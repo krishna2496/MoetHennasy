@@ -1,0 +1,14 @@
+Options +FollowSymlinks
+RewriteEngine On
+
+RewriteCond %{REQUEST_URI} ^/moet_hennessy_app/(api)
+RewriteRule ^api/assets/(.*)$ api/web/assets/$1 [L]
+RewriteRule ^api/css/(.*)$ api/web/css/$1 [L]
+RewriteRule ^api/js/(.*)$ api/web/js/$1 [L]
+RewriteRule ^api/fonts/(.*)$ api/web/fonts/$1 [L]
+RewriteRule ^api/images/(.*)$ api/web/images/$1 [L]
+RewriteRule ^api/libs/(.*)$ api/web/libs/$1 [L]
+
+RewriteCond %{REQUEST_URI} !^/moet_hennessy_app/api/web/(assets|css)/
+RewriteCond %{REQUEST_URI} ^/moet_hennessy_app/(api)
+RewriteRule ^.*$ api/web/index.php [L]
