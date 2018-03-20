@@ -4,7 +4,7 @@ namespace api\modules\v1\controllers;
 
 use yii\rest\ActiveController;
 use Yii;
-use yii\filters\auth\QueryParamAuth;
+use common\components\CustomQueryParamAuth;
 
 
 class BaseApiController extends ActiveController
@@ -13,7 +13,7 @@ class BaseApiController extends ActiveController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
-            'class' => QueryParamAuth::className(),
+            'class' => CustomQueryParamAuth::className(),
         ];
         return $behaviors;
     }

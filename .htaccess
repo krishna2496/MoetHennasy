@@ -12,3 +12,18 @@ RewriteRule ^api/libs/(.*)$ api/web/libs/$1 [L]
 RewriteCond %{REQUEST_URI} !^/moet_hennessy_app/api/web/(assets|css)/
 RewriteCond %{REQUEST_URI} ^/moet_hennessy_app/(api)
 RewriteRule ^.*$ api/web/index.php [L]
+
+RewriteCond %{REQUEST_URI} ^/moet_hennessy_app/(admin)
+RewriteRule ^admin/assets/(.*)$ backend/web/assets/$1 [L]
+RewriteRule ^admin/css/(.*)$ backend/web/css/$1 [L]
+RewriteRule ^admin/js/(.*)$ backend/web/js/$1 [L]
+RewriteRule ^admin/fonts/(.*)$ backend/web/fonts/$1 [L]
+RewriteRule ^admin/images/(.*)$ backend/web/images/$1 [L]
+RewriteRule ^admin/libs/(.*)$ backend/web/libs/$1 [L]
+
+RewriteCond %{REQUEST_URI} !^/moet_hennessy_app/backend/web/(assets|css)/
+RewriteCond %{REQUEST_URI} ^/moet_hennessy_app/(admin)
+RewriteRule ^.*$ backend/web/index.php [L]
+
+RewriteCond %{HTTP_HOST} !/moet_hennessy_app/(admin)
+RewriteRule (.*) /moet_hennessy_app/admin [R=301,L]
