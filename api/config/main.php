@@ -68,7 +68,6 @@ return [
                     ]
                     
                 ],
-                'GET v1/country/index1' => 'v1/country/index1',
             ],        
         ]
     ],

@@ -4,7 +4,7 @@ namespace api\modules\v1\controllers;
 
 use yii\rest\ActiveController;
 use Yii;
-use common\components\CustomQueryParamAuth;
+use common\components\MoetQueryParamAuth;
 
 
 class BaseApiController extends ActiveController
@@ -13,7 +13,7 @@ class BaseApiController extends ActiveController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
-            'class' => CustomQueryParamAuth::className(),
+            'class' => MoetQueryParamAuth::className(),
         ];
         return $behaviors;
     }

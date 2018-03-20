@@ -2,7 +2,7 @@
 namespace common\components;
 use yii\filters\auth\QueryParamAuth;
 
-class CustomQueryParamAuth extends QueryParamAuth
+class MoetQueryParamAuth extends QueryParamAuth
 {
     public function authenticate($user, $request, $response)
     {
