@@ -33,10 +33,11 @@ return [
                 $response = $event->sender;
                 if ($response->data !== null) {
                     $response->data = [
-                        'success' => $response->isSuccessful,
-                        'data' => $response->data,
+                        //'success' => $response->isSuccessful,
+                        'code' => (isset($response->data['code']) && $response->data['code']) ? $response->data['code'] : $response->statusCode,
+                        'message' => isset($response->data['message']) ? $response->data['message'] : '',
+                        'data' => ($response->data !== true) ? $response->data : new stdClass(),
                     ];
-                    $response->statusCode = 200;
                 }
             },
             'format' =>  \yii\web\Response::FORMAT_JSON
@@ -68,6 +69,7 @@ return [
                     ]
                     
                 ],
+                'POST v1/site/login' => 'v1/site/login',
             ],        
         ]
     ],
