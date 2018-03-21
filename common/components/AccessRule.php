@@ -17,8 +17,7 @@ class AccessRule extends \yii\filters\AccessRule {
         }
 
         $canAccess = false;
-        $cookies = Yii::$app->request->cookies;
-        $authKey = $cookies->getValue('auth_key', '');
+        $authKey = isset($_COOKIE['auth_key']) ? $_COOKIE['auth_key'] : '';
         $matchFlag = (User::findIdentityByAccessToken($authKey)) ? true : false;
         foreach ($this->roles as $role) {
 

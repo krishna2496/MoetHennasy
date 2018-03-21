@@ -21,10 +21,11 @@
 		var password = $('#loginform-password').val();
         userWebServices.login(username,password).then(function(result){
         	if (typeof result.data.authKey  !== "undefined"){
-        		$.cookie("auth_key", result.data.authKey, { expires : 7300 });
+        		$.cookie("auth_key", result.data.authKey, { expires : 7300, path : '/' });
         	}
+        	window.location.href = adminUrl;
         },function(result){
-        	alert("Something went wrong.");
+        	moet.showAlert('flash-message-block',result.message,'error');
         });
         return false;
     });

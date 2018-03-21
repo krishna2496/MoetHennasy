@@ -54,21 +54,11 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         return $this->render('index');
     }
 
-    /**
-     * Login action.
-     *
-     * @return string
-     */
     public function actionLogin()
     {
         if (CommonHelper::getUser()) {
@@ -76,27 +66,16 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
-
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
+        return $this->render('login', [
+            'model' => $model,
+        ]);
     }
 
-    /**
-     * Logout action.
-     *
-     * @return string
-     */
     public function actionLogout()
     {
-        $cookies = Yii::$app->response->cookies;
-        $cookies->remove('auth_key');
-
+        if(isset($_COOKIE['auth_key'])){
+            setcookie('auth_key', null, -1, '/');
+        }
         return $this->goHome();
     }
 }

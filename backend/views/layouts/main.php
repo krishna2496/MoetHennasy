@@ -16,6 +16,7 @@ $this->registerAssetBundle(yii\web\JqueryAsset::className(), \yii\web\View::POS_
 $this->registerAssetBundle(backend\assets\MoetAsset::className(), \yii\web\View::POS_HEAD);
 $logedInUser = CommonHelper::getUser();
 $apiUrl = CommonHelper::getPath('api_url');
+$adminUrl = CommonHelper::getPath('admin_url');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -66,6 +67,7 @@ $apiUrl = CommonHelper::getPath('api_url');
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
+		<div id="flash-message-block"></div>
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>
@@ -80,6 +82,7 @@ $apiUrl = CommonHelper::getPath('api_url');
 </footer>
 <script type="text/javascript">
     var appUrl = '<?php echo $apiUrl; ?>';
+    var adminUrl = '<?php echo $adminUrl; ?>';
 </script>
 <?php $this->endBody() ?>
 </body>

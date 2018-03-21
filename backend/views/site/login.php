@@ -20,8 +20,6 @@ $this->registerJsFile('@web/js/user.js',['depends' => [\backend\assets\MoetAsset
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
 
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
-
                 <div class="form-group">
                     <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button', 'id'=>'login-button']) ?>
                 </div>

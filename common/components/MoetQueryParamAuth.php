@@ -4,6 +4,8 @@ use yii\filters\auth\QueryParamAuth;
 
 class MoetQueryParamAuth extends QueryParamAuth
 {
+    public $optional = ['login'];
+
     public function authenticate($user, $request, $response)
     {
         $accessToken = $request->get($this->tokenParam);
