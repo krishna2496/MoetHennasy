@@ -12,7 +12,11 @@ var moet = {
 			beforeSend: function() {},
 			complete: function() {},
 			success: function(result) {
-				defer.resolve(result);
+				if(result.code == '200'){
+					defer.resolve(result);
+				}else{
+					defer.reject(result);
+				}
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
 				var result = {};

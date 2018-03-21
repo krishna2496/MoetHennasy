@@ -6,10 +6,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\helpers\CommonHelper;
 
-/**
- * Site controller
- */
 class SiteController extends Controller
 {
     /**
@@ -20,6 +18,9 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => \common\components\AccessRule::className(),
+                ],
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
@@ -70,7 +71,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
+        if (CommonHelper::getUser()) {
             return $this->goHome();
         }
 
@@ -93,7 +94,8 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
-        Yii::$app->user->logout();
+        $cookies = Yii::$app->response->cookies;
+        $cookies->remove('auth_key');
 
         return $this->goHome();
     }

@@ -61,14 +61,7 @@ class LoginForm extends Model
             $authKey = Yii::$app->security->generateRandomString();
             $userModel->auth_key = $authKey;
             $userModel->save(false);
-
-            $cookies = Yii::$app->response->cookies;
-            $cookies->add(new \yii\web\Cookie([
-                'name' => 'auth_key',
-                'value' => $authKey,
-            ]));
-
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+            return $authKey;
         }
         
         return false;

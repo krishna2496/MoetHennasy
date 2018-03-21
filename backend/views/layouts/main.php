@@ -9,9 +9,13 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
+use common\helpers\CommonHelper;
 
 AppAsset::register($this);
 $this->registerAssetBundle(yii\web\JqueryAsset::className(), \yii\web\View::POS_HEAD);
+$this->registerAssetBundle(backend\assets\MoetAsset::className(), \yii\web\View::POS_HEAD);
+$logedInUser = CommonHelper::getUser();
+$apiUrl = CommonHelper::getPath('api_url');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -39,13 +43,13 @@ $this->registerAssetBundle(yii\web\JqueryAsset::className(), \yii\web\View::POS_
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
     ];
-    if (Yii::$app->user->isGuest) {
+    if (!$logedInUser) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
+                'Logout (' . $logedInUser->username . ')',
                 ['class' => 'btn btn-link logout']
             )
             . Html::endForm()
@@ -74,7 +78,9 @@ $this->registerAssetBundle(yii\web\JqueryAsset::className(), \yii\web\View::POS_
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
 </footer>
-
+<script type="text/javascript">
+    var appUrl = '<?php echo $apiUrl; ?>';
+</script>
 <?php $this->endBody() ?>
 </body>
 </html>
