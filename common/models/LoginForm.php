@@ -11,6 +11,8 @@ class LoginForm extends Model
 {
     public $username;
     public $password;
+    public $device_type;
+    public $device_token;
     public $rememberMe = true;
 
     private $_user;
@@ -23,11 +25,12 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['username', 'password'], 'required'],
+            [['username', 'password', 'device_type'], 'required'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
+            [['device_token'], 'safe'],
         ];
     }
 
@@ -59,6 +62,8 @@ class LoginForm extends Model
             $userModel = User::findByUsername($this->username);
             $authKey = Yii::$app->security->generateRandomString();
             $userModel->auth_key = $authKey;
+            $userModel->device_type = $this->device_type;
+            $userModel->device_token = $this->device_token;
             $userModel->save(false);
             unset($userModel->password_hash);
             unset($userModel->password_reset_token);

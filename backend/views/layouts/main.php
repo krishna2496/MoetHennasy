@@ -83,6 +83,7 @@ $adminUrl = CommonHelper::getPath('admin_url');
 <script type="text/javascript">
     var appUrl = '<?php echo $apiUrl; ?>';
     var adminUrl = '<?php echo $adminUrl; ?>';
+    var deviceType = {'ios':1, 'android':2, 'web':3};
 </script>
 <?php $this->endBody() ?>
 </body>

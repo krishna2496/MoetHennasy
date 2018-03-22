@@ -3,10 +3,11 @@
 		list: function(){
 
 		},
-		login: function(username, password){
+		login: function(username, password, deviceType, deviceToken){
+			deviceToken = deviceToken || '';
 			var defer = jQuery.Deferred();
 			var loginUrl = appUrl+'site/login';
-			var data = {username:username,password:password};
+			var data = {username:username,password:password,deviceType:deviceType,deviceToken:deviceToken};
 			moet.ajax(loginUrl,data,'post').then(function(result){
 				defer.resolve(result);
 			},function(result){
@@ -41,7 +42,7 @@
 	$('#login-form').on('beforeSubmit', function (e) {
 		var username = $('#loginform-username').val();
 		var password = $('#loginform-password').val();
-        userWebServices.login(username,password).then(function(result){
+        userWebServices.login(username,password,deviceType.web).then(function(result){
         	result = moet.parseApi(result);
         	if(result.success == 1){
         		if (typeof result.data.user.auth_key  !== "undefined"){
