@@ -12,11 +12,7 @@ var moet = {
 			beforeSend: function() {},
 			complete: function() {},
 			success: function(result) {
-				if(result.code == '200'){
-					defer.resolve(result);
-				}else{
-					defer.reject(result);
-				}
+				defer.resolve(result);
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
 				var result = {};
@@ -86,5 +82,13 @@ var moet = {
 	    }
 
 	    return true;
+	},
+	'parseApi': function (apiData){
+		var response = {
+			success : apiData.status.success,
+			message : apiData.status.message, 
+			data : apiData.data, 
+		};
+	    return response;
 	},
 }

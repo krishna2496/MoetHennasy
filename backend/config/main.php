@@ -50,6 +50,20 @@ return [
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
             ],
         ],
+        'i18n' => [
+            'translations' => [
+                'app' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@backend/messages',
+                    'sourceLanguage' => '',
+                ],
+                'yii' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@backend/messages',
+                    'sourceLanguage' => '',
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];

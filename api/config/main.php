@@ -28,18 +28,6 @@ return [
             ]
         ], 
         'response' => [
-            'class' => 'yii\web\Response',
-            'on beforeSend' => function ($event) {
-                $response = $event->sender;
-                if ($response->data !== null) {
-                    $response->data = [
-                        //'success' => $response->isSuccessful,
-                        'code' => (isset($response->data['code']) && $response->data['code']) ? $response->data['code'] : $response->statusCode,
-                        'message' => isset($response->data['message']) ? $response->data['message'] : '',
-                        'data' => ($response->data !== true) ? $response->data : new stdClass(),
-                    ];
-                }
-            },
             'format' =>  \yii\web\Response::FORMAT_JSON
         ],  
         'user' => [
@@ -56,6 +44,18 @@ return [
                 ],
             ],
         ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => '@api/mail',
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.gmail.com',
+                'username' => 'mytest225@gmail.com',
+                'password' => 'tatva123',
+                'port' => '587',//587,465,
+                'encryption' => 'tls',
+            ],
+        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'enableStrictParsing' => true,
@@ -70,8 +70,24 @@ return [
                     
                 ],
                 'POST v1/site/login' => 'v1/site/login',
+                'POST v1/site/request-password-reset' => 'v1/site/request-password-reset',
+                'POST v1/site/reset-password' => 'v1/site/reset-password',
             ],        
-        ]
+        ],
+        'i18n' => [
+            'translations' => [
+                'app' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@api/messages',
+                    'sourceLanguage' => '',
+                ],
+                'yii' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@api/messages',
+                    'sourceLanguage' => '',
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];

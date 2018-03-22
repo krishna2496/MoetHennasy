@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use common\helpers\CommonHelper;
 
-$resetLink = CommonHelper::getPath('admin_url').'site/reset-password?token='.$user->password_reset_token;
+$resetLink = CommonHelper::getPath('api_admin_url').'site/reset-password?token='.$user->password_reset_token;
 ?>
 <div class="password-reset">
     <p>Hello <?= Html::encode($user->username) ?>,</p>

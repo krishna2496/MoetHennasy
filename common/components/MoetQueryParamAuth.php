@@ -4,7 +4,7 @@ use yii\filters\auth\QueryParamAuth;
 
 class MoetQueryParamAuth extends QueryParamAuth
 {
-    public $optional = ['login'];
+    public $optional = ['login','request-password-reset','reset-password'];
 
     public function authenticate($user, $request, $response)
     {

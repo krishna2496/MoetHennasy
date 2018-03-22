@@ -2,13 +2,14 @@
 namespace backend\controllers;
 
 use Yii;
-use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
 use common\helpers\CommonHelper;
+use backend\models\PasswordResetRequestForm;
+use backend\models\ResetPasswordForm;
 
-class SiteController extends Controller
+class SiteController extends BaseBackendController
 {
     /**
      * {@inheritdoc}
@@ -23,7 +24,7 @@ class SiteController extends Controller
                 ],
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'error', 'request-password-reset', 'reset-password'],
                         'allow' => true,
                     ],
                     [
@@ -77,5 +78,28 @@ class SiteController extends Controller
             setcookie('auth_key', null, -1, '/');
         }
         return $this->goHome();
+    }
+
+    public function actionRequestPasswordReset()
+    {
+        $model = new PasswordResetRequestForm();
+
+        return $this->render('requestPasswordResetToken', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionResetPassword($token)
+    {
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+
+        return $this->render('resetPassword', [
+            'model' => $model,
+            'token' => $token,
+        ]);
     }
 }

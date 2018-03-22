@@ -19,6 +19,10 @@ $this->registerJsFile('@web/js/user.js',['depends' => [\backend\assets\MoetAsset
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
+                
+                <div style="color:#999;margin:1em 0">
+                    If you forgot your password you can <?= Html::a('reset it', ['site/request-password-reset']) ?>.
+                </div>
 
                 <div class="form-group">
                     <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button', 'id'=>'login-button']) ?>

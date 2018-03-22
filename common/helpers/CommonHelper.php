@@ -91,6 +91,10 @@ class CommonHelper
 					$return = str_replace(\Yii::$app->request->adminUrl, '', Url::base(true)).'/api/v1/';
 				break;
 
+			case 'api_admin_url':
+					$return = str_replace(\Yii::$app->request->adminUrl, '', Url::base(true)).'/admin/';
+				break;
+
 			case 'front_url':
 					$return = str_replace(\Yii::$app->request->adminUrl, '', Url::base(true)).'/';
 				break;
