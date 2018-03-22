@@ -19,6 +19,8 @@ class SiteController extends BaseApiController
         $model = new LoginForm();
         $model->username = Yii::$app->request->post('username');
         $model->password = Yii::$app->request->post('password');
+        $model->device_type = Yii::$app->request->post('deviceType');
+        $model->device_token = Yii::$app->request->post('deviceToken');
         $loginData = $model->login();
         if($loginData) {
             $this->apiCode = 1;
@@ -71,6 +73,10 @@ class SiteController extends BaseApiController
             $this->apiMessage = $model->errors;
         }
         return $this->response();
+    }
+
+    public function actionUpdateUserToken(){
+        echo '<pre>';print_r('asd');exit;
     }
 }
 
