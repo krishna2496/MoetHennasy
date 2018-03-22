@@ -3,11 +3,11 @@
 namespace api\modules\v1\controllers;
 use Yii;
 use common\models\LoginForm;
-use backend\models\PasswordResetRequestForm;
+use common\models\PasswordResetRequestForm;
 use common\helpers\CommonHelper;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use backend\models\ResetPasswordForm;
+use common\models\ResetPasswordForm;
 
 class SiteController extends BaseApiController
 {
