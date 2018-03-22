@@ -65,8 +65,16 @@ class LoginForm extends Model
             $userModel->device_type = $this->device_type;
             $userModel->device_token = $this->device_token;
             $userModel->save(false);
+
+            unset($userModel->created_by);
+            unset($userModel->updated_by);
+            unset($userModel->deleted_by);
+            unset($userModel->created_at);
+            unset($userModel->updated_at);
+            unset($userModel->deleted_at);
             unset($userModel->password_hash);
             unset($userModel->password_reset_token);
+            
             return $userModel;
         }
         
