@@ -81,6 +81,7 @@ return [
                 'POST v1/site/request-password-reset' => 'v1/site/request-password-reset',
                 'POST v1/site/reset-password' => 'v1/site/reset-password',
                 'POST v1/site/logout' => 'v1/site/logout',
+                'POST v1/site/update-device-token' => 'v1/site/update-device-token',
             ],        
         ],
         'i18n' => [

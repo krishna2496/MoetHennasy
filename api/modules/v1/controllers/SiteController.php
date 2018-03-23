@@ -49,8 +49,14 @@ class SiteController extends BaseApiController
         return $returnData;
     }
 
-    public function actionUpdateUserToken(){
-        echo '<pre>';print_r('asd');exit;
+    public function actionUpdateDeviceToken(){
+        $data = array();
+        $data['deviceType'] = Yii::$app->request->post('deviceType');
+        $data['deviceToken'] = Yii::$app->request->post('deviceToken');
+
+        $userRepository = new UserRepository;
+        $returnData = $userRepository->updateDeviceToken($data);
+        return $returnData;
     }
 }
 

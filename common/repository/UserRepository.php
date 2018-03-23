@@ -1,10 +1,12 @@
 <?php
 namespace common\repository;
+
+use Yii;
 use common\models\LoginForm;
 use common\models\PasswordResetRequestForm;
 use common\models\ResetPasswordForm;
 use common\models\User;
-use Yii;
+use common\helpers\CommonHelper;
 
 class UserRepository extends Repository
 {
@@ -82,6 +84,26 @@ class UserRepository extends Repository
         } else {
              $this->apiMessage = Yii::t('app', 'Something went wrong.');
         }
+        return $this->response();
+    }
+
+    public function updateDeviceToken($deviceInfo = array())
+    {
+        $this->apiCode = 0;
+        $user = CommonHelper::getUser();
+
+        $userModel = User::findOne($user->id);
+        $userModel->device_type = $deviceInfo['deviceType'];
+        $userModel->device_token = $deviceInfo['deviceToken'];
+                
+        if($userModel->save(false)){
+            $this->apiCode = 1;
+            $this->apiMessage = Yii::t('app', 'Device info stored sucessfully.');
+        }else{
+            $this->apiCode = 0;
+            $this->apiMessage = Yii::t('app', 'Fail to store user.');
+        }
+
         return $this->response();
     }
 }
