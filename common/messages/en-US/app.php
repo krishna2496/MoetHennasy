@@ -13,4 +13,10 @@ return [
     'Logout sucessfully.' => 'Logout sucessfully.',
     'Something went wrong.' => 'Something went wrong.',
     'Your request was made with invalid credentials.' => 'Your request was made with invalid credentials.',
+    'permission_label' => 'Label',
+    'permission_title' => 'Title',
+    'permission_parent_id' => 'Parent ID',
+    'created_successfully' => '{0} created successfully',
+    'updated_successfully' => '{0} updated successfully',
+    'permission' => 'Permission',
 ];

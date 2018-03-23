@@ -4,6 +4,7 @@ namespace common\models;
 use Yii;
 use yii\db\ActiveRecord;
 use common\helpers\CommonHelper;
+use yii\behaviors\TimestampBehavior;
 
 class BaseModel extends ActiveRecord
 {
@@ -65,5 +66,56 @@ class BaseModel extends ActiveRecord
                 $command->delete(static::tableName(), $condition);
                 return $command->execute();
         }
+    }
+
+    public function canDelete()
+    {
+        return true;
+    }
+
+    public function behaviors()
+    {
+        $createdAt = false;
+        $updatedAt = false;
+
+        if($this->hasAttribute('created_at')){
+            $createdAt = 'created_at';
+        }
+        if($this->hasAttribute('updated_at')){
+            $updatedAt = 'updated_at';
+        }
+        
+        $behaviors = [
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => $createdAt,
+                'updatedAtAttribute' => $updatedAt,
+                'value' => date('Y-m-d H:i:s'),
+            ],
+        ];
+        
+        $parent_behaviors = parent::behaviors();
+        return array_merge($behaviors,$parent_behaviors);
+    }
+
+    public function beforeSave($insert)
+    {
+        if($insert){
+            if($this->hasAttribute('created_by')){
+                $this->created_by = intval(Yii::$app->user->id);
+            }
+            if($this->hasAttribute('updated_by')){
+                $this->updated_by = intval(Yii::$app->user->id);
+            }
+        } else {
+            if($this->hasAttribute('updated_by')){
+                $this->updated_by = intval(Yii::$app->user->id);
+            }
+        }
+
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        return true;
     }
 }

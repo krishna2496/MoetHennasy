@@ -53,12 +53,12 @@ return [
             'translations' => [
                 'app' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@backend/messages',
+                    'basePath' => '@common/messages',
                     'sourceLanguage' => '',
                 ],
                 'yii' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@backend/messages',
+                    'basePath' => '@common/messages',
                     'sourceLanguage' => '',
                 ],
             ],

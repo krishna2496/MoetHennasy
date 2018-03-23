@@ -35,7 +35,7 @@ return [
                     $response->data = [
                         'status'=> [
                             'success' => $response->isSuccessful ? 1 : 0,
-                            'message' => $response->data['message'],
+                            'message' => isset($response->data['message']) ? $response->data['message'] : '',
                         ],
                         'data' => $response->data,
                     ];
@@ -81,18 +81,22 @@ return [
                 'POST v1/site/request-password-reset' => 'v1/site/request-password-reset',
                 'POST v1/site/reset-password' => 'v1/site/reset-password',
                 'POST v1/site/logout' => 'v1/site/logout',
+                'GET v1/permission/index' => 'v1/permission/index',
+                'POST v1/permission/create' => 'v1/permission/create',
+                'POST v1/permission/update-permission' => 'v1/permission/update-permission',
+                'POST v1/permission/delete-permission' => 'v1/permission/delete-permission',
             ],        
         ],
         'i18n' => [
             'translations' => [
                 'app' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@api/messages',
+                    'basePath' => '@common/messages',
                     'sourceLanguage' => '',
                 ],
                 'yii' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@api/messages',
+                    'basePath' => '@common/messages',
                     'sourceLanguage' => '',
                 ],
             ],
