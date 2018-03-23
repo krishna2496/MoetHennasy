@@ -28,6 +28,22 @@ return [
             ]
         ], 
         'response' => [
+            'class' => 'yii\web\Response',
+            'on beforeSend' => function ($event) {
+                $response = $event->sender;
+                if (!isset($response->data['isApi'])) {
+                    $response->data = [
+                        'status'=> [
+                            'success' => $response->isSuccessful ? 1 : 0,
+                            'message' => $response->data['message'],
+                        ],
+                        'data' => $response->data,
+                    ];
+                    $response->statusCode = 200;
+                } else {
+                    unset($response->data['isApi']);
+                }
+            },
             'format' =>  \yii\web\Response::FORMAT_JSON
         ],  
         'user' => [
@@ -61,17 +77,10 @@ return [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                [
-                    'class' => 'yii\rest\UrlRule', 
-                    'controller' => 'v1/country',
-                    'tokens' => [
-                        '{id}' => '<id:\\w+>'
-                    ]
-                    
-                ],
                 'POST v1/site/login' => 'v1/site/login',
                 'POST v1/site/request-password-reset' => 'v1/site/request-password-reset',
                 'POST v1/site/reset-password' => 'v1/site/reset-password',
+                'POST v1/site/logout' => 'v1/site/logout',
             ],        
         ],
         'i18n' => [

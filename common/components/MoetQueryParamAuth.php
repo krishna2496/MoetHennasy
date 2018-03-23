@@ -8,7 +8,8 @@ class MoetQueryParamAuth extends QueryParamAuth
 
     public function authenticate($user, $request, $response)
     {
-        $accessToken = $request->get($this->tokenParam);
+        $headers = $request->headers;
+        $accessToken = $headers->get('authToken');
         if (is_string($accessToken)) {
             $identity = $user->loginByAccessToken($accessToken, get_class($this));
             if ($identity !== null) {

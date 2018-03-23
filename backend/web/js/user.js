@@ -38,48 +38,4 @@
 			return defer.promise();
 		}
 	};
-
-	$('#login-form').on('beforeSubmit', function (e) {
-		var username = $('#loginform-username').val();
-		var password = $('#loginform-password').val();
-        userWebServices.login(username,password,deviceType.web).then(function(result){
-        	result = moet.parseApi(result);
-        	if(result.success == 1){
-        		if (typeof result.data.user.auth_key  !== "undefined"){
-	        		$.cookie("auth_key", result.data.user.auth_key, { expires : 7300, path : '/' });
-	        	}
-	        	window.location.href = adminUrl;
-        	} else {
-        		moet.showAlert('flash-message-block',result.message,'error');
-        	}
-        });
-        return false;
-    });
-
-	$('#request-password-reset-form').on('beforeSubmit', function (e) {
-		var email = $('#passwordresetrequestform-email').val();
-        userWebServices.forgotPassword(email).then(function(result){
-        	result = moet.parseApi(result);
-        	if(result.success == 1){
-        		moet.showAlert('flash-message-block',result.message,'success');
-        	} else {
-        		moet.showAlert('flash-message-block',result.message,'error');
-        	}
-        });
-        return false;
-    });
-
-	$('#reset-password-form').on('beforeSubmit', function (e) {
-		var password = $('#resetpasswordform-password').val();
-		var token = $('#resetpasswordform-token').val();
-        userWebServices.resetPassword(password,token).then(function(result){
-        	result = moet.parseApi(result);
-        	if(result.success == 1){
-        		moet.showAlert('flash-message-block',result.message,'success');
-        	} else {
-        		moet.showAlert('flash-message-block',result.message,'error');
-        	}
-        });
-        return false;
-    });
 })(jQuery);

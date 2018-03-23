@@ -2,12 +2,8 @@
 
 namespace api\modules\v1\controllers;
 use Yii;
-use common\models\LoginForm;
-use common\models\PasswordResetRequestForm;
+use common\repository\UserRepository;
 use common\helpers\CommonHelper;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\ResetPasswordForm;
 
 class SiteController extends BaseApiController
 {
@@ -15,64 +11,42 @@ class SiteController extends BaseApiController
 
     public function actionLogin()
     {
-        $this->apiCode = 0;
-        $model = new LoginForm();
-        $model->username = Yii::$app->request->post('username');
-        $model->password = Yii::$app->request->post('password');
-        $model->device_type = Yii::$app->request->post('deviceType');
-        $model->device_token = Yii::$app->request->post('deviceToken');
-        $loginData = $model->login();
-        if($loginData) {
-            $this->apiCode = 1;
-            $data = array();
-            $data['user'] = $loginData;
-            $this->apiData = $data;
-        }
-        if(isset($model->errors) && $model->errors){
-            $this->apiMessage = $model->errors;
-        }
-        return $this->response();
+        $data = array();
+        $data['username'] = Yii::$app->request->post('username');
+        $data['password'] = Yii::$app->request->post('password');
+        $data['deviceType'] = Yii::$app->request->post('deviceType');
+        $data['deviceToken'] = Yii::$app->request->post('deviceToken');
+
+        $userRepository = new UserRepository;
+        $returnData =$userRepository->login($data);
+        return $returnData;
     }
 
     public function actionRequestPasswordReset()
     {
-        $this->apiCode = 0;
-        $model = new PasswordResetRequestForm();
-        $model->email = Yii::$app->request->post('email');
-        if($model->validate()){
-            $resetToken = $model->sendEmail();
-            if ($resetToken) {
-                $this->apiCode = 1;
-                $this->apiMessage = Yii::t('app', 'Check your email for further instructions.');
-            } else {
-                $this->apiMessage = Yii::t('app', 'Sorry, we are unable to reset password for the provided email address.');
-            }
-        }
+        $data = array();
+        $data['email'] = Yii::$app->request->post('email');
 
-        if(isset($model->errors) && $model->errors){
-            $this->apiMessage = $model->errors;
-        }
-        return $this->response();
+        $userRepository = new UserRepository;
+        $returnData =$userRepository->requestPasswordReset($data);
+        return $returnData;
     }
 
     public function actionResetPassword()
     {
-        $this->apiCode = 0;
-        $model = new ResetPasswordForm(Yii::$app->request->post('token'));
-        $model->password = Yii::$app->request->post('password');
-        if ($model->validate()) {
-            if($model->resetPassword()){
-                $this->apiCode = 1;
-                $this->apiMessage = Yii::t('app', 'New password saved.');
-            } else {
-                 $this->apiMessage = Yii::t('app', 'Wrong password reset token.');
-            }
-        }
+        $data = array();
+        $data['token'] = Yii::$app->request->post('token');
+        $data['password'] = Yii::$app->request->post('password');
 
-        if(isset($model->errors) && $model->errors){
-            $this->apiMessage = $model->errors;
-        }
-        return $this->response();
+        $userRepository = new UserRepository;
+        $returnData = $userRepository->resetPassword($data);
+        return $returnData;
+    }
+
+    public function actionLogout(){
+        $userRepository = new UserRepository;
+        $returnData = $userRepository->logout();
+        return $returnData;
     }
 
     public function actionUpdateUserToken(){

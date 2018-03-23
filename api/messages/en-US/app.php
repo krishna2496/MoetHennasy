@@ -10,4 +10,7 @@ return [
     'Check your email for further instructions.' => 'Check your email for further instructions.',
     'New password saved.' => 'New password saved.',
     'Wrong password reset token.' => 'Wrong password reset token.',
+    'Logout sucessfully.' => 'Logout sucessfully.',
+    'Something went wrong.' => 'Something went wrong.',
+    'Your request was made with invalid credentials.' => 'Your request was made with invalid credentials.',
 ];
