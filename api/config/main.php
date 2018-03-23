@@ -85,6 +85,7 @@ return [
                 'POST v1/permission/create' => 'v1/permission/create',
                 'POST v1/permission/update-permission' => 'v1/permission/update-permission',
                 'POST v1/permission/delete-permission' => 'v1/permission/delete-permission',
+                'POST v1/site/update-device-token' => 'v1/site/update-device-token',
             ],        
         ],
         'i18n' => [

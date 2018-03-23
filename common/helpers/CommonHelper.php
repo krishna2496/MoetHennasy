@@ -13,15 +13,13 @@ class CommonHelper
 {
 	public static function getUser()
 	{
-		$cookies = Yii::$app->request->cookies;
-		$authKey = $cookies->getValue('auth_key', '');
-		$currentUser = User::findIdentityByAccessToken($authKey);
+		$user = Yii::$app->user;
 
-		if(empty($currentUser)) {
+		if(empty($user)) {
 	        return false;
 	    }
 
-        return $currentUser;
+        return $user;
 	}
 
 	/**
