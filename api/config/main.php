@@ -83,9 +83,12 @@ return [
                 'POST v1/site/logout' => 'v1/site/logout',
                 'GET v1/permission/index' => 'v1/permission/index',
                 'POST v1/permission/create' => 'v1/permission/create',
-                'POST v1/permission/update-permission' => 'v1/permission/update-permission',
+                'PUT v1/permission/update/<id:\d+>' => 'v1/permission/update',
                 'POST v1/permission/delete-permission' => 'v1/permission/delete-permission',
                 'POST v1/site/update-device-token' => 'v1/site/update-device-token',
+                'POST v1/permission/matrix' => 'v1/permission/matrix',
+                'GET v1/permission/matrix-listing' => 'v1/permission/matrix-listing',
+                'GET v1/roles/index' => 'v1/roles/index',
             ],        
         ],
         'i18n' => [

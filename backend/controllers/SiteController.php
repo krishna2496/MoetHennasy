@@ -31,7 +31,7 @@ class SiteController extends BaseBackendController
                     [
                         'actions' => ['logout', 'index'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['&'],
                     ],
                 ],
             ],
@@ -102,6 +102,7 @@ class SiteController extends BaseBackendController
     {
         $userRepository = new UserRepository;
         $userRepository->logout();
+        Yii::$app->user->logout();
         setcookie('auth_key', null, -1, '/');
 
         return $this->goHome();

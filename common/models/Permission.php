@@ -36,4 +36,32 @@ class Permission extends BaseModel
     {
         return $this->hasOne(Permission::className(),['id'=>'parent_id']);
     }
+
+    public function getPermissionTree($permissions,$parentId)
+    {
+        $listPermission = array();
+        $count = 0;
+        foreach ($permissions as $key => $value) {
+
+            if( $value['parent_id'] == $parentId ) {
+
+                $listPermission[$value['id']] = array(
+                    'id' => $value['id'],
+                    'permission_label' => $value['permission_label'],
+                    'permission_title' => $value['permission_title'],
+                    'parentId' => $value['parent_id'],
+                    'children' => array()
+                );
+
+                // using recursion
+                $children =  $this->getPermissionTree( $permissions, $value['id'] );
+                if( $children ) {
+                    $listPermission[$value['id']]['children'] = $children;
+                }
+            } else{
+                $count++;
+            }
+        }
+        return $listPermission;
+    }
 }

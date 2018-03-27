@@ -17,18 +17,20 @@ class AccessRule extends \yii\filters\AccessRule {
         }
 
         $canAccess = false;
-        $cookies = Yii::$app->request->cookies;
-        $authKey = $cookies->getValue('auth_key', '');
-        $matchFlag = (User::findIdentityByAccessToken($authKey)) ? true : false;
+        
         foreach ($this->roles as $role) {
 
             switch ($role) {
                 case '?':
-                    $canAccess = ($matchFlag) ? false : true;
+                    if ($user->getIsGuest()) {
+                        $canAccess = true;
+                    }
                     break;
 
                 case '@':
-                    $canAccess = $matchFlag;
+                    if (!$user->getIsGuest()) {
+                        $canAccess = true;
+                    }
                     break;
 
                 case '&':
@@ -38,18 +40,18 @@ class AccessRule extends \yii\filters\AccessRule {
                     
                     // Genrate current permission values
                     $permissions = array();
-                    $permissions[] = implode('.', array('admin', $controllerId, $actionId));
+                    $permissions[] = implode('.', array($controllerId, $actionId));
                     
                     // Check for camelcase permission
                     if(substr_count($controllerId, '-') > 0) {
                         $controllerId = lcfirst(str_replace("- ", "", ucwords(str_replace("-", "- ", $controllerId))));
-                        $permissions[] = implode('.', array('admin', $controllerId, $actionId));
+                        $permissions[] = implode('.', array($controllerId, $actionId));
                     }
 
                     // Check permission
-                    $canAction = CommonHelper::checkPermission($permissions);
+                    $canAction = CommonHelper::checkPermission($permissions,'api');
 
-                    if ($matchFlag && $canAction) {
+                    if (!$user->getIsGuest() && $canAction) {
                         $canAccess = true;
                     }
 
@@ -62,6 +64,7 @@ class AccessRule extends \yii\filters\AccessRule {
                     break;
             }
         }
+
         return $canAccess;
     }
 }

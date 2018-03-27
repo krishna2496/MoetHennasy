@@ -4,10 +4,34 @@ namespace api\modules\v1\controllers;
 use Yii;
 use common\repository\UserRepository;
 use common\helpers\CommonHelper;
+use yii\filters\AccessControl;
 
 class SiteController extends BaseApiController
 {
     public $modelClass = 'common\models\User';
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['access'] = [
+            'class' => AccessControl::className(),
+            'ruleConfig' => [
+                'class' => \common\components\AccessRule::className(),
+            ],
+            'rules' => [
+                [
+                    'actions' => ['login', 'request-password-reset', 'reset-password'],
+                    'allow' => true,
+                ],
+                [
+                    'actions' => ['logout', 'index', 'update-device-token'],
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],
+            ],
+        ];
+        return $behaviors;
+    }
 
     public function actionLogin()
     {

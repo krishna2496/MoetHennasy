@@ -74,7 +74,7 @@ class LoginForm extends Model
             unset($userModel->deleted_at);
             unset($userModel->password_hash);
             unset($userModel->password_reset_token);
-            
+            Yii::$app->user->loginByAccessToken($authKey);
             return $userModel;
         }
         

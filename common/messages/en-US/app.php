@@ -17,6 +17,10 @@ return [
     'permission_title' => 'Title',
     'permission_parent_id' => 'Parent ID',
     'created_successfully' => '{0} created successfully',
+    'deleted_successfully' => '{0} deleted successfully',
     'updated_successfully' => '{0} updated successfully',
+    'delete_confirm' => 'Are you sure want to delete this item?',
     'permission' => 'Permission',
+    'role_permission' => 'Permission matrix',
+    'The requested page does not exist.' => 'The requested page does not exist.',
 ];

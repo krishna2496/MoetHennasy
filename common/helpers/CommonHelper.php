@@ -13,13 +13,13 @@ class CommonHelper
 {
 	public static function getUser()
 	{
-		$user = Yii::$app->user;
+		$currentUser = Yii::$app->user->identity;
 
-		if(empty($user)) {
+		if(empty($currentUser)) {
 	        return false;
 	    }
 
-        return $user;
+        return $currentUser;
 	}
 
 	/**
@@ -131,24 +131,31 @@ class CommonHelper
 	}
     
     public static function checkPermission($permission = '') {
+		
+    	$currentUser = Yii::$app->user->identity;
+
 		// If user is super admin give all permissions
-		$currentUser = Yii::$app->user->identity;
         $superAdminRole = Yii::$app->params['superAdminRole'];
         
         if(!empty($currentUser) && ($currentUser->role_id == $superAdminRole)) {
             return true;
-        } elseif (!empty($currentUser) && $permission[0] == 'admin.site.index' ) {
+        } elseif (!empty($currentUser) && $permission[0] == 'site.index' ) {
             return true;
-        } elseif ($permission[0] == 'admin.users.login' ) {
+        } elseif ($permission[0] == 'site.login' ) {
             return true;
         }
 
-		$session = Yii::$app->session;
-		$permissionsLabelList = $session->get('permissionsLabelList');
+		$permissionsLabelList = array();
+		if(isset($currentUser->permissions)){
+			foreach ($currentUser->permissions as $key => $value) {
+				$permissionsLabelList[] = $value->permission->permission_label;
+			}
+		}
+
 		if(!is_array($permission)){
 			$permission = array($permission);
 		}
-		
+
 		if(!empty($permissionsLabelList) && !empty($permission)) {
 			if(array_uintersect($permission, $permissionsLabelList, 'strcasecmp')) {
 				return true;

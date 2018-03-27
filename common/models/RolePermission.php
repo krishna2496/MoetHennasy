@@ -18,7 +18,7 @@ class RolePermission extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'role_permission';
+        return 'role_permissions';
     }
 
     /**
@@ -43,30 +43,7 @@ class RolePermission extends \yii\db\ActiveRecord
         ];
     }
     
-    public function selectRolePermission()
-    {
-        $rows = RolePermission::find()->all();
-        
-        if(!empty($rows))
-        {
-            foreach($rows as $row)
-            {
-				$roleId[] = $row->role_id;
-				$permissionId[] = $row->permission_id;
-            }
-          
-			$data['roleId']=$roleId;
-			$data['permissionId']=$permissionId;
-      
-        	return $data;
-        }
-        else
-        {
-             return 0;
-        }
-    }
-    
-    public function insertRolePermissions($data)
+    public static function insertRolePermissions($data)
     {
 		$connection = \Yii::$app->db;
 		$transaction = $connection->beginTransaction();
@@ -77,15 +54,16 @@ class RolePermission extends \yii\db\ActiveRecord
 			RolePermission::deleteAll();
 
 			$model = new RolePermission;
+            if($data){
+    			foreach ($data as $value) {
+    				$values = explode (",", $value);
 
-			foreach ($data as $value) {
-				$values = explode (",", $value);
-
-				$model = new RolePermission;
-				$model->role_id = $values[0];
-				$model->permission_id = $values[1];
-				$model->save();
-			} 
+    				$model = new RolePermission;
+    				$model->role_id = isset($values[0]) ? $values[0] : 0;
+    				$model->permission_id = isset($values[1]) ? $values[1] : 0;
+    				$model->save();
+    			}
+            }
 
 			$transaction->commit();
 
@@ -94,5 +72,9 @@ class RolePermission extends \yii\db\ActiveRecord
 		}
 
         return true;
-}
+    }
+
+    public function getPermission(){
+        return $this->hasOne(Permission::className(), ['id' => 'permission_id']);
+    }
 }

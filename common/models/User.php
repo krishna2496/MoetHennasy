@@ -5,6 +5,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\web\IdentityInterface;
+use common\models\RolePermission;
 
 /**
  * User model
@@ -60,7 +61,10 @@ class User extends BaseModel implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        $cookies = Yii::$app->request->cookies;
+        $authKey = $cookies->getValue('auth_key', '');
+
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE, 'auth_key' => $authKey]);
     }
 
     /**
@@ -184,5 +188,9 @@ class User extends BaseModel implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public function getPermissions(){
+        return $this->hasMany(RolePermission::className(), ['role_id' => 'role_id'])->with('permission');
     }
 }

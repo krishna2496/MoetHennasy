@@ -73,9 +73,8 @@ class UserRepository extends Repository
     public function logout()
     {
         $this->apiCode = 0;
-        $headers = Yii::$app->request->headers;
-        $accessToken = $headers->get('authToken');
-        $model = User::findIdentityByAccessToken($accessToken);
+        $user = Yii::$app->user->identity;
+        $model = User::findOne($user->id);
         if($model){
             $model->auth_key = '';
             $model->save(false);
@@ -90,7 +89,7 @@ class UserRepository extends Repository
     public function updateDeviceToken($deviceInfo = array())
     {
         $this->apiCode = 0;
-        $user = CommonHelper::getUser();
+        $user = Yii::$app->user->identity;
 
         $userModel = User::findOne($user->id);
         $userModel->device_type = $deviceInfo['deviceType'];
