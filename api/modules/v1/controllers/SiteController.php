@@ -3,8 +3,10 @@
 namespace api\modules\v1\controllers;
 use Yii;
 use common\repository\UserRepository;
+use common\repository\UploadRepository;
 use common\helpers\CommonHelper;
 use yii\filters\AccessControl;
+use yii\web\UploadedFile;
 
 class SiteController extends BaseApiController
 {
@@ -24,7 +26,7 @@ class SiteController extends BaseApiController
                     'allow' => true,
                 ],
                 [
-                    'actions' => ['logout', 'index', 'update-device-token'],
+                    'actions' => ['logout', 'index', 'update-device-token','upload'],
                     'allow' => true,
                     'roles' => ['@'],
                 ],
@@ -80,6 +82,15 @@ class SiteController extends BaseApiController
 
         $userRepository = new UserRepository;
         $returnData = $userRepository->updateDeviceToken($data);
+        return $returnData;
+    }
+
+    public function actionUpload(){
+        $data = array();
+        $data['type'] = Yii::$app->request->post('type');
+        $data['files'] = UploadedFile::getInstancesByName('file');
+        $uploadRepository = new UploadRepository;
+        $returnData = $uploadRepository->store($data);
         return $returnData;
     }
 }

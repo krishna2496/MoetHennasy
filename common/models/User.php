@@ -193,4 +193,8 @@ class User extends BaseModel implements IdentityInterface
     public function getPermissions(){
         return $this->hasMany(RolePermission::className(), ['role_id' => 'role_id'])->with('permission');
     }
+
+    public function getRole(){
+        return $this->hasOne(Role::className(), ['id' => 'role_id']);
+    }
 }

@@ -81,6 +81,7 @@ return [
                 'POST v1/site/request-password-reset' => 'v1/site/request-password-reset',
                 'POST v1/site/reset-password' => 'v1/site/reset-password',
                 'POST v1/site/logout' => 'v1/site/logout',
+                'POST v1/site/upload' => 'v1/site/upload',
                 'GET v1/permission/index' => 'v1/permission/index',
                 'POST v1/permission/create' => 'v1/permission/create',
                 'PUT v1/permission/update/<id:\d+>' => 'v1/permission/update',
