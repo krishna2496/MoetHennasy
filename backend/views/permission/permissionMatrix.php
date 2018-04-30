@@ -54,10 +54,15 @@ function genratePermissionTr($permissionLabels, $roleLabels,$checkedValArray, $l
 	}
 }
 ?>
-<section class="app-content">
-	<div class="row">
-		<div class="col-md-12">
-			<div class="widget p-lg">
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">
+                    <?= Html::encode($this->title) ?>
+                </h3>
+            </div>
+            <div class="box-body">
 				<form method="post" id="saveRolePermission" action="<?php echo CommonHelper::getPath('admin_url') ?>permission/matrix">
 					<input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
 					<?php
@@ -108,7 +113,7 @@ function genratePermissionTr($permissionLabels, $roleLabels,$checkedValArray, $l
 			</div>
 		</div>
 	</div>
-</section>	
+</div>	
 
 <style type="text/css">
 .fixed_headers {

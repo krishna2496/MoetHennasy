@@ -1,0 +1,99 @@
+.login-page{
+    display: flex;
+}
+.login-page .left-part{
+    background-color: #231f20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+}
+.login-page .left-part .logo-top{
+    position: relative;
+    z-index: 2;
+    margin-top: 5px; 
+}
+.login-page .left-part .logo-top img{
+    max-width: 75%;
+}
+.login-page .right-part {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.login-page .right-part .login-box, .login-page .right-part .register-box {
+    width: auto;
+    margin: 0;
+    max-width: 80%;
+}
+.login-page .left-part::before{
+    content: '';
+    position: absolute;
+    width: -webkit-calc(100% - 30px);
+    width: -moz-calc(100% - 30px);
+    width: -o-calc(100% - 30px);
+    width: calc(100% - 30px);
+    height: -webkit-calc(100% - 60px);
+    height: -moz-calc(100% - 60px);
+    height: -o-calc(100% - 60px);
+    height: calc(100% - 60px);
+    border: 1px solid #947549;
+    top: 35px;
+    left: 15px;
+    z-index: 1;
+}
+.log-img {
+    max-width: 75%;
+    width: auto;
+    margin-bottom: 15%;
+}
+.login-page .welcome {font-size: 60px}
+.login-page .welcome + p {
+    font-size: 30px;
+    color: #947549;
+    line-height: 24px;
+    margin-top: 15px;}
+.login-page .welcome + p span {font-size: 16px; color: #000; font-weight: 400;}
+.login-page .btn-primary {
+    font-size: 14px;
+    font-weight: 600;
+}
+.login-page .has-feedback .form-control {
+    padding-right: 42.5px;
+    width: 600px;
+    margin: 0;
+    border-radius: 2px;
+    max-width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+}
+.login-page .form-control:focus {
+    border-color: #947549;
+    box-shadow: none;
+}
+.login-page .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+.login-page .forgot{
+    float: right;
+    margin-top: -20px;
+    color: #4d4d4d;
+    text-decoration: underline;
+}
+.login-page .copyright {
+    padding: 5px 15px 15px;
+    border-top: 1px solid #ccc;
+    margin-top: 15px;
+}
+.login-page .copyright span{
+    font-size: 12px;
+}
+@media (max-width: 992px ){
+    .login-page .left-part {display: none;}
+    .login-page .right-part {width: 100%;}
+}

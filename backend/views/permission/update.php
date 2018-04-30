@@ -9,11 +9,7 @@ $this->title = 'Update Permission'.' : ' . $model->permission_title;
 $this->params['breadcrumbs'][] = ['label' => 'Permissions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="permissions-update">
-
-    <?= $this->render('_form', [
-        'model' => $model,
-        'listPermissions' => $listPermissions,
-    ]) ?>
-
-</div>
+<?= $this->render('_form', [
+    'model' => $model,
+    'listPermissions' => $listPermissions,
+]) ?>

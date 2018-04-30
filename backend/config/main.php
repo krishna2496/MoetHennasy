@@ -64,6 +64,31 @@ return [
                 ],
             ],
         ],
+        'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'sourcePath' => '@backend',
+                    'basePath' => '@webroot',
+                    'baseUrl' => '@web',
+                    'js' => [
+                        'theme/bower_components/jquery/dist/jquery.min.js',
+                    ]
+                ],
+                'yii\bootstrap\BootstrapAsset' => [
+                    'sourcePath' => '@backend/web/theme',
+                    'js' => [
+                        'bootstrap.js' => 'bower_components/bootstrap/dist/js/bootstrap.min.js'
+                    ],
+                    'css' => []
+                ],
+                'yii\bootstrap\BootstrapPluginAsset' => [
+                    'sourcePath' => '@backend/web/theme',
+                    'js' => [
+                        'bootstrap.js' => 'bower_components/bootstrap/dist/js/bootstrap.min.js'
+                    ]
+                ]
+            ],
+        ],
     ],
     'params' => $params,
 ];

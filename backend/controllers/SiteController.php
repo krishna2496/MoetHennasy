@@ -63,6 +63,7 @@ class SiteController extends BaseBackendController
 
     public function actionLogin()
     {
+        $this->layout = 'auth';
         if (CommonHelper::getUser()) {
             return $this->goHome();
         }
@@ -110,6 +111,7 @@ class SiteController extends BaseBackendController
 
     public function actionRequestPasswordReset()
     {
+        $this->layout = 'auth';
         if (CommonHelper::getUser()) {
             return $this->goHome();
         }
@@ -137,6 +139,7 @@ class SiteController extends BaseBackendController
 
     public function actionResetPassword($token)
     {
+        $this->layout = 'auth';
         if (CommonHelper::getUser()) {
             return $this->goHome();
         }

@@ -1,32 +1,30 @@
 <?php
-
-/* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\PasswordResetRequestForm */
-
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use common\helpers\CommonHelper;
+use yii\helpers\Url;
 
-$this->title = 'Forgot password';
-$this->params['breadcrumbs'][] = $this->title;
-$this->registerJsFile('@web/js/user.js',['depends' => [\backend\assets\MoetAsset::className()]]);
+$this->title = 'Forgot Password';
+$adminUrl = CommonHelper::getPath('admin_url');
+$loginUrl = Url::to(['site/login']);
 ?>
-<div class="site-request-password-reset">
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>Please fill out your email. A link to reset password will be sent there.</p>
-
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'request-password-reset-form']); ?>
-
-                <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
-
-                <div class="form-group">
-                    <?= Html::submitButton('Send', ['class' => 'btn btn-primary']) ?>
-                </div>
-
-            <?php ActiveForm::end(); ?>
+<div class="login-box">
+    <div class="login-logo">
+        <a href="javascript:void(0)" class="welcome"></a>
+        <p>
+            <?= Html::encode($this->title) ?> <br>
+            <span>Please fill out your email. A link to reset password will be sent there.</span>
+        </p>
+    </div>
+    <div class="login-box-body">
+        <?php $form = ActiveForm::begin(['id' => 'request-password-reset-form','fieldConfig' => ['options' => ['class' => 'form-group has-feedback']]]); ?>
+            <?= $form->field($model, 'email',['template' => '{label}{input}{error}<span class="glyphicon glyphicon-envelope form-control-feedback"></span><a href="'.$loginUrl.'" class="forgot">Login here</a><div class="clearfix"></div>'])->textInput(['autofocus' => true,'placeholder' =>'Email'])->label('EMAIL')  ?>
+            <div class="form-group">
+                <?= Html::submitButton('Send', ['class' => 'btn btn-primary']) ?>
+            </div>
+        <?php ActiveForm::end(); ?>
+        <div class="copyright">
+          <span>© 2018 - DIYS by ODiTY</span>
         </div>
     </div>
 </div>
