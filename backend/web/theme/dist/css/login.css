@@ -97,3 +97,6 @@
     .login-page .left-part {display: none;}
     .login-page .right-part {width: 100%;}
 }
+.alert{
+    width: 100%;
+}
