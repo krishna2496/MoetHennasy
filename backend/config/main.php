@@ -90,5 +90,13 @@ return [
             ],
         ],
     ],
+    'container' => [
+        'definitions' => [
+            'yii\widgets\LinkPager' => [
+                'nextPageLabel' => 'Next',
+                'prevPageLabel'  => 'Previous',
+            ]
+        ]
+    ],
     'params' => $params,
 ];
