@@ -5,3 +5,48 @@ b, strong {
 	margin: 0 !important;
 	float: right;
 }
+a.asc::after, a.desc::after {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    padding-left: 5px;
+    color: #3c8dbc;
+    font-size: 14px;
+}
+a.asc::after {
+    content: "\e151";
+}
+a.desc::after {
+    content: "\e152";
+}
+a.asc::after, a.desc::after {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    padding-left: 5px;
+    color: #3c8dbc;
+    font-size: 14px;
+}
+.mw-md{
+	min-width: 120px;
+}
+.btn-inverse{
+	background-color: #FFF;
+	border: 1px solid #866a42 !important;
+	color: #866a42 !important;
+}
+.hideParentUser{
+	display: none;
+}
+.filter-search{
+    height: 34px;
+    margin-left: 15px !important;
+}

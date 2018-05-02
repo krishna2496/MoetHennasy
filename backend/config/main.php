@@ -48,6 +48,9 @@ return [
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:[^/]+>/<action:[^/]+>/<slug:[^/]+>' => '<controller>/<action>',
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
+                'users/update/<id:\d+>/<parentId:\d+>' => 'users/update',
+                'users/view/<id:\d+>/<parentId:\d+>' => 'users/view',
+                'users/delete/<id:\d+>/<parentId:\d+>' => 'users/delete',
             ],
         ],
         'i18n' => [

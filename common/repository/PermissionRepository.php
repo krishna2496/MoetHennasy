@@ -3,6 +3,7 @@ namespace common\repository;
 use common\models\PermissionSearch;
 use common\models\Permission;
 use common\models\RolePermission;
+use common\models\ParentRolePermission;
 use yii\web\NotFoundHttpException;
 use Yii;
 
@@ -92,6 +93,33 @@ class PermissionRepository extends Repository
         $data = array();
         $data['permission'] = $rows;
         $this->apiData = $data;
+        return $this->response();
+    }
+
+    public function selectParentRolePermission($data = array())
+    {
+        $this->apiCode = 1;
+        $query = ParentRolePermission::find()->with(['roleName']);
+        if(isset($data['parent_role_id']) && $data['parent_role_id']){
+            $query->andWhere(['parent_role_id'=>$data['parent_role_id']]);
+        }
+        $rows = $query->asArray()->all();
+        $data = array();
+        $data['permission'] = $rows;
+        $this->apiData = $data;
+        return $this->response();
+    }
+
+    public function insertParentRolePermission($data)
+    {
+        $this->apiCode = 0;
+        $success = ParentRolePermission::insertRolePermissions($data);
+        if($success == true){
+            $this->apiCode = 1;
+            $this->apiMessage = Yii::t('app', 'updated_successfully', [Yii::t('app', 'role_permission')]);
+        } else {
+            $this->apiMessage = Yii::t('app', 'Something went wrong.');
+        }
         return $this->response();
     }
 }

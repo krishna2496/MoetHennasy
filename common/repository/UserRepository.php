@@ -7,6 +7,7 @@ use common\models\PasswordResetRequestForm;
 use common\models\ResetPasswordForm;
 use common\models\User;
 use common\helpers\CommonHelper;
+use common\components\Email;
 
 class UserRepository extends Repository
 {
@@ -101,6 +102,152 @@ class UserRepository extends Repository
         }else{
             $this->apiCode = 0;
             $this->apiMessage = Yii::t('app', 'Fail to store user.');
+        }
+
+        return $this->response();
+    }
+
+    public function userList($data = array()){
+        $this->apiCode = 1;
+        $query = User::find()->joinWith(['role'])->andWhere(['!=','role_id',Yii::$app->params['superAdminRole']]);
+        if(isset($data['role_id']) && $data['role_id']){
+            $query->andWhere(['=','users.role_id',$data['role_id']]);
+        }
+        if(isset($data['parent_user_id']) && $data['parent_user_id']){
+            $query->andWhere(['=','users.parent_user_id',$data['parent_user_id']]);
+        }
+        if(isset($data['id']) && $data['id']){
+            $query->andWhere(['=','users.id',$data['id']]);
+        }
+        if(isset($data['update_id']) && $data['update_id']){
+            $query->andWhere(['!=','users.id',$data['update_id']]);
+        }
+        if(isset($data['search']) && $data['search']){
+            $data['search'] = trim($data['search']);
+            $nameArray = explode(' ', $data['search']);
+            $firstName = $nameArray[0];
+            $lastName = isset($nameArray[1]) ? $nameArray[1] : $nameArray[0];
+            $query->andWhere([
+                'or',
+                    ['like', 'first_name', $firstName],
+                    ['like', 'last_name', $lastName],
+                    ['like', 'username', $data['search']],
+                    ['like', 'email', $data['search']],
+            ]);
+        }
+        $data = array();
+        $data['users'] = $query->asArray()->all();
+        $this->apiData = $data;
+        return $this->response();
+    }
+
+    public function createUser($data = array()){
+        $this->apiCode = 0;
+        $userModel = new User;
+        $userModel->scenario = 'create';
+        $userModel->username = $data['username'];
+        $userModel->email = $data['email'];
+        $userModel->first_name = $data['first_name'];
+        $userModel->last_name = $data['last_name'];
+        $userModel->status = $data['status'];
+        $userModel->role_id = $data['role_id'];
+        $userModel->device_type = $data['device_type'];
+        if(isset($data['profile_photo']) && $data['profile_photo']){
+            $userModel->profile_photo = $data['profile_photo'];
+        }
+        if(isset($data['device_token'])) {
+            $userModel->device_token = $data['device_token'];
+        }
+        if(isset($data['parent_user_id'])) {
+            $userModel->parent_user_id = $data['parent_user_id'];
+        }
+        if($userModel->validate()) {
+            $password = CommonHelper::generateRandomString(6);
+            $userModel->setPassword($password);
+            $userModel->generateAuthKey();
+
+            if($userModel->save(false)) {
+                $mail = new Email();
+                $mail->email = $userModel->email;
+
+                $siteUrl = CommonHelper::getPath('site_url');
+                $userString = array();
+                $userString[] = $userModel->first_name;
+                $userString[] = $userModel->last_name;
+                $mail->body = Yii::$app->controller->renderPartial('mail');
+                $mail->setFrom = Yii::$app->params['supportEmail'];
+                $mail->subject = 'Create User';
+                $mail->set("USERNAME", $userModel->username);
+                $mail->set("NAME", implode(' ', $userString));
+                if (isset($password)) {
+                    $mail->set("PASSWORD", $password);
+                }
+                $mail->send();
+
+                $this->apiCode = 1;
+                $this->apiMessage = Yii::t('app', 'created_successfully', [Yii::t('app', 'user')]);
+            } else {
+                $this->apiCode = 0;
+                $this->apiMessage = Yii::t('app', 'Something went wrong.');
+            }
+        } else {
+            $this->apiCode = 0;
+            if(isset($userModel->errors) && $userModel->errors){
+                $this->apiMessage = $userModel->errors;
+            }
+        }
+
+        return $this->response();
+    }
+
+    public function updateUser($data = array(), $type='user'){
+        $this->apiCode = 0;
+        $userModel = new User;
+        $userModel = User::findOne($data['id']);
+        if(!$userModel){
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        $userModel->username = $data['username'];
+        $userModel->email = $data['email'];
+        $userModel->first_name = $data['first_name'];
+        $userModel->last_name = $data['last_name'];
+        $userModel->status = $data['status'];
+        $userModel->role_id = $data['role_id'];
+        $userModel->device_type = $data['device_type'];
+        if(isset($data['profile_photo']) && $data['profile_photo']){
+            $userModel->profile_photo = $data['profile_photo'];
+        }
+        if(isset($data['new_password'])) {
+            $userModel->new_password = $data['new_password'];
+        }
+        if(isset($data['confirm_password'])) {
+            $userModel->confirm_password = $data['confirm_password'];
+        }
+        if(isset($data['device_token'])) {
+            $userModel->device_token = $data['device_token'];
+        }
+        if(isset($data['parent_user_id'])) {
+            $userModel->parent_user_id = $data['parent_user_id'];
+        }
+        if($userModel->validate()) {
+            if($userModel->new_password) {
+                $userModel->setPassword($userModel->new_password);
+                $userModel->generateAuthKey();
+            }
+
+            if($userModel->save(false)) {
+                $this->apiCode = 1;
+                $this->apiMessage = Yii::t('app', 'updated_successfully', [Yii::t('app', $type)]);
+            } else {
+                $this->apiCode = 0;
+                $this->apiMessage = Yii::t('app', 'Something went wrong.');
+            }
+        } else {
+            $this->apiCode = 0;
+            if(isset($userModel->errors) && $userModel->errors){
+                $this->apiMessage = $userModel->errors;
+            }
         }
 
         return $this->response();

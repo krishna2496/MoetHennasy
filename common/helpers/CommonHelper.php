@@ -179,6 +179,43 @@ class CommonHelper
 		}
 		return $imgUrl;
 	}
+
+	public static function getDropdown($list, $columns = array()){
+    	// Prepare key, value
+		$key   = '';
+		$value = '';
+		$columnArray = array(
+			'key' => $columns[0], 
+			'value' => $columns[1]
+		);
+
+		foreach ($columnArray as $arrKey => $arrValue) {
+			if(is_array($arrValue)){
+				${$arrKey} = function($data) use ($arrValue) {
+					$clouserValue = array();
+					foreach ($arrValue as $cKey => $cValue) {
+						$clouserValue[] = $data[$cValue];
+					}
+		            return implode(' ', $clouserValue);
+		        };		        
+			} else {
+				${$arrKey} = $arrValue;
+			}
+		}
+
+		$lists = ArrayHelper::map($list, $key, $value);
+		return $lists;
+    }
+
+    public static function generateRandomString($length = 5) {
+	    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	    $charactersLength = strlen($characters);
+	    $randomString = '';
+	    for ($i = 0; $i < $length; $i++) {
+	        $randomString .= $characters[rand(0, $charactersLength - 1)];
+	    }
+	    return $randomString;
+	}
         
 }
 

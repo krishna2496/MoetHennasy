@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\Permission;
 use common\models\PermissionSearch;
+use common\models\Role;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\helpers\CommonHelper;
@@ -26,7 +27,7 @@ class PermissionController extends BaseBackendController
                 ],
                 'rules' => [
                     [
-                        'actions' => ['index','create','update','delete','matrix','matrix-listing'],
+                        'actions' => ['index','create','update','delete','matrix','matrix-listing','roles-matrix-listing','parent-matrix'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -55,6 +56,12 @@ class PermissionController extends BaseBackendController
             'allModels' => $permissions,
             'pagination' =>  [ 
                 'pageSize' => Yii::$app->params['pageSize'],
+            ],
+            'sort' => [
+                'attributes' => [
+                    'permission_label',
+                    'permission_title',
+                ],
             ],
         ]);
 
@@ -194,6 +201,44 @@ class PermissionController extends BaseBackendController
             'roleLabels' => $roleLabels,
             'checkedValArray' => $checkedValArray,
             'permissionCount' => count($permissionLabels)
+        ]);
+    }
+
+    public function actionParentMatrix()
+    {
+        $data = array();
+        $data = Yii::$app->request->post('permissionscheck');
+        $permissionRepository = new PermissionRepository;
+        $returnData = $permissionRepository->insertParentRolePermission($data);
+        if($returnData['status']['success'] == 1)
+        {
+            Yii::$app->session->setFlash('success', $returnData['status']['message']);
+        } else {
+            Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+        }
+        return $this->redirect(['roles-matrix-listing']);
+    }
+
+    public function actionRolesMatrixListing()
+    {
+        $roleLabels = Role::find()->asArray()->all(); 
+
+        $permissionRepository = new PermissionRepository;
+        $rolePermissionData = $permissionRepository->selectParentRolePermission();
+        $checkedValArray = array();
+        if($rolePermissionData['status']['success'] == 1){
+            if($rolePermissionData['data']){
+                foreach ($rolePermissionData['data']['permission'] as $key=>$value)
+                {
+                    $checkedValArray[]= $value['parent_role_id'].",".$value['child_role_id']; 
+                }
+            }
+        }
+
+        return $this->render('parentPermissionMatrix', [
+            'roleLabels' => $roleLabels,
+            'checkedValArray' => $checkedValArray,
+            'permissionCount' => count($roleLabels)
         ]);
     }
 

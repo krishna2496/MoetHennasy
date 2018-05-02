@@ -30,7 +30,7 @@ $user = CommonHelper::getUser();
                     <li>
                       <a href="#">
                         <div class="pull-left">
-                          <img src="<?php echo $adminUrl; ?>theme/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                          <img src="<?php echo CommonHelper::getImage(UPLOAD_PATH_USER_IMAGES . $user['profile_photo']); ?>" class="img-circle" alt="User Image">
                         </div>
                         <h4>
                           Support Team
@@ -43,7 +43,7 @@ $user = CommonHelper::getUser();
                     <li>
                       <a href="#">
                         <div class="pull-left">
-                          <img src="<?php echo $adminUrl; ?>theme/dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                          <img src="<?php echo CommonHelper::getImage(UPLOAD_PATH_USER_IMAGES . $user['profile_photo']); ?>" class="img-circle" alt="User Image">
                         </div>
                         <h4>
                           AdminLTE Design Team
@@ -212,13 +212,13 @@ $user = CommonHelper::getUser();
             
             <li class="dropdown user user-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <img src="<?php echo $adminUrl; ?>theme/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                <img src="<?php echo CommonHelper::getImage(UPLOAD_PATH_USER_IMAGES . $user->profile_photo); ?>" class="user-image" alt="User Image">
                 <span class="hidden-xs"><?php echo $user->first_name.' '.$user->last_name; ?></span>
               </a>
               <ul class="dropdown-menu">
                 
                 <li class="user-header">
-                  <img src="<?php echo $adminUrl; ?>theme/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                  <img src="<?php echo CommonHelper::getImage(UPLOAD_PATH_USER_IMAGES . $user->profile_photo); ?>" class="img-circle" alt="User Image">
 
                   <p>
                     <?php echo $user->first_name.' '.$user->last_name; ?>
@@ -244,7 +244,7 @@ $user = CommonHelper::getUser();
                 
                 <li class="user-footer">
                   <div class="pull-left">
-                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                    <a href="<?php echo $adminUrl.'site/edit-profile'; ?>" class="btn btn-default btn-flat">Profile</a>
                   </div>
                   <div class="pull-right">
                     <a href="<?php echo $adminUrl.'site/logout'; ?>" class="btn btn-default btn-flat" data-method="post">Sign out</a>

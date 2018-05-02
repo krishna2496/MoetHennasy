@@ -25,40 +25,49 @@ class User extends BaseModel implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 1;
+    public $new_password;
+    public $confirm_password;
+    public $userImage;
 
-
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return '{{%users}}';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className(),
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            [['username','first_name','last_name','email','role_id','status','device_type'], 'required'],
+            ['confirm_password', 'compare', 'compareAttribute' => 'new_password','skipOnEmpty' => false,'message' => "Password doesn't match"],
+            [['new_password','confirm_password'], 'string', 'min' => 6],
+            [['first_name','last_name','username','password_hash','email','device_token','latitude','longitude','profile_photo'],'string','max'=>255,'on' => ['create','update']],
+            [['role_id','parent_user_id'],'integer','on' => ['create','update']],
+            [['email'], 'email'],
+            [['created_by', 'updated_by', 'deleted_by', 'status'], 'integer','on' => ['create','update']],
+            [['username','email'], 'unique'],
+            [['userImage'], 'file','extensions'=>'jpg,png,jpeg','on' => ['create','update']],
+            ['parent_user_id', 'required', 'when' => function ($model) { return ($model->role_id != Yii::$app->params['marketAdministratorRole'] && $model->role_id != Yii::$app->params['superAdminRole']); }, 'whenClient' => "function (attribute, value) { return $('#user-role_id').val() != '".Yii::$app->params['marketAdministratorRole']."'; }"],
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function attributeLabels()
+    {
+        return [
+            'username' => Yii::t("app", "view_lbl_username"),
+            'status' => Yii::t("app", "view_lbl_status"),
+            'first_name' => Yii::t("app", "view_lbl_first_name"),
+            'last_name' => Yii::t("app", "view_lbl_last_name"),
+            'email' => Yii::t("app", "view_lbl_email"),
+            'role_id' => Yii::t("app", "view_lbl_role"),
+            'new_password' => Yii::t("app", "view_lbl_password"),
+            'parent_user_id' => Yii::t("app", "view_lbl_parent_user_id"),
+            'profile_photo' => Yii::t("app", "view_lbl_profile_photo"),
+            
+        ];
+    }
+    
     public static function findIdentity($id)
     {
         $cookies = Yii::$app->request->cookies;
@@ -67,31 +76,16 @@ class User extends BaseModel implements IdentityInterface
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE, 'auth_key' => $authKey]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function findIdentityByAccessToken($token, $type = null)
     {
         return static::findOne(['auth_key' => $token]);
     }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
     public static function findByUsername($username)
     {
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
 
-    /**
-     * Finds user by password reset token
-     *
-     * @param string $token password reset token
-     * @return static|null
-     */
     public static function findByPasswordResetToken($token)
     {
         if (!static::isPasswordResetTokenValid($token)) {
@@ -104,12 +98,6 @@ class User extends BaseModel implements IdentityInterface
         ]);
     }
 
-    /**
-     * Finds out if password reset token is valid
-     *
-     * @param string $token password reset token
-     * @return bool
-     */
     public static function isPasswordResetTokenValid($token)
     {
         if (empty($token)) {
@@ -121,70 +109,41 @@ class User extends BaseModel implements IdentityInterface
         return $timestamp + $expire >= time();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->getPrimaryKey();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAuthKey()
     {
         return $this->auth_key;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validateAuthKey($authKey)
     {
         return $this->getAuthKey() === $authKey;
     }
 
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 
-    /**
-     * Generates password hash from password and sets it to the model
-     *
-     * @param string $password
-     */
     public function setPassword($password)
     {
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
 
-    /**
-     * Generates "remember me" authentication key
-     */
     public function generateAuthKey()
     {
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
-    /**
-     * Generates new password reset token
-     */
     public function generatePasswordResetToken()
     {
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
-    /**
-     * Removes password reset token
-     */
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;

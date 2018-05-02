@@ -53,6 +53,47 @@ $arrayMenu = array(
             ),
         )
     ),
+    
+    array(
+        'title' => 'User Management',
+        'permissionName' => array(
+            'Users.Index',
+            'Users.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'users'
+        ),
+        'actionId' => array(
+            'index', 'create'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Listing',
+                'permissionName' => array(
+                    'Users.Index'
+                ),
+                'icon' => '',
+                'link' => 'users/index',
+                'controllerId' => 'users',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Create',
+                'permissionName' => array(
+                    'Users.Create'
+                ),
+                'icon' => '',
+                'link' => 'users/create',
+                'controllerId' => 'users',
+                'actionId' => array('create')
+            ),
+        )
+    ),
+
 );
 ?>
 <b>
@@ -60,7 +101,7 @@ $arrayMenu = array(
         <section class="sidebar">
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="<?php echo $adminUrl; ?>theme/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <img src="<?php echo CommonHelper::getImage(UPLOAD_PATH_USER_IMAGES . $user->profile_photo); ?>" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
                     <p><?php echo $user->first_name.' '.$user->last_name; ?></p>
@@ -92,7 +133,7 @@ $arrayMenu = array(
                         <?php if ((CommonHelper::checkPermission($value['permissionName']))) { ?>
                             <li class="<?php echo $value['hasChildClass'].$parentMenuClass; ?>">
                                 <a href="<?php echo $value['link']; ?>">
-                                    <i class="fa fa-edit"></i>
+                                    <i class="<?php echo $value['icon']; ?>"></i>
                                     <span><?php echo $value['title']; ?></span>
                                     <?php if($value['childs']){ ?>
                                         <span class="pull-right-container">
