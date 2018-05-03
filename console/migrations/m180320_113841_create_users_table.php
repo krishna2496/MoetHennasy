@@ -25,6 +25,7 @@ class m180320_113841_create_users_table extends Migration
             'parent_user_id' => $this->integer()->unsigned()->defaultValue(null),
             'status' => $this->tinyInteger(1)->defaultValue(1)->comment('0:inactive, 1:active'),
             'profile_photo' => $this->string(255)->defaultValue(null),
+            'phone' => $this->string(30)->defaultValue(null),
             'device_type' => $this->tinyInteger(1)->defaultValue(null)->comment('1:ios, 2:android, 3:Web'),
             'device_token' => $this->string(255)->defaultValue(null),
             'latitude' => $this->string(30)->defaultValue(null),
