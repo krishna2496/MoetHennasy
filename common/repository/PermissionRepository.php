@@ -139,9 +139,6 @@ class PermissionRepository extends Repository
 
     public function checkLoginPermission($permission = '', $roleId)
     {
-        if($roleId == Yii::$app->params['superAdminRole']){
-             return true;
-        }
         if($permission){
             $row = RolePermission::find()->joinWith(['permission'])->andWhere(['permissions.permission_label'=>$permission])->andWhere(['role_permissions.role_id'=>$roleId])->asArray()->one();
             if($row){

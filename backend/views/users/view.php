@@ -31,8 +31,12 @@ if($isUpdateParent) {
                         'first_name',
                         'last_name',
                         'role.title',
+                        [
+                            'label' => 'Market',
+                            'attribute' => 'market.title'
+                        ],
                         [                      // the owner name of the model
-                            'label' => 'Owner',
+                            'label' => 'Status',
                             'value' => isset(Yii::$app->params['status'][$model->status]) ? Yii::$app->params['status'][$model->status] : '',
                         ],
                         'phone',

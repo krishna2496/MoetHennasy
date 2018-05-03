@@ -57,10 +57,16 @@ use common\helpers\CommonHelper;
                 			<?= $form->field($model, 'phone')->textInput(); ?> 
                 		</div>
                 	</div>
+                    <div class="row">
+                        <div class="col-md-6">
+                             <?= $form->field($model, 'market_id')->dropDownList($markets, ['prompt' => 'Select Market']); ?> 
+                        </div>
+                        <div class="col-md-6">
+                             <?= $form->field($model, 'role_id')->dropDownList($roles, ['prompt' => 'Select User Type']); ?> 
+                        </div>
+                    </div>
                 	<div class="row">
-                		<div class="col-md-6">
-                			 <?= $form->field($model, 'role_id')->dropDownList($roles, ['prompt' => 'Select User Type']); ?> 
-                		</div>
+                		
                 		<div class="col-md-6 <?php echo $parentUserClass; ?>" id="parentUser">
                 			<?= $form->field($model, 'parent_user_id')->dropDownList($userList,['prompt' => 'Select Parent User']); ?>
                 		</div>

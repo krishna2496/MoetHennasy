@@ -14,6 +14,7 @@ use yii\web\UploadedFile;
 use common\repository\RoleRepository;
 use common\repository\UserRepository;
 use common\repository\UploadRepository;
+use common\repository\MarketRepository;
 use common\helpers\CommonHelper;
 
 class UsersController extends BaseBackendController
@@ -101,10 +102,20 @@ class UsersController extends BaseBackendController
         
         $model = new User();
         $model->scenario = 'create';
+
+        //roles
         $parentRoleModel = new ParentRolePermission();
         $parentRoles = $parentRoleModel->getAllParentPermission();
         if(isset($parentRoles[$currentUser->role_id])){
             $roles = $parentRoles[$currentUser->role_id];
+        }
+
+        //markets
+        $markets = array();
+        $marketRepository = new MarketRepository();
+        $marketsData = $marketRepository->marketList();
+        if($marketsData['status']['success'] == 1){
+            $markets = CommonHelper::getDropdown($marketsData['data']['markets'], ['id', 'title']);
         }
 
         if(Yii::$app->request->post()) {
@@ -153,6 +164,7 @@ class UsersController extends BaseBackendController
             'roles' => $roles,
             'parentUserClass' => $parentUserClass,
             'userList' => $userList,
+            'markets' => $markets,
         ]);
     }
 
@@ -208,10 +220,19 @@ class UsersController extends BaseBackendController
         $model = $this->findModel($id,$parentId);
         $model->scenario = 'update';
 
+        //roles
         $parentRoleModel = new ParentRolePermission();
         $parentRoles = $parentRoleModel->getAllParentPermission();
         if(isset($parentRoles[$currentUser->role_id])){
             $roles = $parentRoles[$currentUser->role_id];
+        }
+
+        //markets
+        $markets = array();
+        $marketRepository = new MarketRepository();
+        $marketsData = $marketRepository->marketList();
+        if($marketsData['status']['success'] == 1){
+            $markets = CommonHelper::getDropdown($marketsData['data']['markets'], ['id', 'title']);
         }
 
         if($model->role_id != Yii::$app->params['marketAdministratorRole']){
@@ -278,6 +299,7 @@ class UsersController extends BaseBackendController
             'roles' => $roles,
             'parentUserClass' => $parentUserClass,
             'userList' => $userList,
+            'markets' => $markets,
         ]);
     }
 

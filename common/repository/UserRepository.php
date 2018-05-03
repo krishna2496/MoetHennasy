@@ -24,6 +24,8 @@ class UserRepository extends Repository
             $this->apiCode = 1;
             $returnData = array();
             $returnData['user'] = $loginData;
+            $returnData['user']['role_id'] = $loginData->role;
+            $returnData['user']['market_id'] = $loginData->market;
             $this->apiData = $returnData;
 
             //check login access
@@ -89,6 +91,7 @@ class UserRepository extends Repository
         if($model){
             $model->auth_key = '';
             $model->save(false);
+            Yii::$app->user->logout();
             $this->apiCode = 1;
             $this->apiMessage = Yii::t('app', 'Logout sucessfully.');
         } else {
@@ -119,7 +122,7 @@ class UserRepository extends Repository
 
     public function userList($data = array()){
         $this->apiCode = 1;
-        $query = User::find()->joinWith(['role'])->andWhere(['!=','role_id',Yii::$app->params['superAdminRole']]);
+        $query = User::find()->joinWith(['role','market'])->andWhere(['!=','role_id',Yii::$app->params['superAdminRole']]);
         if(isset($data['role_id']) && $data['role_id']){
             $query->andWhere(['=','users.role_id',$data['role_id']]);
         }
@@ -164,6 +167,7 @@ class UserRepository extends Repository
         $userModel->device_type = $data['device_type'];
         $userModel->phone = $data['phone'];
         $userModel->address = $data['address'];
+        $userModel->market_id = $data['market_id'];
         if(isset($data['profile_photo']) && $data['profile_photo']){
             $userModel->profile_photo = $data['profile_photo'];
         }
@@ -267,6 +271,9 @@ class UserRepository extends Repository
         if(isset($data['longitude'])) {
             $userModel->longitude = $data['longitude'];
         }
+        if(isset($data['market_id'])) {
+            $userModel->market_id = $data['market_id'];
+        }
         if($userModel->validate()) {
             if($userModel->new_password) {
                 $userModel->setPassword($userModel->new_password);
@@ -303,6 +310,8 @@ class UserRepository extends Repository
         $this->apiCode = 1;
         $returnData = array();
         $returnData['user'] = $currentUser;
+        $returnData['user']['role_id'] = $currentUser->role;
+        $returnData['user']['market_id'] = $currentUser->market;
         $this->apiData = $returnData;
         return $this->response();
     }

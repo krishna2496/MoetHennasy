@@ -34,6 +34,7 @@ return [
     'view_lbl_role'=>'User Type',
     'view_lbl_parent_user_id'=>'Parent User',
     'view_lbl_profile_photo'=>'Profile Image',
+    'view_lbl_market_id'=>'Market',
     'user'=>'User',
     'profile'=>'Profile',
     'Fail to create user.'=>'Fail to create user.',

@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'roles' => $roles,
         'parentUserClass' => $parentUserClass,
         'userList' => $userList,
+        'markets' => $markets,
     ]) ?>
 
 </div>

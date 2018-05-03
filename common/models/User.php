@@ -6,21 +6,8 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\web\IdentityInterface;
 use common\models\RolePermission;
+use common\models\Markets;
 
-/**
- * User model
- *
- * @property integer $id
- * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $email
- * @property string $auth_key
- * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
- * @property string $password write-only password
- */
 class User extends BaseModel implements IdentityInterface
 {
     const STATUS_DELETED = 0;
@@ -39,7 +26,7 @@ class User extends BaseModel implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-            [['username','first_name','last_name','email','role_id','status','device_type','phone','address'], 'required'],
+            [['username','first_name','last_name','email','role_id','status','device_type','phone','address','market_id'], 'required'],
             ['confirm_password', 'compare', 'compareAttribute' => 'new_password','skipOnEmpty' => false,'message' => "Password doesn't match"],
             [['new_password','confirm_password'], 'string', 'min' => 6],
             [['first_name','last_name','username','password_hash','email','device_token','latitude','longitude','profile_photo'],'string','max'=>255,'on' => ['create','update']],
@@ -64,6 +51,7 @@ class User extends BaseModel implements IdentityInterface
             'new_password' => Yii::t("app", "view_lbl_password"),
             'parent_user_id' => Yii::t("app", "view_lbl_parent_user_id"),
             'profile_photo' => Yii::t("app", "view_lbl_profile_photo"),
+            'market_id' => Yii::t("app", "view_lbl_market_id"),
             
         ];
     }
@@ -83,7 +71,10 @@ class User extends BaseModel implements IdentityInterface
 
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::find()
+                    ->andWhere(['status' => self::STATUS_ACTIVE])
+                    ->andWhere(['or', ['=', 'username', $username], ['=', 'email', $username]])
+                    ->one();
     }
 
     public static function findByPasswordResetToken($token)
@@ -155,5 +146,9 @@ class User extends BaseModel implements IdentityInterface
 
     public function getRole(){
         return $this->hasOne(Role::className(), ['id' => 'role_id']);
+    }
+
+    public function getMarket(){
+        return $this->hasOne(Markets::className(), ['id' => 'market_id']);
     }
 }
