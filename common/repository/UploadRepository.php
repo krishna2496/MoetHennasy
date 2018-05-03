@@ -15,7 +15,11 @@ class UploadRepository extends Repository
             $this->apiCode = 1;
             $uploadedFile = [];
             foreach ($data['files'] as $key => $file) {
-                $uploadedFile[] = $uploadUrl.$data['type'].'/'.CommonHelper::uploadFile($file, $data['type']);
+                $imageName = CommonHelper::uploadFile($file, $data['type']);
+                $temp = array();
+                $temp['path'] = $uploadUrl.$data['type'].'/'.$imageName;
+                $temp['name'] = $imageName;
+                $uploadedFile[] = $temp;
             }
 
             $data = array();

@@ -39,6 +39,9 @@ return [
                         ],
                         'data' => $response->data,
                     ];
+                    if($response->statusCode == 401){
+                        $response->data['status']['success'] = -1;
+                    }
                     $response->statusCode = 200;
                 } else {
                     unset($response->data['isApi']);

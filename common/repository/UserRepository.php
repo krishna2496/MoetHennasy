@@ -24,8 +24,9 @@ class UserRepository extends Repository
             $this->apiCode = 1;
             $returnData = array();
             $returnData['user'] = $loginData;
-            $returnData['user']['role_id'] = $loginData->role;
-            $returnData['user']['market_id'] = $loginData->market;
+            $returnData['user']['profile_photo'] = $loginData->profile_photo ? CommonHelper::getPath('upload_url').UPLOAD_PATH_USER_IMAGES.$loginData->profile_photo : '';
+            $returnData['role'] = $loginData->role;
+            $returnData['market'] = $loginData->market;
             $this->apiData = $returnData;
 
             //check login access
@@ -310,8 +311,9 @@ class UserRepository extends Repository
         $this->apiCode = 1;
         $returnData = array();
         $returnData['user'] = $currentUser;
-        $returnData['user']['role_id'] = $currentUser->role;
-        $returnData['user']['market_id'] = $currentUser->market;
+        $returnData['user']['profile_photo'] = $currentUser->profile_photo ? CommonHelper::getPath('upload_url').UPLOAD_PATH_USER_IMAGES.$currentUser->profile_photo : '';
+        $returnData['role'] = $currentUser->role;
+        $returnData['market'] = $currentUser->market;
         $this->apiData = $returnData;
         return $this->response();
     }
