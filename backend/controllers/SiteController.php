@@ -79,6 +79,7 @@ class SiteController extends BaseBackendController
             $data = Yii::$app->request->post('LoginForm');
             $data['deviceType'] = Yii::$app->params['deviceType']['web'];
             $data['deviceToken'] = '';
+            $data['loginType'] = 'Desktop.Site.Login';
             $userRepository = new UserRepository;
             $returnData = $userRepository->login($data);
             if($returnData['status']['success'] == 1){
@@ -203,10 +204,11 @@ class SiteController extends BaseBackendController
                 $fileData = array();
                 $fileData['files'][0] = UploadedFile::getInstance($model,'userImage');
                 $fileData['type'] = 'profile';
+                $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
                 $uploadRepository = new UploadRepository;
                 $uploadData = $uploadRepository->store($fileData);
                 if($uploadData['status']['success'] == 1){
-                    $data['profile_photo'] = $uploadData['data']['uploadedFile'][0];
+                    $data['profile_photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]);
                     if(file_exists($oldImagePath)){
                         @unlink($oldImagePath);
                     }

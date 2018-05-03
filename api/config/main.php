@@ -90,6 +90,8 @@ return [
                 'POST v1/permission/matrix' => 'v1/permission/matrix',
                 'GET v1/permission/matrix-listing' => 'v1/permission/matrix-listing',
                 'GET v1/roles/index' => 'v1/roles/index',
+                'GET v1/permission/user-permissions' => 'v1/permission/user-permissions',
+                'GET v1/site/user-data' => 'v1/site/user-data',
             ],        
         ],
         'i18n' => [

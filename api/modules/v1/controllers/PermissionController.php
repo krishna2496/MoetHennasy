@@ -20,7 +20,7 @@ class PermissionController extends BaseApiController
             ],
             'rules' => [
                 [
-                    'actions' => ['index','create','update','delete-permission', 'matrix','matrix-listing'],
+                    'actions' => ['index','create','update','delete-permission', 'matrix','matrix-listing','user-permissions'],
                     'allow' => true,
                     'roles' => ['&'],
                 ],
@@ -92,6 +92,16 @@ class PermissionController extends BaseApiController
     {
         $permissionRepository = new PermissionRepository;
         $returnData = $permissionRepository->selectRolePermission();
+        return $returnData;
+    }
+    
+    public function actionUserPermissions()
+    {
+        $currentUser = CommonHelper::getUser();
+        $data = array();
+        $data['role_id'] = $currentUser->role_id;
+        $permissionRepository = new PermissionRepository;
+        $returnData = $permissionRepository->selectRolePermission($data);
         return $returnData;
     }
 }

@@ -116,10 +116,11 @@ class UsersController extends BaseBackendController
                 $fileData = array();
                 $fileData['files'][0] = UploadedFile::getInstance($model,'userImage');
                 $fileData['type'] = 'profile';
+                $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
                 $uploadRepository = new UploadRepository;
                 $uploadData = $uploadRepository->store($fileData);
                 if($uploadData['status']['success'] == 1){
-                    $data['userImage'] = $data['profile_photo'] = $uploadData['data']['uploadedFile'][0];
+                    $data['userImage'] = $data['profile_photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]);
                 } else {
                     return $this->redirect(['index']);
                     Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
@@ -235,10 +236,11 @@ class UsersController extends BaseBackendController
                 $fileData = array();
                 $fileData['files'][0] = UploadedFile::getInstance($model,'userImage');
                 $fileData['type'] = 'profile';
+                $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
                 $uploadRepository = new UploadRepository;
                 $uploadData = $uploadRepository->store($fileData);
                 if($uploadData['status']['success'] == 1){
-                    $data['profile_photo'] = $uploadData['data']['uploadedFile'][0];
+                    $data['profile_photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]);
                     if(file_exists($oldImagePath)){
                         @unlink($oldImagePath);
                     }

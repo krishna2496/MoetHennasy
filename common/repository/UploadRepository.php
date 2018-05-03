@@ -8,14 +8,14 @@ class UploadRepository extends Repository
 {
     public function store($data)
     {
+        $uploadUrl = CommonHelper::getPath('upload_url');
         $this->apiCode = 0;
         if($data['type'] && $data['files']){
 
             $this->apiCode = 1;
             $uploadedFile = [];
             foreach ($data['files'] as $key => $file) {
-                //$uploadedFile[$file->name] = CommonHelper::uploadFile($file, $data['type']);
-                $uploadedFile[] = CommonHelper::uploadFile($file, $data['type']);
+                $uploadedFile[] = $uploadUrl.$data['type'].'/'.CommonHelper::uploadFile($file, $data['type']);
             }
 
             $data = array();

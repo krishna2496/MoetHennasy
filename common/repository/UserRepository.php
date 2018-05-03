@@ -8,6 +8,7 @@ use common\models\ResetPasswordForm;
 use common\models\User;
 use common\helpers\CommonHelper;
 use common\components\Email;
+use common\repository\PermissionRepository;
 
 class UserRepository extends Repository
 {
@@ -21,9 +22,18 @@ class UserRepository extends Repository
         $loginData = $model->login();
         if($loginData) {
             $this->apiCode = 1;
-            $data = array();
-            $data['user'] = $loginData;
-            $this->apiData = $data;
+            $returnData = array();
+            $returnData['user'] = $loginData;
+            $this->apiData = $returnData;
+
+            //check login access
+            $permissionRepository = new PermissionRepository;
+            if(isset($data['loginType']) && !$permissionRepository->checkLoginPermission($data['loginType'],$loginData->role_id)){
+                $this->logout();
+                $this->apiCode = 0;
+                $this->apiData = array();
+                $this->apiMessage = Yii::t('app', 'You are not allowed to perform this action.');
+            }
         }
         if(isset($model->errors) && $model->errors){
             $this->apiMessage = $model->errors;
@@ -250,6 +260,23 @@ class UserRepository extends Repository
             }
         }
 
+        return $this->response();
+    }
+
+    public function getLoginUserDetail(){
+        $currentUser = CommonHelper::getUser();
+        unset($currentUser->created_by);
+        unset($currentUser->updated_by);
+        unset($currentUser->deleted_by);
+        unset($currentUser->created_at);
+        unset($currentUser->updated_at);
+        unset($currentUser->deleted_at);
+        unset($currentUser->password_hash);
+        unset($currentUser->password_reset_token);
+        $this->apiCode = 1;
+        $returnData = array();
+        $returnData['user'] = $currentUser;
+        $this->apiData = $returnData;
         return $this->response();
     }
 }

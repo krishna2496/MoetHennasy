@@ -37,4 +37,5 @@ return [
     'user'=>'User',
     'profile'=>'Profile',
     'Fail to create user.'=>'Fail to create user.',
+    'You are not allowed to perform this action.'=>'You are not allowed to perform this action.',
 ];

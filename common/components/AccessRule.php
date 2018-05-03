@@ -7,9 +7,6 @@ use common\helpers\CommonHelper;
 
 class AccessRule extends \yii\filters\AccessRule {
  
-    /**
-     * @inheritdoc
-     */
     protected function matchRole($user)
     {
         if (empty($this->roles)) {
@@ -49,7 +46,7 @@ class AccessRule extends \yii\filters\AccessRule {
                     }
 
                     // Check permission
-                    $canAction = CommonHelper::checkPermission($permissions,'api');
+                    $canAction = CommonHelper::checkPermission($permissions);
 
                     if (!$user->getIsGuest() && $canAction) {
                         $canAccess = true;

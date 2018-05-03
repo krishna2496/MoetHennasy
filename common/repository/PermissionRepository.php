@@ -86,12 +86,26 @@ class PermissionRepository extends Repository
         return $this->response();
     }
 
-    public function selectRolePermission()
+    public function selectRolePermission($data = array())
     {
         $this->apiCode = 1;
-        $rows = RolePermission::find()->asArray()->all();
+        $query = RolePermission::find()->with(['permission']);
+        if(isset($data['role_id']) && $data['role_id']){
+            $query->andWhere(['role_id'=>$data['role_id']]);
+        }
+        $rows = $query->asArray()->all();
+        $returnData = array();
+        foreach ($rows as $key => $value) {
+            $temp = $value;
+            if($value['permission']){
+                $temp['permission_label'] = $value['permission']['permission_label'];
+                $temp['permission_title'] = $value['permission']['permission_title'];
+            }
+            unset($temp['permission']);
+            $returnData[] = $temp;
+        }
         $data = array();
-        $data['permission'] = $rows;
+        $data['permission'] = $returnData;
         $this->apiData = $data;
         return $this->response();
     }
@@ -121,5 +135,20 @@ class PermissionRepository extends Repository
             $this->apiMessage = Yii::t('app', 'Something went wrong.');
         }
         return $this->response();
+    }
+
+    public function checkLoginPermission($permission = '', $roleId)
+    {
+        if($roleId == Yii::$app->params['superAdminRole']){
+             return true;
+        }
+        if($permission){
+            $row = RolePermission::find()->joinWith(['permission'])->andWhere(['permissions.permission_label'=>$permission])->andWhere(['role_permissions.role_id'=>$roleId])->asArray()->one();
+            if($row){
+                return true;    
+            }
+            return false;
+        }
+        return true;    
     }
 }

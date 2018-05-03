@@ -26,7 +26,7 @@ class SiteController extends BaseApiController
                     'allow' => true,
                 ],
                 [
-                    'actions' => ['logout', 'index', 'update-device-token','upload'],
+                    'actions' => ['logout', 'index', 'update-device-token','upload','user-data'],
                     'allow' => true,
                     'roles' => ['@'],
                 ],
@@ -42,6 +42,7 @@ class SiteController extends BaseApiController
         $data['password'] = Yii::$app->request->post('password');
         $data['deviceType'] = Yii::$app->request->post('deviceType');
         $data['deviceToken'] = Yii::$app->request->post('deviceToken');
+        $data['loginType'] = 'Mobile.Site.Login';
 
         $userRepository = new UserRepository;
         $returnData =$userRepository->login($data);
@@ -91,6 +92,12 @@ class SiteController extends BaseApiController
         $data['files'] = UploadedFile::getInstancesByName('file');
         $uploadRepository = new UploadRepository;
         $returnData = $uploadRepository->store($data);
+        return $returnData;
+    }
+
+    public function actionUserData(){
+        $userRepository = new UserRepository;
+        $returnData = $userRepository->getLoginUserDetail();
         return $returnData;
     }
 }
