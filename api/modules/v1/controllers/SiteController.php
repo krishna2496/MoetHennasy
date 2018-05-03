@@ -26,7 +26,7 @@ class SiteController extends BaseApiController
                     'allow' => true,
                 ],
                 [
-                    'actions' => ['logout', 'index', 'update-device-token','upload','user-data'],
+                    'actions' => ['logout', 'index', 'update-device-token','upload','user-data','change-password'],
                     'allow' => true,
                     'roles' => ['@'],
                 ],
@@ -98,6 +98,13 @@ class SiteController extends BaseApiController
     public function actionUserData(){
         $userRepository = new UserRepository;
         $returnData = $userRepository->getLoginUserDetail();
+        return $returnData;
+    }
+
+    public function actionChangePassword(){
+        $data = Yii::$app->request->post();
+        $userRepository = new UserRepository;
+        $returnData = $userRepository->changePassword($data);
         return $returnData;
     }
 }

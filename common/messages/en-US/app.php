@@ -38,4 +38,6 @@ return [
     'profile'=>'Profile',
     'Fail to create user.'=>'Fail to create user.',
     'You are not allowed to perform this action.'=>'You are not allowed to perform this action.',
+    'You have entered wrong password.'=>'You have entered wrong password.',
+    'Password changed sucessfully.'=>'Password changed sucessfully.',
 ];

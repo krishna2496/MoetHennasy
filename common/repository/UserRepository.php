@@ -279,4 +279,23 @@ class UserRepository extends Repository
         $this->apiData = $returnData;
         return $this->response();
     }
+
+    public function changePassword($data){
+        $this->apiCode = 0;
+        $currentUser = CommonHelper::getUser();
+        if(Yii::$app->security->validatePassword($data['oldPassword'], $currentUser->password_hash)){
+            $userModel = User::findOne($currentUser->id);
+            $userModel->setPassword($data['newPassword']);
+                    
+            if($userModel->save(false)){
+                $this->apiCode = 1;
+                $this->apiMessage = Yii::t('app', 'Password changed sucessfully.');
+            }else{
+                $this->apiMessage = Yii::t('app', 'Something went wrong.');
+            }
+        } else {
+            $this->apiMessage = Yii::t('app', 'You have entered wrong Password.');
+        }
+        return $this->response();
+    }
 }
