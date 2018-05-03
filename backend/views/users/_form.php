@@ -41,12 +41,20 @@ use common\helpers\CommonHelper;
                 		</div>
                 	</div>
                 	<?php } ?>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'status')->dropDownList(Yii::$app->params['status'], ['prompt' => 'Select Status']); ?> 
+                        </div>
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'userImage')->fileInput() ?>
+                        </div>
+                    </div>
                 	<div class="row">
                 		<div class="col-md-6">
-                			<?= $form->field($model, 'status')->dropDownList(Yii::$app->params['status'], ['prompt' => 'Select Status']); ?> 
+                			<?= $form->field($model, 'address')->textarea(['rows' => '6']); ?>
                 		</div>
                 		<div class="col-md-6">
-                			<?= $form->field($model, 'userImage')->fileInput() ?>
+                			<?= $form->field($model, 'phone')->textInput(); ?> 
                 		</div>
                 	</div>
                 	<div class="row">

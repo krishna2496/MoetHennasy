@@ -26,7 +26,7 @@ class SiteController extends BaseApiController
                     'allow' => true,
                 ],
                 [
-                    'actions' => ['logout', 'index', 'update-device-token','upload','user-data','change-password'],
+                    'actions' => ['logout', 'index', 'update-device-token','upload','user-data','change-password','edit-profile'],
                     'allow' => true,
                     'roles' => ['@'],
                 ],
@@ -105,6 +105,23 @@ class SiteController extends BaseApiController
         $data = Yii::$app->request->post();
         $userRepository = new UserRepository;
         $returnData = $userRepository->changePassword($data);
+        return $returnData;
+    }
+
+    public function actionEditProfile(){
+        $currentUser = CommonHelper::getUser();
+        $data = array();
+        $data['id'] = $currentUser->id;
+        $data['email'] = Yii::$app->request->post('email');
+        $data['phone'] = Yii::$app->request->post('phone');
+        $data['address'] = Yii::$app->request->post('address');
+        $data['first_name'] = Yii::$app->request->post('first_name');
+        $data['last_name'] = Yii::$app->request->post('last_name');
+        $data['latitude'] = Yii::$app->request->post('latitude');
+        $data['longitude'] = Yii::$app->request->post('longitude');
+        $data['profile_photo'] = Yii::$app->request->post('profile_photo');
+        $userRepository = new UserRepository;
+        $returnData = $userRepository->updateUser($data,'profile');
         return $returnData;
     }
 }

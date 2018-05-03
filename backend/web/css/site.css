@@ -50,3 +50,7 @@ a.asc::after, a.desc::after {
     height: 34px;
     margin-left: 15px !important;
 }
+.form-group.required .control-label::after {
+    color: #333;
+    content: "*";
+}

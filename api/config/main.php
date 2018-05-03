@@ -93,6 +93,7 @@ return [
                 'GET v1/permission/user-permissions' => 'v1/permission/user-permissions',
                 'GET v1/site/user-data' => 'v1/site/user-data',
                 'POST v1/site/change-password' => 'v1/site/change-password',
+                'POST v1/site/edit-profile' => 'v1/site/edit-profile',
             ],        
         ],
         'i18n' => [

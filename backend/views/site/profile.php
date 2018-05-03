@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 			<?= $form->field($model, 'username')->textInput(['autofocus' => 'autofocus']) ?>
                 		</div>
                 		<div class="col-md-6">
-                			<?= $form->field($model, 'email')->textInput() ?>
+                			<?= $form->field($model, 'email')->textInput(['disabled'=>true]) ?>
                 		</div>
                 	</div>
                 	<div class="row">
@@ -43,6 +43,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 		</div>
                 	</div>
                 	<?php } ?>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'address')->textarea(['rows' => '6']); ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'phone')->textInput(); ?> 
+                        </div>
+                    </div>
                 	<div class="row">
                 		<div class="col-md-6">
                 			<?= $form->field($model, 'userImage')->fileInput() ?>

@@ -162,6 +162,8 @@ class UserRepository extends Repository
         $userModel->status = $data['status'];
         $userModel->role_id = $data['role_id'];
         $userModel->device_type = $data['device_type'];
+        $userModel->phone = $data['phone'];
+        $userModel->address = $data['address'];
         if(isset($data['profile_photo']) && $data['profile_photo']){
             $userModel->profile_photo = $data['profile_photo'];
         }
@@ -217,14 +219,33 @@ class UserRepository extends Repository
         if(!$userModel){
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-
-        $userModel->username = $data['username'];
-        $userModel->email = $data['email'];
-        $userModel->first_name = $data['first_name'];
-        $userModel->last_name = $data['last_name'];
-        $userModel->status = $data['status'];
-        $userModel->role_id = $data['role_id'];
-        $userModel->device_type = $data['device_type'];
+        if(isset($data['username'])) {
+            $userModel->username = $data['username'];
+        }
+        if(isset($data['email'])) {
+            $userModel->email = $data['email'];
+        }
+        if(isset($data['first_name'])) {
+            $userModel->first_name = $data['first_name'];
+        }
+        if(isset($data['last_name'])) {
+            $userModel->last_name = $data['last_name'];
+        }
+        if(isset($data['status'])) {
+            $userModel->status = $data['status'];
+        }
+        if(isset($data['role_id'])) {
+            $userModel->role_id = $data['role_id'];
+        }
+        if(isset($data['role_id'])) {
+            $userModel->device_type = $data['device_type'];
+        }
+        if(isset($data['phone'])) {
+            $userModel->phone = $data['phone'];
+        }
+        if(isset($data['address'])) {
+            $userModel->address = $data['address'];
+        }
         if(isset($data['profile_photo']) && $data['profile_photo']){
             $userModel->profile_photo = $data['profile_photo'];
         }
@@ -239,6 +260,12 @@ class UserRepository extends Repository
         }
         if(isset($data['parent_user_id'])) {
             $userModel->parent_user_id = $data['parent_user_id'];
+        }
+        if(isset($data['latitude'])) {
+            $userModel->latitude = $data['latitude'];
+        }
+        if(isset($data['longitude'])) {
+            $userModel->longitude = $data['longitude'];
         }
         if($userModel->validate()) {
             if($userModel->new_password) {
