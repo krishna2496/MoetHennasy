@@ -107,7 +107,7 @@ array(
             'market-segments'
         ),
         'actionId' => array(
-            'index', 'create'
+            'index', 'create','update','view'
         ),
         'childs' => array(
             array(
@@ -147,7 +147,7 @@ array(
             'market'
         ),
         'actionId' => array(
-            'index', 'create'
+           'index', 'create','update','view'
         ),
         'childs' => array(
             array(

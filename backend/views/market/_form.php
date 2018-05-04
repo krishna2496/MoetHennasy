@@ -24,6 +24,8 @@ use common\helpers\CommonHelper;
                         <div class="col-md-6">
                             <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
                         </div>
+                    </div>
+                     <div class="row">
                         <div class="col-md-6">
                             <?= $form->field($model, 'market_segment_id')->dropDownList($marketSegmentList,['prompt' => 'Select Market Segment']); ?>
                            
