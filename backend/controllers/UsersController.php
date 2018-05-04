@@ -131,7 +131,7 @@ class UsersController extends BaseBackendController
                 $uploadRepository = new UploadRepository;
                 $uploadData = $uploadRepository->store($fileData);
                 if($uploadData['status']['success'] == 1){
-                    $data['userImage'] = $data['profile_photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]);
+                    $data['userImage'] = $data['profile_photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
                 } else {
                     return $this->redirect(['index']);
                     Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
@@ -261,7 +261,7 @@ class UsersController extends BaseBackendController
                 $uploadRepository = new UploadRepository;
                 $uploadData = $uploadRepository->store($fileData);
                 if($uploadData['status']['success'] == 1){
-                    $data['profile_photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]);
+                    $data['profile_photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
                     if(file_exists($oldImagePath)){
                         @unlink($oldImagePath);
                     }

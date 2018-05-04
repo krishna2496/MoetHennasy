@@ -46,7 +46,16 @@ use common\helpers\CommonHelper;
                             <?= $form->field($model, 'status')->dropDownList(Yii::$app->params['status'], ['prompt' => 'Select Status']); ?> 
                         </div>
                         <div class="col-md-6">
-                            <?= $form->field($model, 'userImage')->fileInput() ?>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <?= $form->field($model, 'userImage')->fileInput() ?>  
+                                </div>
+                                <?php if(isset($model->id) && $model->id) { ?>
+                                <div class="col-md-2">
+                                    <img class="img-responsive" src="<?php echo CommonHelper::getImage(UPLOAD_PATH_USER_IMAGES . $model->profile_photo); ?>"/>        
+                                </div>
+                                <?php } ?>
+                            </div>
                         </div>
                     </div>
                 	<div class="row">
