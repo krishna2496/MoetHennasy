@@ -32,6 +32,11 @@ if($isUpdateParent) {
                         'last_name',
                         'role.title',
                         [
+                            'attribute'=>'profile_photo',
+                            'value'=>CommonHelper::getImage(UPLOAD_PATH_USER_IMAGES . $model->profile_photo),
+                            'format' => ['image',['width'=>'100']],
+                        ],
+                        [
                             'label' => 'Market',
                             'attribute' => 'market.title'
                         ],
