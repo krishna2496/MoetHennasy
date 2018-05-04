@@ -93,7 +93,45 @@ $arrayMenu = array(
             ),
         )
     ),
-
+array(
+        'title' => 'Market Segments',
+        'permissionName' => array(
+            'MarketSegments.Index',
+            'MarketSegments.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'market-segments'
+        ),
+        'actionId' => array(
+            'index', 'create'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Listing',
+                'permissionName' => array(
+                    'MarketSegments.Index'
+                ),
+                'icon' => '',
+                'link' => 'market-segments/index',
+                'controllerId' => 'market-segments',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Create',
+                'permissionName' => array(
+                    'MarketSegments.Create'
+                ),
+                'icon' => '',
+                'link' => 'market-segments/create',
+                'controllerId' => 'market-segments',
+                'actionId' => array('create')
+            ),
+        )
+    ),
 );
 ?>
 <b>
