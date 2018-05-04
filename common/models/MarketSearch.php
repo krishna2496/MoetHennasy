@@ -45,12 +45,13 @@ class MarketSearch extends Markets
       $marketRepository = new MarketRepository;
         $marketList = array();
         $resultMarketList = $marketRepository->marketList($params);
+       
         if($resultMarketList['status']['success'] == 1){
             if($resultMarketList['data']['markets']){
                 foreach ($resultMarketList['data']['markets'] as $key => $value) {
                     $temp = $value;
                     $temp['title'] = $value['title'];
-                    $temp['market_segment_id'] = $value['market_segment_id'];
+//                    $temp['market_segment_id'] = $value['market_segment_id'];
                     $marketList[] = $temp;
                 }
             }
@@ -64,7 +65,7 @@ class MarketSearch extends Markets
                 'attributes' =>
                 [
                     'title',
-                    'market_segment_id',
+//                    'market_segment_id',
                 ],
                 'defaultOrder' => [
                     'title' => SORT_ASC,

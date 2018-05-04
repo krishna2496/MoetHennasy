@@ -11,14 +11,9 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\repository\MarketSegmentsRepository;
 
-/**
- * MarketSegmentsController implements the CRUD actions for MarketSegments model.
- */
-class MarketSegmentsController extends Controller
+class MarketSegmentsController extends BaseBackendController
 {
-    /**
-     * @inheritdoc
-     */
+
     public function behaviors()
     {
         return [
@@ -45,10 +40,6 @@ class MarketSegmentsController extends Controller
         ];
     }
 
-    /**
-     * Lists all MarketSegments models.
-     * @return mixed
-     */
     public function actionIndex()
     {
         $searchModel = new MarketSegmentsSearch();
@@ -67,12 +58,6 @@ class MarketSegmentsController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single MarketSegments model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -80,11 +65,6 @@ class MarketSegmentsController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new MarketSegments model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
         $model = new MarketSegments();
@@ -110,13 +90,6 @@ class MarketSegmentsController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing MarketSegments model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -141,13 +114,6 @@ class MarketSegmentsController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing MarketSegments model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         if($this->findModel($id)->delete()){
@@ -156,13 +122,6 @@ class MarketSegmentsController extends Controller
         }
     }
 
-    /**
-     * Finds the MarketSegments model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return MarketSegments the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = MarketSegments::findOne($id)) !== null) {

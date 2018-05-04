@@ -4,20 +4,7 @@ namespace common\models;
 
 use Yii;
 
-/**
- * This is the model class for table "market_segments".
- *
- * @property int $id
- * @property string $title
- * @property string $description
- * @property int $created_by
- * @property int $updated_by
- * @property int $deleted_by
- * @property string $created_at
- * @property string $updated_at
- * @property string $deleted_at
- */
-class MarketSegments extends \yii\db\ActiveRecord
+class MarketSegments extends BaseModel
 {
     /**
      * @inheritdoc
