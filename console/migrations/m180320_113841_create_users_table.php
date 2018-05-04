@@ -14,8 +14,8 @@ class m180320_113841_create_users_table extends Migration
     {
         $this->createTable('users', [
             'id' => $this->primaryKey(11)->unsigned(),
-            'username' => $this->string(100)->notNull()->unique(),
-            'email' => $this->string(255)->notNull()->unique(),
+            'username' => $this->string(100)->notNull(),
+            'email' => $this->string(255)->notNull(),
             'first_name' => $this->string(100)->defaultValue(null),
             'last_name' => $this->string(100)->defaultValue(null),
             'auth_key' => $this->string(255)->defaultValue(null),
@@ -27,6 +27,7 @@ class m180320_113841_create_users_table extends Migration
             'status' => $this->tinyInteger(1)->defaultValue(1)->comment('0:inactive, 1:active'),
             'profile_photo' => $this->string(255)->defaultValue(null),
             'phone' => $this->string(30)->defaultValue(null),
+            'address' => $this->text()->defaultValue(null),
             'device_type' => $this->tinyInteger(1)->defaultValue(null)->comment('1:ios, 2:android, 3:Web'),
             'device_token' => $this->string(255)->defaultValue(null),
             'latitude' => $this->string(30)->defaultValue(null),
