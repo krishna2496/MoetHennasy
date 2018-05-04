@@ -10,7 +10,7 @@ class MarketRepository extends Repository
     public function marketList($data = array())
     {
         $this->apiCode = 1;
-        $query = Markets::find()->joinWith(['marketSegment']);
+        $query = Markets::find()->joinWith(['marketSegment','user']);
        
         if(isset($data['search']) && $data['search']){
             $search =  $data['search'];       
@@ -20,6 +20,11 @@ class MarketRepository extends Repository
                     ['like', 'market_segments.title', $search],
             ]);
         }
+
+        if(isset($data['user_id']) && $data['user_id']){
+            $query->andWhere(['users.id'=>$data['user_id']]);
+        }
+
         $data = array();
         $data['markets'] = $query->asArray()->all();
         $this->apiData = $data;
