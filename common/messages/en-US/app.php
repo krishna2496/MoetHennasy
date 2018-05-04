@@ -41,4 +41,9 @@ return [
     'You are not allowed to perform this action.'=>'You are not allowed to perform this action.',
     'You have entered wrong password.'=>'You have entered wrong password.',
     'Password changed sucessfully.'=>'Password changed sucessfully.',
-];
+    'market_segment_updated_successfully' => 'Market segment updated successfully',
+    'market_segment_created_successfully' => 'Market segment created successfully',
+    'market_updated_successfully' => 'Market updated successfully',
+    'market_created_successfully' => 'Market created successfully',
+    
+    ];
