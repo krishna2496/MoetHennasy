@@ -132,6 +132,46 @@ array(
             ),
         )
     ),
+    
+    array(
+        'title' => 'Markets',
+        'permissionName' => array(
+            'Market.Index',
+            'Market.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'market'
+        ),
+        'actionId' => array(
+            'index', 'create'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Listing',
+                'permissionName' => array(
+                    'Market.Index'
+                ),
+                'icon' => '',
+                'link' => 'market/index',
+                'controllerId' => 'market',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Create',
+                'permissionName' => array(
+                    'Market.Create'
+                ),
+                'icon' => '',
+                'link' => 'market/create',
+                'controllerId' => 'market',
+                'actionId' => array('create')
+            ),
+        )
+    ),
 );
 ?>
 <b>

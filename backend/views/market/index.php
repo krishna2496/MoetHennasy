@@ -5,9 +5,9 @@ use yii\grid\GridView;
 use common\helpers\CommonHelper;
 use yii\helpers\Url;
 
-$this->title = 'Market Segments';
+$this->title = 'Market';
 $this->params['breadcrumbs'][] = $this->title;
-$formUrl = Url::to(['market-segments/index']);
+$formUrl = Url::to(['market/index']);
 ?>
 <div class="row">
     <div class="col-xs-12">
@@ -18,8 +18,8 @@ $formUrl = Url::to(['market-segments/index']);
                 </h3>
                 <div class="row pull-right">
                     <div class="col-md-2">
-                        <?php  if(CommonHelper::checkPermission('MarketSegments.Create')){ ?>
-                        <?= Html::a('New Market Segments', ['create'], ['class' => 'btn btn-primary']) ?>
+                        <?php  if(CommonHelper::checkPermission('Market.Create')){ ?>
+                        <?= Html::a('New Market', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-10">
@@ -47,21 +47,26 @@ $formUrl = Url::to(['market-segments/index']);
 
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-                        'title',
-                        'description:ntext',
+                        'title:ntext',
+                          [
+                            'label' => 'Market segment',
+                            'attribute' => 'market_segment_id',
+                            'value' => 'marketSegment.title'
+                        ],
+                          
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
                            'template' => '{view} {update} {delete}',
                            'buttons' => [
                                'view' => function ($url, $model) use ($filters) {
-                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['market-segments/view/'.$model['id']]);
+                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['market/view/'.$model['id']]);
                                 },
                                'update' => function ($url, $model) use ($filters) {
-                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/market-segments/update/'.$model['id']]);
+                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/market/update/'.$model['id']]);
                                 },                                
                                'delete' => function ($url, $model) use ($filters) {
-                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['market-segments/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this market segment?']);
+                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['market/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this market segment?']);
                                 },                               
                                
                             ],

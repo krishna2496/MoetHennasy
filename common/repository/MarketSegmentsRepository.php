@@ -41,7 +41,7 @@ class MarketSegmentsRepository extends Repository
          
             if($model->save(false)) {
                 $this->apiCode = 1;
-                $this->apiMessage = Yii::t('app', 'Market segment created successfully');
+                $this->apiMessage = Yii::t('app', 'market_segment_created_successfully');
             } else {
                 $this->apiCode = 0;
                 $this->apiMessage = Yii::t('app', 'Something went wrong.');
@@ -73,7 +73,7 @@ class MarketSegmentsRepository extends Repository
         if($model->validate()) {
             if($model->save(false)) {
                 $this->apiCode = 1;
-                $this->apiMessage = Yii::t('app', 'Market segment updated successfully');
+                $this->apiMessage = Yii::t('app', 'market_segment_updated_successfully');
             } else {
                 $this->apiCode = 0;
                 $this->apiMessage = Yii::t('app', 'Something went wrong.');

@@ -45,5 +45,9 @@ return [
     'market_segment_created_successfully' => 'Market segment created successfully',
     'market_updated_successfully' => 'Market updated successfully',
     'market_created_successfully' => 'Market created successfully',
+    'market_title'=>'Title',
+    'market_segment_id'=>'Market segment',
+    'market_segment_title'=>'Title',
+    'market_segment_description' => 'Description',
     
     ];
