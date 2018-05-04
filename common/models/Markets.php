@@ -36,4 +36,8 @@ class Markets extends BaseModel
         return $this->hasOne(MarketSegments::className(), ['id' => 'market_segment_id']);
     }
     
+    public function getUser(){
+        return $this->hasOne(User::className(), ['market_id' => 'id']);
+    }
+    
 }

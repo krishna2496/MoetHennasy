@@ -111,9 +111,13 @@ class UsersController extends BaseBackendController
         }
 
         //markets
+        $marketFilter = array();
+        if($currentUser->role_id != Yii::$app->params['superAdminRole']){
+            $marketFilter['user_id'] = $currentUser->id;
+        }
         $markets = array();
         $marketRepository = new MarketRepository();
-        $marketsData = $marketRepository->marketList();
+        $marketsData = $marketRepository->marketList($marketFilter);
         if($marketsData['status']['success'] == 1){
             $markets = CommonHelper::getDropdown($marketsData['data']['markets'], ['id', 'title']);
         }
@@ -228,9 +232,13 @@ class UsersController extends BaseBackendController
         }
 
         //markets
+        $marketFilter = array();
+        if($currentUser->role_id != Yii::$app->params['superAdminRole']){
+            $marketFilter['user_id'] = $currentUser->id;
+        }
         $markets = array();
         $marketRepository = new MarketRepository();
-        $marketsData = $marketRepository->marketList();
+        $marketsData = $marketRepository->marketList($marketFilter);
         if($marketsData['status']['success'] == 1){
             $markets = CommonHelper::getDropdown($marketsData['data']['markets'], ['id', 'title']);
         }
