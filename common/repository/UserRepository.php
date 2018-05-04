@@ -159,7 +159,7 @@ class UserRepository extends Repository
         $this->apiCode = 0;
         $userModel = new User;
         $userModel->scenario = 'create';
-        $userModel->username = $data['username'];
+        $userModel->username = strtolower($data['username']);
         $userModel->email = $data['email'];
         $userModel->first_name = $data['first_name'];
         $userModel->last_name = $data['last_name'];
@@ -225,7 +225,7 @@ class UserRepository extends Repository
             throw new NotFoundHttpException('The requested page does not exist.');
         }
         if(isset($data['username'])) {
-            $userModel->username = $data['username'];
+            $userModel->username = strtolower($data['username']);
         }
         if(isset($data['email'])) {
             $userModel->email = $data['email'];
@@ -282,6 +282,12 @@ class UserRepository extends Repository
             }
 
             if($userModel->save(false)) {
+                $returnData = array();
+                $returnData['user'] = $userModel;
+                $returnData['user']['profile_photo'] = $userModel->profile_photo ? CommonHelper::getPath('upload_url').UPLOAD_PATH_USER_IMAGES.$userModel->profile_photo : '';
+                $returnData['role'] = $userModel->role;
+                $returnData['market'] = $userModel->market;
+                $this->apiData = $returnData;
                 $this->apiCode = 1;
                 $this->apiMessage = Yii::t('app', 'updated_successfully', [Yii::t('app', $type)]);
             } else {
