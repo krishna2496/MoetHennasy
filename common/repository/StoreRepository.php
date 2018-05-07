@@ -10,7 +10,36 @@ class StoreRepository extends Repository {
 
     public function storeList($data = array()) {
         $this->apiCode = 1;
-        $query = Stores::find()->with(['market','marketSegment','user']);
+        $query = Stores::find()->joinWith(['market','marketSegment','user']);
+        if(isset($data['market_id']) && $data['market_id']){
+            $query->andWhere(['=','stores.market_id',$data['market_id']]);
+        }
+        if(isset($data['market_segment_id']) && $data['market_segment_id']){
+            $query->andWhere(['=','stores.market_segment_id',$data['market_segment_id']]);
+        }
+        if(isset($data['country_id']) && $data['country_id']){
+            $query->andWhere(['=','stores.country_id',$data['country_id']]);
+        }
+        if(isset($data['city_id']) && $data['city_id']){
+            $query->andWhere(['=','stores.city_id',$data['city_id']]);
+        }
+        if(isset($data['assign_to']) && $data['assign_to']){
+            $query->andWhere(['stores.assign_to' => $data['assign_to']]);
+        }
+        if(isset($data['search']) && $data['search']){
+            $data['search'] = trim($data['search']);
+            $nameArray = explode(' ', $data['search']);
+            $firstName = $nameArray[0];
+            $lastName = isset($nameArray[1]) ? $nameArray[1] : $nameArray[0];
+            $query->andWhere([
+                'or',
+                    ['like', 'stores.store_manager_first_name', $firstName],
+                    ['like', 'stores.store_manager_last_name', $lastName],
+                    ['like', 'stores.store_manager_email', $data['search']],
+                    ['like', 'stores.store_manager_phone_number', $data['search']],
+                    ['like', 'stores.name', $data['search']],
+            ]);
+        }
         $data = array();
         $data['stores'] = $query->asArray()->all();
         $this->apiData = $data;

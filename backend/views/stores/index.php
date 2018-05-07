@@ -17,26 +17,32 @@ $formUrl = Url::to(['stores/index']);
                     <?= Html::encode($this->title) ?>
                 </h3>
                 <div class="row pull-right">
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <?php  if(CommonHelper::checkPermission('Stores.Create')){ ?>
                         <?= Html::a('New Store', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-11">
                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-stores']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
-                                <div class="col-md-3">
-                                    <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text']) ?>
-                                </div>
-                                <div class="col-md-3">
-                                    <?= Html::dropDownList('market_id', isset($filters['market_id']) ? $filters['market_id'] : '' ,$markets,  ['class' => 'form-control', 'id' => 'user-type','prompt' => 'Select Market']) ?>
-                                </div>
-                                <div class="col-md-3">
-                                    <?= Html::dropDownList('market_id', isset($filters['market_id']) ? $filters['market_id'] : '' ,$markets,  ['class' => 'form-control', 'id' => 'user-type','prompt' => 'Select User Type']) ?>
+                                <div class="col-md-2">
+                                    <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'store-text']) ?>
                                 </div>
                                 <div class="col-md-2">
-                                    <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
+                                    <?= Html::dropDownList('market_id', isset($filters['market_id']) ? $filters['market_id'] : '' ,$markets,  ['class' => 'form-control', 'id' => 'store-markets','prompt' => 'Select Market']) ?>
+                                </div>
+                                <div class="col-md-2">
+                                    <?= Html::dropDownList('market_segment_id', isset($filters['market_segment_id']) ? $filters['market_segment_id'] : '' ,$marketSegments,  ['class' => 'form-control', 'id' => 'store-market_segment','prompt' => 'Select Segment']) ?>
+                                </div> 
+                                <div class="col-md-2">
+                                    <?= Html::dropDownList('country_id', isset($filters['country_id']) ? $filters['country_id'] : '' ,$countries,  ['class' => 'form-control', 'id' => 'store-markets','prompt' => 'Select Country']) ?>
+                                </div>
+                                <div class="col-md-2">
+                                    <?= Html::dropDownList('city_id', isset($filters['city_id']) ? $filters['city_id'] : '' ,$cities,  ['class' => 'form-control', 'id' => 'store-markets','prompt' => 'Select City']) ?>
+                                </div>
+                                <div class="col-md-2">
+                                    <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'store-limit']) ?>
                                 </div>
                             </div>
                         </div>
@@ -60,7 +66,7 @@ $formUrl = Url::to(['stores/index']);
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
-                           'template' => '{view} {update} {delete} {manageUser}',
+                           'template' => '{view} {update} {delete}',
                            'buttons' => [
                                'view' => function ($url, $model) {
                                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['stores/view/'.$model['id']]);
@@ -81,7 +87,11 @@ $formUrl = Url::to(['stores/index']);
 </div>
 
 <script type="text/javascript">
-    $("body").on("change", "#user-type,#user-text,#user-limit",function(event){
+    $("body").on("change", "#store-text,#store-limit,#store-market_segment",function(event){
+        $('#search-stores').submit();
+    });
+    $("body").on("change", "#store-markets",function(event){
+        $('#store-market_segment').val('');
         $('#search-stores').submit();
     });
 </script>

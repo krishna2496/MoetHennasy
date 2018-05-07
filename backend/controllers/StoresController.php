@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
+use common\models\User;
 use common\models\Stores;
 use common\models\StoresSearch;
 use yii\web\NotFoundHttpException;
@@ -12,6 +13,7 @@ use yii\web\UploadedFile;
 use common\helpers\CommonHelper;
 use common\repository\MarketRepository;
 use common\repository\MasterDataRepository;
+use common\repository\MarketSegmentsRepository;
 use common\repository\UserRepository;
 use common\repository\StoreRepository;
 use common\repository\UploadRepository;
@@ -51,9 +53,17 @@ class StoresController extends BaseBackendController
     public function actionIndex()
     {
         $currentUser = CommonHelper::getUser();
+
+        //filters
         $filters = Yii::$app->request->queryParams;
         if(!isset($filters['limit'])){
             $filters['limit'] = Yii::$app->params['pageSize'];
+        }
+        if($currentUser->role_id != Yii::$app->params['superAdminRole']){
+            $userObj = new User;
+            $childUser = $userObj->getAllChilds(array($currentUser->id));
+            $childUser[] = $currentUser->id;
+            $filters['assign_to'] = $childUser;
         }
 
         //markets
@@ -61,12 +71,39 @@ class StoresController extends BaseBackendController
         if($currentUser->role_id != Yii::$app->params['superAdminRole']){
             $marketFilter['user_id'] = $currentUser->id;
         }
-        $markets = array();
+        $markets = $marketSegments = array();
         $marketRepository = new MarketRepository();
         $marketsData = $marketRepository->marketList($marketFilter);
         if($marketsData['status']['success'] == 1){
-            $markets = CommonHelper::getDropdown($marketsData['data']['markets'], ['id', 'title']);
+            if($marketsData['data']['markets']){
+                $markets = CommonHelper::getDropdown($marketsData['data']['markets'], ['id', 'title']);
+                foreach ($marketsData['data']['markets'] as $key => $value) {
+                    if($value['marketSegmentData'] && isset($filters['market_id']) && $value['id'] == $filters['market_id']){
+                        foreach ($value['marketSegmentData'] as $segmentKey => $segmentValue) {
+                            if(isset($segmentValue['marketSegment']['id'])){
+                                $marketSegments[$segmentValue['marketSegment']['id']] = $segmentValue['marketSegment']['title'];
+                            }
+                        }
+                    }
+                }
+            }
         }
+
+        //countries
+        $countries = array();
+        $masterDataRepository = new MasterDataRepository();
+        $countriesData = $masterDataRepository->countries();
+        if($countriesData['status']['success'] == 1){
+            $countries = CommonHelper::getDropdown($countriesData['data']['countries'], ['id', 'name']);
+        }
+
+        //cities
+        $cities = array();
+        $citiesData = $masterDataRepository->cities($filters);
+        if($citiesData['status']['success'] == 1){
+            $cities = CommonHelper::getDropdown($citiesData['data']['cities'], ['id', 'name']);
+        }
+
 
         $searchModel = new StoresSearch();
         $dataProvider = $searchModel->search($filters);
@@ -76,6 +113,9 @@ class StoresController extends BaseBackendController
             'dataProvider' => $dataProvider,
             'markets' => $markets,
             'filters' => $filters,
+            'marketSegments' => $marketSegments,
+            'countries' => $countries,
+            'cities' => $cities,
         ]);
     }
 
@@ -223,9 +263,11 @@ class StoresController extends BaseBackendController
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if($this->findModel($id)->delete()){
+            Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'store')]));
 
-        return $this->redirect(['index']);
+            return $this->redirect(['index']);
+        }
     }
 
     public function actionAjaxGetSegment()
@@ -239,7 +281,14 @@ class StoresController extends BaseBackendController
 
     public function actionAjaxGetUser()
     {
+        $currentUser = CommonHelper::getUser();
         $data = Yii::$app->request->post();
+        if($currentUser->role_id != Yii::$app->params['superAdminRole']){
+            $userObj = new User;
+            $childUser = $userObj->getAllChilds(array($currentUser->id));
+            $childUser[] = $currentUser->id;
+            $data['parent_user_id'] = $childUser;
+        }
         $userRepository = new UserRepository;
         $returnData = $userRepository->userList($data);
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

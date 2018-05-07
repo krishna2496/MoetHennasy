@@ -128,7 +128,7 @@ class UserRepository extends Repository
             $query->andWhere(['=','users.role_id',$data['role_id']]);
         }
         if(isset($data['parent_user_id']) && $data['parent_user_id']){
-            $query->andWhere(['=','users.parent_user_id',$data['parent_user_id']]);
+            $query->andWhere(['users.parent_user_id' => $data['parent_user_id']]);
         }
         if(isset($data['id']) && $data['id']){
             $query->andWhere(['=','users.id',$data['id']]);

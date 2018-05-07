@@ -23,6 +23,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/jquery.cookie.js',
+        'js/custom.js',
         'theme/bower_components/jquery-ui/jquery-ui.min.js',
         'theme/bower_components/moment/min/moment.min.js',
         'theme/bower_components/bootstrap-daterangepicker/daterangepicker.js',

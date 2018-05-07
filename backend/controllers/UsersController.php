@@ -52,11 +52,12 @@ class UsersController extends BaseBackendController
     {
         $currentUser = CommonHelper::getUser();
         
-        $rolesRepository = new RoleRepository;
-        $rolesData = $rolesRepository->listing();
+        //roles
         $roles = array();
-        if($rolesData['status']['success'] == 1){
-            $roles = CommonHelper::getDropdown($rolesData['data']['roles'], ['id', 'title']);
+        $parentRoleModel = new ParentRolePermission();
+        $parentRoles = $parentRoleModel->getAllParentPermission();
+        if(isset($parentRoles[$currentUser->role_id])){
+            $roles = $parentRoles[$currentUser->role_id];
         }
 
         $filters = Yii::$app->request->queryParams;

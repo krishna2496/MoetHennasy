@@ -29,7 +29,9 @@ $adminUrl = CommonHelper::getPath('admin_url');
     <body class="hold-transition skin-blue sidebar-mini">
         <?php $this->beginBody() ?>
         <div class="wrapper">
-
+            <div class="page-loader">
+                <img src="<?php echo Yii::$app->request->baseUrl.'/images/loader.gif'; ?>">
+            </div>
             <?php echo $this->render('navbar'); ?>
 
             <?php echo $this->render('menubar'); ?>
