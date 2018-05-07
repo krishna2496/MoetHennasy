@@ -29,13 +29,16 @@ if(isset($filters['setParentID'])){
                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text']) ?>
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <?= Html::dropDownList('role_id', isset($filters['role_id']) ? $filters['role_id'] : '' ,$roles,  ['class' => 'form-control', 'id' => 'user-type','prompt' => 'Select User Type']) ?>
                                 </div>
                                 <div class="col-md-3">
+                                    <?= Html::dropDownList('market_id', isset($filters['market_id']) ? $filters['market_id'] : '' ,$markets,  ['class' => 'form-control', 'id' => 'user-market','prompt' => 'Select Market']) ?>
+                                </div>
+                                <div class="col-md-2">
                                     <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
                                 </div>
                             </div>
@@ -91,7 +94,7 @@ if(isset($filters['setParentID'])){
 </div>
 
 <script type="text/javascript">
-    $("body").on("change", "#user-type,#user-text,#user-limit",function(event){
+    $("body").on("change", "#user-type,#user-text,#user-limit,#user-market",function(event){
         $('#search-users').submit();
     });
 </script>

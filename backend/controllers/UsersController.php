@@ -63,6 +63,20 @@ class UsersController extends BaseBackendController
         if(!isset($filters['limit'])){
             $filters['limit'] = Yii::$app->params['pageSize'];
         }
+
+        //markets
+        $marketFilter = array();
+        if($currentUser->role_id != Yii::$app->params['superAdminRole']){
+            $marketFilter['user_id'] = $currentUser->id;
+        }
+        $markets = array();
+        $marketRepository = new MarketRepository();
+        $marketsData = $marketRepository->marketList($marketFilter);
+        if($marketsData['status']['success'] == 1){
+            $markets = CommonHelper::getDropdown($marketsData['data']['markets'], ['id', 'title']);
+        }
+
+
         $hasChild = false;
         if($currentUser->role_id != Yii::$app->params['superAdminRole']){
             $roleId = $currentUser->role_id;
@@ -90,6 +104,7 @@ class UsersController extends BaseBackendController
             'filters' => $filters,
             'hasChild' => $hasChild,
             'roles' => $roles,
+            'markets' => $markets,
         ]);
     }
 
