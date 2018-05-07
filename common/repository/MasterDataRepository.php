@@ -48,23 +48,15 @@ class MasterDataRepository extends Repository
     }
     
     public function market($data = array()){
-    $this->apiCode = 1;
-    $id=$data['id'];
-    $data=array();
-    
-    $marketData=Markets::find()->where(['id'=>$id])->asArray()->one();
-    $marketSegmentData=MarketSegmentData::find()->andWhere(['market_id'=>$id])->asArray()->all();
-    
-    foreach($marketSegmentData as $key=>$value){
-        $marketSegmentDataArry[]=$value['market_segment_id'];
-    }
-    $marketSegmentDataIds= implode(',',$marketSegmentDataArry);
- 
-    $marketSegmentDetail=MarketSegments::find()->where("id IN($marketSegmentDataIds) ")->asArray()->all();
-    $data['market']=$marketData;
-    $data['market']['marketSegment']=$marketSegmentDetail;
-    $this->apiData = $data;
-    return $this->response();
+        $this->apiCode = 1;
+        $marketRepository = new MarketRepository();
+        $markets = $marketRepository->marketList($data);
+        if($markets['status']['success'] == 1 ){
+            $markets = $markets['data']['markets'];
+        }
+        $data['markets']=$markets;
+        $this->apiData = $data;
+        return $this->response();
     }
     
      public function listing($data = array()) {
@@ -88,9 +80,9 @@ class MasterDataRepository extends Repository
             $returnData['provinces']=$returnData['provinces']['data']['provinces'];
         }
         
-        $returnData['market'] = $this->market(array('id'=>$marketId));
-        if( $returnData['market']['status']['success'] == 1 ){
-            $returnData['market']=$returnData['market']['data']['market'];
+        $returnData['markets'] = $this->market($data);
+        if( $returnData['markets']['status']['success'] == 1 ){
+            $returnData['markets']=$returnData['markets']['data']['markets'];
         }
         $this->apiData = $returnData;
         return $this->response();

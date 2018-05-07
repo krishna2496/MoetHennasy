@@ -38,8 +38,10 @@ class MasterDataController extends BaseApiController
 
     public function actionMasters()
     {
+        $currentUser = CommonHelper::getUser();
+        $data['user_id'] = $currentUser->id;
         $masterDataRepository = new MasterDataRepository;
-        $returnData = $masterDataRepository->listing();
+        $returnData = $masterDataRepository->listing($data);
         return $returnData;
     }
     }
