@@ -1,5 +1,6 @@
 <?php
 define('UPLOAD_PATH_USER_IMAGES', 'profile/');
+define('UPLOAD_PATH_STORE_IMAGES', 'stores/');
 return [
     'adminEmail' => 'admin@example.com',
     'supportEmail' => 'support@example.com',

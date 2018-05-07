@@ -172,6 +172,46 @@ array(
             ),
         )
     ),
+    
+    array(
+        'title' => 'Stores',
+        'permissionName' => array(
+            'Stores.Index',
+            'Stores.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'stores'
+        ),
+        'actionId' => array(
+           'index', 'create','update','view'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Listing',
+                'permissionName' => array(
+                    'Stores.Index'
+                ),
+                'icon' => '',
+                'link' => 'stores/index',
+                'controllerId' => 'stores',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Create',
+                'permissionName' => array(
+                    'Stores.Create'
+                ),
+                'icon' => '',
+                'link' => 'stores/create',
+                'controllerId' => 'stores',
+                'actionId' => array('create')
+            ),
+        )
+    ),
 );
 ?>
 <b>

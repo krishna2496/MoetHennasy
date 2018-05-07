@@ -102,4 +102,17 @@ class MarketRepository extends Repository {
         return $this->response();
     }
 
+    public function segmentList($data = array()) {
+        $this->apiCode = 1;
+        $query = MarketSegmentData::find()->joinWith(['marketSegment']);
+
+        if (isset($data['market_id']) && $data['market_id']) {
+            $query->andWhere(['market_segment_data.market_id' => $data['market_id']]);
+        }
+        $data = array();
+        $data['segments'] = $query->asArray()->all();
+        $this->apiData = $data;
+        return $this->response();
+    }
+
 }

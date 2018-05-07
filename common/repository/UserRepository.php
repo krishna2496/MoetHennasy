@@ -136,6 +136,9 @@ class UserRepository extends Repository
         if(isset($data['update_id']) && $data['update_id']){
             $query->andWhere(['!=','users.id',$data['update_id']]);
         }
+        if(isset($data['market_id']) && $data['market_id']){
+            $query->andWhere(['=','users.market_id',$data['market_id']]);
+        }
         if(isset($data['search']) && $data['search']){
             $data['search'] = trim($data['search']);
             $nameArray = explode(' ', $data['search']);
