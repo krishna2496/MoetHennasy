@@ -97,6 +97,8 @@ return [
                 'GET v1/site/user-data' => 'v1/site/user-data',
                 'POST v1/site/change-password' => 'v1/site/change-password',
                 'POST v1/site/edit-profile' => 'v1/site/edit-profile',
+                'POST v1/stores/create' => 'v1/stores/create',
+                'GET v1/master-data/masters' => 'v1/master-data/masters',
             ],        
         ],
         'i18n' => [
