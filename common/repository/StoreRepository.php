@@ -38,9 +38,25 @@ class StoreRepository extends Repository {
         $model->store_manager_phone_code = $data['store_manager_phone_code'];
         $model->store_manager_phone_number = $data['store_manager_phone_number'];
         $model->store_manager_email = $data['store_manager_email'];
+        if(isset($data['latitude'])){
+            $model->latitude = $data['latitude'];
+        }
+        if(isset($data['longitude'])){
+            $model->longitude = $data['longitude'];
+        }
+        if(isset($data['comment'])){
+            $model->comment = $data['comment'];
+        }
 
         if ($model->validate()) {
             if ($model->save(false)) {
+                $returnData = array();
+                $returnData['store'] = $model;
+                $returnData['store']['photo'] = $model->photo ? CommonHelper::getPath('upload_url').UPLOAD_PATH_STORE_IMAGES.$model->photo : '';
+                $returnData['market'] = $model->market;
+                $returnData['marketSegment'] = $model->marketSegment;
+                $returnData['assignTo'] = $model->user;
+                $this->apiData = $returnData;
                 $this->apiCode = 1;
                 $this->apiMessage = Yii::t('app', 'created_successfully', [Yii::t('app', 'store')]);
             } else {
@@ -113,12 +129,24 @@ class StoreRepository extends Repository {
         if(isset($data['store_manager_email'])){
             $model->store_manager_email = $data['store_manager_email'];
         }
+        if(isset($data['latitude'])){
+            $model->latitude = $data['latitude'];
+        }
+        if(isset($data['longitude'])){
+            $model->longitude = $data['longitude'];
+        }
+        if(isset($data['comment'])){
+            $model->comment = $data['comment'];
+        }
 
         if ($model->validate()) {
             if ($model->save(false)) {
                 $returnData = array();
                 $returnData['store'] = $model;
                 $returnData['store']['photo'] = $model->photo ? CommonHelper::getPath('upload_url').UPLOAD_PATH_STORE_IMAGES.$model->photo : '';
+                $returnData['market'] = $model->market;
+                $returnData['marketSegment'] = $model->marketSegment;
+                $returnData['assignTo'] = $model->user;
                 $this->apiData = $returnData;
                 $this->apiCode = 1;
                 $this->apiMessage = Yii::t('app', 'updated_successfully', [Yii::t('app', 'store')]);

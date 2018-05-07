@@ -73,6 +73,11 @@ use yii\widgets\ActiveForm;
                                     <?= $form->field($model, 'assign_to')->dropDownList(array(), ['prompt' => 'Select User']); ?> 
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
+                                </div>
+                            </div>
                         </div>
                       </div>
                     </div>
