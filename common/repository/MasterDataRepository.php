@@ -51,10 +51,29 @@ class MasterDataRepository extends Repository
         $this->apiCode = 1;
         $marketRepository = new MarketRepository();
         $markets = $marketRepository->marketList($data);
+        $marektData = array();
         if($markets['status']['success'] == 1 ){
-            $markets = $markets['data']['markets'];
+            if($markets['data']['markets']){
+                foreach ($markets['data']['markets'] as $key => $value) {
+                    $temp = array();
+                    $temp['id'] = $value['id'];
+                    $temp['title'] = $value['title'];
+                    $temp['description'] = $value['description'];
+                    if($value['marketSegmentData']){
+                        foreach ($value['marketSegmentData'] as $childKey => $childValue) {
+                            $newTemp = array();
+                            $newTemp['id'] = isset($childValue['marketSegment']['id']) ? $childValue['marketSegment']['id'] : 0;
+                            $newTemp['title'] = isset($childValue['marketSegment']['title']) ? $childValue['marketSegment']['title'] : '';
+                            $newTemp['description'] = isset($childValue['marketSegment']['description']) ? $childValue['marketSegment']['description'] : '';
+                            $temp['marketSegment'][] = $newTemp;
+                        }
+                    }
+                    $marektData[] = $temp;
+                }
+            }
         }
-        $data['markets']=$markets;
+        
+        $data['markets']=$marektData;
         $this->apiData = $data;
         return $this->response();
     }
