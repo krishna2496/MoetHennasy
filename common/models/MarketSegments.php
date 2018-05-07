@@ -38,4 +38,8 @@ class MarketSegments extends BaseModel
             'description' => Yii::t("app", "market_segment_description"), 
         ];
     }
+    
+    public function getMarketSegmentData(){
+        return $this->hasMany(MarketSegmentData::className(), ['market_segment_id' => 'id']);
+    }
 }

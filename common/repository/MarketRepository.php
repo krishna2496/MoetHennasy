@@ -11,8 +11,12 @@ class MarketRepository extends Repository {
 
     public function marketList($data = array()) {
         $this->apiCode = 1;
-        $query = Markets::find()->joinWith(['marketSegmentData.marketSegment','user']);
-       
+        $query = Markets::find()
+            
+             ->joinWith(['marketSegmentData.marketSegment','user']);
+    
+     
+        
         if (isset($data['search']) && $data['search']) {
             $search = $data['search'];
             $query->andWhere([
@@ -40,10 +44,9 @@ class MarketRepository extends Repository {
         $model->scenario = 'create';
         $model->title = $data['title'];
 
-        if ($model->validate()) {
+        if ($model->validate(false)) {
             $modelSegment = new MarketSegmentData;
             if ($model->save(false)) {
-
                 $id = $model->id;
                 $marketSegmentData = $data['market_segment_id'];
                 foreach ($marketSegmentData as $value) {
@@ -80,12 +83,20 @@ class MarketRepository extends Repository {
         if (isset($data['title'])) {
             $model->title = $data['title'];
         }
-        if (isset($data['market_segment_id'])) {
-            $model->market_segment_id = $data['market_segment_id'];
-        }
-
+        $modelSegment = new MarketSegmentData;
         if ($model->validate()) {
             if ($model->save(false)) {
+                $modelSegment::deleteAll(['market_id'=>$data['id']]);
+                $marketSegmentData = $data['market_segment_id'];
+                foreach ($marketSegmentData as $value) {
+                    $modelSegment = new MarketSegmentData;
+                    if ($modelSegment->validate()) {
+                        $modelSegment->market_id = $data['id'];
+                        $modelSegment->market_segment_id = $value;
+                        $modelSegment->save(false);
+                    }
+                }
+
                 $this->apiCode = 1;
                 $this->apiMessage = Yii::t('app', 'market_updated_successfully');
             } else {

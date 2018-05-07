@@ -12,6 +12,8 @@ use yii\filters\AccessControl;
 use common\repository\MarketRepository;
 use common\repository\MarketSegmentsRepository;
 use common\helpers\CommonHelper;
+use common\models\MarketSegments;
+use common\models\MarketSegmentData;
 
 class MarketController extends BaseBackendController
 {
@@ -62,8 +64,23 @@ class MarketController extends BaseBackendController
 
     public function actionView($id)
     {
+       $data=MarketSegmentData::find()->joinWith('marketSegment')->andWhere(['market_id'=>$id])->asArray()->all();
+     
+       $dataCount=count($data);
+       $segment='';
+       $i=0;
+       foreach ($data as $key=>$value){
+           $i++;
+           if($i == $dataCount){
+           $segment .=$value['marketSegment']['title'];
+           }else{
+           $segment .=$value['marketSegment']['title'].',';
+           }
+       }
+      
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'segment'=>$segment,
         ]);
     }
 
@@ -101,12 +118,23 @@ class MarketController extends BaseBackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+       
         $marketSegment = array();
         $marketSegmentRepository = new MarketSegmentsRepository();
         $marketsSegmentData = $marketSegmentRepository->marketSegmentsList();
         if($marketsSegmentData['status']['success'] == 1){
             $marketSegment = CommonHelper::getDropdown($marketsSegmentData['data']['market_segments'], ['id', 'title']);
         }
+        
+        $marketSegmentId=MarketSegmentData::find()->andWhere(['market_id'=>$id])->asArray()->all();
+//        echo '<pre>';
+//        print_r($marketSegmentId);exit;
+        $segmentIdArry;
+        foreach ($marketSegmentId as $data){
+            $segmentIdArry[]=$data['market_segment_id'];
+        }
+
+        $model->market_segment_id = $segmentIdArry;
         $model->scenario = 'update';
         if(Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
@@ -123,7 +151,6 @@ class MarketController extends BaseBackendController
                 Yii::$app->session->setFlash('danger', $returnData['status']['message']);
             }
         }
-
         return $this->render('update', [
             'model' => $model,
             'marketSegmentList' =>$marketSegment,

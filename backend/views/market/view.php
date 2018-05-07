@@ -26,7 +26,8 @@ $updateUrl = Url::to(['market/update/'.$model->id]);
                         'title',
                         [
                             'label' => 'Market segment',
-                            'attribute' => 'marketSegment.title'
+                            'value' => $segment
+                         
                         ],
                       
                     ],
