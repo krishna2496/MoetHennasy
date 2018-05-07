@@ -43,6 +43,7 @@ class StoresController extends BaseApiController
 
     public function actionCreate()
     {
+        $currentUser = CommonHelper::getUser();
         $data = array();
         $data['id'] = Yii::$app->request->post('id');
         $data['name'] = Yii::$app->request->post('name');
@@ -54,7 +55,7 @@ class StoresController extends BaseApiController
         $data['country_id'] = Yii::$app->request->post('country_id');
         $data['city_id'] = Yii::$app->request->post('city_id');
         $data['province_id'] = Yii::$app->request->post('province_id');
-        $data['assign_to'] = Yii::$app->request->post('assign_to');
+        $data['assign_to'] = $currentUser->id;
         $data['store_manager_first_name'] = Yii::$app->request->post('store_manager_first_name');
         $data['store_manager_last_name'] = Yii::$app->request->post('store_manager_last_name');
         $data['store_manager_phone_code'] = Yii::$app->request->post('store_manager_phone_code');
