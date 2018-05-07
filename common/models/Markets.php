@@ -16,7 +16,7 @@ class Markets extends BaseModel
     public function rules()
     {
         return [
-            [['title'], 'required','on'=>['create','update']],
+            [['title','market_segment_id'], 'required','on'=>['create','update']],
             [['created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['description'], 'string'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
