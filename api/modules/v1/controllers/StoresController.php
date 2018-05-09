@@ -118,6 +118,12 @@ class StoresController extends BaseApiController
             if($data['sort'] == 'Visit new to Old'){
                  $data['sort']='-id';
             }
+            if($data['sort'] == 'distance A-Z'){
+                 $data['sort']='distance';
+            }
+             if($data['sort'] == 'distance Z-A'){
+                 $data['sort']='-distance';
+            }
         }
         $_GET['sort'] = $data['sort'];
         $_GET['page'] = $data['page'];
@@ -127,6 +133,11 @@ class StoresController extends BaseApiController
         if($resultStoreList['status']['success'] == 1){
             if($resultStoreList['data']['stores']){
                 foreach ($resultStoreList['data']['stores'] as $key => $value) {
+                    
+                    $storeLatitude=$value['latitude'];
+                    $storeLongitude=$value['longitude'];               
+                    $userLatitude=$value['user']['latitude'];
+                    $userLongitude=$value['user']['longitude'];
                     $photo=$value['photo'];
                     $userImage=$value['user']['profile_photo'];
                     unset($value['photo']);
@@ -138,6 +149,7 @@ class StoresController extends BaseApiController
                     $temp['market'] = isset($value['market']['title']) ? $value['market']['title'] : '';
                     $temp['marketSegment'] = isset($value['marketSegment']['title']) ? $value['marketSegment']['title'] : '';
                     $temp['cityId'] = isset($value['city']['name']) ? $value['city']['name'] : '';
+                    $temp['distance']= $this->distance($userLatitude, $userLongitude, $storeLatitude, $storeLongitude);
                     $storeList[] = $temp;
                 }
             }
@@ -155,11 +167,13 @@ class StoresController extends BaseApiController
                 [
                     'id',
                     'cityId',
+                    'distance',
                     'name',
                     'market',
                     'marketSegment',
                     'address1',
                     'assignTo',
+                   
                 ],          
             ]
              
@@ -170,5 +184,19 @@ class StoresController extends BaseApiController
         $return['isApi']=1; 
         return $return;
         
+    }
+    public function distance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
+    {
+          $latFrom = deg2rad($latitudeFrom);
+          $lonFrom = deg2rad($longitudeFrom);
+          $latTo = deg2rad($latitudeTo);
+          $lonTo = deg2rad($longitudeTo);
+
+          $lonDelta = $lonTo - $lonFrom;
+          $a = pow(cos($latTo) * sin($lonDelta), 2) + pow(cos($latFrom) * sin($latTo) - sin($latFrom) * cos($latTo) * cos($lonDelta), 2);
+          $b = sin($latFrom) * sin($latTo) + cos($latFrom) * cos($latTo) * cos($lonDelta);
+
+          $angle = atan2(sqrt($a), $b);
+          return $angle * $earthRadius;
     }
 }
