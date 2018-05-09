@@ -13,10 +13,7 @@ class StoreRepository extends Repository {
         $query = Stores::find()->joinWith(['market','marketSegment','user','city','country','province']);
 
         if(isset($data['serachText']) && ($data['serachText'] != '')){        
-            $data['search']=$data['serachText'];
-        }
-        if(isset($data['search']) && $data['search']){
-            $search = trim($data['search']);       
+           $search = trim($data['serachText']);       
             $query->andWhere([
                 'or',
                 ['like', 'stores.name', $search],
@@ -27,7 +24,23 @@ class StoreRepository extends Repository {
                 ['like', 'users.last_name', $search],
             ]);
         }
-
+        if(isset($data['search']) && $data['search']){
+            $data['search'] = trim($data['search']);
+            $nameArray = explode(' ', $data['search']);
+            $firstName = $nameArray[0];
+            $lastName = isset($nameArray[1]) ? $nameArray[1] : $nameArray[0];
+            $query->andWhere([
+                'or',
+                    ['like', 'stores.store_manager_first_name', $firstName],
+                    ['like', 'stores.store_manager_last_name', $lastName],
+                    ['like', 'stores.store_manager_email', $data['search']],
+                    ['like', 'stores.store_manager_phone_number', $data['search']],
+                    ['like', 'stores.name', $data['search']],
+            ]);
+        }
+        if(isset($data['city_id']) && $data['city_id']){
+           $data['cityIdArray']=$data['city_id'];
+        }
         if(isset($data['cityIdArray'])){        
             $query->andFilterWhere([
                 'stores.city_id' => $data['cityIdArray']
@@ -46,17 +59,22 @@ class StoreRepository extends Repository {
                 'stores.market_id' => $data['market_id']
             ]);
         }
-        
+        if(isset($data['assign_to']) && $data['assign_to']){
+            $data['assignTo']=$data['assign_to'];
+        }
         if(isset($data['assignTo']) && ($data['assignTo'] != '')){
             $query->andFilterWhere([
                 'stores.assign_to' => $data['assignTo']
             ]);
         }
-        
-        $result=$query->asArray();
-        $data = array();
+        if(isset($data['market_segment_id']) && $data['market_segment_id']){
+            $query->andWhere(['=','stores.market_segment_id',$data['market_segment_id']]);
+        }
+        if(isset($data['country_id']) && $data['country_id']){
+            $query->andWhere(['=','stores.country_id',$data['country_id']]);
+        }
        
-
+        $data = array();
         $data['stores'] = $query->asArray()->all();
     
         $this->apiData = $data;

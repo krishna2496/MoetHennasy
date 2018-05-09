@@ -151,4 +151,17 @@ class User extends BaseModel implements IdentityInterface
     public function getMarket(){
         return $this->hasOne(Markets::className(), ['id' => 'market_id']);
     }
+
+    public function getAllChilds($parentId,$childs = array()){
+        $temp = self::find()->andWhere(['parent_user_id'=>$parentId])->all();
+        if($temp){
+            $parentIds = array();
+            foreach ($temp as $key => $value) {
+                $childs[] = $value->id;
+                $parentIds[] = $value->id;
+            }
+            return $this->getAllChilds($parentIds,$childs);
+        }
+        return $childs;
+    }
 }
