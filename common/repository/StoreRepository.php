@@ -82,7 +82,6 @@ class StoreRepository extends Repository {
     }
 
     public function createStore($data = array()) {
-
         $this->apiCode = 0;
         $model = new Stores;
 
@@ -138,7 +137,6 @@ class StoreRepository extends Repository {
     }
 
     public function updateStore($data = array()) {
-
         $this->apiCode = 0;
         $model = Stores::findOne($data['id']);
         if(!$model){
