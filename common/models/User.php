@@ -26,7 +26,7 @@ class User extends BaseModel implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-            [['username','first_name','last_name','email','role_id','status','device_type','phone','address','market_id'], 'required'],
+            [['username','first_name','last_name','email','role_id','status','device_type','phone','address','market_id','company_name'], 'required'],
             ['confirm_password', 'compare', 'compareAttribute' => 'new_password','skipOnEmpty' => false,'message' => "Password doesn't match"],
             [['new_password','confirm_password'], 'string', 'min' => 6],
             [['first_name','last_name','username','password_hash','email','device_token','latitude','longitude','profile_photo'],'string','max'=>255,'on' => ['create','update']],

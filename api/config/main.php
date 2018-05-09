@@ -99,6 +99,7 @@ return [
                 'POST v1/site/edit-profile' => 'v1/site/edit-profile',
                 'POST v1/stores/create' => 'v1/stores/create',
                 'GET v1/master-data/masters' => 'v1/master-data/masters',
+                'GET v1/stores/list-stores' => 'v1/stores/list-stores',
             ],        
         ],
         'i18n' => [

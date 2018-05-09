@@ -40,7 +40,7 @@ class MarketSearch extends Markets
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params =array())
     {
       $marketRepository = new MarketRepository;
         $marketList = array();

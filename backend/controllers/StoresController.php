@@ -28,7 +28,7 @@ class StoresController extends BaseBackendController
                 ],
                 'rules' => [
                     [
-                        'actions' => ['index','create','update','view','delete'],
+                        'actions' => ['list-stores','index','create','update','view','delete'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -47,8 +47,12 @@ class StoresController extends BaseBackendController
             ],
         ];
     }
-
     public function actionIndex()
+    {
+     return $this->redirect(['stores/list-stores']);
+    }
+ 
+    public function actionListStores()
     {
         $currentUser = CommonHelper::getUser();
         $filters = Yii::$app->request->queryParams;

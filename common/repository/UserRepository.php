@@ -172,6 +172,7 @@ class UserRepository extends Repository
         $userModel->phone = $data['phone'];
         $userModel->address = $data['address'];
         $userModel->market_id = $data['market_id'];
+        $userModel->company_name = $data['company_name'];
         if(isset($data['profile_photo']) && $data['profile_photo']){
             $userModel->profile_photo = $data['profile_photo'];
         }
@@ -277,6 +278,9 @@ class UserRepository extends Repository
         }
         if(isset($data['market_id'])) {
             $userModel->market_id = $data['market_id'];
+        }
+        if(isset($data['company_name'])){
+            $userModel->company_name = $data['company_name'];
         }
         if($userModel->validate()) {
             if($userModel->new_password) {

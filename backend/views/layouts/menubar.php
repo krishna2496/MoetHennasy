@@ -212,6 +212,46 @@ array(
             ),
         )
     ),
+    
+    array(
+        'title' => 'Catalogue',
+        'permissionName' => array(
+            'Catalogues.Index',
+            'Catalogues.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'catalogues'
+        ),
+        'actionId' => array(
+           'index', 'create','update','view'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Listing',
+                'permissionName' => array(
+                    'Catalogues.Index'
+                ),
+                'icon' => '',
+                'link' => 'catalogues/index',
+                'controllerId' => 'catalogues',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Create',
+                'permissionName' => array(
+                    'Catalogues.Create'
+                ),
+                'icon' => '',
+                'link' => 'catalogues/create',
+                'controllerId' => 'catalogues',
+                'actionId' => array('create')
+            ),
+        )
+    ),
 );
 ?>
 <b>

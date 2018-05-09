@@ -25,9 +25,12 @@ class StoresSearch extends Stores
 
     public function search($params)
     {
+//        echo '<pre>';
+//        print_r($params);exit;
         $storeRepository = new StoreRepository;
         $storeList = array();
         $resultStoreList = $storeRepository->storeList($params);
+      
         if($resultStoreList['status']['success'] == 1){
             if($resultStoreList['data']['stores']){
                 foreach ($resultStoreList['data']['stores'] as $key => $value) {
@@ -39,7 +42,7 @@ class StoresSearch extends Stores
                 }
             }
         }
-
+//      pre($storeList);exit;
         $dataProvider = new ArrayDataProvider([
             'allModels' => $storeList,
             'pagination' => [
@@ -47,7 +50,7 @@ class StoresSearch extends Stores
             ],
             'sort' => [
                 'attributes' =>
-                [
+                ['id',
                     'name',
                     'market',
                     'marketSegment',
@@ -59,7 +62,12 @@ class StoresSearch extends Stores
                 ]
             ]
         ]);
-
+          $dataProvider->sort->attributes['city_id'] = [
+          'asc'  => ['cities.name' => SORT_ASC ],
+          'desc' => ['cities.name' => SORT_DESC],
+        ];
+//        echo '<pre>';
+//        print_r($dataProvider);exit;
         return $dataProvider;
     }
 }

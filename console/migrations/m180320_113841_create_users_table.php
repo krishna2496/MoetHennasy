@@ -23,6 +23,7 @@ class m180320_113841_create_users_table extends Migration
             'password_reset_token' => $this->string(255)->unique()->defaultValue(null),
             'role_id' => $this->integer()->unsigned()->defaultValue(null),
             'market_id' => $this->integer()->unsigned()->defaultValue(null),
+            'company_name' => $this->string(100)->defaultValue(null),
             'parent_user_id' => $this->integer()->unsigned()->defaultValue(null),
             'status' => $this->tinyInteger(1)->defaultValue(1)->comment('0:inactive, 1:active'),
             'profile_photo' => $this->string(255)->defaultValue(null),

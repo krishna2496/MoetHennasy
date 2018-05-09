@@ -33,7 +33,7 @@ class m180322_093859_create_catalogues_table extends Migration
             'box_only' => $this->tinyInteger(1)->defaultValue(null)->comment('0:no, 1:yes'),
             'market_share' => $this->integer()->unsigned()->defaultValue(null),
             'price' => $this->decimal(8,2)->defaultValue(null),
-            'top_shelf' => $this->tinyInteger(1)->defaultValue(null)->comment('0:no, 1:yes'),
+            'top_shelf' => $this->tinyInteger(1)->defaultValue(null)->comment('0:no, 1:yes'),  
             'created_by' => $this->integer()->unsigned()->defaultValue(null),
             'updated_by' => $this->integer()->unsigned()->defaultValue(null),
             'deleted_by' => $this->integer()->unsigned()->defaultValue(null),

@@ -10,9 +10,55 @@ class StoreRepository extends Repository {
 
     public function storeList($data = array()) {
         $this->apiCode = 1;
-        $query = Stores::find()->with(['market','marketSegment','user']);
+        $query = Stores::find()->joinWith(['market','marketSegment','user','city','country','province']);
+
+        if(isset($data['serachText']) && ($data['serachText'] != '')){        
+            $data['search']=$data['serachText'];
+        }
+        if(isset($data['search']) && $data['search']){
+            $search = trim($data['search']);       
+            $query->andWhere([
+                'or',
+                ['like', 'stores.name', $search],
+                ['like', 'markets.title', $search],
+                ['like', 'market_segments.title', $search],
+                ['like', 'address1', $search],
+                ['like', 'users.first_name', $search],
+                ['like', 'users.last_name', $search],
+            ]);
+        }
+
+        if(isset($data['cityIdArray'])){        
+            $query->andFilterWhere([
+                'stores.city_id' => $data['cityIdArray']
+            ]);
+        }
+        if(isset($data['provinceIdArray']) && ($data['provinceIdArray'] != '')){        
+            $query->andFilterWhere([
+                'stores.province_id' => $data['provinceIdArray']
+            ]);
+        }
+        if(isset($data['marketIdArray']) && ($data['marketIdArray'] != '')){        
+           $data['market_id']=$data['marketIdArray'];
+        }
+        if(isset($data['market_id']) && ($data['market_id'] != '')){     
+            $query->andFilterWhere([
+                'stores.market_id' => $data['market_id']
+            ]);
+        }
+        
+        if(isset($data['assignTo']) && ($data['assignTo'] != '')){
+            $query->andFilterWhere([
+                'stores.assign_to' => $data['assignTo']
+            ]);
+        }
+        
+        $result=$query->asArray();
         $data = array();
+       
+
         $data['stores'] = $query->asArray()->all();
+    
         $this->apiData = $data;
         return $this->response();
     }

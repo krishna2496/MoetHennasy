@@ -137,7 +137,7 @@ class UsersController extends BaseBackendController
             $markets = CommonHelper::getDropdown($marketsData['data']['markets'], ['id', 'title']);
         }
 
-        if(Yii::$app->request->post()) {
+        if(Yii::$app->request->post()) {          
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('User');
             $data['device_type'] = Yii::$app->params['deviceType']['web'];
