@@ -9,7 +9,7 @@ use common\models\Stores;
 class StoreRepository extends Repository {
 
     public function storeList($data = array()) {
-       
+        
         $this->apiCode = 1;
         $query = Stores::find()->joinWith(['market','marketSegment','user','city','country','province']);
 
@@ -40,21 +40,29 @@ class StoreRepository extends Repository {
             ]);
         }
         if(isset($data['city_id']) && $data['city_id']){
-           $data['cityIdArray']=$data['city_id'];
-        }
-        if(isset($data['cityIdArray'])){        
-            $query->andFilterWhere([
-                'stores.city_id' => $data['cityIdArray']
+           $query->andFilterWhere([
+                'stores.city_id' => $data['city_id']
             ]);
         }
-        if(isset($data['provinceIdArray']) && ($data['provinceIdArray'] != '')){        
+        if(isset($data['cityIdArray']) && ($data['cityIdArray'] != '')){ 
+            $cityIdArry= explode(',', $data['cityIdArray']);
             $query->andFilterWhere([
-                'stores.province_id' => $data['provinceIdArray']
+                'stores.city_id' => $cityIdArry
             ]);
         }
-        if(isset($data['marketIdArray']) && ($data['marketIdArray'] != '')){        
-           $data['market_id']=$data['marketIdArray'];
+        if(isset($data['provinceIdArray']) && ($data['provinceIdArray'] != '')){ 
+            $provinceIdArry= explode(',', $data['provinceIdArray']);
+            $query->andFilterWhere([
+                'stores.province_id' => $provinceIdArry
+            ]);
         }
+        if(isset($data['marketIdArray']) && ($data['marketIdArray'] != '')){ 
+           $marketIdArry= explode(',', $data['marketIdArray']);
+           $query->andFilterWhere([
+                'stores.market_id' => $marketIdArry
+           ]);
+        }
+        
         if(isset($data['market_id']) && ($data['market_id'] != '')){     
             $query->andFilterWhere([
                 'stores.market_id' => $data['market_id']
@@ -111,8 +119,7 @@ class StoreRepository extends Repository {
         if(isset($data['comment'])){
             $model->comment = $data['comment'];
         }
-// echo '<pre>';
-//            print_r($model);exit;
+
         if ($model->validate()) {
            
             if ($model->save(false)) {

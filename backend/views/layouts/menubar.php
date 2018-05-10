@@ -252,6 +252,36 @@ array(
             ),
         )
     ),
+    
+     array(
+        'title' => 'Help',
+        'permissionName' => array(
+            'Catalogues.Index',
+            'Catalogues.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'catalogues'
+        ),
+        'actionId' => array(
+           'index', 'create','update','view'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Categories',
+                'permissionName' => array(
+                    'Help.Categories'
+                ),
+                'icon' => '',
+                'link' => 'help/categories',
+                'controllerId' => 'help',
+                'actionId' => array('categories')
+            ), 
+        )
+    ),
 );
 ?>
 <b>
