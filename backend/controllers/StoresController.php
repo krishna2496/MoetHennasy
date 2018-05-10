@@ -55,7 +55,9 @@ class StoresController extends BaseBackendController
     }
  
     public function actionListStores()
+        
     {
+      
         $currentUser = CommonHelper::getUser();
 
         //filters
@@ -175,8 +177,20 @@ class StoresController extends BaseBackendController
                     Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
                 }
             }
-
+            
             $storeRepository = new StoreRepository;
+            $address1= isset($data['address1']) ? $data['address1'] : '';
+            $address2= isset($data['address2']) ? $data['address2'] : '';
+            $countryId=array_search($data['country_id'],array_column($countriesData['data']['countries'],'id'));
+            $countryName=$countriesData['data']['countries'][$countryId]['name'];
+            
+            $map= CommonHelper::geoMap($address1,$address2,$countryName);            
+            $data['latitude']=$data['longitude']='';
+            if($map['status'] == 'OK'){
+                 $data['latitude']=$map['results'][0]['geometry']['location']['lat'];
+                 $data['longitude']=$map['results'][0]['geometry']['location']['lng'];
+            }
+          
             $returnData = $storeRepository->createStore($data);
             if($returnData['status']['success'] == 1)
             {
@@ -226,6 +240,19 @@ class StoresController extends BaseBackendController
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('Stores');
             $data['id'] = $id;
+         
+            $address1= isset($data['address1']) ? $data['address1'] : '';
+            $address2= isset($data['address2']) ? $data['address2'] : '';
+            $countryId=array_search($data['country_id'],array_column($countriesData['data']['countries'],'id'));
+            $countryName=$countriesData['data']['countries'][$countryId]['name'];
+            
+            $map= CommonHelper::geoMap($address1,$address2,$countryName);            
+            $data['latitude']=$data['longitude']='';
+            if($map['status'] == 'OK'){
+                 $data['latitude']=$map['results'][0]['geometry']['location']['lat'];
+                 $data['longitude']=$map['results'][0]['geometry']['location']['lng'];
+            }
+           
             if(UploadedFile::getInstance($model,'storeImage')) {
                 $fileData = array();
                 $fileData['files'][0] = UploadedFile::getInstance($model,'storeImage');

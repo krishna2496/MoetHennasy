@@ -34,7 +34,7 @@ class StoresController extends BaseApiController
         ];
         return $behaviors;
     }
-
+    
     public function actions()
     {
         $actions = parent::actions();
@@ -78,7 +78,6 @@ class StoresController extends BaseApiController
     
     public function actionListStores(){
         $currentUser = CommonHelper::getUser();
-        
         $data = array();
         $data['pageNumber'] = Yii::$app->request->get('pageNumber');
         $data['serachText'] = Yii::$app->request->get('serachText');

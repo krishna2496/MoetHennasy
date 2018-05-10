@@ -1,6 +1,7 @@
 <?php
 namespace common\components;
 use yii\filters\auth\QueryParamAuth;
+use yii\web\UnauthorizedHttpException;
 
 class MoetQueryParamAuth extends QueryParamAuth
 {
@@ -12,7 +13,10 @@ class MoetQueryParamAuth extends QueryParamAuth
         $accessToken = $headers->get('authToken');
         if (is_string($accessToken)) {
             $identity = $user->loginByAccessToken($accessToken, get_class($this));	
-            if ($identity !== null && isset($identity->status) && $identity->status === 1) { // check user is active
+            if ($identity !== null) {
+                if($identity->status === 0){ // check user is active
+                    throw new UnauthorizedHttpException('User is Inactive');
+                }
                 return $identity;
             }
         }

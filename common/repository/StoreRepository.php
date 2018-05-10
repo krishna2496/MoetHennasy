@@ -111,8 +111,10 @@ class StoreRepository extends Repository {
         if(isset($data['comment'])){
             $model->comment = $data['comment'];
         }
-
+// echo '<pre>';
+//            print_r($model);exit;
         if ($model->validate()) {
+           
             if ($model->save(false)) {
                 $returnData = array();
                 $returnData['store'] = $model;
