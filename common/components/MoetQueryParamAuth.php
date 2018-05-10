@@ -11,8 +11,8 @@ class MoetQueryParamAuth extends QueryParamAuth
         $headers = $request->headers;
         $accessToken = $headers->get('authToken');
         if (is_string($accessToken)) {
-            $identity = $user->loginByAccessToken($accessToken, get_class($this));
-            if ($identity !== null) {
+            $identity = $user->loginByAccessToken($accessToken, get_class($this));	
+            if ($identity !== null && isset($identity->status) && $identity->status === 1) { // check user is active
                 return $identity;
             }
         }
