@@ -134,10 +134,10 @@ class StoresController extends BaseApiController
             if($resultStoreList['data']['stores']){
                 foreach ($resultStoreList['data']['stores'] as $key => $value) {
                     
-                    $storeLatitude=$value['latitude'];
-                    $storeLongitude=$value['longitude'];               
-                    $userLatitude=$value['user']['latitude'];
-                    $userLongitude=$value['user']['longitude'];
+                    $storeLatitude=isset($value['latitude']) ? $value['latitude'] : 0;
+                    $storeLongitude=isset($value['longitude']) ? $value['longitude'] : 0;               
+                    $userLatitude= (isset($value['user']['latitude']) && ($value['user']['latitude'] != '') )? $value['user']['latitude'] : 0; 
+                    $userLongitude=(isset($value['user']['longitude']) && ($value['user']['longitude'] != '')) ? $value['user']['longitude'] :0;
                     $photo=$value['photo'];
                     $userImage=$value['user']['profile_photo'];
                     unset($value['photo']);
@@ -187,10 +187,10 @@ class StoresController extends BaseApiController
     }
     public function distance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
     {
-          $latFrom = deg2rad($latitudeFrom);
-          $lonFrom = deg2rad($longitudeFrom);
-          $latTo = deg2rad($latitudeTo);
-          $lonTo = deg2rad($longitudeTo);
+          $latFrom = deg2rad(floatval($latitudeFrom));
+          $lonFrom = deg2rad(floatval($longitudeFrom));
+          $latTo = deg2rad(floatval($latitudeTo));
+          $lonTo = deg2rad(floatval($longitudeTo));
 
           $lonDelta = $lonTo - $lonFrom;
           $a = pow(cos($latTo) * sin($lonDelta), 2) + pow(cos($latFrom) * sin($latTo) - sin($latFrom) * cos($latTo) * cos($lonDelta), 2);

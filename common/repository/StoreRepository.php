@@ -9,6 +9,7 @@ use common\models\Stores;
 class StoreRepository extends Repository {
 
     public function storeList($data = array()) {
+       
         $this->apiCode = 1;
         $query = Stores::find()->joinWith(['market','marketSegment','user','city','country','province']);
 

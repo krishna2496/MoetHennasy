@@ -222,6 +222,8 @@ class UserRepository extends Repository
     }
 
     public function updateUser($data = array(), $type='user'){
+        echo '<pre>';
+        print_r($data);exit;
         $this->apiCode = 0;
         $userModel = new User;
         $userModel = User::findOne($data['id']);

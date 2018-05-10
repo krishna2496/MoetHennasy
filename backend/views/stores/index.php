@@ -75,7 +75,7 @@ $formUrl = Url::to(['stores/index']);
                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['stores/update/'.$model['id']]);
                                 },                                
                                'delete' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['stores/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this user?']);
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['stores/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this store?']);
                                 },
                             ],
                         ],
