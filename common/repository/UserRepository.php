@@ -222,8 +222,7 @@ class UserRepository extends Repository
     }
 
     public function updateUser($data = array(), $type='user'){
-        echo '<pre>';
-        print_r($data);exit;
+       
         $this->apiCode = 0;
         $userModel = new User;
         $userModel = User::findOne($data['id']);
@@ -291,6 +290,9 @@ class UserRepository extends Repository
             }
 
             if($userModel->save(false)) {
+                if(isset($data['status']) && ($data['status'] == 0)){
+                   $this->updateAuthToken($data['id']);
+                }
                 $returnData = array();
                 $returnData['user'] = $userModel;
                 $returnData['user']['profile_photo'] = $userModel->profile_photo ? CommonHelper::getPath('upload_url').UPLOAD_PATH_USER_IMAGES.$userModel->profile_photo : '';
@@ -350,5 +352,13 @@ class UserRepository extends Repository
             $this->apiMessage = Yii::t('app', 'You have entered wrong Password.');
         }
         return $this->response();
+    }
+    
+    public function updateAuthToken($id){
+        
+        $userModel = User::findOne($id);
+        $userModel->auth_key=Yii::$app->security->generateRandomString();
+       
+        $userModel->save(false);
     }
 }
