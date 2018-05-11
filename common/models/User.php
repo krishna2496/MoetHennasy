@@ -66,7 +66,7 @@ class User extends BaseModel implements IdentityInterface
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['auth_key' => $token]);
+        return static::findOne(['status' => self::STATUS_ACTIVE, 'auth_key' => $token]);
     }
 
     public static function findByUsername($username)

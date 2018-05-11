@@ -148,7 +148,9 @@ class CommonHelper
 		$permissionsLabelList = array();
 		if(isset($currentUser->permissions)){
 			foreach ($currentUser->permissions as $key => $value) {
-				$permissionsLabelList[] = $value->permission->permission_label;
+				if(isset($value->permission->permission_label)){
+					$permissionsLabelList[] = $value->permission->permission_label;
+				}
 			}
 		}
 
