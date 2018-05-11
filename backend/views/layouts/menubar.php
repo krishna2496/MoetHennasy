@@ -252,19 +252,18 @@ array(
             ),
         )
     ),
-    
-     array(
+    array(
         'title' => 'Help',
         'permissionName' => array(
-            'Catalogues.Index',
-            'Catalogues.Create',
+            'Help.Index',
+            'Help.Create',
         ),
         'icon' => 'fa fa-user',
         'link' => 'javascript:void(0)',
         'hasChildClass' => 'treeview ',
         'submenuToggleClass' => 'treeview-menu',
         'controllerId' => array(
-            'catalogues'
+            'Help'
         ),
         'actionId' => array(
            'index', 'create','update','view'
@@ -273,17 +272,16 @@ array(
             array(
                 'title' => 'Categories',
                 'permissionName' => array(
-                    'Help.Categories'
+                    'HelpCategories.Index'
                 ),
                 'icon' => '',
-                'link' => 'help/categories',
+                'link' => 'help-categories/index',
                 'controllerId' => 'help',
                 'actionId' => array('categories')
             ), 
         )
     ),
-    
-     array(
+    array(
         'title' => 'Brands',
         'permissionName' => array(
             'Brands.Index',

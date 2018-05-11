@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 },                                
                                'delete' => function ($url, $model) {
                                     $addLink = isset($filters['setParentID']) ? '/'.$model['parent_user_id'] : '';
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['product-categories/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this brand?','title'=>'Delete']);
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['product-categories/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this category?','title'=>'Delete']);
                                 },
                             ],
                         ],
