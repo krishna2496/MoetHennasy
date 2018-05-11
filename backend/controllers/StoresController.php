@@ -65,7 +65,6 @@ class StoresController extends BaseBackendController
             $childUser = $userObj->getAllChilds(array($currentUser->id));
             $childUser[] = $currentUser->id;
             $filters['assign_to'] = $childUser;
-            echo '<pre>';print_r($filters);exit;
         }
 
         //markets
