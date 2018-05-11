@@ -64,6 +64,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?php } ?>
                             </div>
                 		</div>
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'company_name')->textInput(); ?> 
+                        </div>
                 	</div>
                 </div>
             </div>

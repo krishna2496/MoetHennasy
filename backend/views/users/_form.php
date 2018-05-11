@@ -78,8 +78,8 @@ use common\helpers\CommonHelper;
                 		<div class="col-md-6 <?php echo $parentUserClass; ?>" id="parentUser">
                 			<?= $form->field($model, 'parent_user_id')->dropDownList($userList,['prompt' => 'Select Parent User']); ?>
                 		</div>
-                                <div class="col-md-6">
-                                    <?= $form->field($model, 'company_name')->textInput(); ?> 
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'company_name')->textInput(); ?> 
                 		</div>
                 	</div>
                 </div>
