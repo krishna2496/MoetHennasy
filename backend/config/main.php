@@ -53,16 +53,20 @@ return [
                 'help-categories/update/<id:\d+>' => 'help-categories/update',
                 'help-categories/delete/<id:\d+>' => 'help-categories/delete',
                 'help-categories/view/<id:\d+>' => 'help-categories/view',
-                'help/index/<id:\d+>' => 'help/index',
-                'help/update/<id:\d+>' => 'help/update',
-                'help/delete/<id:\d+>' => 'help/delete',
-                'help/view/<id:\d+>' => 'help/view',
+                
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:[^/]+>/<action:[^/]+>/<slug:[^/]+>' => '<controller>/<action>',
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
+                
+                'helps/update/<id:\d+>/<categoryId:\d+>' => 'helps/update',
+                'helps/create/<id:\d+>' => 'helps/create',
+                'helps/delete/<id:\d+>/<categoryId:\d+>' => 'helps/delete',
+                'helps/view/<id:\d+>/<categoryId:\d+>' => 'helps/view',
                 'users/update/<id:\d+>/<parentId:\d+>' => 'users/update',
                 'users/view/<id:\d+>/<parentId:\d+>' => 'users/view',
                 'users/delete/<id:\d+>/<parentId:\d+>' => 'users/delete',
+                'help/index/<id:\d+>' => 'help/index',
+               
             ],
         ],
         'i18n' => [

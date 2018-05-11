@@ -22,19 +22,22 @@ $formUrl = Url::to(['catalogues/index']);
                             <?= Html::a('New Catalogue', ['create'], ['class' => 'btn btn-primary']) ?>
 <?php } ?>
                     </div>
-                    <div class="col-md-1"></div>
-                    <div class="col-md-8">
+                   
+                    <div class="col-md-10">
 <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-catalogue']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
-                                <div class="col-md-5">
+                                <div class="col-md-4">
 <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-3">
 <?= Html::dropDownList('market_id', isset($filters['market_id']) ? $filters['market_id'] : '', $market, ['class' => 'form-control', 'id' => 'user-market', 'prompt' => 'Select Market']) ?>
                                 </div>
-                                <div class="col-md-3">
+                                 <div class="col-md-3">
+<?= Html::dropDownList('brand_id', isset($filters['brand_id']) ? $filters['brand_id'] : '', $brand, ['class' => 'form-control', 'id' => 'brand_market', 'prompt' => 'Select Brand']) ?>
+                                </div>
+                                <div class="col-md-2">
                                     <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
                                 </div>
 
@@ -52,16 +55,8 @@ $formUrl = Url::to(['catalogues/index']);
                     'columns' => [
                             [
                             'class' => 'yii\grid\SerialColumn'],
-                        'id',
-                            [
-                            'label' => 'Image',
-                            'format' => 'html',
-                            'attribute' => 'image',
-                            'headerOptions' => ['class' => 'column-name-image'],
-                            'value' => function($model, $index, $dataColumn) {
-                                return '<div><img  style="width:100px;height:100px;border:100%" src="' . CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $model['image']) . '"></div>';
-                            }
-                        ],
+                       
+                           
                         'sku',
                         'ean',
                             [
@@ -69,6 +64,12 @@ $formUrl = Url::to(['catalogues/index']);
                             'attribute' => 'marketName',
                             'value' => 'market.title'
                         ],
+                            [
+                            'label' => 'Brand',
+                            'attribute' => 'brandName',
+                            'value' => 'brand.name'
+                        ],
+                            'price',
                             [
                             'class' => 'yii\grid\ActionColumn',
                             'header' => 'Actions',
@@ -93,7 +94,7 @@ $formUrl = Url::to(['catalogues/index']);
     </div>
 </div>
 <script type="text/javascript">
-    $("body").on("change", "#user-type,#user-text,#user-limit,#user-market", function (event) {
+    $("body").on("change", "#user-type,#user-text,#user-limit,#user-market,#brand_market", function (event) {
        $('#search-catalogue').submit();
     });
 </script>

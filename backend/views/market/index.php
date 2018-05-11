@@ -65,6 +65,7 @@ $formUrl = Url::to(['market/index']);
                            'header' => 'Actions',
                            'template' => '{view} {update} {delete}',
                            'buttons' => [
+    
                                'view' => function ($url, $model) use ($filters) {
                                   return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['market/view/'.$model['id']]);
                                 },

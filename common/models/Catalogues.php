@@ -71,4 +71,7 @@ class Catalogues extends BaseModel
      public function getMarket(){
         return $this->hasOne(Markets::className(), ['id' => 'market_id']);
     }
+     public function getBrand(){
+        return $this->hasOne(Brands::className(), ['id' => 'brand_id']);
+    }
 }

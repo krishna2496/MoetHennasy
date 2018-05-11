@@ -10,11 +10,12 @@ class CataloguesRepository extends Repository
 {
       public function listing($data = array()) {
         $this->apiCode = 1;
-        $query = Catalogues::find()->joinWith(['market']);
+        $query = Catalogues::find()->joinWith(['market','brand']);
 
         if(isset($data['serachText']) && ($data['serachText'] != '')){        
             $data['search']=$data['serachText'];
         }
+        
         if(isset($data['search']) && $data['search']){
             $search = trim($data['search']);       
             $query->andWhere([
@@ -24,13 +25,17 @@ class CataloguesRepository extends Repository
                 ['like', 'catalogues.short_name', $search],
                 ['like', 'catalogues.long_name', $search],
                 ['like', 'markets.title', $search],
-                
+                ['like', 'brands.name', $search],
+                ['like', 'price', $search],
             ]);
         }
         
          if(isset($data['market_id']) && $data['market_id']){
                  
             $query->andWhere(['market_id'=> $data['market_id']]);
+        }
+         if(isset($data['brand_id']) && ($data['brand_id'] != '')){        
+              $query->andWhere(['brand_id'=> $data['brand_id']]);
         }
 
         $result=$query->asArray();

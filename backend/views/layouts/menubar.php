@@ -263,7 +263,7 @@ array(
         'hasChildClass' => 'treeview ',
         'submenuToggleClass' => 'treeview-menu',
         'controllerId' => array(
-            'Help'
+            'helps','help-categories'
         ),
         'actionId' => array(
            'index', 'create','update','view'

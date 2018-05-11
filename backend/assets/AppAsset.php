@@ -27,6 +27,7 @@ class AppAsset extends AssetBundle
         'js/custom.js',
         'theme/bower_components/jquery-ui/jquery-ui.min.js',
         'theme/bower_components/select2/dist/js/select2.full.min.js',
+        'theme/bower_components/ckeditor/ckeditor.js',
         'theme/bower_components/moment/min/moment.min.js',
         'theme/bower_components/bootstrap-daterangepicker/daterangepicker.js',
         'theme/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',

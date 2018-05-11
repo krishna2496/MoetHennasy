@@ -59,12 +59,20 @@ class CataloguesController extends BaseBackendController
         if($market['status']['success'] == 1){
             $market = CommonHelper::getDropdown($market['data']['markets'], ['id', 'title']);
         }
+        
+        $brand =new BrandRepository();
+        $brand=$brand->listing(); 
+        if($brand['status']['success'] == 1){
+            $brand = CommonHelper::getDropdown($brand['data']['brand'], ['id', 'name']);
+        }
+        
         parent::userActivity(array('View Catalogues'),$description='View Catalogues');
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'market' => $market,
             'filters'=>$filters,
+            'brand' => $brand
         ]);
     }
 
