@@ -3,34 +3,39 @@ namespace common\repository;
 
 use Yii;
 use common\helpers\CommonHelper;
-use common\models\Brands;
+use common\models\ProductCategories;
 
 
-class BrandRepository extends Repository
+class ProductCategoryRepository extends Repository
 {
-      public function listing($data = array()) {
+    public function listing($data = array()) {
         $this->apiCode = 1;
-        $query = Brands::find();
+        $query = ProductCategories::find()->with(['parentCategory']);
 
         if(isset($data['search']) && $data['search']){
-        	$data['search'] = trim($data['search']);
-        	$query->andWhere(['like','name',$data['search']]);
+            $data['search'] = trim($data['search']);
+            $query->andWhere(['like','name',$data['search']]);
+        }
+
+        if(isset($data['except_id']) && $data['except_id']){
+        	$query->andWhere(['!=','id',$data['except_id']]);
         }
 
         $data = array();
-        $data['brand'] = $query->asArray()->all();
+        $data['productCategories'] = $query->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }
 
-    public function createBrand($data = array()){
+    public function createProductCategory($data = array()){
         $this->apiCode = 0;
-        $model = new Brands;
+        $model = new ProductCategories;
         $model->name = $data['name'];
+        $model->parent_id = $data['parent_id'];
         if($model->validate()) {
             if($model->save(false)) {
                 $this->apiCode = 1;
-                $this->apiMessage = Yii::t('app', 'created_successfully', [Yii::t('app', 'brand')]);
+                $this->apiMessage = Yii::t('app', 'created_successfully', [Yii::t('app', 'product_categories')]);
             } else {
                 $this->apiCode = 0;
                 $this->apiMessage = Yii::t('app', 'Something went wrong.');
@@ -45,16 +50,19 @@ class BrandRepository extends Repository
         return $this->response();
     }
 
-    public function upadateBrand($data = array()){
+    public function upadateProductCategory($data = array()){
         $this->apiCode = 0;
-        $model = Brands::findOne($data['id']);
+        $model = ProductCategories::findOne($data['id']);
         if(isset($data['name'])) {
-        	$model->name = $data['name'];
+            $model->name = $data['name'];
+        }
+        if(isset($data['parent_id'])) {
+        	$model->parent_id = $data['parent_id'];
         }
         if($model->validate()) {
             if($model->save(false)) {
                 $this->apiCode = 1;
-                $this->apiMessage = Yii::t('app', 'updated_successfully', [Yii::t('app', 'brand')]);
+                $this->apiMessage = Yii::t('app', 'updated_successfully', [Yii::t('app', 'product_categories')]);
             } else {
                 $this->apiCode = 0;
                 $this->apiMessage = Yii::t('app', 'Something went wrong.');

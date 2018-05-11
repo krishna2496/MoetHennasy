@@ -37,6 +37,7 @@ return [
     'view_lbl_market_id'=>'Market',
     'user'=>'User',
     'store'=>'Store',
+    'brand'=>'Brand',
     'profile'=>'Profile',
     'Fail to create user.'=>'Fail to create user.',
     'You are not allowed to perform this action.'=>'You are not allowed to perform this action.',
@@ -69,4 +70,5 @@ return [
     'store_manager_phone_code' => 'Store Manager Phone Code',
     'store_manager_phone_number' => 'Store Manager Phone Number',
     'catalogues'=>'Catalogues',
+    'product_categories'=>'Product Categories',
     ];

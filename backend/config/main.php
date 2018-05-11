@@ -48,6 +48,8 @@ return [
                 'market-segments/update/<id:\d+>' => 'market-segments/update',
                 'market-segments/delete/<id:\d+>' => 'market-segments/delete',
                 'market-segments/view/<id:\d+>' => 'market-segments/view',
+                'product-categories/update/<id:\d+>' => 'product-categories/update',
+                'product-categories/delete/<id:\d+>' => 'product-categories/delete',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:[^/]+>/<action:[^/]+>/<slug:[^/]+>' => '<controller>/<action>',
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',

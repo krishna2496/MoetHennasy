@@ -282,6 +282,85 @@ array(
             ), 
         )
     ),
+    
+     array(
+        'title' => 'Brands',
+        'permissionName' => array(
+            'Brands.Index',
+            'Brands.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'brands'
+        ),
+        'actionId' => array(
+           'index', 'create','update','view'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Listing',
+                'permissionName' => array(
+                    'Brands.Index'
+                ),
+                'icon' => '',
+                'link' => 'brands/index',
+                'controllerId' => 'brands',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Create',
+                'permissionName' => array(
+                    'Brands.Create'
+                ),
+                'icon' => '',
+                'link' => 'brands/create',
+                'controllerId' => 'brands',
+                'actionId' => array('create')
+            ),
+        )
+    ),
+    array(
+        'title' => 'Product Categories',
+        'permissionName' => array(
+            'Product-Categories.Index',
+            'Product-Categories.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'product-categories'
+        ),
+        'actionId' => array(
+           'index', 'create','update','view'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Listing',
+                'permissionName' => array(
+                    'Product-Categories.Index'
+                ),
+                'icon' => '',
+                'link' => 'product-categories/index',
+                'controllerId' => 'product-categories',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Create',
+                'permissionName' => array(
+                    'Product-Categories.Create'
+                ),
+                'icon' => '',
+                'link' => 'product-categories/create',
+                'controllerId' => 'product-categories',
+                'actionId' => array('create')
+            ),
+        )
+    ),
 );
 ?>
 <b>

@@ -224,7 +224,6 @@ class UserRepository extends Repository
     public function updateUser($data = array(), $type='user'){
        
         $this->apiCode = 0;
-        $userModel = new User;
         $userModel = User::findOne($data['id']);
         if(!$userModel){
             throw new NotFoundHttpException('The requested page does not exist.');
