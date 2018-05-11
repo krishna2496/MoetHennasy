@@ -69,19 +69,19 @@ if(isset($filters['setParentID'])){
                            'buttons' => [
                                'view' => function ($url, $model) use ($filters) {
                                     $addLink = isset($filters['setParentID']) ? '/'.$model['parent_user_id'] : '';
-                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['users/view/'.$model['id'].$addLink]);
+                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['users/view/'.$model['id'].$addLink],['title'=>'View']);
                                 },
                                'update' => function ($url, $model) use ($filters) {
                                     $addLink = isset($filters['setParentID']) ? '/'.$model['parent_user_id'] : '';
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['users/update/'.$model['id'].$addLink]);
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['users/update/'.$model['id'].$addLink],['title'=>'Update']);
                                 },                                
                                'delete' => function ($url, $model) use ($filters) {
                                     $addLink = isset($filters['setParentID']) ? '/'.$model['parent_user_id'] : '';
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['users/delete/'.$model['id'].$addLink],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this user?']);
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['users/delete/'.$model['id'].$addLink],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this user?','title'=>'Delete']);
                                 },                               
                                'manageUser' => function ($url, $model) use ($hasChild) {
                                     if($hasChild){
-                                        return Html::a('<span class="glyphicon glyphicon-user"></span>', ['users/index/'.$model['id']]);
+                                        return Html::a('<span class="glyphicon glyphicon-user"></span>', ['users/index/'.$model['id']],['title'=>'Manager Users']);
                                     }
                                 },
                             ],

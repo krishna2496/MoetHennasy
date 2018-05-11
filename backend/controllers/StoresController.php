@@ -30,7 +30,7 @@ class StoresController extends BaseBackendController
                 ],
                 'rules' => [
                     [
-                        'actions' => ['list-stores','index','create','update','view','delete'],
+                        'actions' => ['index','create','update','view','delete'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -49,13 +49,8 @@ class StoresController extends BaseBackendController
             ],
         ];
     }
-    public function actionIndex()
-    {
-     return $this->redirect(['stores/list-stores']);
-    }
- 
-    public function actionListStores()
-        
+
+    public function actionIndex()  
     {
       
         $currentUser = CommonHelper::getUser();
@@ -70,6 +65,7 @@ class StoresController extends BaseBackendController
             $childUser = $userObj->getAllChilds(array($currentUser->id));
             $childUser[] = $currentUser->id;
             $filters['assign_to'] = $childUser;
+            echo '<pre>';print_r($filters);exit;
         }
 
         //markets
@@ -179,12 +175,10 @@ class StoresController extends BaseBackendController
             }
             
             $storeRepository = new StoreRepository;
-            $address1= isset($data['address1']) ? $data['address1'] : '';
-            $address2= isset($data['address2']) ? $data['address2'] : '';
-            $countryId=array_search($data['country_id'],array_column($countriesData['data']['countries'],'id'));
-            $countryName=$countriesData['data']['countries'][$countryId]['name'];
-            
-            $map= CommonHelper::geoMap($address1,$address2,$countryName);            
+            $address1 = isset($data['address1']) ? $data['address1'] : '';
+            $address2 = isset($data['address2']) ? $data['address2'] : '';
+            $countryName = isset($countries[$data['country_id']]) ? $countries[$data['country_id']] : '';
+            $map = CommonHelper::geoMap($address1,$address2,$countryName);            
             $data['latitude']=$data['longitude']='';
             if($map['status'] == 'OK'){
                  $data['latitude']=$map['results'][0]['geometry']['location']['lat'];
@@ -241,10 +235,9 @@ class StoresController extends BaseBackendController
             $data = Yii::$app->request->post('Stores');
             $data['id'] = $id;
          
-            $address1= isset($data['address1']) ? $data['address1'] : '';
-            $address2= isset($data['address2']) ? $data['address2'] : '';
-            $countryId=array_search($data['country_id'],array_column($countriesData['data']['countries'],'id'));
-            $countryName=$countriesData['data']['countries'][$countryId]['name'];
+            $address1 = isset($data['address1']) ? $data['address1'] : '';
+            $address2 = isset($data['address2']) ? $data['address2'] : '';
+            $countryName = isset($countries[$data['country_id']]) ? $countries[$data['country_id']] : '';
             
             $map= CommonHelper::geoMap($address1,$address2,$countryName);            
             $data['latitude']=$data['longitude']='';

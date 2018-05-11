@@ -13,17 +13,23 @@ class StoreRepository extends Repository {
         $this->apiCode = 1;
         $query = Stores::find()->joinWith(['market','marketSegment','user','city','country','province']);
 
-        if(isset($data['serachText']) && ($data['serachText'] != '')){        
-           $search = trim($data['serachText']);       
-            $query->andWhere([
-                'or',
-                ['like', 'stores.name', $search],
-                ['like', 'markets.title', $search],
-                ['like', 'market_segments.title', $search],
-                ['like', 'address1', $search],
-                ['like', 'users.first_name', $search],
-                ['like', 'users.last_name', $search],
-            ]);
+        if(isset($data['market_id']) && $data['market_id']){
+            $query->andWhere(['stores.market_id' => $data['market_id']]);
+        }
+        if(isset($data['market_segment_id']) && $data['market_segment_id']){
+            $query->andWhere(['stores.market_segment_id' => $data['market_segment_id']]);
+        }
+        if(isset($data['country_id']) && $data['country_id']){
+            $query->andWhere(['stores.country_id' => $data['country_id']]);
+        }
+        if(isset($data['city_id']) && $data['city_id']){
+            $query->andWhere(['stores.city_id' => $data['city_id']]);
+        }
+        if(isset($data['province_id']) && $data['province_id']){
+            $query->andWhere(['stores.province_id' => $data['province_id']]);
+        }
+        if(isset($data['assign_to']) && $data['assign_to']){
+            $query->andWhere(['stores.assign_to' => $data['assign_to']]);
         }
         if(isset($data['search']) && $data['search']){
             $data['search'] = trim($data['search']);
@@ -37,55 +43,12 @@ class StoreRepository extends Repository {
                     ['like', 'stores.store_manager_email', $data['search']],
                     ['like', 'stores.store_manager_phone_number', $data['search']],
                     ['like', 'stores.name', $data['search']],
+                    ['like', 'users.first_name', $firstName],
+                    ['like', 'users.last_name', $lastName],
             ]);
         }
-        if(isset($data['city_id']) && $data['city_id']){
-           $query->andFilterWhere([
-                'stores.city_id' => $data['city_id']
-            ]);
-        }
-        if(isset($data['cityIdArray']) && ($data['cityIdArray'] != '')){ 
-            $cityIdArry= explode(',', $data['cityIdArray']);
-            $query->andFilterWhere([
-                'stores.city_id' => $cityIdArry
-            ]);
-        }
-        if(isset($data['provinceIdArray']) && ($data['provinceIdArray'] != '')){ 
-            $provinceIdArry= explode(',', $data['provinceIdArray']);
-            $query->andFilterWhere([
-                'stores.province_id' => $provinceIdArry
-            ]);
-        }
-        if(isset($data['marketIdArray']) && ($data['marketIdArray'] != '')){ 
-           $marketIdArry= explode(',', $data['marketIdArray']);
-           $query->andFilterWhere([
-                'stores.market_id' => $marketIdArry
-           ]);
-        }
-        
-        if(isset($data['market_id']) && ($data['market_id'] != '')){     
-            $query->andFilterWhere([
-                'stores.market_id' => $data['market_id']
-            ]);
-        }
-        if(isset($data['assign_to']) && $data['assign_to']){
-            $data['assignTo']=$data['assign_to'];
-        }
-        if(isset($data['assignTo']) && ($data['assignTo'] != '')){
-            $query->andFilterWhere([
-                'stores.assign_to' => $data['assignTo']
-            ]);
-        }
-        if(isset($data['market_segment_id']) && $data['market_segment_id']){
-            $query->andWhere(['=','stores.market_segment_id',$data['market_segment_id']]);
-        }
-        if(isset($data['country_id']) && $data['country_id']){
-            $query->andWhere(['=','stores.country_id',$data['country_id']]);
-        }
-       
         $data = array();
         $data['stores'] = $query->asArray()->all();
-    
         $this->apiData = $data;
         return $this->response();
     }

@@ -80,20 +80,22 @@ class StoresController extends BaseApiController
         $currentUser = CommonHelper::getUser();
         $data = array();
         $data['pageNumber'] = Yii::$app->request->get('pageNumber');
-        $data['serachText'] = Yii::$app->request->get('serachText');
-        $data['cityIdArray'] = Yii::$app->request->get('cityIdArray');
-        $data['provinceIdArray'] = Yii::$app->request->get('provinceIdArray');
-        $data['marketIdArray'] = Yii::$app->request->get('marketIdArray');
-        $data['sort'] = Yii::$app->request->get('sort');
-        $data['storeID'] = Yii::$app->request->get('storeID');
-        $data['assignTo']=$currentUser->id;
-        if(!isset($data['limit'])){
-            $limit = Yii::$app->params['pageSize'];
+        $data['search'] = Yii::$app->request->get('serachText');
+        if(Yii::$app->request->get('cityIdArray')){
+            $data['city_id'] = explode(',', Yii::$app->request->get('cityIdArray'));
         }
-         $data['per-page'] = Yii::$app->params['pageSize'];
-         $data['limit']=Yii::$app->params['pageSize'];  
-         $data['page']=1;
-         
+        if(Yii::$app->request->get('provinceIdArray')){
+            $data['province_id'] = explode(',', Yii::$app->request->get('provinceIdArray'));
+        }
+        if(Yii::$app->request->get('marketIdArray')){
+            $data['market_id'] = explode(',', Yii::$app->request->get('marketIdArray'));
+        }
+        $data['sort'] = Yii::$app->request->get('sort');
+        $data['assign_to'] = $currentUser->id;
+        $limit = Yii::$app->params['pageSize'];
+        $data['per-page'] = Yii::$app->params['pageSize'];
+
+        $data['page'] = 1;
         if(isset($data['pageNumber']) && ($data['pageNumber'] != '')){
              $data['page'] = $data['pageNumber']; 
         }

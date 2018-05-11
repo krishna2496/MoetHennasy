@@ -225,27 +225,27 @@ class CommonHelper
         if(isset($address1) || isset($address2)){
             $url=urlencode($address1.','.$address2.','.$countryName);
         }
-$requrl = "https://maps.googleapis.com/maps/api/geocode/json?address=$url&key=AIzaSyC7P6ddxuBfMcW2BZ9gxLTMhHSZXlZeZmU";
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-curl_setopt($ch, CURLOPT_AUTOREFERER, true);
-curl_setopt($ch, CURLOPT_HEADER, 0);  // DO NOT RETURN HTTP HEADERS
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);  // RETURN THE CONTENTS OF THE CALL
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
-curl_setopt($ch, CURLOPT_PROXY, '192.168.10.5:8080');
-curl_setopt($ch, CURLOPT_URL, $requrl);
-$response = trim(curl_exec($ch));
-if (curl_errno($ch)) {
-	return json_encode(array('status' => 'fail' , 'error' => curl_errno($ch), 'message' => curl_error($ch)));
-}else if (trim($response) == '') {
-	return json_encode(array('status' => 'fail' , 'error' => 404, 'message' => 'Invalid response'));
-}
-curl_close($ch);
+		$requrl = "https://maps.googleapis.com/maps/api/geocode/json?address=$url&key=AIzaSyC7P6ddxuBfMcW2BZ9gxLTMhHSZXlZeZmU";
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+		curl_setopt($ch, CURLOPT_HEADER, 0);  // DO NOT RETURN HTTP HEADERS
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);  // RETURN THE CONTENTS OF THE CALL
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
+		curl_setopt($ch, CURLOPT_PROXY, '192.168.10.5:8080');
+		curl_setopt($ch, CURLOPT_URL, $requrl);
+		$response = trim(curl_exec($ch));
+		if (curl_errno($ch)) {
+			return json_encode(array('status' => 'fail' , 'error' => curl_errno($ch), 'message' => curl_error($ch)));
+		}else if (trim($response) == '') {
+			return json_encode(array('status' => 'fail' , 'error' => 404, 'message' => 'Invalid response'));
+		}
+		curl_close($ch);
 
-$curl_response_results = json_decode($response,true);
-return $curl_response_results;
-}
+		$curl_response_results = json_decode($response,true);
+		return $curl_response_results;
+	}
         
 }
 
