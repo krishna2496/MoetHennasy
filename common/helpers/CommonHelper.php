@@ -246,6 +246,29 @@ class CommonHelper
 		$curl_response_results = json_decode($response,true);
 		return $curl_response_results;
 	}
+	
+    public static function exportFileAsCsv($file,$list)
+	{	
+		$data = '';
+		foreach($list as $key=>$val)
+		{
+			$row = array();		
+			foreach($val as $k=>$d)
+			{		
+				$row[$k] = '"'.$d.'"';
+			}		
+			$data .= join(',', $row)."\n"; 
+		}
+		// Output the headers to download the file
+		header('Content-Type: text/csv');
+		header("Content-Type: application/force-download");
+		header("Content-Type: application/octet-stream");
+		header("Content-Type: application/download");
+		header("Content-Disposition: attachment; filename=$file");
+		header("Pragma: no-cache");
+		header("Expires: 0");
+		echo $data;exit;
+	}
         
 }
 

@@ -30,7 +30,7 @@ class StoresController extends BaseBackendController
                 ],
                 'rules' => [
                     [
-                        'actions' => ['index','create','update','view','delete'],
+                        'actions' => ['index','create','update','view','delete','export'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -118,6 +118,52 @@ class StoresController extends BaseBackendController
             'countries' => $countries,
             'cities' => $cities,
         ]);
+    }
+
+    public function actionExport()  
+    {
+        $currentUser = CommonHelper::getUser();
+
+        //filters
+        $filters = Yii::$app->request->queryParams;
+        if(!isset($filters['limit'])){
+            $filters['limit'] = Yii::$app->params['pageSize'];
+        }
+        if($currentUser->role_id != Yii::$app->params['superAdminRole']){
+            $userObj = new User;
+            $childUser = $userObj->getAllChilds(array($currentUser->id));
+            $childUser[] = $currentUser->id;
+            $filters['assign_to'] = $childUser;
+        }
+
+
+        $searchModel = new StoresSearch();
+        $dataProvider = $searchModel->search($filters);
+        $allModels = $dataProvider->allModels;
+        if($allModels){
+            $exportArray[0] = ['No','Name','Market','Market Segment','Address1','Address2','Assign To','Province','City','Country','Comment','Store Manager Name','Store Manager Email','Store Manager Phone Number'];
+            $i = 1;
+            foreach ($allModels as $key => $value) {
+                $temp = array();
+                $temp['no'] = $i;
+                $temp['name'] = $value['name'];
+                $temp['market'] = $value['market'];
+                $temp['marketSegment'] = $value['marketSegment'];
+                $temp['address1'] = $value['address1'];
+                $temp['address2'] = $value['address2'];
+                $temp['assignTo'] = isset($value['user']['first_name']) ? $value['user']['first_name'].' '.$value['user']['last_name'] : '';
+                $temp['province'] = isset($value['province']['name']) ? $value['province']['name'] : '';
+                $temp['city'] = isset($value['city']['name']) ? $value['city']['name'] : '';
+                $temp['country'] = isset($value['country']['name']) ? $value['country']['name'] : '';
+                $temp['comment'] = $value['comment'];
+                $temp['storeManagerName'] = $value['store_manager_first_name'].' '.$value['store_manager_last_name'];
+                $temp['storeManagerEmail'] = $value['store_manager_email'];
+                $temp['storeManagerPhone'] = $value['store_manager_phone_code'].' '.$value['store_manager_phone_number'];
+                $exportArray[$i] = $temp;
+                $i++;
+            }
+            CommonHelper::exportFileAsCsv('stores.csv',$exportArray);
+        }
     }
 
     public function actionView($id)

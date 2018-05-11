@@ -8,6 +8,12 @@ use yii\helpers\Url;
 $this->title = 'Stores';
 $this->params['breadcrumbs'][] = $this->title;
 $formUrl = Url::to(['stores/index']);
+
+$urlData = explode('?', Yii::$app->getRequest()->getUrl());
+$queryString = '';
+if(isset($urlData[1]) && $urlData[1]){
+    $queryString = '?'.$urlData[1];
+}
 ?>
 <div class="row">
     <div class="col-xs-12">
@@ -17,12 +23,21 @@ $formUrl = Url::to(['stores/index']);
                     <?= Html::encode($this->title) ?>
                 </h3>
                 <div class="row pull-right">
-                    <div class="col-md-1">
-                        <?php  if(CommonHelper::checkPermission('Stores.Create')){ ?>
-                        <?= Html::a('New Store', ['create'], ['class' => 'btn btn-primary']) ?>
-                        <?php } ?>
+                    <div class="col-md-2">
+                        <div class="row">
+                            <?php  if(CommonHelper::checkPermission('Stores.Create')){ ?>
+                                <div class="col-md-6">
+                                    <?= Html::a('New Store', ['create'], ['class' => 'btn btn-primary']) ?>
+                                </div>
+                            <?php } ?>
+                            <?php  if(CommonHelper::checkPermission('Stores.Export')){ ?>
+                                <div class="col-md-6">
+                                    <?= Html::a('Export', ['export'.$queryString], ['class' => 'btn btn-primary']) ?>
+                                </div>
+                            <?php } ?>
+                        </div>
                     </div>
-                    <div class="col-md-11">
+                    <div class="col-md-10">
                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-stores']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
@@ -36,10 +51,10 @@ $formUrl = Url::to(['stores/index']);
                                     <?= Html::dropDownList('market_segment_id', isset($filters['market_segment_id']) ? $filters['market_segment_id'] : '' ,$marketSegments,  ['class' => 'form-control', 'id' => 'store-market_segment','prompt' => 'Select Segment']) ?>
                                 </div> 
                                 <div class="col-md-2">
-                                    <?= Html::dropDownList('country_id', isset($filters['country_id']) ? $filters['country_id'] : '' ,$countries,  ['class' => 'form-control', 'id' => 'store-markets','prompt' => 'Select Country']) ?>
+                                    <?= Html::dropDownList('country_id', isset($filters['country_id']) ? $filters['country_id'] : '' ,$countries,  ['class' => 'form-control', 'id' => 'store-country','prompt' => 'Select Country']) ?>
                                 </div>
                                 <div class="col-md-2">
-                                    <?= Html::dropDownList('city_id', isset($filters['city_id']) ? $filters['city_id'] : '' ,$cities,  ['class' => 'form-control', 'id' => 'store-markets','prompt' => 'Select City']) ?>
+                                    <?= Html::dropDownList('city_id', isset($filters['city_id']) ? $filters['city_id'] : '' ,$cities,  ['class' => 'form-control', 'id' => 'store-city','prompt' => 'Select City']) ?>
                                 </div>
                                 <div class="col-md-2">
                                     <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'store-limit']) ?>
@@ -87,7 +102,7 @@ $formUrl = Url::to(['stores/index']);
 </div>
 
 <script type="text/javascript">
-    $("body").on("change", "#store-text,#store-limit,#store-market_segment",function(event){
+    $("body").on("change", "#store-text,#store-limit,#store-market_segment,#store-country,#store-city",function(event){
         $('#search-stores').submit();
     });
     $("body").on("change", "#store-markets",function(event){
