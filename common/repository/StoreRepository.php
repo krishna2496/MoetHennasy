@@ -73,10 +73,10 @@ class StoreRepository extends Repository {
         $model->store_manager_phone_code = $data['store_manager_phone_code'];
         $model->store_manager_phone_number = $data['store_manager_phone_number'];
         $model->store_manager_email = $data['store_manager_email'];
-        if(isset($data['latitude'])){
+        if(isset($data['latitude']) && ($data['latitude'])){
             $model->latitude = $data['latitude'];
         }
-        if(isset($data['longitude'])){
+        if(isset($data['longitude']) && ($data['longitude'])){
             $model->longitude = $data['longitude'];
         }
         if(isset($data['comment'])){
@@ -164,10 +164,10 @@ class StoreRepository extends Repository {
         if(isset($data['store_manager_email'])){
             $model->store_manager_email = $data['store_manager_email'];
         }
-        if(isset($data['latitude'])){
+        if(isset($data['latitude']) && ($data['latitude'] != '')){
             $model->latitude = $data['latitude'];
         }
-        if(isset($data['longitude'])){
+        if(isset($data['longitude']) && ($data['longitude'] != '')){
             $model->longitude = $data['longitude'];
         }
         if(isset($data['comment'])){
