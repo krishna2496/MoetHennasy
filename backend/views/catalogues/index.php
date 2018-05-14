@@ -27,15 +27,18 @@ $formUrl = Url::to(['catalogues/index']);
 <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-catalogue']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
 <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-2">
 <?= Html::dropDownList('market_id', isset($filters['market_id']) ? $filters['market_id'] : '', $market, ['class' => 'form-control', 'id' => 'user-market', 'prompt' => 'Select Market']) ?>
                                 </div>
-                                 <div class="col-md-3">
+                                 <div class="col-md-2">
 <?= Html::dropDownList('brand_id', isset($filters['brand_id']) ? $filters['brand_id'] : '', $brand, ['class' => 'form-control', 'id' => 'brand_market', 'prompt' => 'Select Brand']) ?>
+                                </div>
+                                <div class="col-md-3">
+<?= Html::dropDownList('product_id', isset($filters['product_id']) ? $filters['product_id'] : '', $product, ['class' => 'form-control', 'id' => 'product_id', 'prompt' => 'Select Product']) ?>
                                 </div>
                                 <div class="col-md-2">
                                     <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
@@ -94,7 +97,7 @@ $formUrl = Url::to(['catalogues/index']);
     </div>
 </div>
 <script type="text/javascript">
-    $("body").on("change", "#user-type,#user-text,#user-limit,#user-market,#brand_market", function (event) {
+    $("body").on("change", "#user-type,#product_id,#user-text,#user-limit,#user-market,#brand_market", function (event) {
        $('#search-catalogue').submit();
     });
 </script>

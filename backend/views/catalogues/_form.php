@@ -47,13 +47,15 @@ use common\helpers\CommonHelper;
                         </div>
 
                         <div class="col-md-6">
-                            <?= $form->field($model, 'product_category_id')->textInput(['maxlength' => true]) ?>
+                             <?= $form->field($model, 'product_category_id')->dropDownList($product, ['prompt' => 'Select One','id'=>'user-role_id']); ?>    
+                         
 
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <?= $form->field($model, 'product_sub_category_id')->textInput(['maxlength' => true]) ?>                 
+                             <?= $form->field($model, 'product_sub_category_id')->dropDownList($productSubCatData, ['prompt' => 'Select One','id'=>'user-parent_user_id']); ?> 
+                               
                         </div>               
                     </div>
                     <div class="row">
@@ -118,7 +120,29 @@ use common\helpers\CommonHelper;
         </div>
     </div>
 </div>
-
+<script type="text/javascript">
+	$("body").on("change", "#user-role_id",function(event){
+		
+		var product_id = parseInt($('#user-role_id').val());
+                var data = {product_id : product_id};
+		var str = "<option value>Select Catalogues</option>";
+		moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>catalogues/product-sub-category",data,'post').then(function(result){
+                
+			if(result.status.success == 1) {
+				if(result.data.productCategories.length > 0) {
+					$.each(result.data.productCategories, function(key, value){
+						str += "<option value="+value.id+">"+value.name+"</option>";
+					});
+				}
+			}
+                       
+			$('#user-parent_user_id').html(str);
+			
+		},function(result){
+			alert('Fail');
+		});
+	});
+</script>
 
 
 

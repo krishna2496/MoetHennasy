@@ -37,6 +37,11 @@ class CataloguesRepository extends Repository
          if(isset($data['brand_id']) && ($data['brand_id'] != '')){        
               $query->andWhere(['brand_id'=> $data['brand_id']]);
         }
+        
+        if(isset($data['product_id']) && ($data['product_id'] != '')){        
+              $query->andWhere(['product_category_id'=> $data['product_id']]);
+        }
+
 
         $result=$query->asArray();
         $data = array();

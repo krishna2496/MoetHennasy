@@ -15,6 +15,7 @@ use yii\filters\AccessControl;
 use common\repository\UploadRepository;
 use common\repository\BrandRepository;
 use common\helpers\CommonHelper;
+use common\repository\ProductCategoryRepository;
 
 class CataloguesController extends BaseBackendController
 {
@@ -32,6 +33,10 @@ class CataloguesController extends BaseBackendController
                         'allow' => true,
                         'roles' => ['&'],
                     ],
+                    [
+                        'actions' => ['product-sub-category'],
+                        'allow' => true,
+                    ],
                    
                 ],
             ],
@@ -47,6 +52,7 @@ class CataloguesController extends BaseBackendController
     public function actionIndex()
     {
         $filters = Yii::$app->request->queryParams;
+       
         if(!isset($filters['limit'])){
             $filters['limit'] = Yii::$app->params['pageSize'];
         }       
@@ -65,6 +71,11 @@ class CataloguesController extends BaseBackendController
         if($brand['status']['success'] == 1){
             $brand = CommonHelper::getDropdown($brand['data']['brand'], ['id', 'name']);
         }
+        $product= new ProductCategoryRepository();
+        $product=$product->listing();
+         if($product['status']['success'] == 1){
+            $productData = CommonHelper::getDropdown($product['data']['productCategories'], ['id', 'name']);
+        }
         
         parent::userActivity(array('View Catalogues'),$description='View Catalogues');
         return $this->render('index', [
@@ -72,7 +83,8 @@ class CataloguesController extends BaseBackendController
             'dataProvider' => $dataProvider,
             'market' => $market,
             'filters'=>$filters,
-            'brand' => $brand
+            'brand' => $brand,
+            'product' =>$productData
         ]);
     }
 
@@ -99,7 +111,15 @@ class CataloguesController extends BaseBackendController
         if($brand['status']['success'] == 1){
             $brand = CommonHelper::getDropdown($brand['data']['brand'], ['id', 'name']);
         }
-
+        
+        $product= new ProductCategoryRepository();
+        $product=$product->listing();
+         if($product['status']['success'] == 1){
+            $productData = CommonHelper::getDropdown($product['data']['productCategories'], ['id', 'name']);
+        }
+   
+        
+        
         if(Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('Catalogues');  
@@ -133,7 +153,8 @@ class CataloguesController extends BaseBackendController
         return $this->render('create', [
             'model' => $model,
             'market'=>$market,
-            'brand' => $brand
+            'brand' => $brand,
+            'product'=>$productData
         ]);
     }
 
@@ -152,7 +173,18 @@ class CataloguesController extends BaseBackendController
         if($brand['status']['success'] == 1){
             $brand = CommonHelper::getDropdown($brand['data']['brand'], ['id', 'name']);
         }
-        
+       
+        $product= new ProductCategoryRepository();
+        $filterData['parent_id']=$model['product_category_id'];
+        $productData=$product->listing();
+        if($productData['status']['success'] == 1){
+            $productData = CommonHelper::getDropdown($productData['data']['productCategories'], ['id', 'name']);
+        }
+        $product=$product->listing($filterData);
+      
+         if($product['status']['success'] == 1){
+            $productSubCatData = CommonHelper::getDropdown($product['data']['productCategories'], ['id', 'name']);
+        }
         if ($model->load(Yii::$app->request->post())) {
             $oldImagePath = CommonHelper::getPath('upload_path').UPLOAD_PATH_CATALOGUES_IMAGES.$model->image;
             $model->load(Yii::$app->request->post());
@@ -194,10 +226,30 @@ class CataloguesController extends BaseBackendController
         return $this->render('update', [
             'model' => $model,
             'market'=>$market,
-            'brand' => $brand
+            'brand' => $brand,
+            'product'=>$productData,
+            'productSubCatData' => $productSubCatData
+            
         ]);
     }
 
+    public function actionProductSubCategory($data = array()){
+      
+        $isJson = 1;
+        if($data) {
+            $isJson = 0;
+        } else {
+            $data = Yii::$app->request->post();
+        }
+        $product= new ProductCategoryRepository();
+        $filter['parent_id']=$data['product_id'];
+        $product=$product->listing($filter);
+        if($isJson){
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        }
+        return $product;
+        
+    }
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();

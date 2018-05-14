@@ -20,6 +20,10 @@ class ProductCategoryRepository extends Repository
         if(isset($data['except_id']) && $data['except_id']){
         	$query->andWhere(['!=','id',$data['except_id']]);
         }
+        
+        if(isset($data['parent_id']) && $data['parent_id']){
+            	$query->andWhere(['=','parent_id',$data['parent_id']]);
+        }
 
         $data = array();
         $data['productCategories'] = $query->asArray()->all();
