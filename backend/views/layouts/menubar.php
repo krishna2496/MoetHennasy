@@ -179,7 +179,7 @@ array(
             'Stores.Index',
             'Stores.Create',
         ),
-        'icon' => 'fa fa-user',
+        'icon' => 'fa fa-bank',
         'link' => 'javascript:void(0)',
         'hasChildClass' => 'treeview ',
         'submenuToggleClass' => 'treeview-menu',
