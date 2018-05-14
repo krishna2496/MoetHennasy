@@ -21,7 +21,7 @@ $arrayMenu = array(
             'index', 'matrix-listing', 'create'
         ),
         'childs' => array(
-            array(
+            /*array(
                 'title' => 'Listing',
                 'permissionName' => array(
                     'Permission.Index'
@@ -40,7 +40,7 @@ $arrayMenu = array(
                 'link' => 'permission/create',
                 'controllerId' => 'permission',
                 'actionId' => array('create')
-            ),
+            ),*/
             array(
                 'title' => 'Matrix',
                 'permissionName' => array(
