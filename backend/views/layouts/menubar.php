@@ -359,6 +359,45 @@ array(
             ),
         )
     ),
+    array(
+        'title' => 'Rules',
+        'permissionName' => array(
+            'Rules.Index',
+            'Rules.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'rules'
+        ),
+        'actionId' => array(
+           'index', 'create','update','view'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Listing',
+                'permissionName' => array(
+                    'Rules.Index'
+                ),
+                'icon' => '',
+                'link' => 'rules/index',
+                'controllerId' => 'rules',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Create',
+                'permissionName' => array(
+                    'rules.Create'
+                ),
+                'icon' => '',
+                'link' => 'rules/create',
+                'controllerId' => 'rules',
+                'actionId' => array('create')
+            ),
+        )
+    ),
 );
 ?>
 <b>
