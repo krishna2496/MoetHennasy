@@ -1,6 +1,7 @@
 <?php
 namespace common\components;
 use yii\filters\auth\QueryParamAuth;
+use Yii;
 
 class MoetQueryParamAuth extends QueryParamAuth
 {
@@ -12,7 +13,7 @@ class MoetQueryParamAuth extends QueryParamAuth
         $accessToken = $headers->get('authToken');
         if (is_string($accessToken)) {
             $identity = $user->loginByAccessToken($accessToken, get_class($this));	
-            if ($identity !== null) {
+            if ($identity !== null && !in_array($identity->role_id, [Yii::$app->params['superAdminRole'],Yii::$app->params['marketAdministratorRole']])) {
                 return $identity;
             }
         }
