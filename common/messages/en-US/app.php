@@ -71,4 +71,7 @@ return [
     'store_manager_phone_number' => 'Store Manager Phone Number',
     'catalogues'=>'Catalogues',
     'product_categories'=>'Product Categories',
+    'product_categories'=>'Product Categories',
+    'helps' =>'Questions',
+    'category' =>'Category',
     ];

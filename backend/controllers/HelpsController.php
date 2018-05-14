@@ -88,6 +88,7 @@ class HelpsController extends BaseBackendController
             $returnData = $userRepository->createQuestions($data);
             if($returnData['status']['success'] == 1)
             {
+                Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['helps/index/'.$id]);
             } else {
                 Yii::$app->session->setFlash('danger', $returnData['status']['message']);
@@ -115,7 +116,7 @@ class HelpsController extends BaseBackendController
            
             if($returnData['status']['success'] == 1)
             {
-                parent::userActivity(array('Update Categories'));
+                parent::userActivity('Update Categories');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['helps/index/'.$categoryId]);
             } else {
@@ -133,7 +134,7 @@ class HelpsController extends BaseBackendController
     {
       
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'helps')]));
         return $this->redirect(['helps/index/'.$categoryId]);
     }
 

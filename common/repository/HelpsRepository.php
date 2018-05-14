@@ -48,7 +48,7 @@ class HelpsRepository extends Repository
                 $returnData['helps'] = $model;            
                 $this->apiData = $returnData;
                 $this->apiCode = 1;
-                $this->apiMessage = Yii::t('app', 'created_successfully', [Yii::t('app', 'catalogues')]);
+                $this->apiMessage = Yii::t('app', 'created_successfully', [Yii::t('app', 'helps')]);
             } else {
                 $this->apiCode = 0;
                 $this->apiMessage = Yii::t('app', 'Something went wrong.');
@@ -78,7 +78,7 @@ class HelpsRepository extends Repository
                 $returnData['helps'] = $model;
                 $this->apiData = $returnData;
                 $this->apiCode = 1;
-                $this->apiMessage = Yii::t('app', 'updated_successfully', [Yii::t('app', 'catalogues')]);
+                $this->apiMessage = Yii::t('app', 'updated_successfully', [Yii::t('app', 'helps')]);
             } else {
                 $this->apiCode = 0;
                 $this->apiMessage = Yii::t('app', 'Something went wrong.');

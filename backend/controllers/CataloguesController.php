@@ -77,7 +77,7 @@ class CataloguesController extends BaseBackendController
             $productData = CommonHelper::getDropdown($product['data']['productCategories'], ['id', 'name']);
         }
         
-        parent::userActivity(array('View Catalogues'),$description='View Catalogues');
+        parent::userActivity('View Catalogues',$description='View Catalogues');
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -119,7 +119,7 @@ class CataloguesController extends BaseBackendController
         }
    
         
-        
+        $productSubCatData=array();
         if(Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('Catalogues');  
@@ -142,7 +142,7 @@ class CataloguesController extends BaseBackendController
             $returnData = $userRepository->createCatalogue($data);
             if($returnData['status']['success'] == 1)
             {
-                parent::userActivity(array('Create Catalogues'),$description='Create Catalogues');
+                parent::userActivity('Create Catalogues',$description='Create Catalogues');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -154,7 +154,8 @@ class CataloguesController extends BaseBackendController
             'model' => $model,
             'market'=>$market,
             'brand' => $brand,
-            'product'=>$productData
+            'product'=>$productData,
+            'productSubCatData'=>$productSubCatData
         ]);
     }
 
@@ -199,7 +200,7 @@ class CataloguesController extends BaseBackendController
                 $uploadRepository = new UploadRepository;
                 $uploadData = $uploadRepository->store($fileData);
                 if($uploadData['status']['success'] == 1){
-                    parent::userActivity(array('Update Catalogues'));
+                    parent::userActivity('Update Catalogues');
                     $data['image'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
                     if(file_exists($oldImagePath)){
                         @unlink($oldImagePath);
@@ -214,7 +215,7 @@ class CataloguesController extends BaseBackendController
             $returnData = $userRepository->updateCatalogue($data);
             if($returnData['status']['success'] == 1)
             {
-                parent::userActivity(array('Update Catalogues'),$description='Update Catalogues');
+                parent::userActivity('Update Catalogues',$description='Update Catalogues');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                
                 return $this->redirect(['index']);
@@ -253,7 +254,8 @@ class CataloguesController extends BaseBackendController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        parent::userActivity(array('Delete Catalogues'),$description='Catalogues Deleted');
+        Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'catalogues')]));
+        parent::userActivity('Delete Catalogues',$description='Catalogues Deleted');
         return $this->redirect(['index']);
     }
 

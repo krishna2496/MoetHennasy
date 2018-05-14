@@ -78,6 +78,7 @@ class HelpCategoriesController extends BaseBackendController
             $returnData = $userRepository->createCategories($data);
             if($returnData['status']['success'] == 1)
             {
+                Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
                 Yii::$app->session->setFlash('danger', $returnData['status']['message']);
@@ -102,7 +103,7 @@ class HelpCategoriesController extends BaseBackendController
             $returnData = $marketRepository->updateCategories($data);
             if($returnData['status']['success'] == 1)
             {
-                parent::userActivity(array('Update Categories'));
+                parent::userActivity('Update Categories');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {

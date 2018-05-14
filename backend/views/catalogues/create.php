@@ -17,7 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'market' => $market,
         'brand' => $brand,
-        'product' => $product
+        'product' => $product,
+        'productSubCatData'=>$productSubCatData
     ]) ?>
 
 </div>

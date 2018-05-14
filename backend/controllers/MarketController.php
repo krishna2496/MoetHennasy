@@ -54,7 +54,7 @@ class MarketController extends BaseBackendController
         
         $dataProvider = $searchModel->search($filters);
         $dataProvider->pagination->pageSize = $filters['limit'];
-        parent::userActivity(array('View Market'));
+        parent::userActivity('View Market');
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -77,7 +77,7 @@ class MarketController extends BaseBackendController
            $segment .=$value['marketSegment']['title'].',';
            }
        }
-        parent::userActivity(array('View Market'));
+        parent::userActivity('View Market');
         return $this->render('view', [
             'model' => $this->findModel($id),
             'segment'=>$segment,
@@ -102,7 +102,7 @@ class MarketController extends BaseBackendController
             $returnData = $marketRepository->createMarket($data);
             if($returnData['status']['success'] == 1)
             {  
-                parent::userActivity(array('Create Market'));
+                parent::userActivity('Create Market');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -146,7 +146,7 @@ class MarketController extends BaseBackendController
             $returnData = $marketRepository->updateMarket($data);
             if($returnData['status']['success'] == 1)
             {
-                parent::userActivity(array('Update Market'));
+                parent::userActivity('Update Market');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -162,7 +162,7 @@ class MarketController extends BaseBackendController
     public function actionDelete($id)
     {
         if($this->findModel($id)->delete()){
-            parent::userActivity(array('Delete Market'));
+            parent::userActivity('Delete Market');
             Yii::$app->session->setFlash('success', Yii::t('app', 'Market segment deleted successfully'));
             return $this->redirect(['index']);
         }
