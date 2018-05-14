@@ -89,7 +89,7 @@ use yii\widgets\ActiveForm;
                           </a>
                         </h4>
                       </div>
-                      <div id="collapseTwo" class="panel-collapse collapse">
+                      <div id="collapseTwo" class="panel-collapse collapse in">
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-6">
