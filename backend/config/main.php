@@ -108,6 +108,16 @@ return [
                 ]
             ],
         ],
+        'places' => [
+            'class' => '\dosamigos\google\places\Places',
+            'key' => 'AIzaSyA5AagLN2rL1WvX545cbKYJBJDQhkdwDZw',
+            'format' => 'json' // or 'xml'
+        ],
+        'placesSearch' => [
+            'class' => '\dosamigos\google\places\Search',
+            'key' => 'AIzaSyA5AagLN2rL1WvX545cbKYJBJDQhkdwDZw',
+            'format' => 'json' // or 'xml'
+        ],
     ],
     'container' => [
         'definitions' => [

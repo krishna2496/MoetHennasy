@@ -223,11 +223,11 @@ class StoresController extends BaseBackendController
             $address1 = isset($data['address1']) ? $data['address1'] : '';
             $address2 = isset($data['address2']) ? $data['address2'] : '';
             $countryName = isset($countries[$data['country_id']]) ? $countries[$data['country_id']] : '';
-            $map = CommonHelper::geoMap($address1,$address2,$countryName);            
-            $data['latitude']=$data['longitude']='';
-            if($map['status'] == 'OK'){
-                 $data['latitude']=$map['results'][0]['geometry']['location']['lat'];
-                 $data['longitude']=$map['results'][0]['geometry']['location']['lng'];
+            $map = Yii::$app->placesSearch->text($address1.' '.$address2.' '.$countryName);           
+            $data['latitude'] = $data['longitude']='';
+            if(strtolower($map->status) == 'ok'){
+                 $data['latitude'] = $map->results[0]->geometry->location->lat;
+                 $data['longitude'] = $map->results[0]->geometry->location->lng;
             }
           
             $returnData = $storeRepository->createStore($data);
@@ -284,11 +284,11 @@ class StoresController extends BaseBackendController
             $address2 = isset($data['address2']) ? $data['address2'] : '';
             $countryName = isset($countries[$data['country_id']]) ? $countries[$data['country_id']] : '';
             
-            $map= CommonHelper::geoMap($address1,$address2,$countryName);            
-            $data['latitude']=$data['longitude']='';
-            if($map['status'] == 'OK'){
-                 $data['latitude']=$map['results'][0]['geometry']['location']['lat'];
-                 $data['longitude']=$map['results'][0]['geometry']['location']['lng'];
+            $map = Yii::$app->placesSearch->text($address1.' '.$address2.' '.$countryName);           
+            $data['latitude'] = $data['longitude']='';
+            if(strtolower($map->status) == 'ok'){
+                 $data['latitude'] = $map->results[0]->geometry->location->lat;
+                 $data['longitude'] = $map->results[0]->geometry->location->lng;
             }
            
             if(UploadedFile::getInstance($model,'storeImage')) {
