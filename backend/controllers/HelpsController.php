@@ -67,7 +67,7 @@ class HelpsController extends BaseBackendController
 
     public function actionView($id , $categoryId = '')
     {
-      
+        parent::userActivity('view_quetion',$description='');
         return $this->render('view', [
             'model' => $this->findModel($id),
             'categoryId' => $categoryId
@@ -87,7 +87,7 @@ class HelpsController extends BaseBackendController
             $userRepository = new HelpsRepository;
             $returnData = $userRepository->createQuestions($data);
             if($returnData['status']['success'] == 1)
-            {
+            {   parent::userActivity('create_quetion',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['helps/index/'.$id]);
             } else {
@@ -115,8 +115,8 @@ class HelpsController extends BaseBackendController
             $returnData = $marketRepository->updateQuestions($data);
            
             if($returnData['status']['success'] == 1)
-            {
-                parent::userActivity('Update Categories');
+            {   
+                parent::userActivity('update_quetion',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['helps/index/'.$categoryId]);
             } else {
@@ -134,6 +134,7 @@ class HelpsController extends BaseBackendController
     {
       
         $this->findModel($id)->delete();
+        parent::userActivity('delete_quetion',$description='');
         Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'helps')]));
         return $this->redirect(['helps/index/'.$categoryId]);
     }

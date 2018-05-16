@@ -46,7 +46,6 @@ class BrandsController extends BaseBackendController
         }
         $searchModel = new BrandsSearch();
         $dataProvider = $searchModel->search($filters);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -56,6 +55,7 @@ class BrandsController extends BaseBackendController
 
     public function actionView($id)
     {
+        parent::userActivity('view_brand',$description='');
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -71,7 +71,7 @@ class BrandsController extends BaseBackendController
             $brandRepository = new BrandRepository();
             $brandData = $brandRepository->createBrand($data); 
             if($brandData['status']['success'] == 1)
-            {
+            {   parent::userActivity('create_brand',$description='');
                 Yii::$app->session->setFlash('success', $brandData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -95,7 +95,7 @@ class BrandsController extends BaseBackendController
             $brandRepository = new BrandRepository();
             $brandData = $brandRepository->upadateBrand($data); 
             if($brandData['status']['success'] == 1)
-            {
+            {   parent::userActivity('update_brand',$description='');
                 Yii::$app->session->setFlash('success', $brandData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -111,6 +111,7 @@ class BrandsController extends BaseBackendController
     public function actionDelete($id)
     {
         if($this->findModel($id)->delete()){
+            parent::userActivity('delete_brand',$description='');
             Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'brand')]));
             return $this->redirect(['index']);
         }

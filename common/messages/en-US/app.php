@@ -74,4 +74,5 @@ return [
     'product_categories'=>'Product Categories',
     'helps' =>'Questions',
     'category' =>'Category',
+    'rules' =>'Rules',
     ];

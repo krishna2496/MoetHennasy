@@ -46,7 +46,6 @@ class ProductCategoriesController extends BaseBackendController
         }
         $searchModel = new ProductCategoriesSearch();
         $dataProvider = $searchModel->search($filters);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -55,7 +54,7 @@ class ProductCategoriesController extends BaseBackendController
     }
 
     public function actionView($id)
-    {
+    {   parent::userActivity('view_product_category',$description='');
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -80,7 +79,7 @@ class ProductCategoriesController extends BaseBackendController
             $categoryRepository = new ProductCategoryRepository();
             $categoryData = $categoryRepository->createProductCategory($data); 
             if($categoryData['status']['success'] == 1)
-            {
+            {   parent::userActivity('create_product_category',$description='');
                 Yii::$app->session->setFlash('success', $categoryData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -115,7 +114,7 @@ class ProductCategoriesController extends BaseBackendController
             $categoryRepository = new ProductCategoryRepository();
             $categoryData = $categoryRepository->upadateProductCategory($data); 
             if($categoryData['status']['success'] == 1)
-            {
+            {   parent::userActivity('update_product_category',$description='');
                 Yii::$app->session->setFlash('success', $categoryData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -132,6 +131,7 @@ class ProductCategoriesController extends BaseBackendController
     public function actionDelete($id)
     {
         if($this->findModel($id)->delete()){
+            parent::userActivity('delete_product_category',$description='');
             Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'product_categories')]));
             return $this->redirect(['index']);
         }

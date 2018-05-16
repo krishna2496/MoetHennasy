@@ -50,7 +50,7 @@ class MarketSegmentsController extends BaseBackendController
         
         $dataProvider = $searchModel->search($filters);
         $dataProvider->pagination->pageSize = $filters['limit'];
-
+       
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -59,7 +59,7 @@ class MarketSegmentsController extends BaseBackendController
     }
 
     public function actionView($id)
-    {
+    {  parent::userActivity('view_market_segment',$description='');
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -77,7 +77,7 @@ class MarketSegmentsController extends BaseBackendController
             $marketSegmentsRepository = new MarketSegmentsRepository;
             $returnData = $marketSegmentsRepository->createMarketSegment($data);
             if($returnData['status']['success'] == 1)
-            {
+            {   parent::userActivity('create_market_segment',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -101,7 +101,7 @@ class MarketSegmentsController extends BaseBackendController
             $marketSegmentsRepository = new MarketSegmentsRepository;
             $returnData = $marketSegmentsRepository->updateMarketSegment($data);
             if($returnData['status']['success'] == 1)
-            {
+            {   parent::userActivity('update_market_segment',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -117,6 +117,7 @@ class MarketSegmentsController extends BaseBackendController
     public function actionDelete($id)
     {
         if($this->findModel($id)->delete()){
+            parent::userActivity('delete_market_segment',$description='');
             Yii::$app->session->setFlash('success', Yii::t('app', 'Market segment deleted successfully'));
             return $this->redirect(['index']);
         }

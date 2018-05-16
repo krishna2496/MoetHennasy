@@ -4,21 +4,8 @@ namespace common\models;
 
 use Yii;
 
-/**
- * This is the model class for table "helps".
- *
- * @property int $id
- * @property string $category_id
- * @property string $question
- * @property string $answer
- * @property int $created_by
- * @property int $updated_by
- * @property int $deleted_by
- * @property string $created_at
- * @property string $updated_at
- * @property string $deleted_at
- */
-class Helps extends \yii\db\ActiveRecord
+
+class Helps extends BaseModel
 {
     /**
      * @inheritdoc

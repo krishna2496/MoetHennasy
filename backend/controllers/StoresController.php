@@ -105,7 +105,6 @@ class StoresController extends BaseBackendController
             $cities = CommonHelper::getDropdown($citiesData['data']['cities'], ['id', 'name']);
         }
 
-
         $searchModel = new StoresSearch();
         $dataProvider = $searchModel->search($filters);
 
@@ -168,6 +167,7 @@ class StoresController extends BaseBackendController
 
     public function actionView($id)
     {
+        parent::userActivity('view_store',$description='');
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -233,6 +233,7 @@ class StoresController extends BaseBackendController
             $returnData = $storeRepository->createStore($data);
             if($returnData['status']['success'] == 1)
             {
+                parent::userActivity('create_store',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -315,6 +316,7 @@ class StoresController extends BaseBackendController
                         @unlink($oldImagePath);
                     }
                 }
+                parent::userActivity('update_store',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -334,7 +336,7 @@ class StoresController extends BaseBackendController
     {
         if($this->findModel($id)->delete()){
             Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'store')]));
-
+            parent::userActivity('delete_store',$description='');
             return $this->redirect(['index']);
         }
     }

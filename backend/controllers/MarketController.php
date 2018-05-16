@@ -54,7 +54,7 @@ class MarketController extends BaseBackendController
         
         $dataProvider = $searchModel->search($filters);
         $dataProvider->pagination->pageSize = $filters['limit'];
-        parent::userActivity('View Market');
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -77,7 +77,7 @@ class MarketController extends BaseBackendController
            $segment .=$value['marketSegment']['title'].',';
            }
        }
-        parent::userActivity('View Market');
+       parent::userActivity('view_market',$description='');
         return $this->render('view', [
             'model' => $this->findModel($id),
             'segment'=>$segment,
@@ -102,7 +102,7 @@ class MarketController extends BaseBackendController
             $returnData = $marketRepository->createMarket($data);
             if($returnData['status']['success'] == 1)
             {  
-                parent::userActivity('Create Market');
+                parent::userActivity('create_markets',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -128,8 +128,6 @@ class MarketController extends BaseBackendController
         }
         
         $marketSegmentId=MarketSegmentData::find()->andWhere(['market_id'=>$id])->asArray()->all();
-//        echo '<pre>';
-//        print_r($marketSegmentId);exit;
         $segmentIdArry;
         foreach ($marketSegmentId as $data){
             $segmentIdArry[]=$data['market_segment_id'];
@@ -146,7 +144,7 @@ class MarketController extends BaseBackendController
             $returnData = $marketRepository->updateMarket($data);
             if($returnData['status']['success'] == 1)
             {
-                parent::userActivity('Update Market');
+                parent::userActivity('update_markets',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -162,7 +160,7 @@ class MarketController extends BaseBackendController
     public function actionDelete($id)
     {
         if($this->findModel($id)->delete()){
-            parent::userActivity('Delete Market');
+            parent::userActivity('delete_markets',$description='');
             Yii::$app->session->setFlash('success', Yii::t('app', 'Market segment deleted successfully'));
             return $this->redirect(['index']);
         }

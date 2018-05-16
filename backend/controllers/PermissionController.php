@@ -64,7 +64,7 @@ class PermissionController extends BaseBackendController
                 ],
             ],
         ]);
-
+      
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
@@ -86,7 +86,8 @@ class PermissionController extends BaseBackendController
             $userRepository = new PermissionRepository;
             $returnData = $userRepository->create($data);
             if($returnData['status']['success'] == 1)
-            {
+            { 
+                parent::userActivity('create_permission',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -94,7 +95,7 @@ class PermissionController extends BaseBackendController
                 Yii::$app->session->setFlash('danger', $returnData['status']['message']);
             }
         }
-
+      
         return $this->render('create', [
             'model' => $model,
             'listPermissions' => $listPermissions,
@@ -118,7 +119,8 @@ class PermissionController extends BaseBackendController
             $userRepository = new PermissionRepository;
             $returnData = $userRepository->update($data);
             if($returnData['status']['success'] == 1)
-            {
+            {   
+                parent::userActivity('update_permission',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -141,6 +143,7 @@ class PermissionController extends BaseBackendController
         $returnData = $userRepository->delete($data);
         if($returnData['status']['success'] == 1)
         {
+            parent::userActivity('delete_permission',$description='');
             Yii::$app->session->setFlash('success', $returnData['status']['message']);
         } else {
             Yii::$app->session->setFlash('danger', $returnData['status']['message']);
@@ -155,7 +158,7 @@ class PermissionController extends BaseBackendController
         $permissionRepository = new PermissionRepository;
         $returnData = $permissionRepository->insertRole($data);
         if($returnData['status']['success'] == 1)
-        {
+        {   
             Yii::$app->session->setFlash('success', $returnData['status']['message']);
         } else {
             Yii::$app->session->setFlash('danger', $returnData['status']['message']);
@@ -196,7 +199,6 @@ class PermissionController extends BaseBackendController
         }
 
         return $this->render('permissionMatrix', [
-            //pass variables to view file
             'permissionLabels' => $permissionLabels,
             'roleLabels' => $roleLabels,
             'checkedValArray' => $checkedValArray,

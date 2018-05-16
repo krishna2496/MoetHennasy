@@ -50,7 +50,7 @@ class HelpCategoriesController extends BaseBackendController
         $searchModel = new HelpCategoriesSearch();
         $dataProvider = $searchModel->search($filters);
         $dataProvider->pagination->pageSize = $filters['limit'];
-        
+       
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -59,7 +59,7 @@ class HelpCategoriesController extends BaseBackendController
     }
 
     public function actionView($id)
-    {
+    {   parent::userActivity('view_categorie',$description='');
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -77,7 +77,7 @@ class HelpCategoriesController extends BaseBackendController
             $userRepository = new HelpCategoriesRepository;
             $returnData = $userRepository->createCategories($data);
             if($returnData['status']['success'] == 1)
-            {
+            {   parent::userActivity('create_category',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -102,8 +102,8 @@ class HelpCategoriesController extends BaseBackendController
            
             $returnData = $marketRepository->updateCategories($data);
             if($returnData['status']['success'] == 1)
-            {
-                parent::userActivity('Update Categories');
+            {   
+                parent::userActivity('update_category',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -119,7 +119,7 @@ class HelpCategoriesController extends BaseBackendController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        parent::userActivity('delete_category',$description='');
         return $this->redirect(['index']);
     }
 

@@ -91,6 +91,7 @@ class SiteController extends BaseBackendController
                     'value' => $authKey,
                     'expire' => time() + 86400 * 365 * 20,
                 ]));
+                parent::userActivity('user_login',$description='');
                 return $this->redirect(['site/index']);
 
             } else {
@@ -107,10 +108,11 @@ class SiteController extends BaseBackendController
     public function actionLogout()
     {
         $userRepository = new UserRepository;
+        parent::userActivity('user_logout',$description='');
         $userRepository->logout();
         Yii::$app->user->logout();
         setcookie('auth_key', null, -1, '/');
-
+       
         return $this->goHome();
     }
 
@@ -129,6 +131,7 @@ class SiteController extends BaseBackendController
             $userRepository = new UserRepository;
             $returnData = $userRepository->requestPasswordReset($data);
             if($returnData['status']['success'] == 1){
+             
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['site/login']);
             } else {
@@ -156,6 +159,7 @@ class SiteController extends BaseBackendController
                 $userRepository = new UserRepository;
                 $returnData = $userRepository->resetPassword($data);
                 if($returnData['status']['success'] == 1){
+                    parent::userActivity('user_password_reset',$description='');
                     Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 } else {
                     Yii::$app->session->setFlash('error', $returnData['status']['message']);
@@ -221,7 +225,7 @@ class SiteController extends BaseBackendController
             $userRepository = new UserRepository;
             $returnData = $userRepository->updateUser($data,'profile');
             if($returnData['status']['success'] == 1)
-            {
+            {   parent::userActivity('edit_user',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['edit-profile']);
             } else {

@@ -94,7 +94,6 @@ class UsersController extends BaseBackendController
                 }
             }
         }
-
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($filters);
         $dataProvider->pagination->pageSize = $filters['limit'];
@@ -162,6 +161,7 @@ class UsersController extends BaseBackendController
             $returnData = $userRepository->createUser($data);
             if($returnData['status']['success'] == 1)
             {
+                parent::userActivity('create_users',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -299,6 +299,7 @@ class UsersController extends BaseBackendController
             $returnData = $userRepository->updateUser($data);
             if($returnData['status']['success'] == 1)
             {
+                parent::userActivity('update_users',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 if($parentUpdate){
                     return $this->redirect(['users/index/'.$parentId]);    
