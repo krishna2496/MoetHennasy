@@ -13,6 +13,9 @@ use common\models\ParentRolePermission;
 use common\helpers\CommonHelper;
 use common\repository\UploadRepository;
 use common\repository\UserRepository;
+use common\repository\StoreRepository;
+use common\repository\MarketRepository;
+use common\repository\RoleRepository;
 
 class SiteController extends BaseBackendController
 {
@@ -62,11 +65,50 @@ class SiteController extends BaseBackendController
 
     public function actionIndex()
     {
-        return $this->render('index');
+       $user=CommonHelper::getUser();
+       $userData = new User();
+       $childUser=$userData->getAllChilds($user->id);
+       if(!empty($childUser)){
+           array_push($childUser, $user->id);
+           $userId=$childUser;
+       }else{
+           $userId=$user->id;
+       }
+       $data['assign_to']=$userId;
+       $storeRepository = new StoreRepository();
+       $storeData=$storeRepository->storeList($data);
+       $marketRepository = new MarketRepository();
+       $marketData=$marketRepository->marketList();
+       if($marketData['status']['success'] == 1){
+            $marketList = CommonHelper::getDropdown($marketData['data']['markets'], ['id', 'title']);
+       }   
+       $roleRepository = new RoleRepository();
+       $roleData=$roleRepository->listing(array('from_dashboard' =>1 ));
+       if($roleData['status']['success'] == 1){
+            $roleList = CommonHelper::getDropdown($roleData['data']['roles'], ['id', 'title']);
+            
+       }
+
+       $store=array();
+       if($storeData['status']['success'] == 1){
+            $storeList = CommonHelper::getDropdown($storeData['data']['stores'], ['id', 'name']);
+            foreach ($storeData['data']['stores'] as $key => $value) {
+                $store[] = array(
+                    $key, $value['name'], $value['latitude'], $value['longitude'], $value['id'], $value['market_id'], $value['user']['role_id'],$value['address1']
+                );
+            }
+        }
+     
+         return $this->render('index', [
+            'store' => json_encode($store),
+            'storeList' => $storeList,
+            'marketList' => $marketList,
+            'roleList' => $roleList
+        ]);
     }
 
     public function actionLogin()
-    {
+        {
         $this->layout = 'auth';
         if (CommonHelper::getUser()) {
             return $this->goHome();

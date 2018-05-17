@@ -184,7 +184,7 @@ array(
         'hasChildClass' => 'treeview ',
         'submenuToggleClass' => 'treeview-menu',
         'controllerId' => array(
-            'stores'
+            'stores','configs'
         ),
         'actionId' => array(
            'index', 'create','update','view'
@@ -394,6 +394,45 @@ array(
                 'icon' => '',
                 'link' => 'rules/create',
                 'controllerId' => 'rules',
+                'actionId' => array('create')
+            ),
+        )
+    ),
+        array(
+        'title' => 'Ratings',
+        'permissionName' => array(
+            'Ratings.Index',
+            'Ratings.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'ratings'
+        ),
+        'actionId' => array(
+           'index', 'create','update','view'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Listing',
+                'permissionName' => array(
+                    'Ratings.Index'
+                ),
+                'icon' => '',
+                'link' => 'ratings/index',
+                'controllerId' => 'ratings',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Create',
+                'permissionName' => array(
+                    'Ratings.Create'
+                ),
+                'icon' => '',
+                'link' => 'ratings/create',
+                'controllerId' => 'ratings',
                 'actionId' => array('create')
             ),
         )

@@ -2,6 +2,8 @@
 define('UPLOAD_PATH_USER_IMAGES', 'profile/');
 define('UPLOAD_PATH_STORE_IMAGES', 'stores/');
 define('UPLOAD_PATH_CATALOGUES_IMAGES','catalogues/');
+define('BOTTLE','map/bottle.png');
+define('API_KEY','AIzaSyAY16V1f859Ve4NZghFYEZ-XcAiHOIgdTw');
 return [
     'adminEmail' => 'admin@example.com',
     'supportEmail' => 'support@example.com',

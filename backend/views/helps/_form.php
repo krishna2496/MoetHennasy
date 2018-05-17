@@ -34,7 +34,7 @@ use common\helpers\CommonHelper;
                     <?php if (isset($model->id) && $model->id) { ?>
                         <?= Html::a('Cancel', ['helps/index/'.$id], ['class' => 'btn pull-right mw-md btn-inverse']) ?>
                     <?php } else { ?>
-                        <?= Html::a('Reset', ['helps/create'], ['class' => 'btn pull-right mw-md btn-inverse']) ?>
+                        <?= Html::a('Reset', ['helps/create'.$id], ['class' => 'btn pull-right mw-md btn-inverse']) ?>
                     <?php } ?>
                 </div>
                 <div class="col-xs-6">

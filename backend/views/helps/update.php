@@ -9,7 +9,7 @@ $this->params['breadcrumbs'][] = $this->title
 <div class="helps-update">
     <?= $this->render('_form', [
         'model' => $model,
-           'id'=>$id
+        'id'=>$id
     ]) ?>
 
 </div>

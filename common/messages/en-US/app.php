@@ -75,4 +75,6 @@ return [
     'helps' =>'Questions',
     'category' =>'Category',
     'rules' =>'Rules',
+    'ratings' =>'Ratings',
+    'configs' =>'Config',
     ];

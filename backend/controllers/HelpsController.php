@@ -65,13 +65,12 @@ class HelpsController extends BaseBackendController
         }     
     }
 
-    public function actionView($id , $categoryId = '')
+    public function actionView($id , $storeId = '')
     {
         parent::userActivity('view_quetion',$description='');
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'categoryId' => $categoryId
-          
+            'storeId' => $storeId
         ]);
     }
 

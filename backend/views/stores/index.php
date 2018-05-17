@@ -72,16 +72,19 @@ if(isset($urlData[1]) && $urlData[1]){
                     'layout'=>'<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-5">{summary}</div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
 
                     'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
+                        ['class' => 'yii\grid\SerialColumn',
+                         
+                            ],
+                        
                         'name',
                         'market',
                         'marketSegment',
                         'address1',
                         'assignTo',
                         [
-                           'class' => 'yii\grid\ActionColumn',
+                           'class' => 'yii\grid\ActionColumn', 'contentOptions'=>[ 'style'=>'width: 15%'],     
                            'header' => 'Actions',
-                           'template' => '{view} {update} {delete}',
+                           'template' => '{view} {update} {delete}{config}',
                            'buttons' => [
                                'view' => function ($url, $model) {
                                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['stores/view/'.$model['id']]);
@@ -92,6 +95,9 @@ if(isset($urlData[1]) && $urlData[1]){
                                'delete' => function ($url, $model) {
                                     return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['stores/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this store?']);
                                 },
+                                'config' => function ($url, $model) {
+                                   return Html::a('Config', ['configs/index/'.$model['id']], ['class'=>'btn btn-primary','style'=>'margin-left: 15px;']);
+                                }, 
                             ],
                         ],
                     ],
