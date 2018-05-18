@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 use common\helpers\CommonHelper;
-
+$this->title='Catalogues';
 $updateUrl = Url::to(['catalogues/update/'.$model->id]);
 //$this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Stores', 'url' => ['index']];

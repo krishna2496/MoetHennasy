@@ -17,14 +17,12 @@ use common\helpers\CommonHelper;
                 </div>
                 <div class="box-body">
                     <div class="row">
-                        
-                        <div class="col-md-6">
-                            <?= $form->field($model, 'rating')->textInput(['maxlength' => true]) ?>
+                        <div class="col-md-12">
+                            <?= $form->field($model, 'question')->textInput(['maxlength' => true]) ?>
+
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
+                        <div class="col-md-12">
+                            <?= $form->field($model, 'response_type')->dropDownList(Yii::$app->params['response_type'], ['prompt' => 'Select Response Type', 'class' => 'form-control select2']); ?>
                         </div>
                     </div>
                 </div>
@@ -32,9 +30,9 @@ use common\helpers\CommonHelper;
             <div class="row" align="center">
                 <div class="col-xs-6">
                     <?php if (isset($model->id) && $model->id) { ?>
-                        <?= Html::a('Cancel', ['ratings/index'], ['class' => 'btn pull-right mw-md btn-inverse']) ?>
+                        <?= Html::a('Cancel', ['questions/index'], ['class' => 'btn pull-right mw-md btn-inverse']) ?>
                     <?php } else { ?>
-                        <?= Html::a('Reset', ['ratings/create'], ['class' => 'btn pull-right mw-md btn-inverse']) ?>
+                        <?= Html::a('Reset', ['questions/create'], ['class' => 'btn pull-right mw-md btn-inverse']) ?>
                     <?php } ?>
                 </div>
                 <div class="col-xs-6">
@@ -45,8 +43,3 @@ use common\helpers\CommonHelper;
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        $("#ratings-rating").rating({min: 0, max: 3, step: 1, stars: 3, size: 'xs'});
-    });
-</script>

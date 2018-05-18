@@ -66,35 +66,44 @@ class SiteController extends BaseBackendController
     public function actionIndex()
     {
        $user=CommonHelper::getUser();
-       $userData = new User();
-       $childUser=$userData->getAllChilds($user->id);
-       if(!empty($childUser)){
-           array_push($childUser, $user->id);
-           $userId=$childUser;
-       }else{
-           $userId=$user->id;
+       $data=$filterData=array();
+       if($user->role_id != 1){
+            $userData = new User();
+            $childUser=$userData->getAllChilds($user->id);
+            if(!empty($childUser)){
+                array_push($childUser, $user->id);
+                $userId=$childUser;
+            }else{
+                $userId=$user->id;
+            }
+            $data['assign_to']=$userId;
+            $filterData['user_id']=$userId;
        }
-       $data['assign_to']=$userId;
+       
        $storeRepository = new StoreRepository();
        $storeData=$storeRepository->storeList($data);
        $marketRepository = new MarketRepository();
-       $marketData=$marketRepository->marketList();
+      
+       $marketData=$marketRepository->marketList($filterData);
        if($marketData['status']['success'] == 1){
             $marketList = CommonHelper::getDropdown($marketData['data']['markets'], ['id', 'title']);
        }   
        $roleRepository = new RoleRepository();
-       $roleData=$roleRepository->listing(array('from_dashboard' =>1 ));
+       $roleData=$roleRepository->listing(array('from_dashboard' =>1));
        if($roleData['status']['success'] == 1){
             $roleList = CommonHelper::getDropdown($roleData['data']['roles'], ['id', 'title']);
             
        }
-
+//       echo '<pre>';
+//       print_r($storeData);exit;
        $store=array();
        if($storeData['status']['success'] == 1){
             $storeList = CommonHelper::getDropdown($storeData['data']['stores'], ['id', 'name']);
             foreach ($storeData['data']['stores'] as $key => $value) {
+             
+                $storeImage='<img style="width:80px;height:80px" src='.CommonHelper::getImage(UPLOAD_PATH_STORE_IMAGES . $value['photo']).'></img>';
                 $store[] = array(
-                    $key, $value['name'], $value['latitude'], $value['longitude'], $value['id'], $value['market_id'], $value['user']['role_id'],$value['address1']
+                    $key, $value['name'], $value['latitude'], $value['longitude'], $value['id'], $value['market_id'], $value['user']['role_id'],$value['address1'],$value['store_manager_phone_code'],$value['store_manager_phone_number'],$storeImage
                 );
             }
         }

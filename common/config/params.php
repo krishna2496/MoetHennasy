@@ -24,5 +24,5 @@ return [
     ],
     'limit' => [10 => 10, 20 => 20,50 => 50, 100 => 100 ,99999 => 'ALL'],  
     'catalogue_status' => [0=>'Yes',1=>'No'],  
-     
+    'response_type' => [0 =>'Yes/No - Drop down',1 => 'Yes/No - Radio','3' => 'Text']
 ];

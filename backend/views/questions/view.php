@@ -4,9 +4,9 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 use common\helpers\CommonHelper;
-$this->title='Rules';
-$updateUrl = Url::to(['rules/update/'.$model->id]);
-$this->params['breadcrumbs'][] = ['label' => 'Rules', 'url' => ['index']];
+$this->title='Questions';
+$updateUrl = Url::to(['questions/update/'.$model->id]);
+$this->params['breadcrumbs'][] = ['label' => 'Questions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
@@ -22,9 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
-                            'type',
-                            'product_fields',
-                            'detail',
+                          'question',
+                          'response_type',   
                     ],
                 ]) ?>
             </div>

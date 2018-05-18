@@ -1,41 +1,34 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
+use common\helpers\CommonHelper;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\Helps */
-
-$this->title = $model->id;
+$this->title ='Helps';
 $this->params['breadcrumbs'][] = ['label' => 'Helps', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$updateUrl = Url::to(['helps/update/'.$model->id]);
 ?>
-<div class="helps-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-      
-        <?= Html::a('Update', ['helps/update/'.$model->id.'/'.$categoryId], ['class' => 'btn btn-primary']) ?>
-        
-        <?= Html::a('Delete', ['helps/delete/'.$model->id.'/'.$categoryId], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-           
-            'category_id',
-            'question:ntext',
-            'answer:ntext',
-            
-        ],
-    ]) ?>
-
-</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">
+                    <?= Html::encode($this->title) ?>
+                </h3>
+                <?= Html::a('Update', $updateUrl , ['class' => 'btn btn-primary pull-right']) ?>
+            </div>
+            <div class="box-body">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                         'question:ntext',
+                         'answer:ntext',
+                      
+                    ],
+                ]) ?>
+            </div>
+        </div>
+    </div>
+</div>    

@@ -3,6 +3,7 @@ use common\helpers\CommonHelper;
 $adminUrl = CommonHelper::getPath('admin_url');
 $user = CommonHelper::getUser();
 $arrayMenu = array(
+    
     array(
         'title' => 'Permissions',
         'permissionName' => array(
@@ -21,7 +22,7 @@ $arrayMenu = array(
             'index', 'matrix-listing', 'create'
         ),
         'childs' => array(
-            /*array(
+            array(
                 'title' => 'Listing',
                 'permissionName' => array(
                     'Permission.Index'
@@ -40,7 +41,7 @@ $arrayMenu = array(
                 'link' => 'permission/create',
                 'controllerId' => 'permission',
                 'actionId' => array('create')
-            ),*/
+            ),
             array(
                 'title' => 'Matrix',
                 'permissionName' => array(
@@ -255,8 +256,8 @@ array(
     array(
         'title' => 'Help',
         'permissionName' => array(
-            'Help.Index',
-            'Help.Create',
+            'Helps.Index',
+            'Helps.Create',
         ),
         'icon' => 'fa fa-user',
         'link' => 'javascript:void(0)',
@@ -433,6 +434,46 @@ array(
                 'icon' => '',
                 'link' => 'ratings/create',
                 'controllerId' => 'ratings',
+                'actionId' => array('create')
+            ),
+        )
+    ),
+    
+    array(
+        'title' => 'Quetions',
+        'permissionName' => array(
+            'Questions.Index',
+            'Questions.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'questions'
+        ),
+        'actionId' => array(
+           'index', 'create','update','view'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Listing',
+                'permissionName' => array(
+                    'Questions.Index'
+                ),
+                'icon' => '',
+                'link' => 'questions/index',
+                'controllerId' => 'quetions',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Create',
+                'permissionName' => array(
+                    'Questions.Create'
+                ),
+                'icon' => '',
+                'link' => 'questions/create',
+                'controllerId' => 'questions',
                 'actionId' => array('create')
             ),
         )

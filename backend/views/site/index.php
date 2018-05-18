@@ -48,7 +48,7 @@ $this->title = 'Dashboard';
     </div>
 
 <div class="row content-header">
-  <div id="map-canvas"  style="width: 600px; height: 400px;"></div>
+  <div id="map-canvas"  style="width: 1000px; height: 400px;"></div>
 </div>
     
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= API_KEY ?>&callback=initialize"> </script>
@@ -65,14 +65,17 @@ function initialize() {
         center: center,
         mapTypeId: google.maps.MapTypeId.TERRAIN   
     };
-
+var bounds = new google.maps.LatLngBounds();
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     for (i = 0; i < markers1.length; i++) {
         addMarker(markers1[i]);
     }
     var infowindow = new google.maps.InfoWindow({
-    content: ''
+    content: '',
+
+    
 });
+map.fitBounds(bounds);
    
 function addMarker(marker) {
     var storeId = marker[4];
@@ -80,7 +83,7 @@ function addMarker(marker) {
     var roleId =marker[6];
     var title = marker[1];
     var pos = new google.maps.LatLng(marker[2], marker[3]);
-    var content = marker[1]+',<br>'+marker[7];
+    var content = '<div style="min-width:220px"><div style="float:left;clear:both;width:90px;height:90px">'+marker[10]+'</div><div>'+marker[1]+'<br><b>Address: </b>'+marker[7]+'<br><b>Phone: </b>('+marker[8]+')'+marker[9]+'</div></div>';
 var image = {
     url: 'http://localhost/moet_hennessy_app/uploads/map/winebar3.png',
   
@@ -94,7 +97,7 @@ var image = {
     marker1 = new google.maps.Marker({
         title: title,
         position: pos,
-        icon: image,
+//        icon: image,
         storeId: storeId,
         marketId: marketId,
         roleId: roleId,
@@ -105,12 +108,13 @@ var image = {
         return function () {
             infowindow.setContent(content);
             infowindow.open(map, marker1);
-            map.panTo(this.getPosition());
-          
-        }
+//            map.setCenter(marker1.getPosition());
+    }
     })(marker1, content));
+    bounds.extend(marker1.position)
 }
 filterMarkers = function () {
+    infowindow.close();
     var storeId = document.getElementById('storeId').value;
     var marketId = document.getElementById('marketId').value;
     var roleId = document.getElementById('roleId').value;
@@ -126,6 +130,7 @@ filterMarkers = function () {
             marker.setVisible(false);
         }
     }
+    map.fitBounds(bounds);
 }
 }
 </script>

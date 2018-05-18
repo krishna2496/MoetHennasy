@@ -4,9 +4,9 @@ use yii\grid\GridView;
 use common\helpers\CommonHelper;
 use yii\helpers\Url;
 
-$this->title = 'Ratings';
+$this->title = 'Questions';
 $this->params['breadcrumbs'][] = $this->title;
-$formUrl = Url::to(['ratings/index']);
+$formUrl = Url::to(['questions/index']);
 ?>
 <div class="row">
     <div class="col-xs-12">
@@ -17,8 +17,8 @@ $formUrl = Url::to(['ratings/index']);
                 </h3>
                 <div class="row pull-right">
                     <div class="col-md-3">
-                        <?php  if(CommonHelper::checkPermission('Brands.Create')){ ?>
-                        <?= Html::a('New Ratings', ['create'], ['class' => 'btn btn-primary']) ?>
+                        <?php  if(CommonHelper::checkPermission('Questions.Create')){ ?>
+                        <?= Html::a('New Questions', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-9">
@@ -45,21 +45,30 @@ $formUrl = Url::to(['ratings/index']);
 
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-                          'rating',
-                          'type',
+                         'question',
+                       
+                        [
+                            'attribute' => 'response_type',
+                            'value' => function ($model) {
+                               
+                                 return  Yii::$app->params['response_type'][$model['response_type']];
+                             },
+                        ],
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
                            'template' => '{view} {update} {delete}',
                            'buttons' => [
                                'view' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['ratings/view/'.$model['id']],['title'=>'View']);
+                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['questions/view/'.$model['id']],['title'=>'View']);
                                 },
                                'update' => function ($url, $model) {
-                                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['ratings/update/'.$model['id']],['title'=>'Update']);
+                                    $addLink = isset($filters['setParentID']) ? '/'.$model['parent_user_id'] : '';
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['questions/update/'.$model['id']],['title'=>'Update']);
                                 },                                
                                'delete' => function ($url, $model) {
-                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['ratings/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this Ratings?','title'=>'Delete']);
+                                    $addLink = isset($filters['setParentID']) ? '/'.$model['parent_user_id'] : '';
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['questions/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this Questions?','title'=>'Delete']);
                                 },
                             ],
                         ],
