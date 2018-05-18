@@ -1,20 +1,3 @@
-//for check all permission boxes of particular role when role is checked
-function checkboxClick(data)
-{
-	var roleId=data.value;
-
-		$('#role'+roleId).change(function() {
-        if ($(this).is(':checked'))
-        {
-        	
-        	  $(".role"+roleId).prop('checked', true);
-        }
-        else
-        {
-        	$(".role"+roleId).prop('checked', false);
-        }
-    });
-}
 
 var totalPermisssions= totalPermissionCount;
 $.each(roleLabels, function( i, val ) {
@@ -22,4 +5,14 @@ $.each(roleLabels, function( i, val ) {
 	{
 		$("#role"+val.id).prop('checked', true);
 	}
+});
+
+$('.selectAll').on('ifChecked', function (event) {
+    var roleId = $(this).attr('id');
+    $('.'+roleId).iCheck('check');
+});
+
+$('.selectAll').on('ifUnchecked', function (event) {
+    var roleId = $(this).attr('id');
+    $('.'+roleId).iCheck('uncheck');
 });

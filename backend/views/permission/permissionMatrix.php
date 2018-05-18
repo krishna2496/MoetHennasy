@@ -85,7 +85,7 @@ function genratePermissionTr($permissionLabels, $roleLabels,$checkedValArray, $l
 										?>
 										<th>
 											<div  class="checkbox checkbox-primary">
-												<input type="checkbox" aria-invalid="false" onclick='checkboxClick(this);' name="roles[]" id="role<?=$value['id'];?>" value=<?=$value['id'];?> > 
+												<input type="checkbox" class="selectAll" aria-invalid="false" name="roles[]" id="role<?=$value['id'];?>" value=<?=$value['id'];?> > 
 												<label for="role<?=$value['id'];?>" class="label-remember"><?= $value['title'] ?></label>
 											</div>
 										</th>
