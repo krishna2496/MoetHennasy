@@ -22,6 +22,7 @@ class AppAsset extends AssetBundle
         'theme/dist/css/skins/_all-skins.min.css',
         'theme/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
         'theme/bower_components/bootstrap-daterangepicker/daterangepicker.css',
+        'theme/plugins/rating/star-rating.min.css',
     ];
     public $js = [
         'js/jquery.cookie.js',
@@ -35,6 +36,7 @@ class AppAsset extends AssetBundle
         'theme/plugins/iCheck/icheck.min.js',
         'theme/dist/js/adminlte.min.js',
         'theme/dist/js/demo.js',
+         'theme/plugins/rating/star-rating.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

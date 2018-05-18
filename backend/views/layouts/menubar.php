@@ -440,7 +440,7 @@ array(
     ),
     
     array(
-        'title' => 'Quetions',
+        'title' => 'Questions',
         'permissionName' => array(
             'Questions.Index',
             'Questions.Create',
