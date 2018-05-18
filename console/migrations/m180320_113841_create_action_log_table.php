@@ -3,19 +3,23 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `configs`.
+ * Handles the creation of table `users`.
  */
-class m180320_114855_create_ratings_table extends Migration
+class m180320_113841_action_log_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->createTable('ratings', [
+        $this->createTable('action_log', [
             'id' => $this->primaryKey(11)->unsigned(),
-            'rating' => $this->string(80)->defaultValue(null),
-            'type' => $this->string(80)->defaultValue(null),
+            'action_type' => $this->string(110)->notNull(),
+            'date' => $this->date()->defaultValue(null),
+            'time' => $this->time()->defaultValue(null),
+            'last_name' => $this->string(100)->defaultValue(null),
+            'description' => $this->text()->defaultValue(null),
+            'user' => $this->integer()->unsigned()->defaultValue(null),
             'created_by' => $this->integer()->unsigned()->defaultValue(null),
             'updated_by' => $this->integer()->unsigned()->defaultValue(null),
             'deleted_by' => $this->integer()->unsigned()->defaultValue(null),
@@ -30,6 +34,6 @@ class m180320_114855_create_ratings_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('configs');
+        $this->dropTable('action_log');
     }
 }
