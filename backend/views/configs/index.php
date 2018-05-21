@@ -3,9 +3,13 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use common\helpers\CommonHelper;
 use yii\helpers\Url;
+use yii\bootstrap\Modal;
+use yii\bootstrap\Tabs;
 
 $this->title = 'Configs';
+$this->params['breadcrumbs']['store/index'] = 'Stores';
 $this->params['breadcrumbs'][] = $this->title;
+
 $formUrl = Url::to(['configs/index/'.$id]);
 ?>
 <div class="row">
@@ -55,7 +59,7 @@ $formUrl = Url::to(['configs/index/'.$id]);
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
-                           'template' => '{view}{update} {delete}',
+                           'template' => '{view}{update} {delete} {review}',
                            'buttons' => [
                                'view' => function ($url, $model) use ($id) {
                                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['configs/view/'.$model['id'].'/'.$id]);
@@ -66,6 +70,10 @@ $formUrl = Url::to(['configs/index/'.$id]);
                                'delete' => function ($url, $model) use ($id) {
                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['configs/delete/'.$model['id'].'/'.$id],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this config?']);
                                 },
+                                'review' => function ($url, $model) use ($id) {
+                                    return Html::a('Review', ['configs/review/'.$model['id'].'/'.$id], ['class'=>'filter-search btn btn-primary']);
+                                 
+                                },
                             ],
                         ],
                     ],
@@ -75,8 +83,17 @@ $formUrl = Url::to(['configs/index/'.$id]);
     </div>
 </div>
 
+
 <script type="text/javascript">
-    $("body").on("change", "#brands-text,#brands-limit",function(event){
-        $('#search-users').submit();
+ $(function(){
+    $('#modelButton').click(function(){
+        var id=$(this).attr('modalConfig');
+        $("#config_id").val(id);
+        $('.modal').modal('show')
+            .find('#modelContent')
+            .load($(this).attr('value'));
     });
+    
+});
+
 </script>

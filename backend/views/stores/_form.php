@@ -62,12 +62,13 @@ use yii\widgets\ActiveForm;
                                      <?= $form->field($model, 'country_id')->dropDownList($countries, ['prompt' => 'Select Country']); ?> 
                                 </div>
                                 <div class="col-md-6">
-                                     <?= $form->field($model, 'city_id')->dropDownList(array(), ['prompt' => 'Select City']); ?> 
+                                     <?= $form->field($model, 'province_id')->dropDownList(array(), ['prompt' => 'Select Province']); ?> 
+                                   
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <?= $form->field($model, 'province_id')->dropDownList(array(), ['prompt' => 'Select Province']); ?> 
+                                     <?= $form->field($model, 'city_id')->dropDownList(array(), ['prompt' => 'Select City']); ?> 
                                 </div>
                                 <div class="col-md-6">
                                     <?= $form->field($model, 'assign_to')->dropDownList(array(), ['prompt' => 'Select User']); ?> 
@@ -177,7 +178,7 @@ use yii\widgets\ActiveForm;
 
     function getCities(data){
         var str = "<option value>Select City</option>";
-        $('#stores-province_id').html(str);
+        $('#stores-city_id').html(str);
         moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>stores/ajax-get-city",data,'post').then(function(result){
             if(result.status.success == 1) {
                 if(result.data.cities.length > 0) {
@@ -226,13 +227,14 @@ use yii\widgets\ActiveForm;
     $("body").on("change", "#stores-country_id",function(event){
         var country_id = parseInt($('#stores-country_id').val());
         var data = {country_id : country_id};
-        getCities(data);
+           getProvinces(data);
+       
     });
 
-    $("body").on("change", "#stores-city_id",function(event){
-        var city_id = parseInt($('#stores-city_id').val());
-        var data = {city_id : city_id};
-        getProvinces(data);
+    $("body").on("change", "#stores-province_id",function(event){
+        var province_id = parseInt($('#stores-province_id').val());
+        var data = {province_id : province_id};
+        getCities(data);
     });
 
     <?php if(isset($model->market_id) && $model->market_id) { ?>
@@ -244,13 +246,13 @@ use yii\widgets\ActiveForm;
 
     <?php if(isset($model->country_id) && $model->country_id) { ?>
         setTimeout(function(){
-            getCities({country_id : parseInt('<?php echo $model->country_id;?>')}); 
+            getProvinces({country_id : parseInt('<?php echo $model->country_id;?>')}); 
         }, 3000);
     <?php } ?>
 
-    <?php if(isset($model->city_id) && $model->city_id) { ?>
+    <?php if(isset($model->province_id) && $model->province_id) { ?>
         setTimeout(function(){
-            getProvinces({city_id : parseInt('<?php echo $model->city_id;?>')});   
+            getCities({province_id : parseInt('<?php echo $model->province_id;?>')});   
         }, 3000);
     <?php } ?>
 </script>

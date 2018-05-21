@@ -9,8 +9,10 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\Stores;
+use common\models\StoresReview;
 use yii\filters\AccessControl;
 use common\repository\ConfigsRepository;
+use common\repository\StoreRatingsRepository;
 /**
  * ConfigsController implements the CRUD actions for Configs model.
  */
@@ -29,11 +31,10 @@ class ConfigsController extends BaseBackendController
                 ],
                 'rules' => [
                     [
-                        'actions' => ['index','create','update','view','delete'],
+                        'actions' => ['index','create','update','view','delete','create-rating','review'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
-                   
                 ],
             ],
             'verbs' => [
@@ -51,9 +52,9 @@ class ConfigsController extends BaseBackendController
      */
     public function actionIndex($id)
     {
-//        exit("sdg");
         $store=Stores::findOne($id);
         if($store){
+        $ratingModel =new StoresReview;
         $filters = Yii::$app->request->queryParams;
         if(!isset($filters['limit'])){
             $filters['limit'] = Yii::$app->params['pageSize'];
@@ -67,7 +68,8 @@ class ConfigsController extends BaseBackendController
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'filters'=>$filters,
-            'id' => $id
+            'id' => $id,
+            'ratingModel' => $ratingModel,
         ]);
         }else{
             throw new NotFoundHttpException('The requested page does not exist.'); 
@@ -135,6 +137,19 @@ class ConfigsController extends BaseBackendController
             'id'=>$storeId
         ]);
     }
+    public function actionReview($id, $storeId = '')
+    {
+        $model = $this->findReviewModel($id);
+        if($model == 0){
+           
+             $model = new StoresReview(); 
+        }
+        return $this->render('review', [
+            'model' => $model,
+            'store_id'=>$storeId,
+            'config_id' => $id,
+        ]);
+    }
 
     public function actionDelete($id,$storeId = '')
     {  
@@ -142,6 +157,28 @@ class ConfigsController extends BaseBackendController
         parent::userActivity('delete_configs',$description='');
         Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'configs')]));
         return $this->redirect(['configs/index/'.$storeId]);
+    }
+    
+    public function actionCreateRating(){
+        echo '<pre>';
+        print_r(Yii::$app->request->post());exit;
+        if(Yii::$app->request->post()){
+        $data=Yii::$app->request->post();
+        echo '<pre>';
+        print_r($data);exit;
+        $data['reviews']= $data['StoresReview']['reviews'];
+        $data['store_id']= $data['store_id'];
+        $data['config_id'] = $data['config_id'];
+        $rating = new StoreRatingsRepository();
+        $returnData = $rating->createStarRating($data);
+         if($returnData['status']['success'] == 1)
+            {   parent::userActivity('create_configs',$description='');
+                Yii::$app->session->setFlash('success', $returnData['status']['message']);
+                return $this->redirect(['configs/index/'.$id]);
+            } else {
+                Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+            }
+        }
     }
 
     protected function findModel($id)
@@ -151,5 +188,13 @@ class ConfigsController extends BaseBackendController
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    protected function findReviewModel($id)
+    {
+        if (($model = StoresReview::findOne(['config_id' => $id])) !== null) {
+            return $model;
+        }else{
+           return 0;
+        }
     }
 }

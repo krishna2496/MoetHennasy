@@ -26,8 +26,8 @@ class MasterDataRepository extends Repository
     public function cities($data = array()) {
         $this->apiCode = 1;
         $query = Cities::find();
-        if (isset($data['country_id']) && $data['country_id']) {
-        	$query->andWhere(['country_id'=>$data['country_id']]);
+        if (isset($data['province_id']) && $data['province_id']) {
+        	$query->andWhere(['province_id'=>$data['province_id']]);
         }
         $data = array();
         $data['cities'] = $query->asArray()->all();
@@ -38,8 +38,8 @@ class MasterDataRepository extends Repository
     public function provinces($data = array()) {
         $this->apiCode = 1;
         $query = Province::find();
-        if (isset($data['city_id']) && $data['city_id']) {
-        	$query->andWhere(['city_id'=>$data['city_id']]);
+        if (isset($data['country_id']) && $data['country_id']) {
+        	$query->andWhere(['country_id'=>$data['country_id']]);
         }
         $data = array();
         $data['provinces'] = $query->asArray()->all();
