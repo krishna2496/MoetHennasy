@@ -13,6 +13,10 @@ use common\models\StoresReview;
 use yii\filters\AccessControl;
 use common\repository\ConfigsRepository;
 use common\repository\StoreRatingsRepository;
+use common\repository\QuestionsRepository;
+use common\models\Questions;
+use common\models\StoresResponseType;
+use common\repository\StoresResponseTypeRepository;
 /**
  * ConfigsController implements the CRUD actions for Configs model.
  */
@@ -31,7 +35,7 @@ class ConfigsController extends BaseBackendController
                 ],
                 'rules' => [
                     [
-                        'actions' => ['index','create','update','view','delete','create-rating','review'],
+                        'actions' => ['index','create','update','view','delete','create-rating','update-rating','review','create-question'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -137,15 +141,24 @@ class ConfigsController extends BaseBackendController
             'id'=>$storeId
         ]);
     }
+    
     public function actionReview($id, $storeId = '')
     {
-        $model = $this->findReviewModel($id);
-        if($model == 0){
-           
-             $model = new StoresReview(); 
+        if (($model = StoresReview::findOne(['config_id' => $id])) !== null) {
+        }else{
+           $model = new StoresReview(); 
+        }
+        if (($questionsModel = StoresResponseType::findOne(['config_id' => $id])) !== null) {
+            
+        }else{
+            $questionsModel = new Questions();
+            $settings = $questionsModel::find()->indexBy('id')->all();
+         
         }
         return $this->render('review', [
             'model' => $model,
+            'questionsModel' => $questionsModel,
+            'questions'=>$settings,
             'store_id'=>$storeId,
             'config_id' => $id,
         ]);
@@ -160,27 +173,73 @@ class ConfigsController extends BaseBackendController
     }
     
     public function actionCreateRating(){
-        echo '<pre>';
-        print_r(Yii::$app->request->post());exit;
+       
         if(Yii::$app->request->post()){
         $data=Yii::$app->request->post();
-        echo '<pre>';
-        print_r($data);exit;
-        $data['reviews']= $data['StoresReview']['reviews'];
-        $data['store_id']= $data['store_id'];
-        $data['config_id'] = $data['config_id'];
+        
+        $data['reviews']= isset($data['StoresReview']['reviews']) ? $data['StoresReview']['reviews'] :'';
+        $store_id=  $data['store_id'];
+        $config_id = $data['config_id'];
         $rating = new StoreRatingsRepository();
         $returnData = $rating->createStarRating($data);
          if($returnData['status']['success'] == 1)
-            {   parent::userActivity('create_configs',$description='');
+            {   parent::userActivity('create_store_rating',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
-                return $this->redirect(['configs/index/'.$id]);
+             } else {
+                Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+             }
+              return $this->redirect(['configs/review/'.$config_id.'/'.$store_id]);
+        }
+    }
+    
+    public function actionUpdateRating($id)
+    {
+        $model = $this->findModel($id);
+       
+        if(Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+           
+            $repository = new StoreRatingsRepository;
+            $data=Yii::$app->request->post();
+            $data['id'] = $id;
+            $data['reviews']= isset($data['StoresReview']['reviews']) ? $data['StoresReview']['reviews'] :'';
+            $store_id=  $data['store_id'];
+            $config_id = $data['config_id'];
+            $returnData = $repository->updateStarRating($data);
+           
+            if($returnData['status']['success'] == 1)
+            {   
+                parent::userActivity('update_store_rating',$description='');
+                Yii::$app->session->setFlash('success', $returnData['status']['message']);
             } else {
                 Yii::$app->session->setFlash('danger', $returnData['status']['message']);
             }
+             return $this->redirect(['configs/review/'.$config_id.'/'.$store_id]);
         }
     }
-
+    
+    public function actionCreateQuestion(){
+       
+        if(Yii::$app->request->post()){
+        $dataPost=Yii::$app->request->post();
+        
+      
+        $data['questions'] = $dataPost['Questions'];
+        $data['store_id']=  $dataPost['store_id'];
+        $data['config_id'] = $dataPost['config_id'];
+       
+        $rating = new StoresResponseTypeRepository();
+        $returnData = $rating->createQuestions($data);
+         if($returnData['status']['success'] == 1)
+            {   parent::userActivity('create_store_rating',$description='');
+                Yii::$app->session->setFlash('success', $returnData['status']['message']);
+             } else {
+                Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+             }
+              return $this->redirect(['configs/review/'. $data['config_id'].'/'.$data['store_id']]);
+        }
+    }
+    
     protected function findModel($id)
     {
         if (($model = Configs::findOne($id)) !== null) {
@@ -193,8 +252,6 @@ class ConfigsController extends BaseBackendController
     {
         if (($model = StoresReview::findOne(['config_id' => $id])) !== null) {
             return $model;
-        }else{
-           return 0;
         }
     }
 }

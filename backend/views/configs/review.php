@@ -15,21 +15,27 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-xs-12">
           
             <?php
+            echo Html::hiddenInput('task_form_type', 'task-details');
              $items = [[
-                    'label' => '<i class="fa text-yellow fa-star lg"></i> Ratings',
+                    'label' => 'Ratings',
                     'headerOptions' => ['id' => 'li-task-details'],
-                    'options' => ['id' => 'task-details'],
+                    'options' => ['id' => 'rating'],
                     'content' => $this->render('rating-form', [
                         'model' =>$model,
                         'store_id'=>$store_id,
                         'config_id' =>$config_id,
-                    ]),
-                    'active' =>TRUE
+                    ]), 
                 ],
                     [
                     'label' => 'Questions',
-                    'options' => ['id' => 'processing-information'],
-                    'content' =>'hkghk'
+                    'headerOptions' => ['id' => 'li-questions'],
+                    'options' => ['id' => 'questions'],
+                    'content' => $this->render('questions', [
+                        'model' =>$questionsModel,
+                        'questions'=>$questions,
+                        'store_id'=>$store_id,
+                        'config_id' =>$config_id,
+                    ]), 
                   
                 ],
                 ];
@@ -59,3 +65,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 </div>
+<script type="text/javascript">
+    $(".nav-tabs a[data-toggle=tab]").on("click", function (e) {
+        if ($(this).hasClass("disabled")) {
+            e.preventDefault();
+            return false;
+        }
+    });
+</script>

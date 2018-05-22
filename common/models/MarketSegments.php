@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use common\models\MarketSegmentData;
+use common\models\Stores;
 
 class MarketSegments extends BaseModel
 {
@@ -41,5 +43,29 @@ class MarketSegments extends BaseModel
     
     public function getMarketSegmentData(){
         return $this->hasMany(MarketSegmentData::className(), ['market_segment_id' => 'id']);
+    }
+    
+    public function canDelete()
+    { 
+        $count = MarketSegmentData::find()->andWhere(['market_segment_id' => $this->id])->count();
+       
+        if($count > 0){
+            $this->addError('title', "{$this->title} is used in market");
+            return false;
+        }
+        
+        $count = Stores::find()->andWhere(['market_segment_id' => $this->id])->count();
+       
+        if($count > 0){
+            $this->addError('title', "{$this->title} is used in store");
+            return false;
+        }
+        
+        $count = Stores::find()->andWhere(['market_id' => $this->id])->count();
+        if($count > 0){
+            $this->addError('title', "{$this->title} is used in Stores");
+            return false;
+        }
+        return true;
     }
 }

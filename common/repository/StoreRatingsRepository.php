@@ -32,51 +32,22 @@ class StoreRatingsRepository extends Repository
                 $this->apiMessage = $model->errors;
             }
         }
-        
+          return $this->response();
      }
 
-    public function createMarketSegment($data = array()){
-       
-        $this->apiCode = 0;
-        $model = new MarketSegments;
-        $model->scenario = 'create';
-        $model->title = $data['title'];
-        $model->description = isset($data['description']) ? $data['description'] : '';
-       
-      
-        if($model->validate()) {
-         
-            if($model->save(false)) {
-                $this->apiCode = 1;
-                $this->apiMessage = Yii::t('app', 'market_segment_created_successfully');
-            } else {
-                $this->apiCode = 0;
-                $this->apiMessage = Yii::t('app', 'Something went wrong.');
-            }
-        } else {
-            $this->apiCode = 0;
-            if(isset($model->errors) && $model->errors){
-                $this->apiMessage = $model->errors;
-            }
-        }
 
-        return $this->response();
-    }
 
-    public function updateMarketSegment($data = array()){
+    public function updateStarRating($data = array()){
         $this->apiCode = 0;
-        $model = new MarketSegments;
-        $model = MarketSegments::findOne($data['id']);
+        $model = new StoresReview;
+        $model = StoresReview::findOne($data['id']);
         if(!$model){
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-        if(isset($data['title'])) {
-            $model->title = $data['title'];
+        if(isset($data['reviews'])) {
+            $model->reviews = $data['reviews'];
         }
-        if(isset($data['description'])) {
-            $model->description = $data['description'];
-        }
-       
+      
         if($model->validate()) {
             if($model->save(false)) {
                 $this->apiCode = 1;

@@ -130,11 +130,14 @@ class ProductCategoriesController extends BaseBackendController
 
     public function actionDelete($id)
     {
-        if($this->findModel($id)->delete()){
+        $model = $this->findModel($id);
+        if($model->delete()){
             parent::userActivity('delete_product_category',$description='');
             Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'product_categories')]));
-            return $this->redirect(['index']);
+         }else{
+            Yii::$app->session->setFlash('danger', $model['errors']['title'][0]);
         }
+        return $this->redirect(['index']);
     }
 
     protected function findModel($id)

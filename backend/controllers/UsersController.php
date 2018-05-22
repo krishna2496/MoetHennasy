@@ -349,14 +349,17 @@ class UsersController extends BaseBackendController
     }
 
     public function actionDelete($id, $parentId = '')
-    {
-        if($this->findModel($id)->delete()){
+    {   
+        $model = $this->findModel($id);
+        if($model->delete()){
             Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'user')]));
             if($parentId){
                 return $this->redirect(['users/index/'.$parentId]);    
             }
-            return $this->redirect(['index']);
+        }else{
+            Yii::$app->session->setFlash('danger', $model['errors']['title'][0]);
         }
+        return $this->redirect(['index']);
     }
 
     protected function findModel($id,$parentID = '')

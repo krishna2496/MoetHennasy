@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use common\models\Catalogues;
+
 class Brands extends BaseModel
 {
    
@@ -34,5 +36,16 @@ class Brands extends BaseModel
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',
         ];
+    }
+    
+    public function canDelete()
+    { 
+        $count = Catalogues::find()->andWhere(['brand_id' => $this->id])->count();
+       
+        if($count > 0){
+            $this->addError('title', "{$this->name} is used in Catalogues");
+            return false;
+        }
+        return true;
     }
 }

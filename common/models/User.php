@@ -7,6 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\web\IdentityInterface;
 use common\models\RolePermission;
 use common\models\Markets;
+use common\models\Stores;
 
 class User extends BaseModel implements IdentityInterface
 {
@@ -163,5 +164,16 @@ class User extends BaseModel implements IdentityInterface
             return $this->getAllChilds($parentIds,$childs);
         }
         return $childs;
+    }
+    
+    public function canDelete()
+    { 
+        $count = Stores::find()->andWhere(['assign_to' => $this->id])->count();
+       
+        if($count > 0){
+            $this->addError('title', "{$this->first_name} is assigned in store");
+            return false;
+        }
+        return true;
     }
 }

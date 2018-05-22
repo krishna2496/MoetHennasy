@@ -47,6 +47,7 @@ return [
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
                 'market-segments/update/<id:\d+>' => 'market-segments/update',
                 'market-segments/delete/<id:\d+>' => 'market-segments/delete',
+                'configs/update-rating/<id:\d+>' => 'configs/update-rating',
                 'market-segments/view/<id:\d+>' => 'market-segments/view',
                 'product-categories/update/<id:\d+>' => 'product-categories/update',
                 'product-categories/delete/<id:\d+>' => 'product-categories/delete',
@@ -65,7 +66,9 @@ return [
                 'configs/update/<id:\d+>/<storeId:\d+>' => 'configs/update',
                 'configs/create/<id:\d+>' => 'configs/create',
                 'configs/delete/<id:\d+>/<storeId:\d+>' => 'configs/delete',
+                'configs/review/<id:\d+>/<storeId:\d+>' => 'configs/review',
                 'configs/view/<id:\d+>/<storeId:\d+>' => 'configs/view',
+              
                 'users/update/<id:\d+>/<parentId:\d+>' => 'users/update',
                 'users/view/<id:\d+>/<parentId:\d+>' => 'users/view',
                 'users/delete/<id:\d+>/<parentId:\d+>' => 'users/delete',

@@ -5,9 +5,9 @@ use common\helpers\CommonHelper;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Tabs;
 use yii\helpers\Url;
-$formUrl = Url::to(['configs/create-rating/']);
+$formUrl ='configs/create-rating/';
 if ($model->id) {
-    $formUrl = Url::to(['configs/create-rating/']);
+    $formUrl = 'configs/update-rating/'.$model->id;
 }
 ?>
 <div class="stores-create">
@@ -16,7 +16,7 @@ if ($model->id) {
         <div class="row">
             <div class="col-xs-12">
                 <?php
-                $form = ActiveForm::begin(['action' => ['configs/create-rating'],'options' => [
+                $form = ActiveForm::begin(['action' => [$formUrl],'options' => [
                             'tag' => 'div',
                             'class' => 'form-group ',
                             'id' => 'StarRating'
@@ -28,23 +28,19 @@ if ($model->id) {
                     </div>
                     <div class="box-body">
                         <div class="row">
-
                             <div class="col-md-6">
-<?= $form->field($model, 'reviews')->textInput(['maxlength' => true, 'id' => 'ratings-rating']) ?>
+                                <?= $form->field($model, 'reviews')->textInput(['maxlength' => true, 'id' => 'ratings-rating']) ?>
                                 <input type="hidden" value=<?= $store_id ?> name="store_id" id="store_id"/>
                                 <input type="hidden" value=<?= $config_id ?> name="config_id" id="config_id"/>
                             </div>
-
                         </div>
 
-                        <div class="row" align="center">
-                            <div class="col-xs-6">
-                                <?php if (isset($model->id) && $model->id) { ?>
-                                    <?= Html::a('Save', ['configs/updateRating'.$config_id.'/'.$store_id], ['class' => 'btn pull-right mw-md btn-inverse']) ?>
-<?php } else { ?>
-                                   <?= Html::submitButton('Save', ['class' => 'btn btn-info btn-md','id'=>'create']) ?>
-                                   
-                                <?php } ?>
+                        <div class="row">
+                            <div class="col-xs-2 col-md-2">
+                                   <?= Html::submitButton('Save', ['class' => 'btn btn-primary pull-right mw-md','id'=>'create']) ?>
+                            </div>
+                            <div class="col-xs-4 col-md-4">
+                                   <?= Html::Button('Next', ['class' => 'btn btn-inverse pull-left mw-md','id'=>'next']) ?>
                             </div>
                           
                         </div>
@@ -62,6 +58,9 @@ if ($model->id) {
 
             $("#ratings-rating").rating({min: 0, max: 3, step: 1, stars: 3, size: 'xs'});
 
+        });
+        $('#next').click(function(e){
+         $( ".li-questions" ).tabs( "enable" );
         });
     </script>
 </div>

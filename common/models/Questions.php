@@ -4,26 +4,13 @@ namespace common\models;
 
 use Yii;
 
-/**
- * This is the model class for table "questions".
- *
- * @property int $id
- * @property string $question
- * @property string $response_type
- */
-class Questions extends \yii\db\ActiveRecord
+class Questions extends BaseModel
 {
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return 'questions';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -31,10 +18,6 @@ class Questions extends \yii\db\ActiveRecord
             [['question', 'response_type'], 'string', 'max' => 80],
         ];
     }
-
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [

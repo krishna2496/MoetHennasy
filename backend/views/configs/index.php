@@ -59,7 +59,7 @@ $formUrl = Url::to(['configs/index/'.$id]);
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
-                           'template' => '{view}{update} {delete} {review}',
+                           'template' => '{view} {update} {delete} {review}',
                            'buttons' => [
                                'view' => function ($url, $model) use ($id) {
                                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['configs/view/'.$model['id'].'/'.$id]);
