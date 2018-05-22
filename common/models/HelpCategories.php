@@ -39,4 +39,8 @@ class HelpCategories extends BaseModel
             'deleted_at' => 'Deleted At',
         ];
     }
+
+    public function getQuestions(){
+        return $this->hasMany(Helps::className(), ['category_id' => 'id']);
+    }
 }
