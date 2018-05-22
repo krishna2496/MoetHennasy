@@ -10,7 +10,7 @@ class HelpCategoriesRepository extends Repository
 {
       public function listing($data = array()) {
         $this->apiCode = 1;
-        $query = HelpCategories::find();
+        $query = HelpCategories::find()->with(['questions']);
 
         if(isset($data['serachText']) && ($data['serachText'] != '')){        
             $data['search']=$data['serachText'];

@@ -100,6 +100,7 @@ return [
                 'POST v1/stores/create' => 'v1/stores/create',
                 'GET v1/master-data/masters' => 'v1/master-data/masters',
                 'GET v1/stores/list-stores' => 'v1/stores/list-stores',
+                'GET v1/helps/index' => 'v1/helps/index',
             ],        
         ],
         'i18n' => [
