@@ -128,7 +128,7 @@ class MarketController extends BaseBackendController
         }
         
         $marketSegmentId=MarketSegmentData::find()->andWhere(['market_id'=>$id])->asArray()->all();
-        $segmentIdArry;
+        $segmentIdArry = array();
         foreach ($marketSegmentId as $data){
             $segmentIdArry[]=$data['market_segment_id'];
         }

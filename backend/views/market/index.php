@@ -51,7 +51,7 @@ $formUrl = Url::to(['market/index']);
                           [
                             'label' => 'Market segment',
                             'value' => function($model, $index, $dataColumn) {
-                            $array;                              
+                            $array=array();                              
                             foreach($model['marketSegmentData'] as $key=>$value){
                                 $array[]=$value['marketSegment']['title'];
                             }                         
