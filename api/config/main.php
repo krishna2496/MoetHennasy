@@ -101,6 +101,7 @@ return [
                 'GET v1/master-data/masters' => 'v1/master-data/masters',
                 'GET v1/stores/list-stores' => 'v1/stores/list-stores',
                 'GET v1/helps/index' => 'v1/helps/index',
+                'GET v1/rules/index' => 'v1/rules/index',
             ],        
         ],
         'i18n' => [
