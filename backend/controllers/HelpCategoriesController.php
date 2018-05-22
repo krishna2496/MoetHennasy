@@ -117,9 +117,14 @@ class HelpCategoriesController extends BaseBackendController
     }
 
     public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-        parent::userActivity('delete_category',$description='');
+    {  
+        $model = $this->findModel($id);
+        if($model->delete()){
+            parent::userActivity('delete_help_category',$description='');
+            Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'category')]));
+        }else{
+            Yii::$app->session->setFlash('danger', $model['errors']['title'][0]);
+        }
         return $this->redirect(['index']);
     }
 

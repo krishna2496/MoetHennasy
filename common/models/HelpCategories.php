@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use common\models\Helps;
+
 class HelpCategories extends BaseModel
 {
     public static function tableName()
@@ -42,5 +44,15 @@ class HelpCategories extends BaseModel
 
     public function getQuestions(){
         return $this->hasMany(Helps::className(), ['category_id' => 'id']);
+    }
+    
+    public function canDelete()
+    { 
+        $count = Helps::find()->andWhere(['category_id' => $this->id])->count();
+        if($count > 0){
+            $this->addError('title', "{$this->title} is used in help questions");
+            return false;
+        }
+        return true;
     }
 }
