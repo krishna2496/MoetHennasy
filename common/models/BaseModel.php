@@ -8,6 +8,21 @@ use yii\behaviors\TimestampBehavior;
 
 class BaseModel extends ActiveRecord
 {
+
+    public function beforeDelete()
+    {       
+        $uniqueKeysArray = [];
+        foreach ($this->getValidators() as $validator) {
+            if(property_exists($validator, "comboNotUnique")) {
+                $currentTimestamp = time();
+                foreach ($validator->attributes as $attribute) {
+                    $this->setAttribute($attribute, $this->attributes[$attribute] . '-' . $currentTimestamp);
+                }
+            }
+        }
+        return true;
+    }
+    
     public static function find()
     {
         $alias = static::tableName();
