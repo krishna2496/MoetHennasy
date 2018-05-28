@@ -55,8 +55,8 @@ if ($model->id) {
     <script>
 
         $(document).ready(function () {
-
-            $("#ratings-rating").rating({min: 0, max: 3, step: 1, stars: 3, size: 'xs'});
+var stars='<?php echo $totalCount; ?>';
+            $("#ratings-rating").rating({min: 0, max: stars, step: 1, stars: stars, size: 'xs'});
 
         });
         $('#next').click(function(e){

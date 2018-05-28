@@ -62,7 +62,9 @@ class QuestionsRepository extends Repository
        if(!$model){
             throw new NotFoundHttpException('The requested page does not exist.');
        }
+       if(isset($data['question'])) {
        $model->question=$data['question'];
+       }
        $model->response_type=$data['response_type'];
         if ($model->validate()) {
             if ($model->save(false)) {

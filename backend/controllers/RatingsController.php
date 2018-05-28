@@ -10,13 +10,14 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\repository\RatingsRepository;
+
+
 /**
  * RatingsController implements the CRUD actions for Ratings model.
  */
-class RatingsController extends BaseBackendController
-{
-    public function behaviors()
-    {
+class RatingsController extends BaseBackendController {
+
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -24,8 +25,8 @@ class RatingsController extends BaseBackendController
                     'class' => \common\components\AccessRule::className(),
                 ],
                 'rules' => [
-                    [
-                        'actions' => ['index','create','update','view','delete'],
+                        [
+                        'actions' => ['index', 'create', 'update', 'view', 'delete'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -40,40 +41,43 @@ class RatingsController extends BaseBackendController
         ];
     }
 
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $filters = Yii::$app->request->queryParams;
-        if(!isset($filters['limit'])){
+        if (!isset($filters['limit'])) {
             $filters['limit'] = Yii::$app->params['pageSize'];
         }
         $searchModel = new RatingsSearch();
         $dataProvider = $searchModel->search($filters);
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'filters' => $filters,
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'filters' => $filters,
         ]);
     }
 
-    public function actionView($id)
-    {
-        parent::userActivity('view_ratings',$description='');
+    public function actionView($id) {
+        parent::userActivity('view_ratings', $description = '');
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                'model' => $this->findModel($id),
         ]);
     }
 
-    public function actionCreate()
-    {
+    public function actionCreate() {
+        $filters['limit'] = Yii::$app->params['pageSize'];
+        $searchModel = new RatingsSearch();
+        $dataProvider = $searchModel->search($filters);
+        $totalCount = $dataProvider->getTotalCount();
+
         $model = new Ratings();
 
-        if(Yii::$app->request->post()) {          
+        if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('Ratings');
+
             $repository = new RatingsRepository();
-            $ratingData = $repository->createRatings($data); 
-            if($ratingData['status']['success'] == 1)
-            {   parent::userActivity('create_ratings',$description='');
+            $ratingData = $repository->createRatings($data);
+            if ($ratingData['status']['success'] == 1) {
+                parent::userActivity('create_ratings', $description = '');
                 Yii::$app->session->setFlash('success', $ratingData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -82,22 +86,23 @@ class RatingsController extends BaseBackendController
         }
 
         return $this->render('create', [
-            'model' => $model,
+                'model' => $model,
+                'totalCount' => $totalCount + 1
         ]);
     }
 
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
+
         $model = $this->findModel($id);
 
-        if(Yii::$app->request->post()) {          
+        if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('Ratings');
             $data['id'] = $id;
             $repository = new RatingsRepository();
-            $ratingData = $repository->upadateRatings($data); 
-            if($ratingData['status']['success'] == 1)
-            {   parent::userActivity('update_ratings',$description='');
+            $ratingData = $repository->upadateRatings($data);
+            if ($ratingData['status']['success'] == 1) {
+                parent::userActivity('update_ratings', $description = '');
                 Yii::$app->session->setFlash('success', $ratingData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -106,25 +111,35 @@ class RatingsController extends BaseBackendController
         }
 
         return $this->render('update', [
-            'model' => $model,
+                'model' => $model,
         ]);
     }
 
-    public function actionDelete($id)
-    {
-        if($this->findModel($id)->delete()){
-            parent::userActivity('delete_ratings',$description='');
-            Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'ratings')]));
-            return $this->redirect(['index']);
+    public function actionDelete($id) {
+        $model = $this->findModel($id);
+       
+        if ($model->rating > Yii::$app->params['star_min_size']['min_size']) {
+           $id=Ratings::find()->max('id');
+           if($model->id == $id){
+           if ($model->delete()) {
+                parent::userActivity('delete_ratings', $description = '');
+                Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'ratings')]));
+           }
+           }else{
+                Yii::$app->session->setFlash('danger', Yii::t('app', Yii::t('app', 'cant_delete')));  
+           }
+        } else { 
+            Yii::$app->session->setFlash('danger', Yii::t('app', Yii::t('app', 'delete_rating')));
         }
+        return $this->redirect(['index']);
     }
 
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = Ratings::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
 }

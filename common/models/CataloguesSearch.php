@@ -50,8 +50,10 @@ class CataloguesSearch extends Catalogues
         if($resultUserList['status']['success'] == 1){
             if($resultUserList['data']['catalogues']){
                 foreach ($resultUserList['data']['catalogues'] as $key => $value) {
+                   
                     $temp = $value;
                     $temp['marketName'] = $value['market']['title'];
+                    $temp['brandName'] = $value['brand']['name'];
                     $userList[] = $temp;
                 }
             }
@@ -67,6 +69,8 @@ class CataloguesSearch extends Catalogues
                     'sku',
                     'ean',
                     'marketName',
+                    'brandName',
+                    'price'
                   
                 ],
                

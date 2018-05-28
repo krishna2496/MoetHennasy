@@ -61,9 +61,7 @@ class HelpCategoriesSearch extends HelpCategories
             'sort' => [
                 'attributes' =>
                 [
-                    'sku',
-                    'ean',
-                    'marketName',
+                   'title'
                   
                 ],
                

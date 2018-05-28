@@ -102,6 +102,7 @@ return [
                 'GET v1/stores/list-stores' => 'v1/stores/list-stores',
                 'GET v1/helps/index' => 'v1/helps/index',
                 'GET v1/rules/index' => 'v1/rules/index',
+                'GET v1/contacts/index' => 'v1/contacts/index',
             ],        
         ],
         'i18n' => [

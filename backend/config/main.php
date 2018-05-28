@@ -54,11 +54,13 @@ return [
                 'help-categories/update/<id:\d+>' => 'help-categories/update',
                 'help-categories/delete/<id:\d+>' => 'help-categories/delete',
                 'help-categories/view/<id:\d+>' => 'help-categories/view',
+                'market-contacts/index/<id:\d+>' => 'market-contacts/index',
+               
                 
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:[^/]+>/<action:[^/]+>/<slug:[^/]+>' => '<controller>/<action>',
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
-                
+                  
                 'helps/update/<id:\d+>/<categoryId:\d+>' => 'helps/update',
                 'helps/create/<id:\d+>' => 'helps/create',
                 'helps/delete/<id:\d+>/<categoryId:\d+>' => 'helps/delete',
@@ -68,11 +70,15 @@ return [
                 'configs/delete/<id:\d+>/<storeId:\d+>' => 'configs/delete',
                 'configs/review/<id:\d+>/<storeId:\d+>' => 'configs/review',
                 'configs/view/<id:\d+>/<storeId:\d+>' => 'configs/view',
-              
                 'users/update/<id:\d+>/<parentId:\d+>' => 'users/update',
                 'users/view/<id:\d+>/<parentId:\d+>' => 'users/view',
                 'users/delete/<id:\d+>/<parentId:\d+>' => 'users/delete',
                 'help/index/<id:\d+>' => 'help/index',
+                'market-contacts/index/<id:\d+>/<contactId:\d+>' => 'market-contacts/index',
+                'market-contacts/view/<id:\d+>/<contactId:\d+>' => 'market-contacts/view',
+                'market-contacts/delete/<id:\d+>/<contactId:\d+>' => 'market-contacts/delete',
+             
+               
                
             ],
         ],

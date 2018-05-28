@@ -145,7 +145,7 @@ array(
         'hasChildClass' => 'treeview ',
         'submenuToggleClass' => 'treeview-menu',
         'controllerId' => array(
-            'market'
+            'market','market-contacts'
         ),
         'actionId' => array(
            'index', 'create','update','view'
@@ -185,10 +185,10 @@ array(
         'hasChildClass' => 'treeview ',
         'submenuToggleClass' => 'treeview-menu',
         'controllerId' => array(
-            'stores','configs'
+            'stores','configs',
         ),
         'actionId' => array(
-           'index', 'create','update','view'
+           'index', 'create','update','view','review'
         ),
         'childs' => array(
             array(

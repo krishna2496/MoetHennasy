@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\Questions;
 
 class StoresResponseType extends BaseModel
 {
@@ -35,5 +36,9 @@ class StoresResponseType extends BaseModel
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',
         ];
+    }
+    
+    public function getQuestions(){
+        return $this->hasOne(Questions::className(), ['id' => 'question_id']);
     }
 }

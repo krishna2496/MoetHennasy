@@ -1,17 +1,22 @@
+
 <?php
 use yii\helpers\Html;
 use common\helpers\CommonHelper;
 $this->title = 'Dashboard';
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
-<div class="site-index">
-    <h3 class="box-title">
-        <?= Html::encode($this->title) ?>
-    </h3>
+<div class="box">
+    <div  class="box-header">
+<div class="site-index box-header">
+    <h1>
+        Welcome to the MH Dashboard
+    </h1>
 </div>
     <div class="row">
-
-        <div class="col-md-2">
-            <select id="storeId" class="form-control" onchange="filterMarkers();">
+        <div class="col-md-12">
+        <div class="col-md-3">
+            <select id="storeId" class="form-control select2" onchange="filterMarkers();">
                 <option value="">Select Store</option>
             <?php if(!empty($storeList)) {
                 foreach ($storeList as $key=>$value){
@@ -21,9 +26,9 @@ $this->title = 'Dashboard';
             </select>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-3">
 
-            <select id="marketId" class="form-control" onchange="filterMarkers();">
+            <select id="marketId" class="form-control select2" onchange="filterMarkers();">
                 <option value="">Select Market</option>
                 <?php if(!empty($storeList)) {
                 foreach ($marketList as $key=>$value){
@@ -33,9 +38,9 @@ $this->title = 'Dashboard';
             </select>               
         </div>
         
-         <div class="col-md-2">
+         <div class="col-md-3">
 
-            <select id="roleId" class="form-control" onchange="filterMarkers();">
+            <select id="roleId" class="form-control select2" onchange="filterMarkers();">
                 <option value="">Select Role</option>
                 <?php if(!empty($roleList)) {
                 foreach ($roleList as $key=>$value){
@@ -44,15 +49,22 @@ $this->title = 'Dashboard';
             <?php }} ?>
             </select>               
         </div>
-
+        </div>
     </div>
-
-<div class="row content-header">
-  <div id="map-canvas"  style="width: 1000px; height: 400px;"></div>
+    </div>
+    <div class="box-body">
+<div class="row">
+    <div class="col-md-12 col-xs-12 col-lg-12">
+  <div id="map-canvas"  style="width: 100%; height: 700px"></div>
+    </div>
 </div>
-    
+    </div>
+</div>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= API_KEY ?>&callback=initialize"> </script>
 <script>
+    $('document').ready(function(){
+        $('.select2').select2();
+    });
     
 var gmarkers1 = [];
 var markers1 = [];
@@ -97,7 +109,7 @@ var image = {
     marker1 = new google.maps.Marker({
         title: title,
         position: pos,
-//        icon: image,
+
         storeId: storeId,
         marketId: marketId,
         roleId: roleId,

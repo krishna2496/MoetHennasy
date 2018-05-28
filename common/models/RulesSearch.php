@@ -49,11 +49,9 @@ class RulesSearch extends Rules
             'sort' => [
                 'attributes' =>
                 [
-                    'name',
+                    'type','product_fields','detail'
                 ],
-                'defaultOrder' => [
-                    'name' => SORT_ASC,
-                ]
+                
             ]
         ]);
 

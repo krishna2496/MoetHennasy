@@ -24,8 +24,6 @@ class RatingsRepository extends Repository
     }
 
     public function createRatings($data = array()){
-//        echo '<pre>';
-//        print_r($data);exit;
         $this->apiCode = 0;
         $model = new Ratings;
         if(isset($data['rating'])) {

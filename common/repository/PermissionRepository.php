@@ -42,9 +42,15 @@ class PermissionRepository extends Repository
     {
         $this->apiCode = 0;
         $model = Permission::find()->andWhere(['id'=>$data['id']])->one();
+        if(isset($data['permission_label'])) {
         $model->permission_label = $data['permission_label'];
+        }
+        if(isset($data['permission_title'])) {
         $model->permission_title = $data['permission_title'];
+        }
+        if(isset($data['parent_id'])) {
         $model->parent_id = $data['parent_id'];
+        }
         if($model->validate()){
             if($model->save(false)){
                 $this->apiCode = 1;

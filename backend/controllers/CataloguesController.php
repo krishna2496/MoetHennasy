@@ -233,19 +233,11 @@ class CataloguesController extends BaseBackendController
     }
 
     public function actionProductSubCategory($data = array()){
-      
-        $isJson = 1;
-        if($data) {
-            $isJson = 0;
-        } else {
-            $data = Yii::$app->request->post();
-        }
+        $data = Yii::$app->request->post();
         $product= new ProductCategoryRepository();
         $filter['parent_id']=$data['product_id'];
         $product=$product->listing($filter);
-        if($isJson){
-            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        }
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $product;
         
     }

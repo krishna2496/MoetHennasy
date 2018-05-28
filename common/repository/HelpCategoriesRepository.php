@@ -66,9 +66,9 @@ class HelpCategoriesRepository extends Repository
         if(!$model){
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-
+        if(isset($data['title'])){
         $model->title = $data['title'];
-        
+        }
         if ($model->validate()) {
             if ($model->save(false)) {
                 $returnData = array();

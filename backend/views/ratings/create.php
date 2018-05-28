@@ -9,5 +9,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="ratings-create">
     <?= $this->render('_form', [
         'model' => $model,
+        'count' => $totalCount
     ]) ?>
 </div>

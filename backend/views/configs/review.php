@@ -24,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'model' =>$model,
                         'store_id'=>$store_id,
                         'config_id' =>$config_id,
+                        'totalCount' => $totalCount
                     ]), 
                 ],
                     [
@@ -32,9 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'options' => ['id' => 'questions'],
                     'content' => $this->render('questions', [
                         'model' =>$questionsModel,
-                        'questions'=>$questions,
+                        'responseData'=>$data,
                         'store_id'=>$store_id,
                         'config_id' =>$config_id,
+                        'questions' =>$questions
                     ]), 
                   
                 ],

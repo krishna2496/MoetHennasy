@@ -36,7 +36,8 @@ class AppAsset extends AssetBundle
         'theme/plugins/iCheck/icheck.min.js',
         'theme/dist/js/adminlte.min.js',
         'theme/dist/js/demo.js',
-         'theme/plugins/rating/star-rating.min.js',
+        'theme/plugins/rating/star-rating.min.js',
+        'theme/bower_components/select2/dist/js/select2.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

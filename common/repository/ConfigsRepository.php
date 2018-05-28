@@ -65,8 +65,9 @@ class ConfigsRepository extends Repository
         if(!$model){
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+        if(isset($data['value'])){
         $model->value=$data['value'];
-     
+        }
         if ($model->validate()) {
             if ($model->save(false)) {
                 $returnData = array();

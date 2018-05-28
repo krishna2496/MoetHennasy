@@ -39,9 +39,15 @@ class HelpsRepository extends Repository
      
         $this->apiCode = 0;
         $model = new Helps;
-        $model->category_id=$data['category_id'];
-        $model->question=$data['question'];
-        $model->answer=$data['answer'];
+        if (isset($data['category_id'])) {
+            $model->category_id = $data['category_id'];
+        }
+        if (isset($data['question'])) {
+            $model->question = $data['question'];
+        }
+        if (isset($data['answer'])) {
+            $model->answer = $data['answer'];
+        }
         if ($model->validate()) {
             if ($model->save(false)) {
                 $returnData = array();

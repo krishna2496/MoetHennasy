@@ -60,9 +60,15 @@ class RulesRepository extends Repository
     public function upadateRules($data = array()){
         $this->apiCode = 0;
         $model = Rules::findOne($data['id']);
+        if(isset($data['type'])) {
         $model->type = $data['type'];
+        }
+        if(isset($data['product_fields'])) {
         $model->product_fields = $data['product_fields'];
+        }
+        if(isset($data['detail'])) {
         $model->detail = $data['detail'];
+        }
         if($model->validate()) {
             if($model->save(false)) {
                 $this->apiCode = 1;

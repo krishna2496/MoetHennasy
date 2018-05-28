@@ -4,10 +4,10 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 use common\helpers\CommonHelper;
-$this->title='Catalogues';
+
 $updateUrl = Url::to(['catalogues/update/'.$model->id]);
-//$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Stores', 'url' => ['index']];
+$this->title = $model->sku;
+$this->params['breadcrumbs'][] = ['label' => 'Catalogues', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
@@ -33,9 +33,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'short_name',
             'long_name',
             'short_description:ntext',
-            'brand_id',
-            'product_category_id',
-            'product_sub_category_id',
+           
+            [
+                            'label' => 'Brands',
+                            'attribute' => 'brand.name',
+            ],
+            [
+                            'label' => 'Product category',
+                            'attribute' => 'productCategory.name',
+            ],
+            [
+                            'label' => 'Product sub category',
+                            'attribute' => 'productSubCategory.name',
+            ],
             'product_type_id',
             [
                             'label' => 'Market',
@@ -46,11 +56,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'length',
             'scale',
             'manufacturer',
-            'box_only',
+            [
+                            'label' => 'box_only',
+                            'value' => Yii::$app->params['catalogue_status'][$model->box_only],
+            ],
             'market_share',
             'price',
-            'top_shelf',     
-                    ],
+            [
+                            'label' => 'top_shelf',
+                            'value' => Yii::$app->params['catalogue_status'][$model->top_shelf],
+            ],
+              ],
                 ]) ?>
             </div>
         </div>

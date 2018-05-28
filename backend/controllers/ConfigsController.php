@@ -17,6 +17,7 @@ use common\repository\QuestionsRepository;
 use common\models\Questions;
 use common\models\StoresResponseType;
 use common\repository\StoresResponseTypeRepository;
+use common\models\RatingsSearch;
 /**
  * ConfigsController implements the CRUD actions for Configs model.
  */
@@ -144,23 +145,27 @@ class ConfigsController extends BaseBackendController
     
     public function actionReview($id, $storeId = '')
     {
+        $filters['limit'] = Yii::$app->params['pageSize'];
+        $searchModel = new RatingsSearch();
+        $dataProvider = $searchModel->search($filters);
+        $totalCount = $dataProvider->getTotalCount();
+        
         if (($model = StoresReview::findOne(['config_id' => $id])) !== null) {
         }else{
            $model = new StoresReview(); 
-        }
-        if (($questionsModel = StoresResponseType::findOne(['config_id' => $id])) !== null) {
-            
-        }else{
-            $questionsModel = new Questions();
-            $settings = $questionsModel::find()->indexBy('id')->all();
-         
-        }
+        }  
+        $questionsModel = new Questions();
+        $questions = $questionsModel::find()->indexBy('id')->all();
+      
+        $responseData = StoresResponseType::find()->andWhere(['config_id' => $id])->asArray()->all();
         return $this->render('review', [
             'model' => $model,
             'questionsModel' => $questionsModel,
-            'questions'=>$settings,
+            'data'=>$responseData,
             'store_id'=>$storeId,
             'config_id' => $id,
+            'questions' => $questions,
+            'totalCount' => $totalCount
         ]);
     }
 
@@ -175,6 +180,7 @@ class ConfigsController extends BaseBackendController
     public function actionCreateRating(){
        
         if(Yii::$app->request->post()){
+        
         $data=Yii::$app->request->post();
         
         $data['reviews']= isset($data['StoresReview']['reviews']) ? $data['StoresReview']['reviews'] :'';
@@ -222,7 +228,27 @@ class ConfigsController extends BaseBackendController
        
         if(Yii::$app->request->post()){
         $dataPost=Yii::$app->request->post();
-        
+        $data['questions'] = $dataPost['Questions'];
+        $data['store_id']=  $dataPost['store_id'];
+        $data['config_id'] = $dataPost['config_id'];
+       
+        $rating = new StoresResponseTypeRepository();
+        $returnData = $rating->createQuestions($data);
+         if($returnData['status']['success'] == 1)
+            {   parent::userActivity('create_store_rating',$description='');
+                Yii::$app->session->setFlash('success', $returnData['status']['message']);
+             } else {
+                Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+             }
+              return $this->redirect(['configs/review/'. $data['config_id'].'/'.$data['store_id']]);
+        }
+    }
+    
+    public function actionUpdateQuestion($id){
+       
+        if(Yii::$app->request->post()){
+        $dataPost=Yii::$app->request->post();
+      
       
         $data['questions'] = $dataPost['Questions'];
         $data['store_id']=  $dataPost['store_id'];

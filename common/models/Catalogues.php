@@ -30,6 +30,8 @@ class Catalogues extends BaseModel
             [['box_only', 'top_shelf'], 'string', 'max' => 1],
             [['catalogueImage'], 'file','extensions'=>'jpg,png,jpeg','on' => ['create','update']],
              [['catalogueImage'], 'required','on' => ['create']],
+               ['long_name', 'required', 'when' => function ($model) { return $model->short_name == ''; }, 'whenClient' => "function (attribute, value) { return $('#catalogues-short_name').val() == ''; }",'message'=>'Select either Long Product Name or Short Product Name.'],
+             ['short_name', 'required', 'when' => function ($model) { return $model->long_name == ''; }, 'whenClient' => "function (attribute, value) { return $('#catalogues-long_name').val() == ''; }",'message'=>'Select either Long Product Name or Short Product Name.']
         ];
     }
 
@@ -73,5 +75,11 @@ class Catalogues extends BaseModel
     }
      public function getBrand(){
         return $this->hasOne(Brands::className(), ['id' => 'brand_id']);
+    }
+    public function getProductCategory(){
+        return $this->hasOne(ProductCategories::className(), ['id' => 'product_category_id']);
+    }
+     public function getProductSubCategory(){
+        return $this->hasOne(ProductCategories::className(), ['id' => 'product_sub_category_id']);
     }
 }

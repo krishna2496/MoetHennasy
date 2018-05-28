@@ -24,14 +24,20 @@ use common\helpers\CommonHelper;
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
-                            <?= $form->field($model, 'catalogueImage')->fileInput() ?>  
-                        </div>
-                        <?php if (isset($model->id) && $model->id) { ?>
-                            <div class="col-md-3">
-                                <img class="img-responsive" style="width:200px;height: 150px" src="<?php echo CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $model->image); ?>"/>        
+                         <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-8">
+                                   <?= $form->field($model, 'catalogueImage')->fileInput() ?>   
+                                </div>
+                                <?php if(isset($model->id) && $model->id) { ?>
+                                <div class="col-md-3">
+                                   <img class="img-responsive" style="width:100px;height: 100px" src="<?php echo CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $model->image); ?>"/>               
+                                </div>
+                                <?php } ?>
                             </div>
-                        <?php } ?>
+                        </div>
+                        
+                       
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -125,7 +131,7 @@ use common\helpers\CommonHelper;
 		
 		var product_id = parseInt($('#user-role_id').val());
                 var data = {product_id : product_id};
-		var str = "<option value>Select Catalogues</option>";
+		var str = "<option value>Select One</option>";
 		moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>catalogues/product-sub-category",data,'post').then(function(result){
                 
 			if(result.status.success == 1) {

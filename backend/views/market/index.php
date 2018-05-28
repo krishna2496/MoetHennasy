@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use common\helpers\CommonHelper;
 use yii\helpers\Url;
 
-$this->title = 'Market';
+$this->title = 'Markets';
 $this->params['breadcrumbs'][] = $this->title;
 $formUrl = Url::to(['market/index']);
 ?>
@@ -63,18 +63,21 @@ $formUrl = Url::to(['market/index']);
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
-                           'template' => '{view} {update} {delete}',
+                           'template' => '{view} {update} {delete} {contact}',
                            'buttons' => [
     
                                'view' => function ($url, $model) use ($filters) {
-                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['market/view/'.$model['id']]);
+                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['market/view/'.$model['id']],['title' => 'view']);
                                 },
                                'update' => function ($url, $model) use ($filters) {
-                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/market/update/'.$model['id']]);
+                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/market/update/'.$model['id']],['title' => 'update']);
                                 },                                
                                'delete' => function ($url, $model) use ($filters) {
-                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['market/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this market?']);
-                                },                               
+                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['market/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this market?','title' => 'delete']);
+                                },
+                                'contact' => function ($url, $model) use ($filters) {
+                                   return Html::a('contacts', ['market-contacts/index/'.$model['id']],['title' => 'view']);
+                                },
                                
                             ],
                         ],

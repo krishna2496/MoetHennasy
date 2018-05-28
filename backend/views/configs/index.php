@@ -7,7 +7,7 @@ use yii\bootstrap\Modal;
 use yii\bootstrap\Tabs;
 
 $this->title = 'Configs';
-$this->params['breadcrumbs']['store/index'] = 'Stores';
+$this->params['breadcrumbs'][] = ['label' => 'Stores', 'url' => ['/stores']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $formUrl = Url::to(['configs/index/'.$id]);

@@ -29,6 +29,9 @@ class MarketRepository extends Repository {
         if (isset($data['user_id']) && $data['user_id']) {
             $query->andWhere(['users.id' => $data['user_id']]);
         }
+        if (isset($data['market_id']) && $data['market_id']) {
+            $query->andWhere(['markets.id' => $data['market_id']]);
+        }
        
 
         $data = array();

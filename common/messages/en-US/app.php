@@ -77,4 +77,7 @@ return [
     'rules' =>'Rules',
     'ratings' =>'Ratings',
     'configs' =>'Config',
+    'delete_rating' =>'Minimum three ratings are required',
+    'cant_delete' => 'Can not delete this rating',
+    'Contacts' => 'Contacts',
     ];

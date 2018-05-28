@@ -35,6 +35,7 @@ class HelpsSearch extends Helps
         if($resultUserList['status']['success'] == 1){
             if($resultUserList['data']['helps']){
                 foreach ($resultUserList['data']['helps'] as $key => $value) {
+                
                     $userList[] = $value;
                 }
             }
@@ -47,9 +48,7 @@ class HelpsSearch extends Helps
             'sort' => [
                 'attributes' =>
                 [
-                    'sku',
-                    'ean',
-                    'marketName',
+                   'question'
                   
                 ],
                

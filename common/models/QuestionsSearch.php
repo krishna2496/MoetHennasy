@@ -46,11 +46,9 @@ class QuestionsSearch extends Questions
             'sort' => [
                 'attributes' =>
                 [
-                    'name',
+                    'question','response_type'
                 ],
-                'defaultOrder' => [
-                    'name' => SORT_ASC,
-                ]
+               
             ]
         ]);
 

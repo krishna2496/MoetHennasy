@@ -39,7 +39,7 @@ $adminUrl = CommonHelper::getPath('admin_url');
             <div class="content-wrapper">
                 <section class="content-header">
                     <h1>
-                        MOET
+                       Moët Hennessy
                     </h1>
                     <?php 
                         echo Breadcrumbs::widget([
