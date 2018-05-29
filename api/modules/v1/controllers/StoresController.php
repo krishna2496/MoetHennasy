@@ -67,6 +67,7 @@ class StoresController extends BaseApiController
         $data['latitude'] = Yii::$app->request->post('latitude');
         $data['longitude'] = Yii::$app->request->post('longitude');
         $data['comment'] = Yii::$app->request->post('comment');
+        $data['grading'] = Yii::$app->request->post('grading');
         $storeRepository = new StoreRepository;
         if($data['id']){
             $returnData = $storeRepository->updateStore($data);
@@ -134,13 +135,15 @@ class StoresController extends BaseApiController
         if($resultStoreList['status']['success'] == 1){
             if($resultStoreList['data']['stores']){
                 foreach ($resultStoreList['data']['stores'] as $key => $value) {
-                    
+                  
                     $storeLatitude=isset($value['latitude']) ? $value['latitude'] : 0;
                     $storeLongitude=isset($value['longitude']) ? $value['longitude'] : 0;               
                     $userLatitude= (isset($value['user']['latitude']) && ($value['user']['latitude'] != '') )? $value['user']['latitude'] : 0; 
                     $userLongitude=(isset($value['user']['longitude']) && ($value['user']['longitude'] != '')) ? $value['user']['longitude'] :0;
                     $photo=$value['photo'];
                     $userImage=$value['user']['profile_photo'];
+                    $grading=$value['grading'];
+                    unset($value['grading']);
                     unset($value['photo']);
                     unset($value[$value['user']['profile_photo']]);
                     $value['photo']=CommonHelper::getPath('upload_url').UPLOAD_PATH_STORE_IMAGES.$photo;
@@ -151,6 +154,7 @@ class StoresController extends BaseApiController
                     $temp['marketSegment'] = isset($value['marketSegment']['title']) ? $value['marketSegment']['title'] : '';
                     $temp['cityId'] = isset($value['city']['name']) ? $value['city']['name'] : '';
                     $temp['distance']= $this->distance($userLatitude, $userLongitude, $storeLatitude, $storeLongitude);
+                    $temp['grading']= \yii::$app->params['store_grading'][$grading];
                     $storeList[] = $temp;
                 }
             }
