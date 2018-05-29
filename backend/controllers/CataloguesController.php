@@ -182,7 +182,7 @@ class CataloguesController extends BaseBackendController
         }
         $product=$product->listing($filterData);
       
-         if($product['status']['success'] == 1){
+        if($product['status']['success'] == 1){
             $productSubCatData = CommonHelper::getDropdown($product['data']['productCategories'], ['id', 'name']);
         }
         if ($model->load(Yii::$app->request->post())) {

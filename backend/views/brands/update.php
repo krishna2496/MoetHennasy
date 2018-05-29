@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 $this->title = 'Update Brands';
 $this->params['breadcrumbs'][] = ['label' => 'Brands', 'url' => ['index']];
-$this->params['breadcrumbs'][] = '$this->title';
+$this->params['breadcrumbs'][] = 'Update Brand';
 ?>
 <div class="brands-update">
 

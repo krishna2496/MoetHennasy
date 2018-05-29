@@ -90,6 +90,7 @@ class ProductTypesController extends BaseBackendController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+             parent::userActivity('update_product_types',$description='');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -101,7 +102,7 @@ class ProductTypesController extends BaseBackendController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        parent::userActivity('delete_product_types',$description='');
         return $this->redirect(['index']);
     }
 

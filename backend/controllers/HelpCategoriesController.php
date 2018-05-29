@@ -59,7 +59,7 @@ class HelpCategoriesController extends BaseBackendController
     }
 
     public function actionView($id)
-    {   parent::userActivity('view_categorie',$description='');
+    {   parent::userActivity('view_help_categorie',$description='');
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -77,7 +77,7 @@ class HelpCategoriesController extends BaseBackendController
             $userRepository = new HelpCategoriesRepository;
             $returnData = $userRepository->createCategories($data);
             if($returnData['status']['success'] == 1)
-            {   parent::userActivity('create_category',$description='');
+            {   parent::userActivity('create_help_category',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -103,7 +103,7 @@ class HelpCategoriesController extends BaseBackendController
             $returnData = $marketRepository->updateCategories($data);
             if($returnData['status']['success'] == 1)
             {   
-                parent::userActivity('update_category',$description='');
+                parent::userActivity('update_help_category',$description='');
                 Yii::$app->session->setFlash('success', $returnData['status']['message']);
                 return $this->redirect(['index']);
             } else {

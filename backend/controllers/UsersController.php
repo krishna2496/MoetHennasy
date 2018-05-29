@@ -340,7 +340,7 @@ class UsersController extends BaseBackendController
                 $this->findModel($parentId,$currentUser->id);
             }
         }
-
+        parent::userActivity('view_user',$description='');
         return $this->render('view', [
             'model' => $this->findModel($id,$parentId),
             'parentId' => $parentId,
@@ -353,6 +353,7 @@ class UsersController extends BaseBackendController
         $model = $this->findModel($id);
         if($model->delete()){
             Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'user')]));
+            parent::userActivity('delete_user',$description='');
             if($parentId){
                 return $this->redirect(['users/index/'.$parentId]);    
             }
