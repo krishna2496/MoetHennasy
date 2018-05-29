@@ -154,7 +154,7 @@ class StoresController extends BaseApiController
                     $temp['marketSegment'] = isset($value['marketSegment']['title']) ? $value['marketSegment']['title'] : '';
                     $temp['cityId'] = isset($value['city']['name']) ? $value['city']['name'] : '';
                     $temp['distance']= $this->distance($userLatitude, $userLongitude, $storeLatitude, $storeLongitude);
-                    $temp['grading']= \yii::$app->params['store_grading'][$grading];
+                    $temp['grading']= ($grading != '') ? \yii::$app->params['store_grading'][$grading] :'';
                     $storeList[] = $temp;
                 }
             }
