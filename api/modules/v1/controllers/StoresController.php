@@ -48,6 +48,8 @@ class StoresController extends BaseApiController
     {
         $currentUser = CommonHelper::getUser();
         $data = array();
+        $postData= Yii::$app->request->post();  
+       
         $data['id'] = Yii::$app->request->post('id');
         $data['name'] = Yii::$app->request->post('name');
         $data['storeImage'] = $data['photo'] = Yii::$app->request->post('photo');
@@ -67,7 +69,9 @@ class StoresController extends BaseApiController
         $data['latitude'] = Yii::$app->request->post('latitude');
         $data['longitude'] = Yii::$app->request->post('longitude');
         $data['comment'] = Yii::$app->request->post('comment');
+        if(isset($postData['grading'])){
         $data['grading'] = Yii::$app->request->post('grading');
+        }
         $storeRepository = new StoreRepository;
         if($data['id']){
             $returnData = $storeRepository->updateStore($data);

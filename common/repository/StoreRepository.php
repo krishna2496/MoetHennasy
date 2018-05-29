@@ -73,7 +73,10 @@ class StoreRepository extends Repository {
         $model->store_manager_phone_code = $data['store_manager_phone_code'];
         $model->store_manager_phone_number = $data['store_manager_phone_number'];
         $model->store_manager_email = $data['store_manager_email'];
-        $model->grading = $data['grading'];
+       
+        if(isset($data['grading'])  && $data['grading']){
+            $model->grading = $data['grading'];
+        }
         if(isset($data['latitude']) && $data['latitude']){
             $model->latitude = $data['latitude'];
         }
