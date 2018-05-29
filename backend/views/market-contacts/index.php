@@ -46,7 +46,7 @@ $formUrl = Url::to(['market-contacts/index/' . $market_id]);
                     'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
                             [
-                            'label' => 'Market Segment',
+                            'label' => 'Market Cluster',
                             'attribute' => 'marketSegment.title',
                         ],
                         'phone',

@@ -49,7 +49,7 @@ $formUrl = Url::to(['market/index']);
                         ['class' => 'yii\grid\SerialColumn'],
                         'title:ntext',
                           [
-                            'label' => 'Market segment',
+                            'label' => 'Market Cluster',
                             'value' => function($model, $index, $dataColumn) {
                             $array=array();                              
                             foreach($model['marketSegmentData'] as $key=>$value){

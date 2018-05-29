@@ -15,7 +15,7 @@ class Stores extends BaseModel
     public function rules()
     {
         return [
-            [['name','market_id', 'market_segment_id', 'country_id', 'city_id', 'province_id', 'assign_to','address1','store_manager_first_name', 'store_manager_last_name', 'store_manager_email','store_manager_phone_number','store_manager_phone_code'], 'required'],
+            [['name','market_id','grading', 'market_segment_id', 'country_id', 'city_id', 'province_id', 'assign_to','address1','store_manager_first_name', 'store_manager_last_name', 'store_manager_email','store_manager_phone_number','store_manager_phone_code'], 'required'],
             [['market_id', 'market_segment_id', 'country_id', 'city_id', 'assign_to', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['address1', 'address2', 'comment'], 'string'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],

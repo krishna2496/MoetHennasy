@@ -7,7 +7,7 @@ use common\helpers\CommonHelper;
 $this->title='Ratings';
 $updateUrl = Url::to(['ratings/update/'.$model->id]);
 $this->params['breadcrumbs'][] = ['label' => 'Ratings', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $model->type;
 ?>
 <div class="row">
     <div class="col-xs-12">
@@ -24,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attributes' => [
                           'rating',
                           'type', 
+                        
                     ],
                 ]) ?>
             </div>

@@ -7,7 +7,7 @@ use common\helpers\CommonHelper;
 $this->title='Rules';
 $updateUrl = Url::to(['rules/update/'.$model->id]);
 $this->params['breadcrumbs'][] = ['label' => 'Rules', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $model->type;
 ?>
 <div class="row">
     <div class="col-xs-12">
@@ -25,7 +25,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             'type',
                             'product_fields',
                             'detail',
+                         [
+                'attribute'=>'image',
+                'value'=>CommonHelper::getImage(UPLOAD_PATH_RULES_IMAGES . $model->image),
+                'format' => ['image',['width'=>'100']],
+            ],
                     ],
+                   
                 ]) ?>
             </div>
         </div>

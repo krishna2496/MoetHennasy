@@ -95,7 +95,7 @@ $arrayMenu = array(
         )
     ),
 array(
-        'title' => 'Market Segments',
+        'title' => 'Market Clusters',
         'permissionName' => array(
             'MarketSegments.Index',
             'MarketSegments.Create',

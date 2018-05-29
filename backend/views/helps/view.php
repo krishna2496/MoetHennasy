@@ -7,7 +7,7 @@ use common\helpers\CommonHelper;
 
 $this->title ='Helps';
 $this->params['breadcrumbs'][] = ['label' => 'Helps', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = 'View Helps';
 $updateUrl = Url::to(['helps/update/'.$model->id]);
 ?>
 <div class="row">
@@ -24,8 +24,10 @@ $updateUrl = Url::to(['helps/update/'.$model->id]);
                     'model' => $model,
                     'attributes' => [
                          'question:ntext',
-                         'answer:ntext',
-                      
+                       [ 
+                           'attribute' => 'answer',
+                         'format' =>'html'
+                     ]
                     ],
                 ]) ?>
             </div>

@@ -23,7 +23,7 @@ $updateUrl = Url::to(['market-contacts/index/'.$market_id.'/'.$model->id]);
                     'attributes' => [
                       
                         [
-                            'label' => 'Market segment',
+                            'label' => 'Market Cluster',
                             'attribute' => 'marketSegment.title'
                         ],
                       

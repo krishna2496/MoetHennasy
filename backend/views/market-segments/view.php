@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 use common\helpers\CommonHelper;
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Market Segments', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Market Clusters', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $updateUrl = Url::to(['market-segments/update/'.$model->id]);
 ?>

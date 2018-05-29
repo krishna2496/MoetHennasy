@@ -40,7 +40,7 @@ class MarketSegmentData extends BaseModel
         return [
             'id' => 'ID',
             'market_id' => 'Market ID',
-            'market_segment_id' => 'Market Segment',
+            'market_segment_id' => 'Market Cluster',
         ];
     }
     public function getMarketSegment(){

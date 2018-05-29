@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'market.title',
                         ],
                         [
-                            'label' => 'Market Segment',
+                            'label' => 'Market Cluster',
                             'attribute' => 'marketSegment.title',
                         ],
                         'address1:ntext',

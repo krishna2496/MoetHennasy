@@ -2,6 +2,7 @@
 define('UPLOAD_PATH_USER_IMAGES', 'profile/');
 define('UPLOAD_PATH_STORE_IMAGES', 'stores/');
 define('UPLOAD_PATH_CATALOGUES_IMAGES','catalogues/');
+define('UPLOAD_PATH_RULES_IMAGES','rules/');
 define('BOTTLE','map/bottle.png');
 define('API_KEY','AIzaSyAY16V1f859Ve4NZghFYEZ-XcAiHOIgdTw');
 return [
@@ -28,5 +29,6 @@ return [
     'response_type' => ['drop-down' =>'Yes/No - Drop down','text' => 'Text'],
     'star_max_size' => [0 =>'10'],
     'star_min_size' => ['min_size' =>'3'],
+    'store_grading' => ['tier_1' => 'Tier 1' ,'tier_2'=> 'Tier 2' ,'tier_3' => 'Tier 3'],
     
 ];

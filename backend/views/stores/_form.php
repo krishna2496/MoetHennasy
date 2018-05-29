@@ -46,7 +46,7 @@ use yii\widgets\ActiveForm;
                                      <?= $form->field($model, 'market_id')->dropDownList($markets, ['prompt' => 'Select Market']); ?> 
                                 </div>
                                 <div class="col-md-6">
-                                     <?= $form->field($model, 'market_segment_id')->dropDownList(array(), ['prompt' => 'Select Segment']); ?> 
+                                     <?= $form->field($model, 'market_segment_id')->dropDownList(array(), ['prompt' => 'Select Cluster']); ?> 
                                 </div>
                             </div>
                             <div class="row">
@@ -77,6 +77,9 @@ use yii\widgets\ActiveForm;
                             <div class="row">
                                 <div class="col-md-6">
                                     <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
+                                </div>
+                                <div class="col-md-6">
+                                     <?= $form->field($model, 'grading')->dropDownList(yii::$app->params['store_grading'], ['prompt' => 'Select Grading']); ?> 
                                 </div>
                             </div>
                         </div>
@@ -137,7 +140,7 @@ use yii\widgets\ActiveForm;
 
 <script type="text/javascript">
     function getMarketSegments(data){
-        var str = "<option value>Select Segment</option>";
+        var str = "<option value>Select Cluster</option>";
         moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>stores/ajax-get-segment",data,'post').then(function(result){
             if(result.status.success == 1) {
                 if(result.data.segments.length > 0) {

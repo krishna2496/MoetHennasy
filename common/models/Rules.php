@@ -6,6 +6,7 @@ use Yii;
 
 class Rules extends BaseModel
 {
+    public  $ruleImage='';
     public static function tableName()
     {
         return 'rules';
@@ -37,6 +38,7 @@ class Rules extends BaseModel
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',
+            'ruleImage' => 'Image',
         ];
     }
 }

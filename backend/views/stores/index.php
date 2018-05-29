@@ -48,7 +48,7 @@ if(isset($urlData[1]) && $urlData[1]){
                                     <?= Html::dropDownList('market_id', isset($filters['market_id']) ? $filters['market_id'] : '' ,$markets,  ['class' => 'form-control', 'id' => 'store-markets','prompt' => 'Select Market']) ?>
                                 </div>
                                 <div class="col-md-2">
-                                    <?= Html::dropDownList('market_segment_id', isset($filters['market_segment_id']) ? $filters['market_segment_id'] : '' ,$marketSegments,  ['class' => 'form-control', 'id' => 'store-market_segment','prompt' => 'Select Segment']) ?>
+                                    <?= Html::dropDownList('market_segment_id', isset($filters['market_segment_id']) ? $filters['market_segment_id'] : '' ,$marketSegments,  ['class' => 'form-control', 'id' => 'store-market_segment','prompt' => 'Select Cluster']) ?>
                                 </div> 
                                 <div class="col-md-2">
                                     <?= Html::dropDownList('country_id', isset($filters['country_id']) ? $filters['country_id'] : '' ,$countries,  ['class' => 'form-control', 'id' => 'store-country','prompt' => 'Select Country']) ?>
@@ -78,7 +78,11 @@ if(isset($urlData[1]) && $urlData[1]){
                         
                         'name',
                         'market',
-                        'marketSegment',
+                        [
+                            'label' =>'Market Cluster',
+                            'attribute' => 'marketSegment',
+                        ],
+                        
                         'address1',
                         'assignTo',
                         [

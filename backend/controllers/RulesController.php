@@ -9,12 +9,12 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\repository\UploadRepository;
 use common\repository\RulesRepository;
+use common\helpers\CommonHelper;
+use yii\web\UploadedFile;
 
 
-/**
- * RulesController implements the CRUD actions for Rules model.
- */
 class RulesController extends BaseBackendController
 {
     public function behaviors()
@@ -45,8 +45,7 @@ class RulesController extends BaseBackendController
     
     public function actionIndex()
     {
-      
-        $filters = Yii::$app->request->queryParams;
+       $filters = Yii::$app->request->queryParams;
         if(!isset($filters['limit'])){
             $filters['limit'] = Yii::$app->params['pageSize'];
         }
@@ -73,6 +72,23 @@ class RulesController extends BaseBackendController
         if(Yii::$app->request->post()) {          
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('Rules');
+            
+            $data['image'] = '';
+            if(UploadedFile::getInstance($model,'ruleImage')) {
+                $fileData = array();
+                $fileData['files'][0] = UploadedFile::getInstance($model,'ruleImage');
+                $fileData['type'] = 'rules';
+                $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
+                $uploadRepository = new UploadRepository;
+                $uploadData = $uploadRepository->store($fileData);
+                if($uploadData['status']['success'] == 1){
+                    $data['ruleImage'] = $data['image'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
+                } else {
+                    return $this->redirect(['index']);
+                    Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
+                }
+            }
+            
             $rulesRepository = new RulesRepository();
             $rulesData = $rulesRepository->createRules($data); 
             if($rulesData['status']['success'] == 1)
@@ -98,6 +114,25 @@ class RulesController extends BaseBackendController
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('Rules');
             $data['id'] = $id;
+            $data['image'] = '';
+            if(UploadedFile::getInstance($model,'ruleImage')) {
+                $oldImagePath = CommonHelper::getPath('upload_path').UPLOAD_PATH_RULES_IMAGES.$model->image;
+                $fileData = array();
+                $fileData['files'][0] = UploadedFile::getInstance($model,'ruleImage');
+                $fileData['type'] = 'rules';
+                $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
+                $uploadRepository = new UploadRepository;
+                $uploadData = $uploadRepository->store($fileData);
+                if($uploadData['status']['success'] == 1){
+                    $data['image'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
+                    if(file_exists($oldImagePath)){
+                        @unlink($oldImagePath);
+                    }
+                } else {
+                    return $this->redirect(['index']);
+                    Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
+                }
+            }
             $rulesRepository = new RulesRepository();
             $rulesData = $rulesRepository->upadateRules($data); 
             if($rulesData['status']['success'] == 1)

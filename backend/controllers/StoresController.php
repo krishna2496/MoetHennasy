@@ -53,7 +53,7 @@ class StoresController extends BaseBackendController
 
     public function actionIndex()  
     {
-      
+    
         $currentUser = CommonHelper::getUser();
 
         //filters
@@ -141,9 +141,10 @@ class StoresController extends BaseBackendController
         $dataProvider = $searchModel->search($filters);
         $allModels = $dataProvider->allModels;
         if($allModels){
-            $exportArray[0] = ['No','Name','Market','Market Segment','Address1','Address2','Assign To','Province','City','Country','Comment','Store Manager Name','Store Manager Email','Store Manager Phone Number'];
+            $exportArray[0] = ['No','Name','Market','Market Segment','Address1','Address2','Assign To','Province','City','Country','Grading','Comment','Store Manager Name','Store Manager Email','Store Manager Phone Number'];
             $i = 1;
             foreach ($allModels as $key => $value) {
+              
                 $temp = array();
                 $temp['no'] = $i;
                 $temp['name'] = $value['name'];
@@ -155,6 +156,7 @@ class StoresController extends BaseBackendController
                 $temp['province'] = isset($value['province']['name']) ? $value['province']['name'] : '';
                 $temp['city'] = isset($value['city']['name']) ? $value['city']['name'] : '';
                 $temp['country'] = isset($value['country']['name']) ? $value['country']['name'] : '';
+                $temp['grading'] = (isset($value['grading']) && $value['grading'] != '') ? \yii::$app->params['store_grading'][$value['grading']] : '';
                 $temp['comment'] = $value['comment'];
                 $temp['storeManagerName'] = $value['store_manager_first_name'].' '.$value['store_manager_last_name'];
                 $temp['storeManagerEmail'] = $value['store_manager_email'];

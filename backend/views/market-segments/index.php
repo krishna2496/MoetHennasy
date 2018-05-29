@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use common\helpers\CommonHelper;
 use yii\helpers\Url;
 
-$this->title = 'Market Segments';
+$this->title = 'Market Clusters';
 $this->params['breadcrumbs'][] = $this->title;
 $formUrl = Url::to(['market-segments/index']);
 ?>
@@ -19,7 +19,7 @@ $formUrl = Url::to(['market-segments/index']);
                 <div class="row pull-right">
                     <div class="col-md-2">
                         <?php  if(CommonHelper::checkPermission('MarketSegments.Create')){ ?>
-                        <?= Html::a('New Market Segment', ['create'], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('New Market Cluster', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-10">

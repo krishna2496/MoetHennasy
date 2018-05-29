@@ -28,6 +28,20 @@ use common\helpers\CommonHelper;
                          <div class="col-md-12">
                                <?= $form->field($model, 'detail')->textarea(['maxlength' => true]) ?>
                          </div>
+                        
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <?= $form->field($model, 'ruleImage')->fileInput() ?>   
+                                </div>
+                                <?php if (isset($model->id) && $model->id) { ?>
+                                    <div class="col-md-3">
+                                        <img class="img-responsive" style="width:100px;height: 100px" src="<?php echo CommonHelper::getImage(UPLOAD_PATH_RULES_IMAGES . $model->image); ?>"/>               
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                       
                     </div>
                 </div>
             </div>

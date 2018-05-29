@@ -39,6 +39,10 @@ class RulesRepository extends Repository
         $model->type = $data['type'];
         $model->product_fields = $data['product_fields'];
         $model->detail = $data['detail'];
+        if(isset($data['image']) && ($data['image'] != '') ){
+        $model->image = $data['image'];
+        }
+        
         if($model->validate()) {
             if($model->save(false)) {
                 $this->apiCode = 1;
@@ -68,6 +72,9 @@ class RulesRepository extends Repository
         }
         if(isset($data['detail'])) {
         $model->detail = $data['detail'];
+        }
+        if(isset($data['image']) && ($data['image'] != '') ){
+        $model->image = $data['image'];
         }
         if($model->validate()) {
             if($model->save(false)) {
