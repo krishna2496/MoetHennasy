@@ -162,7 +162,7 @@ class MarketController extends BaseBackendController
         $model = $this->findModel($id);
         if($model->delete()){
             parent::userActivity('delete_markets',$description='');
-            Yii::$app->session->setFlash('success', Yii::t('app', 'Market segment deleted successfully'));
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Market deleted successfully'));
         }else{
             Yii::$app->session->setFlash('danger', $model['errors']['title'][0]);
         }
