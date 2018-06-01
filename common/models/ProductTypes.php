@@ -4,43 +4,24 @@ namespace common\models;
 
 use Yii;
 
-/**
- * This is the model class for table "product_types".
- *
- * @property string $id
- * @property string $title
- * @property string $created_by
- * @property string $updated_by
- * @property string $deleted_by
- * @property string $created_at
- * @property string $updated_at
- * @property string $deleted_at
- */
-class ProductTypes extends \yii\db\ActiveRecord
+class ProductTypes extends BaseModel
 {
-    /**
-     * @inheritdoc
-     */
+
     public static function tableName()
     {
         return 'product_types';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
+            [['title'],'required'],
             [['created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['title'], 'string', 'max' => 255],
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
@@ -53,5 +34,16 @@ class ProductTypes extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',
         ];
+    }
+    
+    public function canDelete()
+    { 
+        $count = Catalogues::find()->andWhere(['product_type_id' => $this->id])->count();
+
+        if($count > 0){
+            $this->addError('title', "{$this->title} is used in Catalogues");
+            return false;
+        }
+        return true;
     }
 }

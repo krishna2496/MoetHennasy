@@ -2,13 +2,13 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Update Catalogues';
-$this->params['breadcrumbs'][] = ['label' => 'Catalogues', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Update Rules';
+$this->params['breadcrumbs'][] = ['label' => 'Rules', 'url' => ['index']];
+$this->params['breadcrumbs'][] = 'Update Rule';
 ?>
-<div class="catalogues-update">
+<div class="rules-update">
     <?= $this->render('_form', [
-        'model' => $model,
+          'model' => $model,
         'market'=>$market,
         'brand' => $brand,
         'product' => $product,

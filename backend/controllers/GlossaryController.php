@@ -3,15 +3,15 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\ProductTypes;
-use common\models\ProductTypesSearch;
+use common\models\Glossary;
+use common\models\GlossarySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\repository\ProductTypesRepository;
+use common\repository\GlossaryRepository;
 
-class ProductTypesController extends BaseBackendController
+class GlossaryController extends BaseBackendController
 {
     
     public function behaviors()
@@ -28,6 +28,7 @@ class ProductTypesController extends BaseBackendController
                         'allow' => true,
                         'roles' => ['&'],
                     ],
+                   
                 ],
             ],
             'verbs' => [
@@ -45,19 +46,18 @@ class ProductTypesController extends BaseBackendController
         if(!isset($filters['limit'])){
             $filters['limit'] = Yii::$app->params['pageSize'];
         }
-        $searchModel = new ProductTypesSearch();
+        $searchModel = new GlossarySearch();
         $dataProvider = $searchModel->search($filters);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'filters' => $filters,
         ]);
-        
     }
 
     public function actionView($id)
     {
-        parent::userActivity('view_product_types',$description='');
+        parent::userActivity('view_glossary',$description='');
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -65,16 +65,16 @@ class ProductTypesController extends BaseBackendController
 
     public function actionCreate()
     {
-        $model = new ProductTypes();
+        $model = new Glossary();
 
         if(Yii::$app->request->post()) {          
             $model->load(Yii::$app->request->post());
-            $data = Yii::$app->request->post('ProductTypes');
-          
-            $brandRepository = new ProductTypesRepository();
-            $brandData = $brandRepository->createProductTypes($data); 
+            $data = Yii::$app->request->post('Glossary');
+           
+            $brandRepository = new GlossaryRepository();
+            $brandData = $brandRepository->createGlossary($data); 
             if($brandData['status']['success'] == 1)
-            {   parent::userActivity('create_product_types',$description='');
+            {   parent::userActivity('create_glossary',$description='');
                 Yii::$app->session->setFlash('success', $brandData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -91,14 +91,14 @@ class ProductTypesController extends BaseBackendController
     {
         $model = $this->findModel($id);
 
-       if(Yii::$app->request->post()) {          
+        if(Yii::$app->request->post()) {          
             $model->load(Yii::$app->request->post());
-            $data = Yii::$app->request->post('ProductTypes');
-            $brandRepository = new ProductTypesRepository();
+            $data = Yii::$app->request->post('Glossary');
             $data['id'] = $id;
-            $brandData = $brandRepository->updateProductTypes($data); 
+            $brandRepository = new GlossaryRepository();
+            $brandData = $brandRepository->upadateGlossary($data); 
             if($brandData['status']['success'] == 1)
-            {   parent::userActivity('update_product_types',$description='');
+            {   parent::userActivity('update_glossary',$description='');
                 Yii::$app->session->setFlash('success', $brandData['status']['message']);
                 return $this->redirect(['index']);
             } else {
@@ -111,22 +111,23 @@ class ProductTypesController extends BaseBackendController
         ]);
     }
 
+ 
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
     
         if($model->delete()){
-            parent::userActivity('delete_product_type',$description='');
-            Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'product_type')]));
+            parent::userActivity('delete_glossary',$description='');
+            Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'glossary')]));
         }else{
             Yii::$app->session->setFlash('danger', $model['errors']['title'][0]);
         }
-           return $this->redirect(['index']);
+        return $this->redirect(['index']);
     }
 
     protected function findModel($id)
     {
-        if (($model = ProductTypes::findOne($id)) !== null) {
+        if (($model = Glossary::findOne($id)) !== null) {
             return $model;
         }
 

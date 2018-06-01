@@ -56,11 +56,19 @@ return [
                 'help-categories/view/<id:\d+>' => 'help-categories/view',
                 'market-contacts/index/<id:\d+>' => 'market-contacts/index',
                
+                'product-types/index/<id:\d+>' => 'product-types/index',
+                'product-types/view/<id:\d+>' => 'product-types/view',
+                'product-types/update/<id:\d+>' => 'product-types/update',
+                'product-types/delete/<id:\d+>' => 'product-types/delete',
+                
+                'rule-administration/product/<id:\d+>' => 'rule-administration/product',
                 
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:[^/]+>/<action:[^/]+>/<slug:[^/]+>' => '<controller>/<action>',
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
-                  
+                
+               
+                
                 'helps/update/<id:\d+>/<categoryId:\d+>' => 'helps/update',
                 'helps/create/<id:\d+>' => 'helps/create',
                 'helps/delete/<id:\d+>/<categoryId:\d+>' => 'helps/delete',
@@ -77,6 +85,8 @@ return [
                 'market-contacts/index/<id:\d+>/<contactId:\d+>' => 'market-contacts/index',
                 'market-contacts/view/<id:\d+>/<contactId:\d+>' => 'market-contacts/view',
                 'market-contacts/delete/<id:\d+>/<contactId:\d+>' => 'market-contacts/delete',
+                
+               
              
                
                

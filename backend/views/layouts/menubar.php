@@ -213,7 +213,35 @@ array(
             ),
         )
     ),
-    
+    array(
+        'title' => 'Rule Administration',
+        'permissionName' => array(
+            'Users.Index',
+            'Users.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'rule-administration'
+        ),
+        'actionId' => array(
+            'index', 'create'
+        ),
+        'childs' => array(
+              array(
+                'title' => 'Listing',
+                'permissionName' => array(
+                    'Catalogues.Index'
+                ),
+                'icon' => '',
+                'link' => 'rule-administration/index',
+                'controllerId' => 'catalogues',
+                'actionId' => array('index')
+            ),
+        )
+    ),
     array(
         'title' => 'Catalogue',
         'permissionName' => array(
@@ -316,6 +344,45 @@ array(
                 ),
                 'icon' => '',
                 'link' => 'brands/create',
+                'controllerId' => 'brands',
+                'actionId' => array('create')
+            ),
+        )
+    ),
+    array(
+        'title' => 'Product Type',
+        'permissionName' => array(
+            'ProductTypes.Index',
+            'ProductTypes.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'product-types'
+        ),
+        'actionId' => array(
+           'index', 'create','update','view'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Listing',
+                'permissionName' => array(
+                    'ProductTypes.Index'
+                ),
+                'icon' => '',
+                'link' => 'product-types/index',
+                'controllerId' => 'brands',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Create',
+                'permissionName' => array(
+                    'Brands.Create'
+                ),
+                'icon' => '',
+                'link' => 'product-types/create',
                 'controllerId' => 'brands',
                 'actionId' => array('create')
             ),
@@ -474,6 +541,45 @@ array(
                 'icon' => '',
                 'link' => 'questions/create',
                 'controllerId' => 'questions',
+                'actionId' => array('create')
+            ),
+        )
+    ),
+    array(
+        'title' => 'Glossary',
+        'permissionName' => array(
+            'Glossary.Index',
+            'Glossary.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'glossary'
+        ),
+        'actionId' => array(
+           'index', 'create','update','view'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Listing',
+                'permissionName' => array(
+                    'Glossary.Index'
+                ),
+                'icon' => '',
+                'link' => 'glossary/index',
+                'controllerId' => 'glossary',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Create',
+                'permissionName' => array(
+                    'Glossary.Create'
+                ),
+                'icon' => '',
+                'link' => 'glossary/create',
+                'controllerId' => 'glossary',
                 'actionId' => array('create')
             ),
         )

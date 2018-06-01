@@ -80,4 +80,6 @@ return [
     'delete_rating' =>'Minimum three ratings are required',
     'cant_delete' => 'Can not delete this rating',
     'Contacts' => 'Contacts',
+    'product_type' => 'Product type',
+    'glossary' => 'Glossary'
     ];

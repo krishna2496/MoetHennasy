@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -62,11 +62,11 @@ use common\helpers\CommonHelper;
                         <div class="col-md-6">
                              <?= $form->field($model, 'product_sub_category_id')->dropDownList($productSubCatData, ['prompt' => 'Select One','id'=>'user-parent_user_id']); ?> 
                                
-                        </div>  
-                        <div class="col-md-6">
+                        </div>    
+                         <div class="col-md-6">
                              <?= $form->field($model, 'product_type_id')->dropDownList($productTypeData, ['prompt' => 'Select One','id'=>'user_user_id']); ?> 
                                
-                        </div>  
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">

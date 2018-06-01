@@ -3,24 +3,22 @@
 namespace common\models;
 
 use Yii;
-use common\models\Catalogues;
 
-class Brands extends BaseModel
+class Glossary extends BaseModel
 {
-   
+ 
     public static function tableName()
     {
-        return 'brands';
+        return 'glossary';
     }
 
     public function rules()
     {
         return [
+            [['title', 'description'], 'required'],
             [['created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
-            [['name'], 'string', 'max' => 255],
-            [['name'], 'required'],
-            [['name'], 'unique'],
+            
         ];
     }
 
@@ -28,7 +26,8 @@ class Brands extends BaseModel
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'title' => 'Title',
+            'description' => 'Description',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'deleted_by' => 'Deleted By',
@@ -36,16 +35,5 @@ class Brands extends BaseModel
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',
         ];
-    }
-    
-    public function canDelete()
-    { 
-        $count = Catalogues::find()->andWhere(['brand_id' => $this->id])->count();
-
-        if($count > 0){
-            $this->addError('title', "{$this->name} is used in Catalogues");
-            return false;
-        }
-        return true;
     }
 }

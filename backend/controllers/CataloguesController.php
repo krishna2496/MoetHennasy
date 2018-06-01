@@ -16,6 +16,7 @@ use common\repository\UploadRepository;
 use common\repository\BrandRepository;
 use common\helpers\CommonHelper;
 use common\repository\ProductCategoryRepository;
+use common\repository\ProductTypesRepository;
 
 class CataloguesController extends BaseBackendController
 {
@@ -113,11 +114,16 @@ class CataloguesController extends BaseBackendController
         
         $product= new ProductCategoryRepository();
         $product=$product->listing();
-         if($product['status']['success'] == 1){
+        if($product['status']['success'] == 1){
             $productData = CommonHelper::getDropdown($product['data']['productCategories'], ['id', 'name']);
         }
-   
         
+        $productType = new ProductTypesRepository();
+        $productType=$productType->listing();
+        if($productType['status']['success'] == 1){
+            $productTypeData = CommonHelper::getDropdown($productType['data']['productTypes'], ['id', 'title']);
+        }
+      
         $productSubCatData=array();
         if(Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
@@ -154,8 +160,9 @@ class CataloguesController extends BaseBackendController
             'market'=>$market,
             'brand' => $brand,
             'product'=>$productData,
-            'productSubCatData'=>$productSubCatData
-        ]);
+            'productSubCatData'=>$productSubCatData,
+            'productTypeData' => $productTypeData
+        ]); 
     }
 
     public function actionUpdate($id)
@@ -185,6 +192,13 @@ class CataloguesController extends BaseBackendController
         if($product['status']['success'] == 1){
             $productSubCatData = CommonHelper::getDropdown($product['data']['productCategories'], ['id', 'name']);
         }
+        
+        $productType = new ProductTypesRepository();
+        $productType=$productType->listing();
+        if($productType['status']['success'] == 1){
+            $productTypeData = CommonHelper::getDropdown($productType['data']['productTypes'], ['id', 'title']);
+        }
+        
         if ($model->load(Yii::$app->request->post())) {
             $oldImagePath = CommonHelper::getPath('upload_path').UPLOAD_PATH_CATALOGUES_IMAGES.$model->image;
             $model->load(Yii::$app->request->post());
@@ -227,8 +241,8 @@ class CataloguesController extends BaseBackendController
             'market'=>$market,
             'brand' => $brand,
             'product'=>$productData,
-            'productSubCatData' => $productSubCatData
-            
+            'productSubCatData' => $productSubCatData,
+            'productTypeData' => $productTypeData
         ]);
     }
 

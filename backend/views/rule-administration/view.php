@@ -1,14 +1,13 @@
 <?php
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 use common\helpers\CommonHelper;
-
-$this->title='Product Types';
-$updateUrl = Url::to(['product-types/update/'.$model->id]);
-$this->params['breadcrumbs'][] = ['label' => 'Product Types', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $model->title;
-
+$this->title='Rules';
+$updateUrl = Url::to(['rules/update/'.$model->id]);
+$this->params['breadcrumbs'][] = ['label' => 'Rules', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $model->type;
 ?>
 <div class="row">
     <div class="col-xs-12">
@@ -23,9 +22,16 @@ $this->params['breadcrumbs'][] = $model->title;
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
-                           'title',
-                        
+                            'type',
+                            'product_fields',
+                            'detail',
+                         [
+                'attribute'=>'image',
+                'value'=>CommonHelper::getImage(UPLOAD_PATH_RULES_IMAGES . $model->image),
+                'format' => ['image',['width'=>'100']],
+            ],
                     ],
+                   
                 ]) ?>
             </div>
         </div>

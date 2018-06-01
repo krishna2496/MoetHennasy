@@ -9,8 +9,9 @@ use common\models\Catalogues;
 class CataloguesRepository extends Repository {
 
     public function listing($data = array()) {
+     
         $this->apiCode = 1;
-        $query = Catalogues::find()->joinWith(['market', 'brand']);
+        $query = Catalogues::find()->joinWith(['market', 'brand','productType']);
 
         if (isset($data['serachText']) && ($data['serachText'] != '')) {
             $data['search'] = $data['serachText'];
@@ -71,6 +72,7 @@ class CataloguesRepository extends Repository {
         $model->price = $data['price'];
         $model->top_shelf = $data['top_shelf'];
         $model->image = $data['image'];
+        $model->product_type_id = $data['product_type_id'];
 
         if (isset($data['long_name'])) {
             $model->long_name = $data['long_name'];
@@ -162,7 +164,9 @@ class CataloguesRepository extends Repository {
         if (isset($data['short_name'])) {
             $model->short_name = $data['short_name'];
         }
-
+        if (isset($data['product_type_id'])) {
+             $model->product_type_id = $data['product_type_id'];
+        }
         if ($model->validate()) {
             if ($model->save(false)) {
                 $returnData = array();

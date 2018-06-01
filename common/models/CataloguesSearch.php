@@ -9,14 +9,9 @@ use common\models\Catalogues;
 use common\repository\CataloguesRepository;
 use yii\data\ArrayDataProvider;
 
-/**
- * CataloguesSearch represents the model behind the search form of `common\models\Catalogues`.
- */
 class CataloguesSearch extends Catalogues
 {
-    /**
-     * @inheritdoc
-     */
+    
     public function rules()
     {
         return [
@@ -26,22 +21,12 @@ class CataloguesSearch extends Catalogues
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
+        
         return Model::scenarios();
     }
 
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
     public function search($params)
     {
         $userRepository = new CataloguesRepository;
