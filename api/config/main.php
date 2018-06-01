@@ -103,6 +103,8 @@ return [
                 'GET v1/helps/index' => 'v1/helps/index',
                 'GET v1/rules/index' => 'v1/rules/index',
                 'GET v1/contacts/index' => 'v1/contacts/index',
+                'GET v1/glossary/index' => 'v1/glossary/index',
+                
             ],        
         ],
         'i18n' => [
