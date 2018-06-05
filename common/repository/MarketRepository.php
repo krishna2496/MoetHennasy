@@ -10,13 +10,12 @@ use common\models\MarketSegmentData;
 class MarketRepository extends Repository {
 
     public function marketList($data = array()) {
+      
         $this->apiCode = 1;
         $query = Markets::find()
             
-             ->joinWith(['marketSegmentData.marketSegment','user']);
+             ->joinWith(['marketSegmentData.marketSegment.marketSegmentContacts','user']);
     
-     
-        
         if (isset($data['search']) && $data['search']) {
             $search = $data['search'];
             $query->andWhere([
@@ -32,6 +31,8 @@ class MarketRepository extends Repository {
         if (isset($data['market_id']) && $data['market_id']) {
             $query->andWhere(['markets.id' => $data['market_id']]);
         }
+        
+        
        
 
         $data = array();

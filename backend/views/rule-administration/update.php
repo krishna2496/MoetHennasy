@@ -8,12 +8,13 @@ $this->params['breadcrumbs'][] = 'Update Rule';
 ?>
 <div class="rules-update">
     <?= $this->render('_form', [
-          'model' => $model,
+        'model' => $model,
         'market'=>$market,
         'brand' => $brand,
         'product' => $product,
         'productSubCatData' => $productSubCatData,
-        'productTypeData' => $productTypeData
+        'productTypeData' => $productTypeData,
+       
     ]) ?>
 
 </div>

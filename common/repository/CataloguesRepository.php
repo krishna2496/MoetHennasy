@@ -9,7 +9,7 @@ use common\models\Catalogues;
 class CataloguesRepository extends Repository {
 
     public function listing($data = array()) {
-     
+  
         $this->apiCode = 1;
         $query = Catalogues::find()->joinWith(['market', 'brand','productType']);
 
@@ -42,11 +42,17 @@ class CataloguesRepository extends Repository {
         if (isset($data['product_id']) && ($data['product_id'] != '')) {
             $query->andWhere(['product_category_id' => $data['product_id']]);
         }
-
+        
+        if (isset($data['selection'])) {
+            $query->andWhere(['catalogues.id' => $data['selection']]);
+        }
+        
+      
 
         $result = $query->asArray();
         $data = array();
         $data['catalogues'] = $query->asArray()->all();
+     
         $this->apiData = $data;
         return $this->response();
     }

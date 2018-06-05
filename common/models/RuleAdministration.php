@@ -11,13 +11,13 @@ class RuleAdministration extends \yii\db\ActiveRecord
     public $market_cluster_id;
     public $brand_id;
     public $product_category_id;
-
+    public $limit;
 
 
     public function rules()
     {
         return [
-            [['market', 'marketCluster', 'brand','productCategory'], 'integer'],
+            [['market', 'marketCluster', 'brand','product_category_id'], 'integer'],
            
         ];
     }

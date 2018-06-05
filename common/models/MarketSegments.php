@@ -44,6 +44,9 @@ class MarketSegments extends BaseModel
     public function getMarketSegmentData(){
         return $this->hasMany(MarketSegmentData::className(), ['market_segment_id' => 'id']);
     }
+    public function getMarketSegmentContacts(){
+        return $this->hasOne(MarketContacts::className(), ['market_segment_id' => 'id']);
+    }
     
     public function canDelete()
     { 

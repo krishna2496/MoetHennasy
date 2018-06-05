@@ -37,7 +37,7 @@ class RuleAdministrationController extends BaseBackendController
                 ],
                 'rules' => [
                     [
-                        'actions' => ['index','create','update','view','delete','product'],
+                        'actions' => ['index','create','update','view','delete','product','auto-fill'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -90,21 +90,24 @@ class RuleAdministrationController extends BaseBackendController
             }
         }
         $filters = Yii::$app->request->queryParams;
+        $isDisplay=0;
         if(Yii::$app->request->post()){
-//            echo '<pre>';
-//            print_r(Yii::$app->request->post());exit;
             $postData = Yii::$app->request->post('RuleAdministration');
-           $filters['market_id'] =$postData['market_id'];
-           $filters['brand_id'] = $postData['brand_id'];
-           $filters['product_id']=$filters['product_category_id'] = $postData['product_category_id'];
-           $filters['market_cluster_id'] = $postData['market_cluster_id'];
-            $filters['selection[]'] = Yii::$app->request->post('selection');
+            $filters['market_id'] = $postData['market_id'];
+            $filters['brand_id'] = $postData['brand_id'];
+            $filters['product_id'] = $filters['product_category_id'] = $postData['product_category_id'];
+            $filters['market_cluster_id'] = $postData['market_cluster_id'];
+            $isDisplay=1;
+            $filters['selection'] = Yii::$app->request->post('selection');
+            if(isset($postData['limit']) && ($postData['limit'] != '')){
+                $filters['limit'] = $postData['limit'];
+            }
         }
-      
-        
+       
         if(!isset($filters['limit'])){
             $filters['limit'] = Yii::$app->params['pageSize'];
         }       
+        
         $searchModel = new CataloguesSearch();
         $dataProvider = $searchModel->search($filters);
         $dataProvider->pagination->pageSize = $filters['limit'];
@@ -116,14 +119,14 @@ class RuleAdministrationController extends BaseBackendController
            'filters' => $filters,
            'brands' => $brands,
            'productCategory' => $productCategory,
-           'model' => $model
+           'model' => $model,
+           'isDisplay' => $isDisplay
         ]);
     }
 
     public function actionView($id)
     {
        $data=MarketSegmentData::find()->joinWith('marketSegment')->andWhere(['market_id'=>$id])->asArray()->all();
-     
        $dataCount=count($data);
        $segment='';
        $i=0;
@@ -227,9 +230,9 @@ class RuleAdministrationController extends BaseBackendController
         return $this->redirect(['index']);
     }
     
-        public function actionProduct($id)
+    public function actionProduct($id)
         {
-           
+        
         $model = Catalogues::findOne($id);
         if($model) {
         $marketSearch =new MarketRepository();
@@ -313,6 +316,41 @@ class RuleAdministrationController extends BaseBackendController
        }
     }
     
+    public function actionAutoFill(){
+        $postData = Yii::$app->request->post();
+       
+        $filters=array();
+        if(!isset($filters['limit'])){
+            $filters['limit'] = Yii::$app->params['pageSize'];
+        }
+        if(isset($postData['market_id'])){
+            $filters['market_id']=$postData['market_id'];
+        }
+        if(isset($postData['brand_id']) && ($postData['brand_id'] != '')){
+            $brand = explode(',', $postData['brand_id']);
+            $filters['brand_id']= $brand;
+        }
+        if(isset($postData['product_category_id'])){
+            $filters['product_id']= $filters['product_category_id'] = $postData['product_category_id'];
+        }
+        if(isset($postData['market_cluster_id'])){
+            $filters['market_cluster_id']=$postData['market_cluster_id'];
+        }
+        if(isset($postData['selection'])){        
+            $filters['selection'] =  explode(',', $postData['selection']);
+        }
+     
+        $searchModel = new CataloguesSearch();
+        $dataProvider = $searchModel->search($filters);
+        $dataProvider->pagination->pageSize = $filters['limit'];
+        return $this->render('auto_fill', [
+            'filters' => $filters,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel
+        ]);     
+        
+    }
+
     protected function findModel($id)
     {
         if (($model = Markets::findOne($id)) !== null) {

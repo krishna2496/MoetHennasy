@@ -104,6 +104,7 @@ return [
                 'GET v1/rules/index' => 'v1/rules/index',
                 'GET v1/contacts/index' => 'v1/contacts/index',
                 'GET v1/glossary/index' => 'v1/glossary/index',
+                'GET v1/contacts/listing' => 'v1/contacts/listing',
                 
             ],        
         ],
