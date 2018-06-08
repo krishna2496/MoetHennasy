@@ -148,7 +148,7 @@ array(
             'market','market-contacts'
         ),
         'actionId' => array(
-           'index', 'create','update','view'
+           'index', 'create','update','view','rules'
         ),
         'childs' => array(
             array(

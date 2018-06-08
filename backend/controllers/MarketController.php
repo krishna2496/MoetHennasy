@@ -14,6 +14,10 @@ use common\repository\MarketSegmentsRepository;
 use common\helpers\CommonHelper;
 use common\models\MarketSegments;
 use common\models\MarketSegmentData;
+use common\models\Rules;
+use common\models\RulesSearch;
+use common\models\MarketRules;
+use common\repository\MarketRulesRepository;
 
 class MarketController extends BaseBackendController
 {
@@ -28,7 +32,7 @@ class MarketController extends BaseBackendController
                 ],
                 'rules' => [
                     [
-                        'actions' => ['index','create','update','view','delete'],
+                        'actions' => ['index','create','update','view','delete','rules'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -155,6 +159,61 @@ class MarketController extends BaseBackendController
             'model' => $model,
             'marketSegmentList' =>$marketSegment,
         ]);
+    }
+ 
+    public function actionRules($id){
+       if (($model = Markets::findOne($id)) !== null) {
+           $title=$model->title;
+        
+        $searchModel = new RulesSearch();
+        $filters = Yii::$app->request->queryParams;
+        $model = new MarketRules();
+        $selected = [];
+        $ruleModel = MarketRules::find()->select('rule_id')->where(['market_id' => $id])->asArray()->all();
+        
+        if($ruleModel){
+            foreach ($ruleModel as $key=>$value){
+                  $selected[$key]  = $value['rule_id']; 
+             }
+        }
+        
+        if(Yii::$app->request->post()) {
+        
+            $model->load(Yii::$app->request->post());
+            $data = Yii::$app->request->post('selection');
+            $rules = explode(',', $data);
+            $ruleData['market_id'] = $id;
+            $ruleData['rule_id'] = $rules;
+            $marketRepository = new MarketRulesRepository;
+            $returnData = $marketRepository->createRule($ruleData);
+            if($returnData['status']['success'] == 1)
+            {  
+                parent::userActivity('create_markets_rules',$description='');
+                Yii::$app->session->setFlash('success', $returnData['status']['message']);
+                return $this->redirect(['index']);
+            } else {
+                 Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+            }
+        }
+        
+        if(!isset($filters['limit'])){
+            $filters['limit'] = Yii::$app->params['pageSize'];
+        }
+        
+        $dataProvider = $searchModel->search($filters);
+        $dataProvider->pagination->pageSize = $filters['limit'];
+        
+        return $this->render('apply_rules', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'filters' => $filters,
+            'rules' => $selected,
+            'title' => $title
+        ]);
+        
+       }else{
+            throw new NotFoundHttpException('The requested page does not exist.');
+       }
     }
 
     public function actionDelete($id)

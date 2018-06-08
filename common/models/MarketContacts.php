@@ -4,31 +4,29 @@ namespace common\models;
 
 use Yii;
 
-class MarketContacts extends BaseModel
-{
-    public static function tableName()
-    {
+class MarketContacts extends BaseModel {
+
+    public static function tableName() {
         return 'market_contacts';
     }
 
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['market_segment_id', 'market_id', 'address', 'phone', 'email'], 'required'],
-            [['market_segment_id', 'market_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
-            [['address'], 'string'],
-            [['created_at', 'updated_at', 'deleted_at'], 'safe'],
-            [['phone'], 'string', 'max' => 20],
-            [['email'], 'string', 'max' => 50],
-            [['email'], 'email'],
+                [['market_segment_id', 'market_id', 'address', 'phone', 'email'], 'required'],
+                [['market_segment_id', 'market_id'], 'unique', 'targetAttribute' => ['market_segment_id']],
+                [['market_segment_id', 'market_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
+                [['address'], 'string'],
+                [['created_at', 'updated_at', 'deleted_at'], 'safe'],
+                [['phone'], 'string', 'max' => 20],
+                [['email'], 'string', 'max' => 50],
+                [['email'], 'email'],
         ];
     }
 
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
-            'market_segment_id' => 'Market Segment',
+            'market_segment_id' => 'Market Cluster',
             'market_id' => 'Market',
             'address' => 'Address',
             'phone' => 'Phone',
@@ -41,12 +39,13 @@ class MarketContacts extends BaseModel
             'deleted_at' => 'Deleted At',
         ];
     }
-    
-    public function getMarket(){
+
+    public function getMarket() {
         return $this->hasOne(Markets::className(), ['id' => 'market_id']);
     }
-    
-    public function getMarketSegment(){
+
+    public function getMarketSegment() {
         return $this->hasOne(MarketSegments::className(), ['id' => 'market_segment_id']);
     }
+
 }

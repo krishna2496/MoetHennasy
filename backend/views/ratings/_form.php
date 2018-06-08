@@ -35,7 +35,16 @@ use common\helpers\CommonHelper;
                                 $model->rating = $count ;
                                 }
                                 ?>
+                                <?php 
+
+                                if($count > yii::$app->params['star_max_size'][0]){
+                                  
+                                    $count = yii::$app->params['star_max_size'][0];
+                                    $model->rating = $count ;
+                                }
+                                ?>
                                 <?= $form->field($model, 'rating')->hiddenInput(['maxlength' => true]) ?>
+                             
                                 <?php
                                 for ($i = 1; $i <= $count; $i++) {
                                     ?>

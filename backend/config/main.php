@@ -61,6 +61,8 @@ return [
                 'product-types/update/<id:\d+>' => 'product-types/update',
                 'product-types/delete/<id:\d+>' => 'product-types/delete',
                 
+                'market/rules/<id:\d+>' => 'market/rules',
+                
                 'rule-administration/product/<id:\d+>' => 'rule-administration/product',
                 
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',

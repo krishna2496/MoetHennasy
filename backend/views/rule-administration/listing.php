@@ -7,9 +7,11 @@ use common\helpers\CommonHelper;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
 $formUrl = Url::to(['rule-administration/index']);
+
 ?>
 <div class="product">
     <?php Pjax::begin(['id' => 'pjaxCustomers', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]); ?>
+    
     <div class="view-customer" id="view-customer">
         <?php $form = ActiveForm::begin(['method' => 'post', 'options' => ['data-pjax' => '', 'id' => 'w0']]); ?>
 
@@ -70,8 +72,8 @@ $formUrl = Url::to(['rule-administration/index']);
                               
                                 <div class="col-md-12">
                                        <?= $form->field($model, 'limit')->dropDownList(Yii::$app->params['limit'], ['id' => 'brands-limit'])->label(false); ?>  
-                                    
                                 </div>
+                                
                             </div>
                         </div>
                    
@@ -120,29 +122,10 @@ $formUrl = Url::to(['rule-administration/index']);
             </div>
         </div>
 
-        <?php ActiveForm::end(); ?>
-        <?php $form = ActiveForm::begin(['action' => ['rule-administration/auto-fill'], 'method' => 'post', 'options' => ['data-pjax' => '', 'id' => 'w2']]); ?>
         <div class="row">
-            <?php if (isset($filters['market_id'])) { ?>
-                <input type="hidden" value="<?= $filters['market_id'] ?>" name="market_id"/>
-                <?php
-            }
-            if (isset($filters['brand_id']) && ($filters['brand_id'] != '')) {
-                $brand = implode(',', $filters['brand_id']);
-                ?>
-                <input type="hidden" value="<?= $brand ?>" name="brand_id"/>
-                <?php
-            }
-            if (isset($filters['product_category_id'])) {
-                ?>
-                <input type="hidden" value="<?= $filters['product_category_id'] ?>" name="product_category_id"/>
-                <?php
-            }
-            if (isset($filters['market_cluster_id'])) {
-                ?>
-                <input type="hidden" value="<?= $filters['market_cluster_id'] ?>" name="market_cluster_id"/>
-            <?php } ?>
+            
             <input type="hidden" value="" name="selection" id="selection"/>
+             <input type="hidden" value="0" name="next" id="next"/>
             <div class="col-md-12 isDisplay">
                 <?= Html::Button('Auto Fill', ['class' => 'btn btn-primary pull-left mw-md auto_fill', 'style' => 'margin-top:25px']) ?>
             </div>
@@ -150,22 +133,21 @@ $formUrl = Url::to(['rule-administration/index']);
         <?php ActiveForm::end(); ?>
     </div>
     <script>
-        $("body").on("change", "#brands-text,#brands-limit",function(event){
-        $('#w0').submit();
-    });
-        $(document).ready(function () {
+       $(document).ready(function () {
             $('.select2').select2();
         });
+        
 <?php
-if (isset($filters['selection'])) {
-    foreach ($filters['selection'] as $key => $value) {
+if (isset($filters['selection']) && (!empty($filters['selection']))) {
+    $selection= explode(',', $filters['selection']);
+    foreach ($selection as $key => $value) {
         ?>
-                $("input[type=checkbox][value=" +<?= $value ?> + "]").attr("checked", "true");
-
-        <?php
+            $("input[type=checkbox][value=" +<?= $value ?> + "]").attr("checked", "true");
+  <?php
     }
 }
 ?>
+     
         function getMarketSegments(data) {
             var str = "<option value>Select Cluster</option>";
             moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>stores/ajax-get-segment", data, 'post').then(function (result) {
@@ -195,6 +177,7 @@ if (isset($filters['selection'])) {
             getMarketSegments(data);
 
         });
+        
 <?php if (isset($filters['market_id']) && ($filters['market_id'] != '')) { ?>
             var data = {market_id: '<?php echo $filters['market_id']; ?>'};
 
@@ -202,6 +185,7 @@ if (isset($filters['selection'])) {
 <?php } ?>
 
         $(".auto_fill").on('click', function () {
+           
             var favorite = [];
             $.each($("input[name='selection[]']:checked"), function () {
 
@@ -211,8 +195,17 @@ if (isset($filters['selection'])) {
 
 
             var product = favorite.join(",");
+           
             $("#selection").val(product);
-            $("#w2").submit();
+             if ($("#w0 input:checkbox:checked").length > 0)
+            {
+                $("#next").val(1);
+                $("#w0").submit();
+                return true;
+            } else {
+                alert("Please select at least one prduct");
+                return false;
+            }  
         });
 
         $('.select-on-check-all').on('ifChecked', function (event) {
@@ -224,51 +217,26 @@ if (isset($filters['selection'])) {
             $('input[name="selection[]"]').iCheck('uncheck');
 
         });
-
-<?php if ($isDisplay == 0) { ?>
-    <!-- $('.isDisplay').hide(); -->
-<?php } else { ?>
-    <!-- $('.isDisplay').show(); -->
-<?php } ?>
-
-        $('#w2').on('beforeSubmit', function (e) {
-            if ($("#w0 input:checkbox:checked").length > 0)
-            {
-                return true;
-            } else {
-                alert("Please Select at least one product");
-            }
-            return false;
-
-        });
-
+        
+//        $('#w2').on('beforeSubmit', function (e) {
+//          
+//            if ($("#w0 input:checkbox:checked").length > 0)
+//            {
+//                $("#w0").on("submit",function(){
+//                    alert(0);
+//                    return false;
+//                });
+//                $("#w2").submit();
+//                return true;
+//            } else {
+//                return false;
+//            }  
+//            return false;
+//
+//        });
 </script>
 <?php Pjax::end(); ?>
 </div>
-<!--    <script>
-       
-        var checkboxArryNew = [];
-        $(document).on('ready pjax:click', function () {
-      
-            $.each($("input[name='selection[]']:checked"), function () {
-                checkboxArryNew.push($(this).val());
-                   
-            });
-          
-        });
-
-        $(document).on('ready pjax:end', function () {
-         alert("end");
-                    alert(checkboxArryNew);
-            $.each(checkboxArryNew, function (i, val) {
-                $("input[type=checkbox][value=" +val+ "]").attr("checked", "true");
-                   
-            });
-
-
-        });
-        </script>-->
-
 
 
 

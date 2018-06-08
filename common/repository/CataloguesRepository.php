@@ -9,7 +9,8 @@ use common\models\Catalogues;
 class CataloguesRepository extends Repository {
 
     public function listing($data = array()) {
-  
+//        echo '<pre>';
+//        print_r($data);exit;
         $this->apiCode = 1;
         $query = Catalogues::find()->joinWith(['market', 'brand','productType']);
 
@@ -43,8 +44,9 @@ class CataloguesRepository extends Repository {
             $query->andWhere(['product_category_id' => $data['product_id']]);
         }
         
-        if (isset($data['selection'])) {
-            $query->andWhere(['catalogues.id' => $data['selection']]);
+        if (isset($data['selection']) && (!empty($data['selection']))) {
+           
+            $query->andWhere(['catalogues.id' => explode(',',$data['selection'])]);
         }
         
       

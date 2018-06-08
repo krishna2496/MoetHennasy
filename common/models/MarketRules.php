@@ -4,33 +4,35 @@ namespace common\models;
 
 use Yii;
 
-class Ratings extends BaseModel
+class MarketRules extends BaseModel
 {
+    
+    public static function tableName()
+    {
+        return 'market_rules';
+    }
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
-        return 'ratings';
-    }
-
     public function rules()
     {
         return [
-            [[ 'type'], 'required'],
-            [['created_by', 'updated_by', 'deleted_by'], 'integer'],
+            [['market_id', 'rule_id', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at'], 'required'],
+            [['market_id', 'rule_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
-            [['rating', 'type'], 'string', 'max' => 80],
-            ['rating', 'unique']
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
             'id' => 'ID',
-            'rating' => 'Rating',
-            'type' => 'Type',
+            'market_id' => 'Market ID',
+            'rule_id' => 'Rule ID',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'deleted_by' => 'Deleted By',

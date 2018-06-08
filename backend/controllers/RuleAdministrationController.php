@@ -92,6 +92,8 @@ class RuleAdministrationController extends BaseBackendController
         $filters = Yii::$app->request->queryParams;
         $isDisplay=0;
         if(Yii::$app->request->post()){
+            echo '<pre>';
+            print_r(Yii::$app->request->post());exit;
             $postData = Yii::$app->request->post('RuleAdministration');
             $filters['market_id'] = $postData['market_id'];
             $filters['brand_id'] = $postData['brand_id'];
@@ -111,7 +113,7 @@ class RuleAdministrationController extends BaseBackendController
         $searchModel = new CataloguesSearch();
         $dataProvider = $searchModel->search($filters);
         $dataProvider->pagination->pageSize = $filters['limit'];
-
+     
         return $this->render('listing', [
            'searchModel' => $searchModel,
            'dataProvider' => $dataProvider,
@@ -318,7 +320,6 @@ class RuleAdministrationController extends BaseBackendController
     
     public function actionAutoFill(){
         $postData = Yii::$app->request->post();
-       
         $filters=array();
         if(!isset($filters['limit'])){
             $filters['limit'] = Yii::$app->params['pageSize'];
@@ -339,13 +340,15 @@ class RuleAdministrationController extends BaseBackendController
         if(isset($postData['selection'])){        
             $filters['selection'] =  explode(',', $postData['selection']);
         }
-     
+      
         $searchModel = new CataloguesSearch();
         $dataProvider = $searchModel->search($filters);
         $dataProvider->pagination->pageSize = $filters['limit'];
+        
+      
         return $this->render('auto_fill', [
             'filters' => $filters,
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider->getModels(),
             'searchModel' => $searchModel
         ]);     
         

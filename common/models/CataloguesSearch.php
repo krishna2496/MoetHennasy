@@ -25,7 +25,7 @@ class CataloguesSearch extends Catalogues {
     }
 
     public function search($params) {
-
+      
         $userRepository = new CataloguesRepository;
         $userList = array();
         $resultUserList = $userRepository->listing($params);
