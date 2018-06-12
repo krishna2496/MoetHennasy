@@ -63,7 +63,7 @@ $formUrl = Url::to(['market/index']);
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
-                           'template' => '{view} {update} {delete} {contact}  {rules}',
+                           'template' => '{view} {update} {delete} {contact}  {rules}  {brand}',
                            'buttons' => [
     
                                'view' => function ($url, $model) use ($filters) {
@@ -81,6 +81,9 @@ $formUrl = Url::to(['market/index']);
                                 'rules' => function ($url, $model) use ($filters) {
                                      return Html::a('Apply Rules', ['market/rules/'.$model['id']], ['class'=>'btn btn-primary']);
                                  
+                                },
+                                'brand' => function ($url, $model) use ($filters) {
+                                     return Html::a('Apply Brand', ['market/brands/'.$model['id']], ['class'=>'btn btn-primary']);
                                 },
                                
                             ],

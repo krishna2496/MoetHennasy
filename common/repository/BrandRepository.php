@@ -24,9 +24,12 @@ class BrandRepository extends Repository
     }
 
     public function createBrand($data = array()){
+      
         $this->apiCode = 0;
         $model = new Brands;
         $model->name = $data['name'];
+        $model->image = $data['image'];
+       
         if($model->validate()) {
             if($model->save(false)) {
                 $this->apiCode = 1;

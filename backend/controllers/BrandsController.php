@@ -8,6 +8,9 @@ use common\models\BrandsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+use common\helpers\CommonHelper;
+use common\repository\UploadRepository;
 use yii\filters\AccessControl;
 use common\repository\BrandRepository;
 
@@ -68,6 +71,20 @@ class BrandsController extends BaseBackendController
         if(Yii::$app->request->post()) {          
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('Brands');
+             if(UploadedFile::getInstance($model,'brandImage')) {
+                $fileData = array();
+                $fileData['files'][0] = UploadedFile::getInstance($model,'brandImage');
+                $fileData['type'] = 'brands';
+                $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
+                $uploadRepository = new UploadRepository();
+                $uploadData = $uploadRepository->store($fileData);
+                if($uploadData['status']['success'] == 1){
+                    $data['brandImage'] = $data['image'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
+                } else {
+                    return $this->redirect(['index']);
+                    Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
+                }
+            }
             $brandRepository = new BrandRepository();
             $brandData = $brandRepository->createBrand($data); 
             if($brandData['status']['success'] == 1)

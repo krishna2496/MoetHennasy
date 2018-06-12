@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use common\helpers\CommonHelper;
 ?>
 <div class="row">
     <div class="col-xs-12">
@@ -17,6 +18,22 @@ use yii\widgets\ActiveForm;
                     <div class="col-md-6">
                         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
                     </div>
+                </div>
+                <div class="row">
+                         <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-8">
+                                   <?= $form->field($model, 'brandImage')->fileInput() ?>   
+                                </div>
+                                <?php if(isset($model->id) && $model->id) { ?>
+                                <div class="col-md-3">
+                                   <img class="img-responsive" style="width:100px;height: 100px" src="<?php echo CommonHelper::getImage(UPLOAD_PATH_BRANDS_IMAGES . $model->image); ?>"/>               
+                                </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        
+                       
                 </div>
             </div>
         </div>

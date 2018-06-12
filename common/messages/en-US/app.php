@@ -81,5 +81,6 @@ return [
     'cant_delete' => 'Can not delete this rating',
     'Contacts' => 'Contacts',
     'product_type' => 'Product type',
-    'glossary' => 'Glossary'
+    'glossary' => 'Glossary',
+    'apply_brand' =>'Brand applied sucessfully'
     ];

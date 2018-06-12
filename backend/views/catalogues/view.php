@@ -47,10 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'productSubCategory.name',
             ],
             'product_type_id',
-            [
-                            'label' => 'Market',
-                            'attribute' => 'market.title',
-            ],
+            
             'width',
             'height',
             'length',

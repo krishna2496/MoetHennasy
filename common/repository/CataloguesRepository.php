@@ -69,7 +69,7 @@ class CataloguesRepository extends Repository {
         $model->brand_id = $data['brand_id'];
         $model->product_category_id = $data['product_category_id'];
         $model->product_sub_category_id = $data['product_sub_category_id'];
-        $model->market_id = $data['market_id'];
+//        $model->market_id = $data['market_id'];
         $model->width = $data['width'];
         $model->height = $data['height'];
         $model->length = $data['length'];
@@ -134,7 +134,7 @@ class CataloguesRepository extends Repository {
             $model->product_sub_category_id = $data['product_sub_category_id'];
         }
         if (isset($data['market_id'])) {
-            $model->market_id = $data['market_id'];
+//            $model->market_id = $data['market_id'];
         }
         if (isset($data['width'])) {
             $model->width = $data['width'];

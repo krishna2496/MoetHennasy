@@ -4,12 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\helpers\CommonHelper;
 use yii\helpers\Url;
+?>
 
-
-//$formUrl=Url::to(['market-contacts/create']);
-//if (isset($model->id) && $model->id) {
-//   $formUrl=Url::to(['market-contacts/create', 'id' => $model->id]);
-//}?>
 <div class="catalogues-form">
     <div class="row">
         <div class="col-xs-12">
@@ -26,7 +22,7 @@ use yii\helpers\Url;
                             <div class="col-md-12">
                              <?= $form->field($model, 'market_segment_id')->dropDownList($segmentData,['prompt' => 'Select One']) ?>
                             </div>
-                            <input type="hidden" value="<?= $market_id?>" name="market_id"/>
+                               <input type="hidden" value="<?= $market_id?>" name="market_id"/>
                               <div class="col-md-12">
                               <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
                               </div>

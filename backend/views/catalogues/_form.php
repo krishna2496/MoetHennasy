@@ -69,10 +69,7 @@ use common\helpers\CommonHelper;
                         </div>  
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
-                            <?= $form->field($model, 'market_id')->dropDownList($market, ['prompt' => 'Select Status']); ?> 
 
-                        </div>                
                         <div class="col-md-6">
                             <?= $form->field($model, 'width')->textInput(['maxlength' => true]) ?>
                         </div>

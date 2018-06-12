@@ -7,7 +7,8 @@ use common\models\Catalogues;
 
 class Brands extends BaseModel
 {
-   
+    public $brandImage;
+    
     public static function tableName()
     {
         return 'brands';
@@ -18,6 +19,7 @@ class Brands extends BaseModel
         return [
             [['created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
+            [['brandImage'], 'file','extensions'=>'jpg,png,jpeg'],
             [['name'], 'string', 'max' => 255],
             [['name'], 'required'],
             [['name'], 'unique'],
