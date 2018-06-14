@@ -16,13 +16,15 @@ class AppAsset extends AssetBundle
         'css/font-awesome.min.css',
         'theme/bower_components/bootstrap/dist/css/bootstrap.min.css',
         'theme/bower_components/Ionicons/css/ionicons.min.css',
+        'theme/bower_components/bootstrap-slider/slider.css',
         'theme/bower_components/select2/dist/css/select2.min.css',
-        'theme/dist/css/AdminLTE.min.css',
-        'theme/plugins/iCheck/square/blue.css',
+        'theme/dist/css/AdminLTE.min.css', 
         'theme/dist/css/skins/_all-skins.min.css',
+        'theme/plugins/iCheck/square/blue.css',
         'theme/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
         'theme/bower_components/bootstrap-daterangepicker/daterangepicker.css',
         'theme/plugins/rating/star-rating.min.css',
+      
     ];
     public $js = [
         'js/jquery.cookie.js',
@@ -36,8 +38,12 @@ class AppAsset extends AssetBundle
         'theme/plugins/iCheck/icheck.min.js',
         'theme/dist/js/adminlte.min.js',
         'theme/dist/js/demo.js',
+        'theme/dist/js/bootstrap-wizard.min.js',
+        'theme/dist/js/jquery.validate.min.js',
+         'theme/bower_components/bootstrap-slider/bootstrap-slider.js',
         'theme/plugins/rating/star-rating.min.js',
         'theme/bower_components/select2/dist/js/select2.min.js',
+       
     ];
     public $depends = [
         'yii\web\YiiAsset',

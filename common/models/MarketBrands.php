@@ -37,4 +37,7 @@ class MarketBrands extends BaseModel
             'deleted_at' => 'Deleted At',
         ];
     }
+     public function getBrand(){
+        return $this->hasOne(Brands::className(), ['id' => 'brand_id']);
+    } 
 }

@@ -6,7 +6,7 @@ use yii\helpers\Url;
 $formUrl = Url::to(['store-configuration']);
 
 ?>
-
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 <div class="market-segments-form">
     <div class="row">
           <div class="col-md-12">
@@ -15,8 +15,12 @@ $formUrl = Url::to(['store-configuration']);
             
               <h4 class="panel-title">Configuration</h4>
             </div>
+              <form>
+    <label for="slider-1">Slider:</label>
+    <input name="slider-1" id="slider-1" min="0" max="100" value="50" type="range">
+</form>
             <div class="panel-body panel-body-nopadding">
-              
+            <div class="slider slider-horizontal" id="red"><div class="slider-track"><div class="slider-track-low" style="left: 0px; width: 25%;"></div><div class="slider-selection" style="left: 25%; width: 50%;"></div><div class="slider-track-high" style="right: 0px; width: 25%;"></div><div class="slider-handle min-slider-handle round" role="slider" aria-valuemin="-200" aria-valuemax="200" style="left: 25%;" aria-valuenow="-100" tabindex="0"></div><div class="slider-handle max-slider-handle round" role="slider" aria-valuemin="-200" aria-valuemax="200" style="left: 75%;" aria-valuenow="100" tabindex="0"></div></div><div class="tooltip tooltip-main top" role="presentation" style="left: 50%; margin-left: -35.5px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">-100 : 100</div></div><div class="tooltip tooltip-min top" role="presentation" style="left: 25%; margin-left: -20.5px; display: none;"><div class="tooltip-arrow"></div><div class="tooltip-inner">-100</div></div><div class="tooltip tooltip-max top" role="presentation" style="left: 75%; margin-left: -18.5px; display: none;"><div class="tooltip-arrow"></div><div class="tooltip-inner">100</div></div></div>
               <!-- BASIC WIZARD -->
               <div id="validationWizard" class="basic-wizard">
                 
@@ -31,9 +35,7 @@ $formUrl = Url::to(['store-configuration']);
                   
                   <div class="tab-pane active" id="vtab1">
                       
-                   <input type="text" value="" class="slider form-control" data-slider-min="-200" data-slider-max="200"
-                         data-slider-step="5" data-slider-value="[-100,100]" data-slider-orientation="horizontal"
-                         data-slider-selection="before" data-slider-tooltip="show" data-slider-id="red">
+                   
 
                   <p>data-slider-id="red"</p>
                       
@@ -86,10 +88,7 @@ $formUrl = Url::to(['store-configuration']);
 jQuery(document).ready(function(){
 
   
-    $(function () {
-    /* BOOTSTRAP SLIDER */
-    $('.slider').slider()
-  })
+   
   // Basic Wizard
   jQuery('#basicWizard').bootstrapWizard();
   
@@ -149,11 +148,11 @@ jQuery(document).ready(function(){
       }
     }
   });	  
-
  $(function () {
     /* BOOTSTRAP SLIDER */
     $('.slider').slider()
-});
+  })
+ 
   
 });
  

@@ -45,6 +45,8 @@ class Markets extends BaseModel
         return $this->hasOne(User::className(), ['market_id' => 'id']);
     }
     
+    
+    
     public function canDelete()
     { 
         $count = User::find()->andWhere(['market_id' => $this->id])->count();

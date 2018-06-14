@@ -109,6 +109,20 @@ class BrandsController extends BaseBackendController
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('Brands');
             $data['id'] = $id;
+            if(UploadedFile::getInstance($model,'brandImage')) {
+                $fileData = array();
+                $fileData['files'][0] = UploadedFile::getInstance($model,'brandImage');
+                $fileData['type'] = 'brands';
+                $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
+                $uploadRepository = new UploadRepository();
+                $uploadData = $uploadRepository->store($fileData);
+                if($uploadData['status']['success'] == 1){
+                    $data['brandImage'] = $data['image'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
+                } else {
+                    return $this->redirect(['index']);
+                    Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
+                }
+            }
             $brandRepository = new BrandRepository();
             $brandData = $brandRepository->upadateBrand($data); 
             if($brandData['status']['success'] == 1)

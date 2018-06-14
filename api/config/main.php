@@ -105,6 +105,9 @@ return [
                 'GET v1/contacts/index' => 'v1/contacts/index',
                 'GET v1/glossary/index' => 'v1/glossary/index',
                 'GET v1/contacts/listing' => 'v1/contacts/listing',
+                'GET v1/stores-config/brand-list' => 'v1/stores-config/brand-list',
+                'GET v1/stores-config/question-list' => 'v1/stores-config/question-list',
+                'GET v1/stores-config/market-rule-list' => 'v1/stores-config/market-rule-list',
                 
             ],        
         ],

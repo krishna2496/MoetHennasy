@@ -14,7 +14,7 @@ class MarketRepository extends Repository {
         $this->apiCode = 1;
         $query = Markets::find()
             
-             ->joinWith(['marketSegmentData.marketSegment.marketSegmentContacts','user']);
+             ->joinWith(['marketSegmentData.marketSegment.marketSegmentContacts','user','marketSegmentData.marketSegment.marketRules.rules']);
     
         if (isset($data['search']) && $data['search']) {
             $search = $data['search'];

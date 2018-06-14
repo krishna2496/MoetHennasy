@@ -42,4 +42,7 @@ class MarketRules extends BaseModel
             'market_segment_id' => 'Market Cluster'
         ];
     }
+     public function getRules(){
+        return $this->hasOne(Rules::className(), ['id' => 'rule_id']);
+    }
 }

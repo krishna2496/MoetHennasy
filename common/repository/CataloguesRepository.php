@@ -9,8 +9,7 @@ use common\models\Catalogues;
 class CataloguesRepository extends Repository {
 
     public function listing($data = array()) {
-//        echo '<pre>';
-//        print_r($data);exit;
+        
         $this->apiCode = 1;
         $query = Catalogues::find()->joinWith(['market', 'brand','productType']);
 

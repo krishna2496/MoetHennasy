@@ -49,10 +49,14 @@ class BrandRepository extends Repository
     }
 
     public function upadateBrand($data = array()){
+       
         $this->apiCode = 0;
         $model = Brands::findOne($data['id']);
         if(isset($data['name'])) {
         	$model->name = $data['name'];
+        }
+         if(isset($data['image'])) {
+        	$model->image = $data['image'];
         }
         if($model->validate()) {
             if($model->save(false)) {
