@@ -21,7 +21,7 @@ use Yii;
  * @property string $updated_at
  * @property string $deleted_at
  */
-class StoreConfiguration extends \yii\db\ActiveRecord
+class StoreConfiguration extends BaseModel
 {
     /**
      * @inheritdoc
@@ -37,7 +37,7 @@ class StoreConfiguration extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['store_id', 'config_name', 'shelf_thumb', 'star_ratings', 'is_verified', 'is_autofill', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at'], 'required'],
+            [['store_id', 'config_name', 'shelf_thumb', 'star_ratings', 'is_verified', 'is_autofill'], 'required'],
             [['store_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['config_name'], 'string', 'max' => 100],

@@ -40,60 +40,73 @@ class StoresConfigController extends BaseApiController {
             $marketId = $currentUser->market_id;
         }
 
-        $returnData = array();
+        $returnDatas = array();
         $repository = new MarketBrandsRepository();
+
         if ($marketId != '') {
             $data['market_id'] = $marketId;
             $returnData = $repository->listing($data);
+
+
             $brandId = array();
             if ($returnData['status']['success'] == 1) {
                 if (!empty($returnData['data']['market_brands'])) {
-                    
+
                     foreach ($returnData['data']['market_brands'] as $key => $value) {
+                        $image = $value['brand']['image'];
+
+                        unset($value['brand']['created_by']);
+                        unset($value['brand']['updated_by']);
+                        unset($value['brand']['created_by']);
+                        unset($value['brand']['deleted_by']);
+                        unset($value['brand']['created_at']);
+                        unset($value['brand']['updated_at']);
+                        unset($value['brand']['deleted_at']);
+                        $value['brand']['image'] = isset($value['brand']['image']) ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_BRANDS_IMAGES . $image : '';
+                     
                         
-                        $returnData['data']['marketBrands'][$key]['id'] = $value['brand']['id'];
-                        $returnData['data']['marketBrands'][$key]['name'] = $value['brand']['name'];
-                        $returnData['data']['marketBrands'][$key]['image'] = isset($value['brand']['image']) ? CommonHelper::getPath('upload_url').UPLOAD_PATH_BRANDS_IMAGES.$value['brand']['image'] : '';
-                        $returnData['data']['marketBrands'][$key]['market_id'] = $value['market_id'];
-                        $brandId[$key] = $value['brand_id'];
+                        $product = $value['brand']['product'];
+                        foreach ($product as $key1 =>$value1){
+                            $imageProduct = $value1['image'];
+                            unset($value['brand']['product'][$key1]['image']);
+                            $value['brand']['product'][$key1]['image'] = isset($imageProduct) && ($imageProduct != '') ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_CATALOGUES_IMAGES . $imageProduct : '';
+                        }
+                         $returnDatas['data']['marketBrands'][$key] = $value['brand'];
                     }
                 }
             }
-
-            $product = array();
-            if (!empty($brandId)) {
-                $productData['brand_id'] = $brandId;
-                $productRepository = new CataloguesRepository();
-                $product = $productRepository->listing($productData);
-                if($product['status']['success'] == 1){
-                     foreach ($product['data']['catalogues'] as $key => $value) {
-                         $image =$product['data']['catalogues'][$key]['image'];
-                        unset($product['data']['catalogues'][$key]['image']);
-                        unset($product['data']['catalogues'][$key]['market']);
-                        unset($product['data']['catalogues'][$key]['brand']);
-                        unset($product['data']['catalogues'][$key]['productType']);
-                         $product['data']['catalogues'][$key]['image'] = isset($image) && ($image != '') ? CommonHelper::getPath('upload_url').UPLOAD_PATH_CATALOGUES_IMAGES.$image :'';
-                    } 
-                }
-                $returnData['data']['catalogues'] = $product['data']['catalogues'];
-            }
         }
-        unset($returnData['data']['market_brands']);
-        return $returnData;
+     
+        return $returnDatas;
     }
 
-    public function actionQuestionList(){
+    public function actionQuestionList() {
         $question = new QuestionsRepository();
-        $list =  $question->listing();
+        $list = $question->listing();
         return $list;
     }
-    
-    public function actionMarketRuleList(){
+
+    public function actionMarketRuleList() {
         $question = new MarketRepository();
-        $list =  $question->marketList();
+        $list = $question->marketList();
+        $dataArry = array();
         $marketSegmentData = $list['data']['markets'][0]['marketSegmentData'];
         unset($list['data']['markets']);
-        $list['data']['marketSegmentData'] = $marketSegmentData;
-        return $list;
+        foreach ($marketSegmentData as $key => $value) {
+            $marketRules = $value['marketSegment']['marketRules'];
+            $dataArry['marketSegmentData'][$key]['id'] = $value['id'];
+            $dataArry['marketSegmentData'][$key]['market_id'] = $value['market_id'];
+            $dataArry['marketSegmentData'][$key]['market_segment_id'] = $value['market_segment_id'];
+            $dataArry['marketSegmentData'][$key]['title'] = $value['marketSegment']['title'];
+            $dataArry['marketSegmentData'][$key]['description'] = $value['marketSegment']['description'];
+            $rulesArrry=array();
+            $rules =$value['marketSegment']['marketRules']; 
+            foreach ($rules as $key1 => $value1) {
+          $rulesArrry[$key1]=$value1['rules'];
+            }
+            $dataArry['marketSegmentData'][$key]['marketRules'] = $rulesArrry;
+        }
+        return $dataArry;
     }
+
 }

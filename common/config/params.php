@@ -5,6 +5,7 @@ define('UPLOAD_PATH_CATALOGUES_IMAGES','catalogues/');
 define('UPLOAD_PATH_BRANDS_IMAGES','brands/');
 define('UPLOAD_PATH_RULES_IMAGES','rules/');
 define('BOTTLE','map/bottle.png');
+define('UPLOAD_PATH_IMAGES','images/');
 define('API_KEY','AIzaSyAY16V1f859Ve4NZghFYEZ-XcAiHOIgdTw');
 return [
     'adminEmail' => 'admin@example.com',
@@ -31,5 +32,10 @@ return [
     'star_max_size' => [0 =>'10'],
     'star_min_size' => ['min_size' =>'3'],
     'store_grading' => ['tier_1' => 'Tier 1' ,'tier_2'=> 'Tier 2' ,'tier_3' => 'Tier 3'],
+    'num_of_seleves' => ['min' => '0','max' => '50'],
+    'height_of_seleves' => ['min' => '0','max' => '450'],
+    'width_of_seleves' => ['min' => '0','max' => '500'],
+    'depth_of_seleves' => ['min' => '0','max' => '100'],
+    'shelfConfig' => ['0' => 100,'1' =>2,'3' =>30],
     
 ];

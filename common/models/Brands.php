@@ -39,7 +39,9 @@ class Brands extends BaseModel
             'deleted_at' => 'Deleted At',
         ];
     }
-    
+    public function getProduct(){
+        return $this->hasMany(Catalogues::className(), ['brand_id' => 'id']);
+    }
     public function canDelete()
     { 
         $count = Catalogues::find()->andWhere(['brand_id' => $this->id])->count();

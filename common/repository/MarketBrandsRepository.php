@@ -11,9 +11,9 @@ class MarketBrandsRepository extends Repository {
     public function listing($data = array()) {
 
         $this->apiCode = 1;
-        $query = MarketBrands::find()->joinWith('brand');
+        $query = MarketBrands::find()->joinWith('brand.product.productCategory')->joinWith('brand.product.productType');
         if (isset($data['market_id']) && ($data['market_id'] != '')) {
-            $query->andWhere(['market_id' => $data['market_id']]);
+            $query->andWhere(['market_brands.market_id' => $data['market_id']]);
         }
         $data = array();
         $data['market_brands'] = $query->asArray()->all();

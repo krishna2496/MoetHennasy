@@ -8,6 +8,12 @@ use common\models\StoreConfigurationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\helpers\CommonHelper;
+use common\repository\MarketBrandsRepository;
+use common\repository\CataloguesRepository;
+use common\repository\QuestionsRepository;
+use common\repository\MarketRulesRepository;
+use common\repository\MarketRepository;
 
 /**
  * StoreConfigurationController implements the CRUD actions for StoreConfiguration model.
@@ -38,9 +44,61 @@ class StoreConfigurationController extends Controller
         $searchModel = new StoreConfigurationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $currentUser = CommonHelper::getUser();
+        $marketId = '';
+        if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
+            $marketId = $currentUser->market_id;
+        }
+
+        $returnData = array();
+        $repository = new MarketBrandsRepository();
+        if ($marketId != '') {
+            $data['market_id'] = $marketId;
+            $returnData = $repository->listing($data);
+            $brandId = array();
+            if ($returnData['status']['success'] == 1) {
+                if (!empty($returnData['data']['market_brands'])) {
+                    
+                    foreach ($returnData['data']['market_brands'] as $key => $value) {
+                        
+                        $returnData['data']['marketBrands'][$key]['id'] = $value['brand']['id'];
+                        $returnData['data']['marketBrands'][$key]['name'] = $value['brand']['name'];
+                        $returnData['data']['marketBrands'][$key]['image'] = isset($value['brand']['image']) ? CommonHelper::getPath('upload_url').UPLOAD_PATH_BRANDS_IMAGES.$value['brand']['image'] : '';
+                        $returnData['data']['marketBrands'][$key]['market_id'] = $value['market_id'];
+                        $brandId[$key] = $value['brand_id'];
+                    }
+                }
+            }
+
+            $product = array();
+            if (!empty($brandId)) {
+                $productData['brand_id'] = $brandId;
+                $productRepository = new CataloguesRepository();
+                $product = $productRepository->listing($productData);
+                if($product['status']['success'] == 1){
+                     foreach ($product['data']['catalogues'] as $key => $value) {
+                         $image =$product['data']['catalogues'][$key]['image'];
+                        unset($product['data']['catalogues'][$key]['image']);
+                        unset($product['data']['catalogues'][$key]['market']);
+                        unset($product['data']['catalogues'][$key]['brand']);
+                        unset($product['data']['catalogues'][$key]['productType']);
+                         $product['data']['catalogues'][$key]['image'] = isset($image) && ($image != '') ? CommonHelper::getPath('upload_url').UPLOAD_PATH_CATALOGUES_IMAGES.$image :'';
+                    } 
+                }
+                $returnData['data']['catalogues'] = $product['data']['catalogues'];
+            }
+        }
+        unset($returnData['data']['market_brands']);
+        
+        $brand = array();
+        if($returnData['status']['success'] == 1){
+        $brand=$returnData['data']['marketBrands'];
+        }
+       
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'brand' => $brand
         ]);
     }
 
