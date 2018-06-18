@@ -26,9 +26,9 @@ return [
         0 => 'Inactive'
     ],
     'limit' => [10 => 10, 20 => 20,50 => 50, 100 => 100 ,99999 => 'ALL'],  
-    'catalogue_status' => [0=>'Yes',1=>'No'], 
-    'catalogue_status_inverse' => [0=>'Yes',1=>'No'], 
-    'response_type' => ['drop-down' =>'Yes/No - Drop down','text' => 'Text'],
+    'catalogue_status' => [1=>'Yes',0=>'No'], 
+    'catalogue_status_inverse' => [1=>'Yes',0=>'No'], 
+    'response_type' => ['drop-down' =>'Yes/No - Drop down'],
     'star_max_size' => [0 =>'10'],
     'star_min_size' => ['min_size' =>'3'],
     'store_grading' => ['tier_1' => 'Tier 1' ,'tier_2'=> 'Tier 2' ,'tier_3' => 'Tier 3'],
@@ -37,5 +37,4 @@ return [
     'width_of_seleves' => ['min' => '0','max' => '500'],
     'depth_of_seleves' => ['min' => '0','max' => '100'],
     'shelfConfig' => ['0' => 100,'1' =>2,'3' =>30],
-    
-];
+    ];

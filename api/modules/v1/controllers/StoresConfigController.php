@@ -66,17 +66,25 @@ class StoresConfigController extends BaseApiController {
                      
                         
                         $product = $value['brand']['product'];
+ 
                         foreach ($product as $key1 =>$value1){
                             $imageProduct = $value1['image'];
+                            $box_only = $value1['box_only'];
+                            $top_shelf = $value1['top_shelf'];
                             unset($value['brand']['product'][$key1]['image']);
+                            unset($value['brand']['product'][$key1]['top_shelf']);
+                            unset($value['brand']['product'][$key1]['box_only']);
                             $value['brand']['product'][$key1]['image'] = isset($imageProduct) && ($imageProduct != '') ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_CATALOGUES_IMAGES . $imageProduct : '';
+                            $value['brand']['product'][$key1]['top_shelf'] = \yii::$app->params['catalogue_status'][$top_shelf];
+                            $value['brand']['product'][$key1]['box_only'] = \yii::$app->params['catalogue_status'][$box_only];
+                            
                         }
                          $returnDatas['marketBrands'][$key] = $value['brand'];
                     }
                 }
             }
         }
-     
+       
         return $returnDatas;
     }
 
