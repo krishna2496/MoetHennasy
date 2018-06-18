@@ -71,7 +71,7 @@ class StoresConfigController extends BaseApiController {
                             unset($value['brand']['product'][$key1]['image']);
                             $value['brand']['product'][$key1]['image'] = isset($imageProduct) && ($imageProduct != '') ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_CATALOGUES_IMAGES . $imageProduct : '';
                         }
-                         $returnDatas['data']['marketBrands'][$key] = $value['brand'];
+                         $returnDatas['marketBrands'][$key] = $value['brand'];
                     }
                 }
             }
