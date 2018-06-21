@@ -14,17 +14,11 @@ use common\repository\CataloguesRepository;
 use common\repository\QuestionsRepository;
 use common\repository\MarketRulesRepository;
 use common\repository\MarketRepository;
+use common\models\CataloguesSearch;
 
-/**
- * StoreConfigurationController implements the CRUD actions for StoreConfiguration model.
- */
-class StoreConfigurationController extends Controller
-{
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
+class StoreConfigurationController extends Controller {
+
+    public function behaviors() {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -34,94 +28,90 @@ class StoreConfigurationController extends Controller
             ],
         ];
     }
-
-    /**
-     * Lists all StoreConfiguration models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new StoreConfigurationSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+    
+    public function actionIndex() {
+       
         $currentUser = CommonHelper::getUser();
         $marketId = '';
         if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
             $marketId = $currentUser->market_id;
         }
 
-        $returnData = array();
+        $returnData = $brand = $brandId = array();
         $repository = new MarketBrandsRepository();
         if ($marketId != '') {
             $data['market_id'] = $marketId;
             $returnData = $repository->listing($data);
+
             $brandId = array();
             if ($returnData['status']['success'] == 1) {
                 if (!empty($returnData['data']['market_brands'])) {
-                    
+
                     foreach ($returnData['data']['market_brands'] as $key => $value) {
-                        
-                        $returnData['data']['marketBrands'][$key]['id'] = $value['brand']['id'];
-                        $returnData['data']['marketBrands'][$key]['name'] = $value['brand']['name'];
-                        $returnData['data']['marketBrands'][$key]['image'] = isset($value['brand']['image']) ? CommonHelper::getPath('upload_url').UPLOAD_PATH_BRANDS_IMAGES.$value['brand']['image'] : '';
-                        $returnData['data']['marketBrands'][$key]['market_id'] = $value['market_id'];
-                        $brandId[$key] = $value['brand_id'];
+                        $brand[$key]['id'] = $value['brand']['id'];
+                        $brand[$key]['name'] = $value['brand']['name'];
+                        $brand[$key]['image'] = $value['brand']['image'];
+                        $brandId[]=$value['brand']['id'];
                     }
                 }
             }
-
-            $product = array();
-            if (!empty($brandId)) {
-                $productData['brand_id'] = $brandId;
-                $productRepository = new CataloguesRepository();
-                $product = $productRepository->listing($productData);
-                if($product['status']['success'] == 1){
-                     foreach ($product['data']['catalogues'] as $key => $value) {
-                         $image =$product['data']['catalogues'][$key]['image'];
-                        unset($product['data']['catalogues'][$key]['image']);
-                        unset($product['data']['catalogues'][$key]['market']);
-                        unset($product['data']['catalogues'][$key]['brand']);
-                        unset($product['data']['catalogues'][$key]['productType']);
-                         $product['data']['catalogues'][$key]['image'] = isset($image) && ($image != '') ? CommonHelper::getPath('upload_url').UPLOAD_PATH_CATALOGUES_IMAGES.$image :'';
-                    } 
-                }
-                $returnData['data']['catalogues'] = $product['data']['catalogues'];
-            }
-        }
-        unset($returnData['data']['market_brands']);
-        
-        $brand = array();
-        if($returnData['status']['success'] == 1){
-        $brand=$returnData['data']['marketBrands'];
         }
        
+        $filterProduct['brand_id'] = $brandId;
+        if(!isset($filterProduct['limit'])){
+            $filterProduct['limit'] = Yii::$app->params['pageSize'];
+        }
+        
+        if(isset($_SESSION['config']['brands']) && ($_SESSION['config']['brands'] != '')){
+            $filterProduct['brand_id'] = $_SESSION['config']['brands'];
+        }
+        
+        $searchModel = new CataloguesSearch();
+        $dataProvider = $searchModel->search($filterProduct);
+        
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'brand' => $brand
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'brand' => $brand,
+               
         ]);
     }
 
-    /**
-     * Displays a single StoreConfiguration model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
+    public function actionSaveData() {
+        $post = Yii::$app->request->post();
+
+        $_SESSION['config']['num_of_shelves'] = $post['num_of_shelves'];
+        $_SESSION['config']['height_of_shelves'] = $post['height_of_shelves'];
+        $_SESSION['config']['width_of_shelves'] = $post['width_of_shelves'];        
+        $_SESSION['config']['depth_of_shelves'] = $post['depth_of_shelves'];
+        $_SESSION['config']['brands'] = $post['brands'];
+        $_SESSION['config']['display_name'] = $post['display_name'];
+       
+    }
+    
+    public function actionSaveProductData() {
+        $post = Yii::$app->request->post();
+         echo '<pre>';
+        print_r( $post);exit;
+        $flag = 0;
+        if(!empty($post['productArry'])){
+        $flag = 1;
+        $product = $post['productArry'];
+        $_SESSION['config']['products'] = implode(',', $product);
+        }
+        echo '<pre>';
+        print_r( $_SESSION);exit;
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return $flag;
+    }
+
+    public function actionView($id) {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                'model' => $this->findModel($id),
         ]);
     }
 
-    /**
-     * Creates a new StoreConfiguration model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new StoreConfiguration();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -129,19 +119,11 @@ class StoreConfigurationController extends Controller
         }
 
         return $this->render('create', [
-            'model' => $model,
+                'model' => $model,
         ]);
     }
 
-    /**
-     * Updates an existing StoreConfiguration model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -149,37 +131,22 @@ class StoreConfigurationController extends Controller
         }
 
         return $this->render('update', [
-            'model' => $model,
+                'model' => $model,
         ]);
     }
 
-    /**
-     * Deletes an existing StoreConfiguration model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the StoreConfiguration model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return StoreConfiguration the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = StoreConfiguration::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
 }

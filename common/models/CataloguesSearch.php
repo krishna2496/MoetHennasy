@@ -29,18 +29,21 @@ class CataloguesSearch extends Catalogues {
         $userRepository = new CataloguesRepository;
         $userList = array();
         $resultUserList = $userRepository->listing($params);
+        
         if ($resultUserList['status']['success'] == 1) {
             if ($resultUserList['data']['catalogues']) {
                 foreach ($resultUserList['data']['catalogues'] as $key => $value) {
-
+                   
                     $temp = $value;
                     $temp['marketName'] = $value['market']['title'];
                     $temp['brandName'] = $value['brand']['name'];
+//                    $temp['productType'] = $value['productType']['title'];
+                    $temp['productCategory'] = $value['productCategory']['name'];
                     $userList[] = $temp;
                 }
             }
         }
-
+        
         $dataProvider = new ArrayDataProvider([
             'allModels' => $userList,
             'pagination' => [
@@ -51,6 +54,9 @@ class CataloguesSearch extends Catalogues {
                     [
                     'sku',
                     'ean',
+                    'short_name',
+                    'productCategory',
+                  
                     'marketName',
                     'brandName',
                     'price'
@@ -61,6 +67,8 @@ class CataloguesSearch extends Catalogues {
         if (isset($params['selection']) && ($params['selection'] != '')) {
             $dataProvider->pagination->params = ['selection' => $params['selection']];
         }
+//        echo '<pre>';
+//        print_r($dataProvider);exit;
         return $dataProvider;
     }
 

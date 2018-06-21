@@ -37,4 +37,5 @@ return [
     'width_of_seleves' => ['min' => '0','max' => '500'],
     'depth_of_seleves' => ['min' => '0','max' => '100'],
     'shelfConfig' => ['0' => 100,'1' =>2,'3' =>30],
+    'rackWidth' => ['0' => 550],
     ];

@@ -9,8 +9,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="glossary-create">
 
     <?= $this->render('_form', [
-//        'model' => $model,
-        'brand' => $brand
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'brand' => $brand,
+                
     ]) ?>
 
 </div>

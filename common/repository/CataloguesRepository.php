@@ -9,9 +9,9 @@ use common\models\Catalogues;
 class CataloguesRepository extends Repository {
 
     public function listing($data = array()) {
-        
+       
         $this->apiCode = 1;
-        $query = Catalogues::find()->joinWith(['market', 'brand','productType']);
+        $query = Catalogues::find()->joinWith(['market', 'brand','productType','productCategory']);
 
         if (isset($data['serachText']) && ($data['serachText'] != '')) {
             $data['search'] = $data['serachText'];

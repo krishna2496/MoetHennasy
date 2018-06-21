@@ -116,5 +116,26 @@ class StoresConfigController extends BaseApiController {
         }
         return $dataArry;
     }
+    
+    public function actionConfig(){
+        echo '<pre>';
+//        print_r(Yii::$app->request->post());
+        $data = Yii::$app->request->post('config');
+//                print_r(Yii::$app->request->post('questions'));
+        $d= json_decode($data);
+        print_r($d->asArray());
+//        print_r($d->questions[0]->questionID);
+        exit;
+        $data=array();
+        
+        $data['configID'] = Yii::$app->request->get('configID');
+        $data['storeID'] = Yii::$app->request->get('storeID');  
+        $data['configName'] = Yii::$app->request->get('configName');
+        $data['configImageName'] = Yii::$app->request->get('configImageName');
+             
+          
+          
+    }
+  
 
 }

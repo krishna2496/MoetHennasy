@@ -212,7 +212,9 @@ if (isset($filters['selection']) && (!empty($filters['selection']))) {
             $('input[name="selection[]"]').iCheck('check');
 
         });
-
+$('input[name="selection[]"]').on('ifChecked', function(event){
+  alert(event.type + ' callback');
+});
         $('.select-on-check-all').on('ifUnchecked', function (event) {
             $('input[name="selection[]"]').iCheck('uncheck');
 

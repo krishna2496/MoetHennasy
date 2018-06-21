@@ -38,11 +38,7 @@ class AppAsset extends AssetBundle
         'theme/plugins/iCheck/icheck.min.js',
         'theme/dist/js/adminlte.min.js',
         'theme/dist/js/demo.js',
-        'theme/dist/js/bootstrap-wizard.min.js',
-        'theme/dist/js/modernizr.min.js',
-         'theme/dist/js/lodash.js',
-         'theme/dist/js/fabric.js',
-         'theme/dist/js/myCanvas.js',
+  
          'theme/dist/js/jquery.validate.min.js',
          'theme/bower_components/bootstrap-slider/bootstrap-slider.js',
         'theme/plugins/rating/star-rating.min.js',
