@@ -13,7 +13,6 @@ use yii\web\NotFoundHttpException;
 class StoreConfigRepository extends Repository {
 
     public function listing($data = array()) {
-
         $this->apiCode = 1;
         $query = StoreConfiguration::find()->joinWith(['shelfDisplay', 'configFeedBack','stores']);
 
@@ -22,6 +21,7 @@ class StoreConfigRepository extends Repository {
         }
         
         if (isset($data['store_id']) && $data['store_id']) {
+            
             $query->andWhere(['stores.id' => $data['store_id']]);
         }
         
@@ -36,9 +36,22 @@ class StoreConfigRepository extends Repository {
         if (isset($data['market_id']) && $data['market_id']) {
             $query->andWhere(['stores.market_id' => $data['market_id']]);
         }
-
+        
+        if(isset($data['created_by']) && ($data['created_by'])){
+             $query->andWhere(['store_configuration.created_by' => $data['created_by']]);
+        }
+        if(isset($data['search']) && $data['search']){
+            $search = trim($data['search']);
+            
+            $query->andWhere([
+                'or',
+                    ['like', 'store_configuration.config_name', $search],
+                    ['like', 'stores.name', $search],
+            ]);
+        }
         $data = array();
         $data['stores_config'] = $query->asArray()->all();
+      
         $this->apiData = $data;
         return $this->response();
     }

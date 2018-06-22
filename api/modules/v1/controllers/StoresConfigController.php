@@ -154,8 +154,62 @@ class StoresConfigController extends BaseApiController {
     
     public function actionListing() {
         $storeConfig = new StoreConfigRepository();
-        $returnData = $storeConfig->listing($data = array());
-        return $returnData;
+       
+        $data = Yii::$app->request->post();
+        $user = CommonHelper::getUser();
+        if(!isset($data['store_id'])){
+            $data['created_by'] = $user->id;
+        }
+   
+        $returnData = $storeConfig->listing($data);
+      
+        $dataValue = $returnData['data']['stores_config'];
+        foreach ($dataValue as $keyV=>$valueV){
+                $temp = array();
+                $shelfDisplay = $valueV['shelfDisplay'];
+                
+                $shelf_thumb =  $valueV['shelf_thumb'];
+                unset($dataValue[$keyV]['shelf_thumb']);
+                $dataValue[$keyV]['shelf_thumb'] = CommonHelper::getImage(UPLOAD_PATH_STORE_CONFIG_IMAGES . $shelf_thumb);
+                foreach ($shelfDisplay as $key => $value) {
+                   
+                    $productIds = json_decode($value['shelf_config'], true);
+                    foreach ($productIds as $key2 => $value2) {
+                        $productId = explode(',', $value2['productIds']);
+                        foreach ($productId as $productKey => $productValue) {
+                            $catalogueRepository = new CataloguesRepository();
+                            $productIdData['products_id'] = $productValue;
+                            $productArray = array();
+                            $product = $catalogueRepository->listing($productIdData);
+
+                            if ($product['status']['success'] == 1) {
+                                $productArray = $product['data']['catalogues'][0];
+                                unset($productArray['market']);
+                                unset($productArray['brand']);
+                                unset($productArray['productType']);
+                                unset($productArray['productCategory']);
+                            }
+                            $image = $productArray['image'];
+                            unset($productArray['image']);
+                            unset($dataValue[$keyV]['shelfDisplay']);
+                            $productArray['image'] = CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $image);
+                            $temp['shelf_config'][$key2]['productIds'][$productKey] = $productArray;
+                        }
+                    }
+                }
+                      
+                unset($dataValue[$keyV]['shelfDisplay']);
+                $dataValue[$keyV]['shelfDisplay']['display_name'] = $shelfDisplay[0]['display_name'];
+                $dataValue[$keyV]['shelfDisplay']['no_of_shelves'] = $shelfDisplay[0]['no_of_shelves'];
+                $dataValue[$keyV]['shelfDisplay']['height_of_shelves'] = $shelfDisplay[0]['height_of_shelves'];
+                $dataValue[$keyV]['shelfDisplay']['width_of_shelves'] = $shelfDisplay[0]['width_of_shelves'];
+                $dataValue[$keyV]['shelfDisplay']['depth_of_shelves'] = $shelfDisplay[0]['depth_of_shelves'];
+                $dataValue[$keyV]['shelfDisplay']['brand_thumb_id'] = $shelfDisplay[0]['brand_thumb_id'];
+                $dataValue[$keyV]['shelfDisplay']["shelf_config"] = $temp['shelf_config'];
+        }
+//        echo '<pre>';
+//        print_r($dataValue);exit;
+        return $dataValue;
     }
     
     public function actionRating() {
