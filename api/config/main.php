@@ -108,7 +108,9 @@ return [
                 'GET v1/stores-config/brand-list' => 'v1/stores-config/brand-list',
                 'GET v1/stores-config/question-list' => 'v1/stores-config/question-list',
                 'GET v1/stores-config/market-rule-list' => 'v1/stores-config/market-rule-list',
-                'POST v1/stores-config/config' => 'v1/stores-config/config',
+                'POST v1/stores-config/configuration' => 'v1/stores-config/configuration',
+                'POST v1/stores-config/listing' => 'v1/stores-config/listing',
+                'POST v1/stores-config/rating' => 'v1/stores-config/rating',
                 
             ],        
         ],
