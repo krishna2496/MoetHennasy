@@ -82,5 +82,6 @@ return [
     'Contacts' => 'Contacts',
     'product_type' => 'Product type',
     'glossary' => 'Glossary',
-    'apply_brand' =>'Brand applied sucessfully'
+    'apply_brand' =>'Brand applied sucessfully',
+    'store_config' => 'Configuration'
     ];

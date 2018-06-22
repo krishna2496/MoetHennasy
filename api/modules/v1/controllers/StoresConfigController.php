@@ -14,14 +14,28 @@ use common\repository\QuestionsRepository;
 use common\repository\MarketRulesRepository;
 use common\repository\MarketRepository;
 use yii\data\ArrayDataProvider;
+use common\repository\StoreConfigRepository;
 
 class StoresConfigController extends BaseApiController {
 
     public $modelClass = 'common\models\Brands';
 
-    public function behaviors() {
+    public function behaviors()
+    {
         $behaviors = parent::behaviors();
-
+        $behaviors['access'] = [
+            'class' => AccessControl::className(),
+            'ruleConfig' => [
+                'class' => \common\components\AccessRule::className(),
+            ],
+            'rules' => [
+                [
+                    'actions' => ['brand-list','question-list','market-rule-list','configuration','listing','rating'],
+                    'allow' => true,
+                    'roles' => ['&'],
+                ],
+            ],
+        ];
         return $behaviors;
     }
 
@@ -29,6 +43,13 @@ class StoresConfigController extends BaseApiController {
         $actions = parent::actions();
 
         unset($actions['brand-list']);
+        unset($actions['question-list']);
+        unset($actions['market-rule-list']);
+        unset($actions['market-rule-list']);
+        unset($actions['configuration']);
+        unset($actions['listing']);
+        unset($actions['rating']);
+        
         return $actions;
     }
 
@@ -63,11 +84,11 @@ class StoresConfigController extends BaseApiController {
                         unset($value['brand']['updated_at']);
                         unset($value['brand']['deleted_at']);
                         $value['brand']['image'] = isset($value['brand']['image']) ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_BRANDS_IMAGES . $image : '';
-                     
-                        
+
+
                         $product = $value['brand']['product'];
- 
-                        foreach ($product as $key1 =>$value1){
+
+                        foreach ($product as $key1 => $value1) {
                             $imageProduct = $value1['image'];
                             $box_only = $value1['box_only'];
                             $top_shelf = $value1['top_shelf'];
@@ -77,14 +98,13 @@ class StoresConfigController extends BaseApiController {
                             $value['brand']['product'][$key1]['image'] = isset($imageProduct) && ($imageProduct != '') ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_CATALOGUES_IMAGES . $imageProduct : '';
                             $value['brand']['product'][$key1]['top_shelf'] = \yii::$app->params['catalogue_status'][$top_shelf];
                             $value['brand']['product'][$key1]['box_only'] = \yii::$app->params['catalogue_status'][$box_only];
-                            
                         }
-                         $returnDatas['marketBrands'][$key] = $value['brand'];
+                        $returnDatas['marketBrands'][$key] = $value['brand'];
                     }
                 }
             }
         }
-       
+
         return $returnDatas;
     }
 
@@ -107,35 +127,45 @@ class StoresConfigController extends BaseApiController {
             $dataArry['marketSegmentData'][$key]['market_segment_id'] = $value['market_segment_id'];
             $dataArry['marketSegmentData'][$key]['title'] = $value['marketSegment']['title'];
             $dataArry['marketSegmentData'][$key]['description'] = $value['marketSegment']['description'];
-            $rulesArrry=array();
-            $rules =$value['marketSegment']['marketRules']; 
+            $rulesArrry = array();
+            $rules = $value['marketSegment']['marketRules'];
             foreach ($rules as $key1 => $value1) {
-          $rulesArrry[$key1]=$value1['rules'];
+                $rulesArrry[$key1] = $value1['rules'];
             }
             $dataArry['marketSegmentData'][$key]['marketRules'] = $rulesArrry;
         }
         return $dataArry;
     }
-    
-    public function actionConfig(){
-        echo '<pre>';
-//        print_r(Yii::$app->request->post());
+
+    public function actionConfiguration() {
+
         $data = Yii::$app->request->post('config');
-//                print_r(Yii::$app->request->post('questions'));
-        $d= json_decode($data);
-        print_r($d->asArray());
-//        print_r($d->questions[0]->questionID);
-        exit;
-        $data=array();
-        
-        $data['configID'] = Yii::$app->request->get('configID');
-        $data['storeID'] = Yii::$app->request->get('storeID');  
-        $data['configName'] = Yii::$app->request->get('configName');
-        $data['configImageName'] = Yii::$app->request->get('configImageName');
-             
-          
-          
+     
+        $configData = json_decode($data ,true);
+    
+        $storeConfig = new StoreConfigRepository();
+        if(isset($configData['config_id']) && ($configData['config_id'] != '')){
+        $returnData = $storeConfig->updateConfig($configData);
+        }else{
+        $returnData = $storeConfig->createConfig($configData);
+        }
+        return $returnData;
     }
-  
+    
+    public function actionListing() {
+        $storeConfig = new StoreConfigRepository();
+        $returnData = $storeConfig->listing($data = array());
+        return $returnData;
+    }
+    
+    public function actionRating() {
+        $data = Yii::$app->request->post();
+        
+        $storeConfig = new StoreConfigRepository();
+        
+        $returnData = $storeConfig->createRating($data);
+        return $returnData;
+    }
+    
 
 }

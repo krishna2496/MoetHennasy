@@ -37,7 +37,7 @@ class StoreConfiguration extends BaseModel
     public function rules()
     {
         return [
-            [['store_id', 'config_name', 'shelf_thumb', 'star_ratings', 'is_verified', 'is_autofill'], 'required'],
+            [['store_id', 'config_name', 'shelf_thumb'], 'required'],
             [['store_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['config_name'], 'string', 'max' => 100],
@@ -66,5 +66,16 @@ class StoreConfiguration extends BaseModel
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',
         ];
+    }
+    
+    public function getShelfDisplay(){
+        return $this->hasMany(ShelfDisplay::className(), ['config_id' => 'id']);
+    }
+    
+    public function getConfigFeedBack(){
+        return $this->hasMany(ConfigFeedback::className(), ['config_id' => 'id']);
+    }
+    public function getStores(){
+        return $this->hasMany(Stores::className(), ['id' => 'store_id']);
     }
 }

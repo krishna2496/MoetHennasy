@@ -48,6 +48,10 @@ class CataloguesRepository extends Repository {
             $query->andWhere(['catalogues.id' => explode(',',$data['selection'])]);
         }
         
+        if (isset($data['products_id']) && ($data['products_id'] != '')) {
+            $query->andWhere(['catalogues.id' => $data['products_id']]);
+        }
+        
       
 
         $result = $query->asArray();
