@@ -20,24 +20,24 @@ class StoresConfigController extends BaseApiController {
 
     public $modelClass = 'common\models\Brands';
 
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors['access'] = [
-            'class' => AccessControl::className(),
-            'ruleConfig' => [
-                'class' => \common\components\AccessRule::className(),
-            ],
-            'rules' => [
-                [
-                    'actions' => ['brand-list','question-list','market-rule-list','configuration','listing','rating'],
-                    'allow' => true,
-                    'roles' => ['&'],
-                ],
-            ],
-        ];
-        return $behaviors;
-    }
+//    public function behaviors()
+//    {
+//        $behaviors = parent::behaviors();
+//        $behaviors['access'] = [
+//            'class' => AccessControl::className(),
+//            'ruleConfig' => [
+//                'class' => \common\components\AccessRule::className(),
+//            ],
+//            'rules' => [
+//                [
+//                    'actions' => ['brand-list','question-list','market-rule-list','configuration','listing','rating'],
+//                    'allow' => true,
+//                    'roles' => ['&'],
+//                ],
+//            ],
+//        ];
+//        return $behaviors;
+//    }
 
     public function actions() {
         $actions = parent::actions();
@@ -162,7 +162,54 @@ class StoresConfigController extends BaseApiController {
         }
    
         $returnData = $storeConfig->listing($data);
-      
+  
+        $limit = Yii::$app->params['pageSize'];
+        $data['per-page'] = Yii::$app->params['pageSize'];
+
+        $data['page'] = 1;
+        if(isset($data['pageNumber']) && ($data['pageNumber'] != '')){
+             $data['page'] = $data['pageNumber']; 
+        }
+     
+        if(isset($data['sort']) && ($data['sort'] != '')){
+          
+            if($data['sort'] == 'StoreName A-Z'){
+                 $data['sort']='name';
+            }
+            if($data['sort'] == 'StoreName Z-A'){
+                 $data['sort']='-name';
+            }
+          
+            if($data['sort'] == 'configName A-Z'){
+                 $data['sort']='config_name';
+            }
+            
+            if($data['sort'] == 'configName Z-A'){
+                 $data['sort']='-config_name';
+            }
+          
+            if($data['sort'] == 'CityName A-Z'){
+                 $data['sort']='cityId';
+            }
+            if($data['sort'] == 'CityName Z-A'){
+                 $data['sort']='-cityId';
+            }
+            if($data['sort'] == 'Visit Old to new'){
+                 $data['sort']='id';
+            }
+            if($data['sort'] == 'Visit new to Old'){
+                 $data['sort']='-id';
+            }
+            if($data['sort'] == 'distance A-Z'){
+                 $data['sort']='distance';
+            }
+             if($data['sort'] == 'distance Z-A'){
+                 $data['sort']='-distance';
+            }
+        }
+        $_GET['sort'] = $data['sort'];
+        $_GET['page'] = $data['page'];
+        
         $dataValue = $returnData['data']['stores_config'];
         foreach ($dataValue as $keyV=>$valueV){
                 $temp = array();
@@ -207,9 +254,30 @@ class StoresConfigController extends BaseApiController {
                 $dataValue[$keyV]['shelfDisplay']['brand_thumb_id'] = $shelfDisplay[0]['brand_thumb_id'];
                 $dataValue[$keyV]['shelfDisplay']["shelf_config"] = $temp['shelf_config'];
         }
-//        echo '<pre>';
-//        print_r($dataValue);exit;
-        return $dataValue;
+        
+            $dataProvider = new ArrayDataProvider([
+            'allModels' => $dataValue,
+            'pagination' => [
+                'pageSize' => $limit
+            ],
+            'sort' => [
+                'attributes' =>
+                [
+                    'id',
+                    'config_name',
+                    'cityId',
+                    'distance',
+                    'name',
+                    'market',
+                    'marketSegment',
+                    'address1',
+                    'assignTo',
+                   
+                ],          
+            ]
+             
+        ]);
+        return $dataProvider;
     }
     
     public function actionRating() {
