@@ -56,7 +56,7 @@ class CommonHelper
 				\Tinify\setKey('b3_4sPU_YI0vpBlDyaPaGkDn0NlGhpMW');
 
 				$source = \Tinify\fromFile($fullPath.$fileName);
-            	$source->toFile($fullPath.$fileName);
+                                $source->toFile($fullPath.$fileName);
 			}
 
 			return $fileName;
@@ -241,6 +241,69 @@ class CommonHelper
 		header("Expires: 0");
 		echo $data;exit;
 	}
+        
+    public static function resizeImage($fileuploadname, $saved_filname, $height, $width, $path , $min = true)
+    {
+        $file_path = CommonHelper::getPath('upload_path').$fileuploadname;
+        
+        $copyPath = CommonHelper::getPath('upload_path').$path.'original/';
+        FileHelper::createDirectory($copyPath, $mode = 0775);
+        copy($file_path , $copyPath.$saved_filname);
+
+        $new_file_path = CommonHelper::getPath('upload_path').$path.$saved_filname;
+        list($img_width, $img_height, $type, $attr) = getimagesize($file_path);
+        if (!$img_width || !$img_height)
+        {
+            echo "Error";
+        }
+
+        $scale = min(
+                $width / $img_width, $height / $img_height
+        );
+
+        if($min == false){
+        	$scale = max(
+                $width / $img_width, $height / $img_height
+        	);
+        }
+
+        if ($scale > 1)
+        {
+            $scale = $height / $img_height;
+        }
+        $new_width = $img_width * $scale;
+        $new_height = $img_height * $scale;
+
+        $new_img = imagecreatetruecolor($new_width, $new_height);
+        switch (strtolower(substr(strrchr($saved_filname, '.'), 1)))
+        {
+            case 'jpg':
+            case 'jpeg':
+                $src_img = imagecreatefromjpeg($file_path);
+                $write_image = 'imagejpeg';
+                break;
+            case 'gif':
+                $src_img = imagecreatefromgif($file_path);
+                $write_image = 'imagegif';
+                break;
+            case 'png':
+                $src_img = imagecreatefrompng($file_path);
+                $write_image = 'imagepng';
+                break;
+            default:
+                $src_img = $image_method = null;
+        }
+        $new_img = imagecreatetruecolor($new_width, $new_height);
+        imagealphablending($new_img, false);
+        imagesavealpha($new_img, true);
+        $transparent = imagecolorallocatealpha($new_img, 255, 255, 255, 127);
+        imagefilledrectangle($new_img, 0, 0, $new_width, $new_height, $transparent);
+
+        $success = $src_img && imagecopyresampled(
+                        $new_img, $src_img, 0, 0, 0, 0, $new_width, $new_height, $img_width, $img_height
+                ) && $write_image($new_img, $new_file_path);
+        return $success;
+    }
         
 }
 

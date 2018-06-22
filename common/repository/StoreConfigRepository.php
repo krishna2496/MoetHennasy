@@ -15,10 +15,26 @@ class StoreConfigRepository extends Repository {
     public function listing($data = array()) {
 
         $this->apiCode = 1;
-        $query = StoreConfiguration::find()->joinWith(['shelfDisplay', 'configFeedBack']);
+        $query = StoreConfiguration::find()->joinWith(['shelfDisplay', 'configFeedBack','stores']);
 
         if (isset($data['config_id']) && $data['config_id']) {
             $query->andWhere(['store_configuration.id' => $data['config_id']]);
+        }
+        
+        if (isset($data['store_id']) && $data['store_id']) {
+            $query->andWhere(['stores.id' => $data['store_id']]);
+        }
+        
+        if (isset($data['city_id']) && $data['city_id']) {
+            $query->andWhere(['stores.city_id' => $data['city_id']]);
+        }
+        
+        if (isset($data['province_id']) && $data['province_id']) {
+            $query->andWhere(['stores.province_id' => $data['province_id']]);
+        }
+        
+        if (isset($data['market_id']) && $data['market_id']) {
+            $query->andWhere(['stores.market_id' => $data['market_id']]);
         }
 
         $data = array();
@@ -113,11 +129,13 @@ class StoreConfigRepository extends Repository {
                     $query->andWhere(['store_configuration.id' => $configId]);
                 }
                 $dataValue = $query->asArray()->all();
+             
                 $temp = array();
                 $shelfDisplay = $dataValue[0]['shelfDisplay'];
                 
-               
-                
+                $shelf_thumb =  $dataValue[0]['shelf_thumb'];
+                unset($dataValue[0]['shelf_thumb']);
+                $dataValue[0]['shelf_thumb'] = CommonHelper::getImage(UPLOAD_PATH_STORE_CONFIG_IMAGES . $shelf_thumb);
                 foreach ($shelfDisplay as $key => $value) {
 
                     $productIds = json_decode($value['shelf_config'], true);
@@ -290,7 +308,9 @@ class StoreConfigRepository extends Repository {
 
                 $temp = array();
                 $shelfDisplay = $dataValue[0]['shelfDisplay'];
-
+                $shelf_thumb =  $dataValue[0]['shelf_thumb'];
+                unset($dataValue[0]['shelf_thumb']);
+                $dataValue[0]['shelf_thumb'] = CommonHelper::getImage(UPLOAD_PATH_STORE_CONFIG_IMAGES . $shelf_thumb);
                 foreach ($shelfDisplay as $key => $value) {
 
                     $productIds = json_decode($value['shelf_config'], true);

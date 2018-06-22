@@ -4,6 +4,8 @@ define('UPLOAD_PATH_STORE_IMAGES', 'stores/');
 define('UPLOAD_PATH_CATALOGUES_IMAGES','catalogues/');
 define('UPLOAD_PATH_BRANDS_IMAGES','brands/');
 define('UPLOAD_PATH_RULES_IMAGES','rules/');
+define('UPLOAD_PATH_STORE_CONFIG_IMAGES','store_config/');
+define('UPLOAD_PATH_STORE_CONFIG_ORIGINAL_IMAGES','store_config/original/');
 define('BOTTLE','map/bottle.png');
 define('UPLOAD_PATH_IMAGES','images/');
 define('API_KEY','AIzaSyAY16V1f859Ve4NZghFYEZ-XcAiHOIgdTw');

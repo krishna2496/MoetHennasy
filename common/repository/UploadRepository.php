@@ -21,7 +21,14 @@ class UploadRepository extends Repository
                 $temp['name'] = $imageName;
                 $uploadedFile[] = $temp;
             }
-
+            if($data['type'] == 'store_config'){
+              if(CommonHelper::resizeImage(UPLOAD_PATH_STORE_CONFIG_IMAGES.$temp['name'],$temp['name'],64,64,UPLOAD_PATH_STORE_CONFIG_IMAGES)){
+                  
+              }else{
+                   $this->apiMessage = Yii::t('app', 'Something went wrong.');
+              }
+            }
+            
             $data = array();
             $data['uploadedFile'] = $uploadedFile;
             $this->apiData = $data;
