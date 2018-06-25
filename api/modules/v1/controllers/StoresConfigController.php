@@ -159,7 +159,7 @@ class StoresConfigController extends BaseApiController {
         $data = Yii::$app->request->post();
         $user = CommonHelper::getUser();
        
-        if(!isset($data['store_id'])){
+        if(!isset($data['store_id']) || ($data['store_id'] == 0)){
             
             $userObj = new User;
            
