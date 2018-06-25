@@ -47,25 +47,13 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
     .box.box-danger {
         border-color: #947549;
     }
-    /*     #canvas-generator {
-        background-image: url("images/bar.png");
-        background-repeat: no-repeat;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-    } */
 
     #ex6 .slider-selection {
         background:red;
     }
     [id^=canvas-container] {
-        /*        margin-top: 0px !important;
-                margin-bottom: 0px !important;*/
         margin:auto !important;
         position: relative;
-        /*        width: 500px;
-                margin: 10px auto;*/
         border: 2px solid black;
         border-bottom: 1px solid black;
     }
@@ -74,34 +62,18 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
         padding-left: 50px;
         padding-bottom: 20px;
         padding-top: 20px;
-        /*background-color: green;*/
         width: 650px;
         height:auto;
-
-        /*border: 10px solid red;*/
     }
     [id^=main-rack]:last-child {
         padding-bottom: 80px !important;
-    }/*
-    */     [id^=main-rack]:first-child {
+    }     
+    [id^=main-rack]:first-child {
         padding-top: 80px !important;
     }
-
-    /*    [id^=canvas-container]:last-child {
-            border-bottom: 20px solid black;
-        }
-        [id^=canvas-container]:first-child {
-            border-top: 20px solid black;
-        }*/
-
+    
     [id^=canvas-container].over {
         box-shadow: 0 0 5px 1px black;
-    }
-
-    [id^=real-canvas] {
-        /*        padding: 2px;
-                padding-right: 4px; 
-                padding-bottom: 5px;*/
     }
 
     #images img.img_dragging {
@@ -113,7 +85,6 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
         -khtml-user-select: none;
         -webkit-user-select: none;
         user-select: none;
-        /* Required to make elements draggable in old WebKit */
         -khtml-user-drag: element;
         -webkit-user-drag: element;
         cursor: move;
@@ -162,7 +133,6 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
             <div class="panel panel-default">
                 <div class="panel-body panel-body-nopadding">
 
-                    <!-- BASIC WIZARD -->
                     <div id="validationWizard" class="basic-wizard">
 
                         <ul class="nav nav-pills nav-justified nav-disabled-click">
@@ -170,7 +140,6 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                             <li><a href="#vtab2" data-toggle="tab">DIFINE PRODUCTS</a></li>
                             <li><a href="#vtab3" data-toggle="tab">CONFIGURATION</a></li>
                         </ul>
-
 
                         <div class="tab-content" id="tabs">
 
@@ -186,10 +155,7 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                 </div>
                                                 <div class="box-body">
                                                     <div class="row">
-                                                        <!--<div class="col-md-1"></div>-->
-
-                                                        <div class="col-md-10" id="canvas-generator">safasf safsa safsaf safsaf sa safsaf safsf safsafsf</div>
-
+                                                      <div class="col-md-10" id="canvas-generator">safasf safsa safsaf safsaf sa safsaf safsf safsafsf</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -224,7 +190,6 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                                     </div>
                                                                     <div class="col-md-12">
                                                                         <input id="ex6" type="text" data-slider-min="<?= yii::$app->params['num_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['num_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= yii::$app->params['shelfConfig']['1'] ?>"/>
-                                                                        <!--<span id="ex6CurrentSliderValLabel">Current Slider Value: <span id="ex6SliderVal">3</span></span>-->
                                                                     </div>
                                                                 </div>
                                                             </div><hr>
@@ -239,7 +204,6 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                                     </div>
                                                                     <div class="col-md-12">
                                                                         <input id="hex6" type="text" data-slider-min="<?= yii::$app->params['height_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['height_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= yii::$app->params['shelfConfig']['0'] ?>"/>
-                                                                        <!--<span id="ex6CurrentSliderValLabel">Current Slider Value: <span id="ex6SliderVal">3</span></span>-->
                                                                     </div>
                                                                 </div>
                                                             </div><hr>
@@ -254,7 +218,6 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                                     </div>
                                                                     <div class="col-md-12">
                                                                         <input id="wex6" type="text" data-slider-min="<?= yii::$app->params['width_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['width_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= yii::$app->params['shelfConfig']['0'] ?>"/>
-                                                                        <!--<span id="ex6CurrentSliderValLabel">Current Slider Value: <span id="ex6SliderVal">3</span></span>-->
                                                                     </div>
                                                                 </div>
                                                             </div><hr>
@@ -269,7 +232,6 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                                     </div>
                                                                     <div class="col-md-12">
                                                                         <input id="dex6" type="text" data-slider-min="<?= yii::$app->params['depth_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['depth_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= yii::$app->params['shelfConfig']['3'] ?>"/>
-                                                                        <!--<span id="ex6CurrentSliderValLabel">Current Slider Value: <span id="ex6SliderVal">3</span></span>-->
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -292,9 +254,7 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                                     foreach ($brand as $key => $value) {
                                                                         ?>
                                                                         <div class="col-md-6 brand-margin">
-
-                                                                            <div class="col-md-2"> <input class="role<?php echo $value['id']; ?>" name="brands[]" value="<?php echo $value['id']; ?>" type="checkbox"></div><div class="col-md-10"><?php echo $value['name']; ?></div>
-
+                                                                                <div class="col-md-2"> <input class="role<?php echo $value['id']; ?>" name="brands[]" value="<?php echo $value['id']; ?>" type="checkbox"></div><div class="col-md-10"><?php echo $value['name']; ?></div>
                                                                         </div>
                                                                         <?php
                                                                     }
@@ -322,9 +282,7 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                 <div class="box-body">
                                                     <div class="row">
                                                         <div class="col-md-1"></div>
-
-                                                        <div class="col-md-10" id="canvas-generator2">safasf safsa safsaf safsaf sa safsaf safsf safsafsf</div>
-
+                                                                <div class="col-md-10" id="canvas-generator2">safasf safsa safsaf safsaf sa safsaf safsf safsafsf</div>
                                                         <div class="col-md-1"></div>
                                                     </div>
                                                 </div>
