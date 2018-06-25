@@ -208,6 +208,7 @@ class StoresConfigController extends BaseApiController {
       
         
         $dataValue = $returnData['data']['stores_config'];
+      
         foreach ($dataValue as $keyV=>$valueV){
                 $temp = array();
                 $shelfDisplay = $valueV['shelfDisplay'];
@@ -250,13 +251,24 @@ class StoresConfigController extends BaseApiController {
                 
                 
                 unset($dataValue[$keyV]['shelfDisplay']);
-                $dataValue[$keyV]['shelfDisplay']['display_name'] = $shelfDisplay[0]['display_name'];
-                $dataValue[$keyV]['shelfDisplay']['no_of_shelves'] = $shelfDisplay[0]['no_of_shelves'];
-                $dataValue[$keyV]['shelfDisplay']['height_of_shelves'] = $shelfDisplay[0]['height_of_shelves'];
-                $dataValue[$keyV]['shelfDisplay']['width_of_shelves'] = $shelfDisplay[0]['width_of_shelves'];
-                $dataValue[$keyV]['shelfDisplay']['depth_of_shelves'] = $shelfDisplay[0]['depth_of_shelves'];
-                $dataValue[$keyV]['shelfDisplay']['brand_thumb_id'] = $shelfDisplay[0]['brand_thumb_id'];
-                $dataValue[$keyV]['shelfDisplay']["shelf_config"] = $temp['shelf_config'];
+//                $dataValue[$keyV]['shelfDisplay']['display_name'] = $shelfDisplay[0]['display_name'];
+//                $dataValue[$keyV]['shelfDisplay']['no_of_shelves'] = $shelfDisplay[0]['no_of_shelves'];
+//                $dataValue[$keyV]['shelfDisplay']['height_of_shelves'] = $shelfDisplay[0]['height_of_shelves'];
+//                $dataValue[$keyV]['shelfDisplay']['width_of_shelves'] = $shelfDisplay[0]['width_of_shelves'];
+//                $dataValue[$keyV]['shelfDisplay']['depth_of_shelves'] = $shelfDisplay[0]['depth_of_shelves'];
+//                $dataValue[$keyV]['shelfDisplay']['brand_thumb_id'] = $shelfDisplay[0]['brand_thumb_id'];
+//                $dataValue[$keyV]['shelfDisplay']["shelf_config"] = $temp['shelf_config'];
+                
+                
+                $tmpShelfDisplayArray = array();
+                $tmpShelfDisplayArray['display_name'] = $shelfDisplay[0]['display_name'];
+                $tmpShelfDisplayArray['no_of_shelves'] = $shelfDisplay[0]['no_of_shelves'];
+                $tmpShelfDisplayArray['height_of_shelves'] = $shelfDisplay[0]['height_of_shelves'];
+                $tmpShelfDisplayArray['width_of_shelves'] = $shelfDisplay[0]['width_of_shelves'];
+                $tmpShelfDisplayArray['depth_of_shelves'] = $shelfDisplay[0]['depth_of_shelves'];
+                $tmpShelfDisplayArray['brand_thumb_id'] = $shelfDisplay[0]['brand_thumb_id'];
+                $tmpShelfDisplayArray["shelf_config"] = $temp['shelf_config'];
+                $dataValue[$keyV]['shelfDisplay'][] = $tmpShelfDisplayArray;
         }
         
             $dataProvider = new ArrayDataProvider([
