@@ -136,54 +136,7 @@ class StoreConfigRepository extends Repository {
                     $displayModel->save(false);
                 }
                 }
-                $query = StoreConfiguration::find()->joinWith(['shelfDisplay', 'configFeedBack']);
-
-                if (isset($configId) && ($configId != '')) {
-                    $query->andWhere(['store_configuration.id' => $configId]);
-                }
-                $dataValue = $query->asArray()->all();
-             
-                $temp = array();
-                $shelfDisplay = $dataValue[0]['shelfDisplay'];
-                
-                $shelf_thumb =  $dataValue[0]['shelf_thumb'];
-                unset($dataValue[0]['shelf_thumb']);
-                $dataValue[0]['shelf_thumb'] = CommonHelper::getImage(UPLOAD_PATH_STORE_CONFIG_IMAGES . $shelf_thumb);
-                foreach ($shelfDisplay as $key => $value) {
-
-                    $productIds = json_decode($value['shelf_config'], true);
-                    foreach ($productIds as $key2 => $value2) {
-                        $productId = explode(',', $value2['productIds']);
-                        foreach ($productId as $productKey => $productValue) {
-                            $catalogueRepository = new CataloguesRepository();
-                            $productIdData['products_id'] = $productValue;
-                            $productArray = array();
-                            $product = $catalogueRepository->listing($productIdData);
-
-                            if ($product['status']['success'] == 1) {
-                                $productArray = $product['data']['catalogues'][0];
-                                unset($productArray['market']);
-                                unset($productArray['brand']);
-                                unset($productArray['productType']);
-                                unset($productArray['productCategory']);
-                            }
-                            $image = $productArray['image'];
-                            unset($productArray['image']);
-                            unset($dataValue[0]['shelfDisplay']);
-                            $productArray['image'] = CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $image);
-                            $temp['shelf_config'][$key2]['productIds'][$productKey] = $productArray;
-                        }
-                    }
-                }
-                
-                $dataValue[0]['shelfDisplay']['display_name'] = $shelfDisplay[0]['display_name'];
-                $dataValue[0]['shelfDisplay']['no_of_shelves'] = $shelfDisplay[0]['no_of_shelves'];
-                $dataValue[0]['shelfDisplay']['height_of_shelves'] = $shelfDisplay[0]['height_of_shelves'];
-                $dataValue[0]['shelfDisplay']['width_of_shelves'] = $shelfDisplay[0]['width_of_shelves'];
-                $dataValue[0]['shelfDisplay']['depth_of_shelves'] = $shelfDisplay[0]['depth_of_shelves'];
-                $dataValue[0]['shelfDisplay']['brand_thumb_id'] = $shelfDisplay[0]['brand_thumb_id'];
-                $dataValue[0]['shelfDisplay']["shelf_config"] = $temp['shelf_config'];
-
+                $dataValue = $this->getConfigObject();
                 $this->apiData = $dataValue;
                 $this->apiCode = 1;
                 $this->apiMessage = Yii::t('app', 'created_successfully', [Yii::t('app', 'Configuration')]);
@@ -312,53 +265,7 @@ class StoreConfigRepository extends Repository {
                 }
                 }
 
-                $query = StoreConfiguration::find()->joinWith(['shelfDisplay', 'configFeedBack']);
-
-                if (isset($data['config_id']) && $data['config_id']) {
-                    $query->andWhere(['store_configuration.id' => $data['config_id']]);
-                }
-                $dataValue = $query->asArray()->all();
-
-                $temp = array();
-                $shelfDisplay = $dataValue[0]['shelfDisplay'];
-                $shelf_thumb =  $dataValue[0]['shelf_thumb'];
-                unset($dataValue[0]['shelf_thumb']);
-                $dataValue[0]['shelf_thumb'] = CommonHelper::getImage(UPLOAD_PATH_STORE_CONFIG_IMAGES . $shelf_thumb);
-                foreach ($shelfDisplay as $key => $value) {
-
-                    $productIds = json_decode($value['shelf_config'], true);
-
-                    foreach ($productIds as $key2 => $value2) {
-                        $productId = explode(',', $value2['productIds']);
-                        foreach ($productId as $productKey => $productValue) {
-                            $catalogueRepository = new CataloguesRepository();
-                            $productIdData['products_id'] = $productValue;
-                            $productArray = array();
-                            $product = $catalogueRepository->listing($productIdData);
-
-                            if ($product['status']['success'] == 1) {
-                                $productArray = $product['data']['catalogues'][0];
-                                unset($productArray['market']);
-                                unset($productArray['brand']);
-                                unset($productArray['productType']);
-                                unset($productArray['productCategory']);
-                            }
-                            $image = $productArray['image'];
-                            unset($productArray['image']);
-                            unset($dataValue[0]['shelfDisplay']);
-                            $productArray['image'] = CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $image);
-                            $temp['shelf_config'][$key2]['productIds'][$productKey] = $productArray;
-                        }
-                    }
-                }
-                $dataValue[0]['shelfDisplay']['display_name'] = $shelfDisplay[0]['display_name'];
-                $dataValue[0]['shelfDisplay']['no_of_shelves'] = $shelfDisplay[0]['no_of_shelves'];
-                $dataValue[0]['shelfDisplay']['height_of_shelves'] = $shelfDisplay[0]['height_of_shelves'];
-                $dataValue[0]['shelfDisplay']['width_of_shelves'] = $shelfDisplay[0]['width_of_shelves'];
-                $dataValue[0]['shelfDisplay']['depth_of_shelves'] = $shelfDisplay[0]['depth_of_shelves'];
-                $dataValue[0]['shelfDisplay']['brand_thumb_id'] = $shelfDisplay[0]['brand_thumb_id'];
-                $dataValue[0]['shelfDisplay']["shelf_config"] = $temp['shelf_config'];
-
+                $dataValue = $this->getConfigObject();
                 $this->apiData = $dataValue;
                 $this->apiCode = 1;
                 $this->apiMessage = Yii::t('app', 'updated_successfully', [Yii::t('app', 'Configuration')]);
@@ -408,5 +315,63 @@ class StoreConfigRepository extends Repository {
        }
        return $this->response();
 
+}
+
+    private function getConfigObject(){
+                $query = StoreConfiguration::find()->joinWith(['shelfDisplay', 'configFeedBack','stores']);
+
+                if (isset($configId) && ($configId != '')) {
+                    $query->andWhere(['store_configuration.id' => $configId]);
+                }
+                $tmpDataValues = $query->asArray()->all();
+             
+                $dataValue = $tmpDataValues[0];
+               
+                $tempShelfConfig = array();
+                $shelfDisplay = $dataValue['shelfDisplay'];
+                
+                $shelfThumb =  $dataValue['shelf_thumb'];
+                unset($dataValue['shelf_thumb']);
+                $dataValue['shelf_thumb'] = CommonHelper::getImage(UPLOAD_PATH_STORE_CONFIG_IMAGES . $shelfThumb);
+                foreach ($shelfDisplay as $key => $value) {
+
+                    $productIds = json_decode($value['shelf_config'], true);
+                    foreach ($productIds as $key2 => $value2) {
+                        $productId = explode(',', $value2['productIds']);
+                        foreach ($productId as $productKey => $productValue) {
+                            $catalogueRepository = new CataloguesRepository();
+                            $productIdData['products_id'] = $productValue;
+                            $productArray = array();
+                            $product = $catalogueRepository->listing($productIdData);
+
+                            if ($product['status']['success'] == 1) {
+                                $productArray = $product['data']['catalogues'][0];
+                                unset($productArray['market']);
+                                unset($productArray['brand']);
+                                unset($productArray['productType']);
+                                unset($productArray['productCategory']);
+                            }
+                            $image = $productArray['image'];
+                            unset($productArray['image']);
+                            unset($dataValue['shelfDisplay']);
+                            $productArray['image'] = CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $image);
+                            $tempShelfConfig['shelf_config'][$key2]['productIds'][$productKey] = $productArray;
+                        }
+                    }
+                }
+                $stores= $dataValue['stores'][0];
+                unset($dataValue['stores'][0]);
+                $dataValue['stores'] = $stores;
+                $tmpShelfDisplayArray = array();
+                $tmpShelfDisplayArray['display_name'] = $shelfDisplay[0]['display_name'];
+                $tmpShelfDisplayArray['no_of_shelves'] = $shelfDisplay[0]['no_of_shelves'];
+                $tmpShelfDisplayArray['height_of_shelves'] = $shelfDisplay[0]['height_of_shelves'];
+                $tmpShelfDisplayArray['width_of_shelves'] = $shelfDisplay[0]['width_of_shelves'];
+                $tmpShelfDisplayArray['depth_of_shelves'] = $shelfDisplay[0]['depth_of_shelves'];
+                $tmpShelfDisplayArray['brand_thumb_id'] = $shelfDisplay[0]['brand_thumb_id'];
+                $tmpShelfDisplayArray["shelf_config"] = $tempShelfConfig['shelf_config'];
+                $dataValue['shelfDisplay'][] = $tmpShelfDisplayArray;
+                
+                return $dataValue;
 }
 }

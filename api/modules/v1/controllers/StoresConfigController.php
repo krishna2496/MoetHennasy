@@ -207,7 +207,7 @@ class StoresConfigController extends BaseApiController {
                  $data['sort']='-distance';
             }
         }
-        $_GET['sort'] = $data['sort'];
+//        $_GET['sort'] = $data['sort'];
         $_GET['page'] = $data['page'];
         
         $dataValue = $returnData['data']['stores_config'];
@@ -244,7 +244,10 @@ class StoresConfigController extends BaseApiController {
                         }
                     }
                 }
-                      
+                $stores= $dataValue[$keyV]['stores'][0];
+                unset($dataValue[$keyV]['stores'][0]);
+                $dataValue[$keyV]['stores'] = $stores; 
+                
                 unset($dataValue[$keyV]['shelfDisplay']);
                 $dataValue[$keyV]['shelfDisplay']['display_name'] = $shelfDisplay[0]['display_name'];
                 $dataValue[$keyV]['shelfDisplay']['no_of_shelves'] = $shelfDisplay[0]['no_of_shelves'];
