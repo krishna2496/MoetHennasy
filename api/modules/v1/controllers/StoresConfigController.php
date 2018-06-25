@@ -140,8 +140,8 @@ class StoresConfigController extends BaseApiController {
     public function actionConfiguration() {
 
         $data = Yii::$app->request->post('config');
-     
-        $configData = json_decode($data ,true);
+
+        $configData = json_decode(trim($data,'"') ,true);
     
         $storeConfig = new StoreConfigRepository();
         if(isset($configData['config_id']) && ($configData['config_id'] != '')){
@@ -200,6 +200,12 @@ class StoresConfigController extends BaseApiController {
             }
             if($data['sort'] == 'market Z-A'){
                  $data['sort']='-marketId';
+            }
+            if($data['sort'] == 'Visit Old to new'){
+                 $data['sort']='id';
+            }
+            if($data['sort'] == 'Visit New to Old'){
+                 $data['sort']='-id';
             }
            
             $_GET['sort'] = $data['sort'];

@@ -90,17 +90,36 @@ class StoreConfigurationController extends Controller {
     }
     
     public function actionSaveProductData() {
-        $post = Yii::$app->request->post();
-         echo '<pre>';
-        print_r( $post);exit;
+        $post = Yii::$app->request->post('productObject');
+       
         $flag = 0;
+        $productArry= array();
+        
+        if(!empty($post)){
+            $flag = 1;
+        foreach ($post as $key => $value){
+            
+           if($value['sel'] == 'true'){
+               
+               $searchModel = new CataloguesSearch();
+        $dataProvider = $searchModel->search($filters);
+               
+                $_SESSION['config']['products'][$key]['selcted'] = $value['sel'];
+                $_SESSION['config']['products'][$key]['top_shelf'] = $value['shelf'];
+           } 
+        }
+        }
+   
+        
+        
+      
         if(!empty($post['productArry'])){
-        $flag = 1;
+       
         $product = $post['productArry'];
         $_SESSION['config']['products'] = implode(',', $product);
         }
         echo '<pre>';
-        print_r( $_SESSION);exit;
+        print_r($_SESSION);exit;
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $flag;
     }
