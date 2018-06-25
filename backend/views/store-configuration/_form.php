@@ -15,548 +15,392 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
     var productArry = [];
     var productObject = {};
 </script>
-<div class="market-segments-form">
+<div class="col-sm-12 stepwizard-content-section">
     <form id="tabForm">
         <input type="hidden" value="0" name="first" id="first"> 
         <input type="hidden" value="0" name="second" id="second"> 
         <input type="hidden" value="0" name="third" id="third"> 
     </form>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body panel-body-nopadding">
+    <div class="box box-default">
 
-                    <div id="validationWizard" class="basic-wizard">
 
-                        <ul class="nav nav-pills nav-justified nav-disabled-click">
-                            <li class="active"><a href="#vtab1" data-toggle="tab" id="tab1" onclick="hideShowDiv(this.id)">CREATE YOUR DISPLAY</a></li>
-                            <li><a href="#vtab1" data-toggle="tab" id="tab2" onclick="hideShowDiv(this.id)">DIFINE PRODUCTS</a></li>
-                            <li><a href="#vtab1" data-toggle="tab" id="tab3" onclick="hideShowDiv(this.id)">CONFIGURATION</a></li>
-                        </ul>
+        <div id="validationWizard" class="basic-wizard">
+            <div class="box-header with-border">
+                <h3 class="box-title">Instruction/introduction texte. Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris.</h3>
+                <div class="stepwizard">
+                    <ul class="stepwizard-row setup-panel list-unstyled list-inline">
 
-                        <div class="tab-content" id="tabs">
+                        <li class="stepwizard-step" id="3">
+                            <a href="#vtab1" data-toggle="tab" id="tab1" type="button" class="btn btn-default btn-circle" disabled="disabled" onclick="hideShowDiv(this.id)">
+                                <span class="stepnum">1</span> <span class="stepname"> CREATE YOUR DISPLAY</span>
 
-                            <div class="tab-pane active" id="vtab1">
-                                <form id="firstForm"> 
-                                    <div class="row" style="margin-top:10px">
-                                        <section class="col-md-7">
-                                            <div class="box">
-                                                <div class="box-header">
-                                                    <b>  Display 1 :
-                                                        <span id="getName"></span>
-                                                    </b>
-                                                </div>
-                                                <div class="box-body">
-                                                    <div class="row">
-                                                      <div class="col-md-10" id="canvas-generator">safasf safsa safsaf safsaf sa safsaf safsf safsafsf</div>
-                                                    </div>
-                                                </div>
+                            </a>
+                        </li>
+                        <li class="stepwizard-step ">
+                            <a href="#vtab1" data-toggle="tab" id="tab2" onclick="hideShowDiv(this.id)" type="button" class="btn btn-default btn-circle" disabled="disabled">
+                                <span class="stepnum">2</span> <span class="stepname">PRODUCTS</span>
+                            </a>
+                        </li>
+                        <li class="stepwizard-step ">
+                            <a href="#vtab1" data-toggle="tab" id="tab3" type="button" class="btn btn-default btn-circle" disabled="disabled"onclick="hideShowDiv(this.id)">
+                                <span class="stepnum">3</span> <span class="stepname">CONFIGURATION</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+<div class="box-body">
+<?php 
+//    echo '<pre>';
+//    print_r($_SESSION);exit;
+?>
+            <form id="firstForm"> 
+                <div class="setup-content" >
+                    <div class="panel-body" id="tabs">
+                        <div class="tab-pane active" id="vtab1">
+                            <div class="row" style="margin-top:10px">
+                                <section class="col-md-7">
+                                    <div class="box">
+                                        <div class="box-header">
+                                            <b>  Display 1 :
+                                                <span id="getName">
+                                                    <?=
+                                                      isset($_SESSION['config']['display_name']) ? $_SESSION['config']['display_name'] : '';
+                                                    ?>
+                                                </span>
+                                            </b>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="row">
+                                                <div class="col-md-10" id="canvas-generator"></div>
                                             </div>
-                                        </section>
-                                        <section class="col-md-5" id="tab1Content">
-                                            <div class="box box-danger">
-                                                <div>
-                                                    <span><b style="text-align:center"> Display </b></span>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class="col-md-5" id="tab1Content">
+                                    <div class="box box-danger">
+                                        <div>
+                                            <span><b style="text-align:center"> Display </b></span>
+                                        </div>
+                                        <div class="box-body with-borde">
+                                            <div class="box-margin">
+                                                <label>Name your display</label>
+                                                <input type="text" id="dispaly_name" name="display_name" class="form-control" placeholder="Name of your display" required/>
+                                            </div>
+                                            <div class="box box-shelf">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title shelf-color " >SHELF'S STORE</h3>
+                                                    <div class="box-tools pull-right">
+                                                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+                                                            <i class="fa fa-minus"></i></button>
+                                                    </div>
                                                 </div>
-                                                <div class="box-body with-borde">
-                                                    <div class="box-margin">
-                                                        <label>Name your display</label>
-                                                        <input type="text" id="dispaly_name" name="display_name" class="form-control" placeholder="Name of your display" required/>
-                                                    </div>
-                                                    <div class="box box-shelf">
-                                                        <div class="box-header with-border">
-                                                            <h3 class="box-title shelf-color " >SHELF'S STORE</h3>
-                                                            <div class="box-tools pull-right">
-                                                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
-                                                                    <i class="fa fa-minus"></i></button>
+                                                <div class="box-body" style="">
+
+                                                    <div class="row " style="margin-top:5px">
+                                                        <div class="form-group">
+                                                            <div class="col-md-8">
+                                                                <label>Number of shelves*</label>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <input type="text" value="<?= isset($_SESSION['config']['num_of_shelves']) ? $_SESSION['config']['num_of_shelves'] : yii::$app->params['shelfConfig']['1'];  ?>" id="ex6SliderVal" name="num_of_shelves" class="form-control" required=""/>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <input id="ex6" type="text" data-slider-min="<?= yii::$app->params['num_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['num_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?=  isset($_SESSION['config']['num_of_shelves']) ? $_SESSION['config']['num_of_shelves'] : yii::$app->params['shelfConfig']['1'] ; ?>"/>
                                                             </div>
                                                         </div>
-                                                        <div class="box-body" style="">
+                                                    </div><hr>
 
-                                                            <div class="row " style="margin-top:5px">
-                                                                <div class="form-group">
-                                                                    <div class="col-md-8">
-                                                                        <label>Number of shelves*</label>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <input type="text" value="<?= yii::$app->params['shelfConfig']['1'] ?>" id="ex6SliderVal" name="num_of_shelves" class="form-control" required=""/>
-                                                                    </div>
-                                                                    <div class="col-md-12">
-                                                                        <input id="ex6" type="text" data-slider-min="<?= yii::$app->params['num_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['num_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= yii::$app->params['shelfConfig']['1'] ?>"/>
-                                                                    </div>
-                                                                </div>
-                                                            </div><hr>
-
-                                                            <div class="row " style="margin-top:5px">
-                                                                <div class="form-group">
-                                                                    <div class="col-md-8">
-                                                                        <label>Height of shelves*</label>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <input type="text" value="<?= yii::$app->params['shelfConfig']['0'] ?>" id="hex6SliderVal" name="height_of_shelves" class="form-control" required="" />
-                                                                    </div>
-                                                                    <div class="col-md-12">
-                                                                        <input id="hex6" type="text" data-slider-min="<?= yii::$app->params['height_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['height_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= yii::$app->params['shelfConfig']['0'] ?>"/>
-                                                                    </div>
-                                                                </div>
-                                                            </div><hr>
-
-                                                            <div class="row " style="margin-top:5px">
-                                                                <div class="form-group">
-                                                                    <div class="col-md-8">
-                                                                        <label>Width of shelves*</label>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <input type="text" value="<?= yii::$app->params['shelfConfig']['0'] ?>" id="wex6SliderVal" name="width_of_shelves" class="form-control" required="" />
-                                                                    </div>
-                                                                    <div class="col-md-12">
-                                                                        <input id="wex6" type="text" data-slider-min="<?= yii::$app->params['width_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['width_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= yii::$app->params['shelfConfig']['0'] ?>"/>
-                                                                    </div>
-                                                                </div>
-                                                            </div><hr>
-
-                                                            <div class="row " style="margin-top:5px">
-                                                                <div class="form-group">
-                                                                    <div class="col-md-8">
-                                                                        <label>Depth of shelves*</label>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <input type="text" value="<?= yii::$app->params['shelfConfig']['3'] ?>" id="dex6SliderVal" name="depth_of_shelves" class="form-control" required="" />
-                                                                    </div>
-                                                                    <div class="col-md-12">
-                                                                        <input id="dex6" type="text" data-slider-min="<?= yii::$app->params['depth_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['depth_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= yii::$app->params['shelfConfig']['3'] ?>"/>
-                                                                    </div>
-                                                                </div>
+                                                    <div class="row " style="margin-top:5px">
+                                                        <div class="form-group">
+                                                            <div class="col-md-8">
+                                                                <label>Height of shelves*</label>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <input type="text" value="<?= isset($_SESSION['config']['height_of_seleves']) ? $_SESSION['config']['height_of_seleves'] : yii::$app->params['shelfConfig']['0'];  ?>" id="hex6SliderVal" name="height_of_shelves" class="form-control" required="" />
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <input id="hex6" type="text" data-slider-min="<?= yii::$app->params['height_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['height_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= isset($_SESSION['config']['height_of_seleves']) ? $_SESSION['config']['height_of_seleves'] : yii::$app->params['shelfConfig']['0'];  ?>"/>
                                                             </div>
                                                         </div>
+                                                    </div><hr>
 
-                                                    </div>
-
-                                                    <div class="box box-shelf">
-                                                        <div class="box-header with-border">
-                                                            <h3 class="box-title shelf-color " >Brands</h3>
-                                                            <div class="box-tools pull-right">
-                                                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
-                                                                    <i class="fa fa-minus"></i></button>
+                                                    <div class="row " style="margin-top:5px">
+                                                        <div class="form-group">
+                                                            <div class="col-md-8">
+                                                                <label>Width of shelves*</label>
                                                             </div>
-                                                        </div><div class="box-body" style="">
-                                                            <div class="row">
+                                                            <div class="col-md-4">
+                                                                <input type="text" value="<?= isset($_SESSION['config']['width_of_seleves']) ? $_SESSION['config']['width_of_seleves'] : yii::$app->params['shelfConfig']['0'];  ?>" id="wex6SliderVal" name="width_of_shelves" class="form-control" required="" />
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <input id="wex6" type="text" data-slider-min="<?= yii::$app->params['width_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['width_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= isset($_SESSION['config']['width_of_seleves']) ? $_SESSION['config']['width_of_seleves'] : yii::$app->params['shelfConfig']['0'];  ?>"/>
+                                                            </div>
+                                                        </div>
+                                                    </div><hr>
 
-                                                                <?php
-                                                                if (!empty($brand)) {
-                                                                    foreach ($brand as $key => $value) {
-                                                                        ?>
-                                                                        <div class="col-md-6 brand-margin">
-                                                                                <div class="col-md-2"> <input class="role<?php echo $value['id']; ?>" name="brands[]" value="<?php echo $value['id']; ?>" type="checkbox"></div><div class="col-md-10"><?php echo $value['name']; ?></div>
-                                                                        </div>
-                                                                        <?php
-                                                                    }
-                                                                }
+                                                    <div class="row " style="margin-top:5px">
+                                                        <div class="form-group">
+                                                            <div class="col-md-8">
+                                                                <label>Depth of shelves*</label>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <input type="text" value="<?= isset($_SESSION['config']['depth_of_seleves']) ? $_SESSION['config']['depth_of_seleves'] : yii::$app->params['shelfConfig']['3'];  ?>" id="dex6SliderVal" name="depth_of_shelves" class="form-control" required="" />
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <input id="dex6" type="text" data-slider-min="<?= yii::$app->params['depth_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['depth_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= isset($_SESSION['config']['depth_of_seleves']) ? $_SESSION['config']['depth_of_seleves'] : yii::$app->params['shelfConfig']['3'];  ?>"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="box box-shelf">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title shelf-color " >Brands</h3>
+                                                    <div class="box-tools pull-right">
+                                                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+                                                            <i class="fa fa-minus"></i></button>
+                                                    </div>
+                                                </div><div class="box-body" style="">
+                                                    <div class="row">
+
+                                                        <?php
+                                                        if (!empty($brand)) {
+                                                            foreach ($brand as $key => $value) {
                                                                 ?>
-                                                            </div>
-                                                        </div>
+                                                                <div class="col-md-6 brand-margin">
+                                                                    <div class="col-md-2"> <input class="role<?php echo $value['id']; ?>" name="brands[]" value="<?php echo $value['id']; ?>" type="checkbox"></div><div class="col-md-10"><?php echo $value['name']; ?></div>
+                                                                </div>
+                                                                <?php
+                                                            }
+                                                        }
+                                                        ?>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </section>
-                                        <section class="col-md-5" id="tab2Content">
-                                            <div class="box box-danger">
-                                                <div>
-                                                    <span><b style="text-align:center"> Display </b></span>
-                                                </div>
-                                                <div class="box-body with-borde">
-
-                                                    <div class="box box-shelf">
-                                                        <div class="box-header with-border">
-                                                            <h3 class="box-title shelf-color " >PRODUCTS SKU</h3>
-                                                            <div class="box-tools pull-right">
-                                                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
-                                                                    <i class="fa fa-minus"></i></button>
-                                                            </div>
-                                                        </div>
-                                                        <?php Pjax::begin(['id' => 'employee', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>
-
-                                                        <div class="box-body">
-                                                            <?=
-                                                            GridView::widget([
-                                                                'dataProvider' => $dataProvider,
-                                                                'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-12"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
-                                                                'columns' => [
-                                                                        [
-                                                                        'class' => 'yii\grid\SerialColumn'],
-                                                                        [
-                                                                        'class' => 'yii\grid\CheckboxColumn', 'checkboxOptions' => function($model) {
-                                                                            return ['value' => $model['id'], 'selection' => true, 'class' => 'checked'];
-                                                                        },
-                                                                    ],
-                                                                        [
-                                                                        'label' => 'Product',
-                                                                        'attribute' => 'short_name',
-                                                                        'value' => 'short_name'
-                                                                    ],
-                                                                        [
-                                                                        'label' => 'Product type',
-                                                                        'attribute' => 'productType',
-                                                                        'value' => 'productType.title'
-                                                                    ],
-                                                                    'market_share',
-                                                                        [
-                                                                        'label' => 'Product Category',
-                                                                        'attribute' => 'productCategory',
-                                                                        'value' => 'productCategory'
-                                                                    ],
-                                                                        [
-                                                                        'attribute' => 'top_shelf',
-                                                                        'format' => 'raw',
-                                                                        'value' => function($model) {
-                                                                            $value = ($model['top_shelf'] == 0) ? false : true;
-                                                                            $dvalue = ($model['top_shelf'] == 0) ? "0" : "1";
-                                                                            return '<div class="idDiv" dvalue="' . $dvalue . '" id="' . $model["id"] . '">' . SwitchInput::widget([
-                                                                                    'name' => 'status_41[]',
-                                                                                    'value' => $value,
-                                                                                    'pluginOptions' => [
-                                                                                        'onText' => 'Yes',
-                                                                                        'offText' => 'No'
-                                                                                    ]
-                                                                                ]) . '</div>';
-                                                                        }
-                                                                    ]
-                                                                ],
-                                                            ]);
-                                                            ?>
-                                                        </div>
-                                                        <script type="text/javascript">
-                                                            $(document).ready(function () {
-                                                                $('input[name="selection[]"]').each(function (skey, sval) {
-                                                                    var sobj = {};
-                                                                    sobj["sel"] = false;
-                                                                    sobj["shelf"] = 'undefined';
-                                                                    if (typeof (productObject[$(sval).val()]) === 'undefined')
-                                                                    {
-                                                                        productObject[$(sval).val()] = sobj;
-                                                                    }
-                                                                    if (typeof (productObject[$(sval).val()]) !== 'undefined' && productObject[$(sval).val()]["sel"] === true)
-                                                                    {
-                                                                        $('input[type="checkbox"][value="' + $(sval).val() + '"]').attr('checked', true).iCheck('update');
-                                                                    }
-                                                                    if ((productObject[$(sval).val()] !== 'undefined') && productObject[$(sval).val()]["shelf"] === true)
-                                                                    {
-                                                                        $('div#' + $(sval).val() + ' input[name="status_41[]"]').bootstrapSwitch('state', true);
-//                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', true);
-                                                                    }
-                                                                    if ((productObject[$(sval).val()] !== 'undefined') && productObject[$(sval).val()]["shelf"] === false)
-                                                                    {
-                                                                        $('div#' + $(sval).val() + ' input[name="status_41[]"]').bootstrapSwitch('state', false);
-//                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', true);
-                                                                    }
-//                                                                    if(productObject[$(sval).val()]["shelf"] === false)
-//                                                                    {                                                                            
-//                                                                 
-//                                                                   console.log($(sval).val());
-//                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', false);
-//                                                                    }
-//                                                                    if(productObject[$(sval).val()]["shelf"] === false)
-//                                                                    {                                                                            
-//                                                                   
-//                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', false, false);
-//                                                                    }
-                                                                    //productArry.push({$(sval).val()});
-                                                                });
-                                                                console.log(productObject);
-                                                            });
-
-                                                            $('.select-on-check-all').on('ifChecked', function (event) {
-
-                                                                $('input[name="selection[]"]').iCheck('check');
-
-                                                            });
-
-                                                            $('.select-on-check-all').on('ifUnchecked', function (event) {
-                                                              
-                                                                $('input[name="selection[]"]').iCheck('uncheck');
-
-
-                                                            });
-                                                            $('input[name="selection[]"]').on('ifChecked', function (event) {
-
-                                                                if (typeof (productObject[$(this).val()]) !== 'undefined')
-                                                                {
-                                                                    productArry.push($(this).val());
-                                                                    var id = $(this).val();
-                                                                    var switchValue = $("div#" + id).attr("dvalue");
-                                                                    var switchFlag = (switchValue == "1") ? true : false;
-                                                                    productObject[$(this).val()]['sel'] = true;
-                                                                    productObject[$(this).val()]['shelf'] = switchFlag;
-                                                                }
-                                                            });
-                                                            $('input[name="selection[]"]').on('ifUnchecked', function (event) {
-                                                                popedValue = productArry.indexOf($(this).val());
-                                                                productArry.splice(popedValue, 1);
-                                                                if (typeof (productObject[$(this).val()]) !== 'undefined')
-                                                                {
-                                                                    var id = $(this).val();
-                                                                    var switchValue = $("div#" + id).attr("dvalue");
-                                                                    var switchFlag = (switchValue == "1") ? true : false;
-                                                                    productObject[$(this).val()]['sel'] = false;
-                                                                    productObject[$(this).val()]['shelf'] = switchFlag;
-                                                                }
-                                                            });
-                                                            $('input[name="status_41[]"]').on('switchChange.bootstrapSwitch', function (event, state) {
-                                                                var id = $(this).closest('div.idDiv').attr("id");
-                                                                if ($(this).bootstrapSwitch('state')) {
-                                                                    productObject[id]['shelf'] = true;
-                                                                    $("div#" + id).attr("dvalue", "1")
-                                                                } else {
-                                                                    productObject[id]['shelf'] = false;
-                                                                    $("div#" + id).attr("dvalue", "0")
-                                                                }
-                                                            });
-                                                            /*productArry.forEach(function(item){
-                                                             $("input[type=checkbox][value=" +item+ "]").attr("checked", "true")
-                                                             });*/
-
-                                                        </script>
-                                                        <?php Pjax::end(); ?>
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </section>
+                                        </div>
                                     </div>
-                                </form>
-                            </div>
-                      <div class="tab-pane" id="vtab3">
-                                <form id="secondForm"> 
-                                    <div class="row" style="margin-top:10px">
-                                        <section class="col-md-6">
-                                            <div class="box">
-                                                <div class="box-header">
-                                                    <b>  Display 1 : 
-                                                        <span id="getName"></span>
-                                                    </b>
+                                </section>
+                                <section class="col-md-5" id="tab2Content">
+                                    <div class="box box-danger">
+                                        <div>
+                                            <span><b style="text-align:center"> Display </b></span>
+                                        </div>
+                                        <div class="box-body with-borde">
+
+                                            <div class="box box-shelf">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title shelf-color " >PRODUCTS SKU</h3>
+                                                    <div class="box-tools pull-right">
+                                                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+                                                            <i class="fa fa-minus"></i></button>
+                                                    </div>
                                                 </div>
+                                                <?php Pjax::begin(['id' => 'employee', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>
+
                                                 <div class="box-body">
-                                                    <div class="row">
-                                                        <div class="col-md-1"></div>
-                                                                <div class="col-md-10" id="canvas-generator2">safasf safsa safsaf safsaf sa safsaf safsf safsafsf</div>
-                                                        <div class="col-md-1"></div>
-                                                    </div>
+                                                    <?=
+                                                    GridView::widget([
+                                                        'dataProvider' => $dataProvider,
+                                                        'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-12"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
+                                                        'columns' => [
+                                                                [
+                                                                'class' => 'yii\grid\SerialColumn'],
+                                                                [
+                                                                'class' => 'yii\grid\CheckboxColumn', 'checkboxOptions' => function($model) {
+                                                                    return ['value' => $model['id'], 'selection' => true, 'class' => 'checked'];
+                                                                },
+                                                            ],
+                                                                [
+                                                                'label' => 'Product',
+                                                                'attribute' => 'short_name',
+                                                                'value' => 'short_name'
+                                                            ],
+                                                                [
+                                                                'label' => 'Product type',
+                                                                'attribute' => 'productType',
+                                                                'value' => 'productType.title'
+                                                            ],
+                                                            'market_share',
+                                                                [
+                                                                'label' => 'Product Category',
+                                                                'attribute' => 'productCategory',
+                                                                'value' => 'productCategory'
+                                                            ],
+                                                                [
+                                                                'attribute' => 'top_shelf',
+                                                                'format' => 'raw',
+                                                                'value' => function($model) {
+                                                                    $value = ($model['top_shelf'] == 0) ? false : true;
+                                                                    $dvalue = ($model['top_shelf'] == 0) ? "0" : "1";
+                                                                    return '<div class="idDiv" dvalue="' . $dvalue . '" id="' . $model["id"] . '">' . SwitchInput::widget([
+                                                                            'name' => 'status_41[]',
+                                                                            'value' => $value,
+                                                                            'pluginOptions' => [
+                                                                                'onText' => 'Yes',
+                                                                                'offText' => 'No'
+                                                                            ]
+                                                                        ]) . '</div>';
+                                                                }
+                                                            ]
+                                                        ],
+                                                    ]);
+                                                    ?>
                                                 </div>
+                                                <script type="text/javascript">
+                                                    $(document).ready(function () {
+                                                        $('input[name="selection[]"]').each(function (skey, sval) {
+                                                            var sobj = {};
+                                                            sobj["sel"] = false;
+                                                            sobj["shelf"] = 'undefined';
+                                                            if (typeof (productObject[$(sval).val()]) === 'undefined')
+                                                            {
+                                                                productObject[$(sval).val()] = sobj;
+                                                            }
+                                                            if (typeof (productObject[$(sval).val()]) !== 'undefined' && productObject[$(sval).val()]["sel"] === true)
+                                                            {
+                                                                $('input[type="checkbox"][value="' + $(sval).val() + '"]').attr('checked', true).iCheck('update');
+                                                            }
+                                                            if ((productObject[$(sval).val()] !== 'undefined') && productObject[$(sval).val()]["shelf"] === true)
+                                                            {
+                                                                $('div#' + $(sval).val() + ' input[name="status_41[]"]').bootstrapSwitch('state', true);
+                                                                //                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', true);
+                                                            }
+                                                            if ((productObject[$(sval).val()] !== 'undefined') && productObject[$(sval).val()]["shelf"] === false)
+                                                            {
+                                                                $('div#' + $(sval).val() + ' input[name="status_41[]"]').bootstrapSwitch('state', false);
+                                                                //                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', true);
+                                                            }
+                                                            //                                                                    
+                                                        });
+                                                        console.log(productObject);
+                                                    });
+
+                                                    $('.select-on-check-all').on('ifChecked', function (event) {
+
+                                                        $('input[name="selection[]"]').iCheck('check');
+
+                                                    });
+
+                                                    $('.select-on-check-all').on('ifUnchecked', function (event) {
+
+                                                        $('input[name="selection[]"]').iCheck('uncheck');
+
+
+                                                    });
+                                                    $('input[name="selection[]"]').on('ifChecked', function (event) {
+
+                                                        if (typeof (productObject[$(this).val()]) !== 'undefined')
+                                                        {
+                                                            productArry.push($(this).val());
+                                                            var id = $(this).val();
+                                                            var switchValue = $("div#" + id).attr("dvalue");
+                                                            var switchFlag = (switchValue == "1") ? true : false;
+                                                            productObject[$(this).val()]['sel'] = true;
+                                                            productObject[$(this).val()]['shelf'] = switchFlag;
+                                                        }
+                                                    });
+                                                    $('input[name="selection[]"]').on('ifUnchecked', function (event) {
+                                                        popedValue = productArry.indexOf($(this).val());
+                                                        productArry.splice(popedValue, 1);
+                                                        if (typeof (productObject[$(this).val()]) !== 'undefined')
+                                                        {
+                                                            var id = $(this).val();
+                                                            var switchValue = $("div#" + id).attr("dvalue");
+                                                            var switchFlag = (switchValue == "1") ? true : false;
+                                                            productObject[$(this).val()]['sel'] = false;
+                                                            productObject[$(this).val()]['shelf'] = switchFlag;
+                                                        }
+                                                    });
+                                                    $('input[name="status_41[]"]').on('switchChange.bootstrapSwitch', function (event, state) {
+                                                        var id = $(this).closest('div.idDiv').attr("id");
+                                                        if ($(this).bootstrapSwitch('state')) {
+                                                            productObject[id]['shelf'] = true;
+                                                            $("div#" + id).attr("dvalue", "1")
+                                                        } else {
+                                                            productObject[id]['shelf'] = false;
+                                                            $("div#" + id).attr("dvalue", "0")
+                                                        }
+                                                    });
+                                                    /*productArry.forEach(function(item){
+                                                     $("input[type=checkbox][value=" +item+ "]").attr("checked", "true")
+                                                     });*/
+
+                                                </script>
+                                                <?php Pjax::end(); ?>
+
                                             </div>
-                                        </section>
-                                        <section class="col-md-6">
-                                            <div class="box box-danger">
-                                                <div>
-                                                    <span><b style="text-align:center"> Display </b></span>
-                                                </div>
-                                                <div class="box-body with-borde">
 
-                                                    <div class="box box-shelf">
-                                                        <div class="box-header with-border">
-                                                            <h3 class="box-title shelf-color " >PRODUCTS SKU</h3>
-                                                            <div class="box-tools pull-right">
-                                                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
-                                                                    <i class="fa fa-minus"></i></button>
-                                                            </div>
-                                                        </div>
-                                                        <?php Pjax::begin(['id' => 'employee', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>
-
-                                                        <div class="box-body">
-                                                            <?=
-                                                            GridView::widget([
-                                                                'dataProvider' => $dataProvider,
-                                                                'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-12"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
-                                                                'columns' => [
-                                                                        [
-                                                                        'class' => 'yii\grid\SerialColumn'],
-                                                                        [
-                                                                        'class' => 'yii\grid\CheckboxColumn', 'checkboxOptions' => function($model) {
-                                                                            return ['value' => $model['id'], 'selection' => true, 'class' => 'checked'];
-                                                                        },
-                                                                    ],
-                                                                        [
-                                                                        'label' => 'Product',
-                                                                        'attribute' => 'short_name',
-                                                                        'value' => 'short_name'
-                                                                    ],
-                                                                        [
-                                                                        'label' => 'Product type',
-                                                                        'attribute' => 'productType',
-                                                                        'value' => 'productType.title'
-                                                                    ],
-                                                                    'market_share',
-                                                                        [
-                                                                        'label' => 'Product Category',
-                                                                        'attribute' => 'productCategory',
-                                                                        'value' => 'productCategory'
-                                                                    ],
-                                                                        [
-                                                                        'attribute' => 'top_shelf',
-                                                                        'format' => 'raw',
-                                                                        'value' => function($model) {
-                                                                            $value = ($model['top_shelf'] == 0) ? false : true;
-                                                                            $dvalue = ($model['top_shelf'] == 0) ? "0" : "1";
-                                                                            return '<div class="idDiv" dvalue="' . $dvalue . '" id="' . $model["id"] . '">' . SwitchInput::widget([
-                                                                                    'name' => 'status_41[]',
-                                                                                    'value' => $value,
-                                                                                    'pluginOptions' => [
-                                                                                        'onText' => 'Yes',
-                                                                                        'offText' => 'No'
-                                                                                    ]
-                                                                                ]) . '</div>';
-                                                                        }
-                                                                    ]
-                                                                ],
-                                                            ]);
-                                                            ?>
-                                                        </div>
-                                                        <script type="text/javascript">
-                                                            $(document).ready(function () {
-                                                                $('input[name="selection[]"]').each(function (skey, sval) {
-                                                                    var sobj = {};
-                                                                    sobj["sel"] = false;
-                                                                    sobj["shelf"] = 'undefined';
-                                                                    if (typeof (productObject[$(sval).val()]) === 'undefined')
-                                                                    {
-                                                                        productObject[$(sval).val()] = sobj;
-                                                                    }
-                                                                    if (typeof (productObject[$(sval).val()]) !== 'undefined' && productObject[$(sval).val()]["sel"] === true)
-                                                                    {
-                                                                        $('input[type="checkbox"][value="' + $(sval).val() + '"]').attr('checked', true).iCheck('update');
-                                                                    }
-                                                                    if ((productObject[$(sval).val()] !== 'undefined') && productObject[$(sval).val()]["shelf"] === true)
-                                                                    {
-                                                                        $('div#' + $(sval).val() + ' input[name="status_41[]"]').bootstrapSwitch('state', true);
-//                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', true);
-                                                                    }
-                                                                    if ((productObject[$(sval).val()] !== 'undefined') && productObject[$(sval).val()]["shelf"] === false)
-                                                                    {
-                                                                        $('div#' + $(sval).val() + ' input[name="status_41[]"]').bootstrapSwitch('state', false);
-//                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', true);
-                                                                    }
-//                                                                    if(productObject[$(sval).val()]["shelf"] === false)
-//                                                                    {                                                                            
-//                                                                 
-//                                                                   console.log($(sval).val());
-//                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', false);
-//                                                                    }
-//                                                                    if(productObject[$(sval).val()]["shelf"] === false)
-//                                                                    {                                                                            
-//                                                                   
-//                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', false, false);
-//                                                                    }
-                                                                    //productArry.push({$(sval).val()});
-                                                                });
-                                                                console.log(productObject);
-                                                            });
-
-                                                            $('.select-on-check-all').on('ifChecked', function (event) {
-
-                                                                $('input[name="selection[]"]').iCheck('check');
-
-                                                            });
-
-                                                            $('.select-on-check-all').on('ifUnchecked', function (event) {
-                                                              
-                                                                $('input[name="selection[]"]').iCheck('uncheck');
-
-
-                                                            });
-                                                            $('input[name="selection[]"]').on('ifChecked', function (event) {
-
-                                                                if (typeof (productObject[$(this).val()]) !== 'undefined')
-                                                                {
-                                                                    productArry.push($(this).val());
-                                                                    var id = $(this).val();
-                                                                    var switchValue = $("div#" + id).attr("dvalue");
-                                                                    var switchFlag = (switchValue == "1") ? true : false;
-                                                                    productObject[$(this).val()]['sel'] = true;
-                                                                    productObject[$(this).val()]['shelf'] = switchFlag;
-                                                                }
-                                                            });
-                                                            $('input[name="selection[]"]').on('ifUnchecked', function (event) {
-                                                                popedValue = productArry.indexOf($(this).val());
-                                                                productArry.splice(popedValue, 1);
-                                                                if (typeof (productObject[$(this).val()]) !== 'undefined')
-                                                                {
-                                                                    var id = $(this).val();
-                                                                    var switchValue = $("div#" + id).attr("dvalue");
-                                                                    var switchFlag = (switchValue == "1") ? true : false;
-                                                                    productObject[$(this).val()]['sel'] = false;
-                                                                    productObject[$(this).val()]['shelf'] = switchFlag;
-                                                                }
-                                                            });
-                                                            $('input[name="status_41[]"]').on('switchChange.bootstrapSwitch', function (event, state) {
-                                                                var id = $(this).closest('div.idDiv').attr("id");
-                                                                if ($(this).bootstrapSwitch('state')) {
-                                                                    productObject[id]['shelf'] = true;
-                                                                    $("div#" + id).attr("dvalue", "1")
-                                                                } else {
-                                                                    productObject[id]['shelf'] = false;
-                                                                    $("div#" + id).attr("dvalue", "0")
-                                                                }
-                                                            });
-                                                            /*productArry.forEach(function(item){
-                                                             $("input[type=checkbox][value=" +item+ "]").attr("checked", "true")
-                                                             });*/
-
-                                                        </script>
-                                                        <?php Pjax::end(); ?>
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </section>
+                                        </div>
                                     </div>
-                                </form>
-
+                                </section>
                             </div>
-
 
                         </div>
+                    </div>
+
+                </div>
+            </form>
 
 
-                        <ul class="pager wizard">
-                            <li class="previous disabled"><a href="javascript:void(0)">Reset</a></li>
-                            <li class="next"><a href="javascript:void(0)">Ok</a></li>
-                        </ul>
+            <ul class="pager wizard">
+                <li class="previous disabled"><a href="javascript:void(0)">Reset</a></li>
+                <li class="next"><a href="javascript:void(0)">Ok</a></li>
+            </ul>
 
-                    </div><!-- #validationWizard -->
+        </div><!-- #validationWizard -->
 
-                </div><!-- panel-body -->
-            </div><!-- panel -->
-        </div>
+
+
+
     </div>
 </div>
 
 <script type="text/javascript">
     getRack();
-$("#tab2Content").hide();
 
-function hideShowDiv(data){
-   if(data == 'tab1'){
-        $("#tab2Content").hide();
-        $("#tab1Content").show();
-        $("#tab3Content").hide();
-   }else if(data == 'tab2'){
-       var isFirstComplete = $("#first").val();
-       alert(isFirstComplete);
-      if(isFirstComplete == 0){
-          $("#tab2").parents('li').removeClass('active');
-            $("#tab1").closest('li').removeClass('active');
+    $("#tab2Content").hide();
+    $('#tab2').attr('class', 'disabled');
+    $('#tab2').attr('class', 'disabled');
+
+    $('#tab2').click(function (event) {
+        if ($(this).hasClass('disabled')) {
             return false;
-      }
-       $("#tab2Content").show();
-       $("#tab1Content").hide();
-       $("#tab3Content").hide();
-   }else if(data == 'tab3'){
-       $("#tab2Content").hide();
-       $("#tab1Content").hide();
-       $("#tab3Content").show();
-   }
-}
+        }
+    });
+    $('#tab3').click(function (event) {
+        if ($(this).hasClass('disabled')) {
+            return false;
+        }
+    });
+
+    function hideShowDiv(data) {
+        if (data == 'tab1') {
+            $("#tab2Content").hide();
+            $("#tab1Content").show();
+            $("#tab3Content").hide();
+        } else if (data == 'tab2') {
+            if ($("#tab2").hasClass('disabled')) {
+                return false;
+            } else {
+                $("#tab2Content").show();
+                $("#tab1Content").hide();
+                $("#tab3Content").hide();
+            }
+        } else if (data == 'tab3') {
+            if ($("#tab3").hasClass('disabled')) {
+                return false;
+            } else {
+                $("#tab2Content").hide();
+                $("#tab1Content").hide();
+                $("#tab3Content").show();
+            }
+        }
+    }
     $(function () {
         var mySlider = $("#ex6").slider();
         $("#ex6").on("slide", function (slideEvt) {
@@ -610,8 +454,8 @@ function hideShowDiv(data){
     });
 
     function getRack() {
+        
         var noOfShelves = parseInt($("#ex6SliderVal").val());
-
         var rackHeight = parseInt($("#hex6SliderVal").val());
         var rackWidth = parseInt($("#wex6SliderVal").val());
         var rackDepth = parseInt($("#dex6SliderVal").val());
@@ -631,6 +475,7 @@ function hideShowDiv(data){
         for (i = 0; i < noOfShelves; i++) {
             $("#real-canvas-" + i + "").RackCanvas(i);
         }
+        
     }
 
     function getRatio(width) {
@@ -721,8 +566,8 @@ function hideShowDiv(data){
                     return false;
                 } else {
                     if (index == 1) {
-                     
-                    
+
+
                         url = '<?php echo $formUrl ?>';
                         $.ajax({
                             type: 'POST',
@@ -731,6 +576,7 @@ function hideShowDiv(data){
                             success: function (data) {
                                 $("#tab1Content").hide();
                                 $("#tab2Content").show();
+                                $('#tab2').removeClass('disabled');
                                 $.pjax.reload({container: '#employee'});
 
                             }
@@ -738,26 +584,26 @@ function hideShowDiv(data){
 
                     }
                     if (index == 2) {
-                         
-                       return false;
+
+                        return false;
                         url = '<?php echo $secondFormUrl ?>';
-                       
+
                         $.ajax({
                             type: 'POST',
                             url: url,
-                            data:{productObject : productObject},
+                            data: {productObject: productObject},
                             success: function (data) {
-                             
-                              if(data == '1'){
-                                 
-                                  return true;
-                              }else{
-                                  return false;
-                              }
-                           
+
+                                if (data == '1') {
+                                    $('#tab3').removeClass('disabled');
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+
                             }
                         });
-                       
+
                     }
                 }
             }
