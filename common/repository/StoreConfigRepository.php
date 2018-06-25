@@ -26,15 +26,15 @@ class StoreConfigRepository extends Repository {
         }
         
         if (isset($data['city_id']) && $data['city_id']) {
-            $query->andWhere(['stores.city_id' => $data['city_id']]);
+            $query->andWhere(['stores.city_id' => explode(',',$data['city_id'])]);
         }
         
         if (isset($data['province_id']) && $data['province_id']) {
-            $query->andWhere(['stores.province_id' => $data['province_id']]);
+            $query->andWhere(['stores.province_id' => explode(',',$data['province_id'])]);
         }
         
         if (isset($data['market_id']) && $data['market_id']) {
-            $query->andWhere(['stores.market_id' => $data['market_id']]);
+            $query->andWhere(['stores.market_id' => explode(',',$data['market_id'])]);
         }
         
         if(isset($data['created_by']) && ($data['created_by'])){
@@ -196,9 +196,6 @@ class StoreConfigRepository extends Repository {
             $storeModel->is_autofill = $data['is_autofill'];
         }
      
-
-
-
         if ($storeModel->validate(false)) {
 
             if ($storeModel->save(false)) {

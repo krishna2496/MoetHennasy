@@ -169,15 +169,16 @@ class StoresConfigController extends BaseApiController {
         $data['page'] = 1;
         if(isset($data['pageNumber']) && ($data['pageNumber'] != '')){
              $data['page'] = $data['pageNumber']; 
+             $_GET['page'] = $data['page'];
         }
      
         if(isset($data['sort']) && ($data['sort'] != '')){
           
             if($data['sort'] == 'StoreName A-Z'){
-                 $data['sort']='name';
+                 $data['sort']='storeName';
             }
             if($data['sort'] == 'StoreName Z-A'){
-                 $data['sort']='-name';
+                 $data['sort']='-storeName';
             }
           
             if($data['sort'] == 'configName A-Z'){
@@ -189,26 +190,22 @@ class StoresConfigController extends BaseApiController {
             }
           
             if($data['sort'] == 'CityName A-Z'){
-                 $data['sort']='cityId';
+                 $data['sort']='cityName';
             }
             if($data['sort'] == 'CityName Z-A'){
-                 $data['sort']='-cityId';
+                 $data['sort']='-cityName';
             }
-            if($data['sort'] == 'Visit Old to new'){
-                 $data['sort']='id';
+            if($data['sort'] == 'market A-Z'){
+                 $data['sort']='marketId';
             }
-            if($data['sort'] == 'Visit new to Old'){
-                 $data['sort']='-id';
+            if($data['sort'] == 'market Z-A'){
+                 $data['sort']='-marketId';
             }
-            if($data['sort'] == 'distance A-Z'){
-                 $data['sort']='distance';
-            }
-             if($data['sort'] == 'distance Z-A'){
-                 $data['sort']='-distance';
-            }
+           
+            $_GET['sort'] = $data['sort'];
         }
-//        $_GET['sort'] = $data['sort'];
-        $_GET['page'] = $data['page'];
+       
+      
         
         $dataValue = $returnData['data']['stores_config'];
         foreach ($dataValue as $keyV=>$valueV){
@@ -247,6 +244,10 @@ class StoresConfigController extends BaseApiController {
                 $stores= $dataValue[$keyV]['stores'][0];
                 unset($dataValue[$keyV]['stores'][0]);
                 $dataValue[$keyV]['stores'] = $stores; 
+                $dataValue[$keyV]['storeName'] = $stores['name'];
+                $dataValue[$keyV]['cityName'] = $stores['city_id'];
+                $dataValue[$keyV]['marketId'] = $stores['market_id'];
+                
                 
                 unset($dataValue[$keyV]['shelfDisplay']);
                 $dataValue[$keyV]['shelfDisplay']['display_name'] = $shelfDisplay[0]['display_name'];
