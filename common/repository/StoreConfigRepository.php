@@ -137,7 +137,7 @@ class StoreConfigRepository extends Repository {
                     $displayModel->save(false);
                 }
                 }
-                $dataValue = $this->getConfigObject();
+                $dataValue = $this->getConfigObject($configId);
                 $this->apiData = $dataValue;
                 $this->apiCode = 1;
                 $this->apiMessage = Yii::t('app', 'created_successfully', [Yii::t('app', 'Configuration')]);
@@ -264,7 +264,7 @@ class StoreConfigRepository extends Repository {
                 }
                 }
 
-                $dataValue = $this->getConfigObject();
+                $dataValue = $this->getConfigObject($data['config_id']);
                 $this->apiData = $dataValue;
                 $this->apiCode = 1;
                 $this->apiMessage = Yii::t('app', 'updated_successfully', [Yii::t('app', 'Configuration')]);
@@ -316,7 +316,7 @@ class StoreConfigRepository extends Repository {
 
 }
 
-    private function getConfigObject(){
+    private function getConfigObject($configId){
                 $query = StoreConfiguration::find()->joinWith(['shelfDisplay', 'configFeedBack','stores']);
 
                 if (isset($configId) && ($configId != '')) {
