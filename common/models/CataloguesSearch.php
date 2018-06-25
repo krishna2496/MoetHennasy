@@ -43,7 +43,9 @@ class CataloguesSearch extends Catalogues {
                 }
             }
         }
-        
+        if(!isset($params['limit'])){
+            $params['limit'] = count($userList);
+        }
         $dataProvider = new ArrayDataProvider([
             'allModels' => $userList,
             'pagination' => [

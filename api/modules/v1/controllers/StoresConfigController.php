@@ -15,6 +15,7 @@ use common\repository\MarketRulesRepository;
 use common\repository\MarketRepository;
 use yii\data\ArrayDataProvider;
 use common\repository\StoreConfigRepository;
+use common\models\User;
 
 class StoresConfigController extends BaseApiController {
 
@@ -157,8 +158,16 @@ class StoresConfigController extends BaseApiController {
        
         $data = Yii::$app->request->post();
         $user = CommonHelper::getUser();
+       
         if(!isset($data['store_id'])){
-            $data['created_by'] = $user->id;
+            
+            $userObj = new User;
+           
+           
+            $childUser = $userObj->getAllChilds(array($user->id));
+            array_push($childUser, $user->id);
+           
+            $data['created_by'] = $childUser;
         }
    
         $returnData = $storeConfig->listing($data);

@@ -70,3 +70,110 @@ a.asc::after, a.desc::after {
 .rating-container div.caption{
     display:none;
 }
+   .box-shelf {
+        position: relative !important;
+        border-radius: 3px !important;
+        background: #ffffff !important;
+        border: 0px solid #d2d6de !important;
+        margin-bottom: 10px !important;
+        width: 100% !important;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.1) !important;
+    }
+    .box-shelf .box-header{
+        border-bottom: 1px solid #947549;
+    }
+    .shelf-color{
+        color:#947549 !important;  
+        font-size: 14px !important;
+        font-weight: bolder;
+    }
+    .box {
+        position: relative;
+        border-radius: 3px;
+        background: #ffffff;
+        border: 1px solid #d2d6de;
+        margin-bottom: 20px;
+        width: 100%;
+        box-shadow: 9px 9px 9px rgba(0, 0, 0, 0.1);
+        padding: 9px !important;
+    }
+    .box.box-danger {
+        border-color: #947549;
+    }
+
+    #ex6 .slider-selection {
+        background:red;
+    }
+    [id^=canvas-container] {
+        margin:auto !important;
+        position: relative;
+        border: 2px solid black;
+        border-bottom: 1px solid black;
+    }
+    #main-rack{
+        padding-right: 50px;
+        padding-left: 50px;
+        padding-bottom: 20px;
+        padding-top: 20px;
+        width: 650px;
+        height:auto;
+    }
+    [id^=main-rack]:last-child {
+        padding-bottom: 80px !important;
+    }     
+    [id^=main-rack]:first-child {
+        padding-top: 80px !important;
+    }
+    
+    [id^=canvas-container].over {
+        box-shadow: 0 0 5px 1px black;
+    }
+
+    #images img.img_dragging {
+        opacity: 0.4;
+    }
+
+    [draggable] {
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -khtml-user-drag: element;
+        -webkit-user-drag: element;
+        cursor: move;
+    }
+    .deleteBtn{
+        height: 30px;
+        width: 30px;
+    }
+    .custom-menu {
+        display: none;
+        z-index: 1000;
+        position: absolute;
+        overflow: hidden;
+        border: 1px solid #CCC;
+        white-space: nowrap;
+        font-family: sans-serif;
+        background: #FFF;
+        color: #333;
+        border-radius: 5px;
+    }
+
+    .custom-menu li {
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    .custom-menu li:hover {
+        background-color: #DEF;
+    }
+    .box-margin{
+        margin-bottom: 8px;
+    }
+    .brand-margin{
+        margin-bottom: 5px !important;
+    }
+    label.error {
+        color: #B94A48;
+        margin-top: 2px;
+    }

@@ -15,119 +15,12 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
     var productArry = [];
     var productObject = {};
 </script>
-<style type="text/css">
-
-    .box-shelf {
-        position: relative !important;
-        border-radius: 3px !important;
-        background: #ffffff !important;
-        border: 0px solid #d2d6de !important;
-        margin-bottom: 10px !important;
-        width: 100% !important;
-        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.1) !important;
-    }
-    .box-shelf .box-header{
-        border-bottom: 1px solid #947549;
-    }
-    .shelf-color{
-        color:#947549 !important;  
-        font-size: 14px !important;
-        font-weight: bolder;
-    }
-    .box {
-        position: relative;
-        border-radius: 3px;
-        background: #ffffff;
-        border: 1px solid #d2d6de;
-        margin-bottom: 20px;
-        width: 100%;
-        box-shadow: 9px 9px 9px rgba(0, 0, 0, 0.1);
-        padding: 9px !important;
-    }
-    .box.box-danger {
-        border-color: #947549;
-    }
-
-    #ex6 .slider-selection {
-        background:red;
-    }
-    [id^=canvas-container] {
-        margin:auto !important;
-        position: relative;
-        border: 2px solid black;
-        border-bottom: 1px solid black;
-    }
-    #main-rack{
-        padding-right: 50px;
-        padding-left: 50px;
-        padding-bottom: 20px;
-        padding-top: 20px;
-        width: 650px;
-        height:auto;
-    }
-    [id^=main-rack]:last-child {
-        padding-bottom: 80px !important;
-    }     
-    [id^=main-rack]:first-child {
-        padding-top: 80px !important;
-    }
-    
-    [id^=canvas-container].over {
-        box-shadow: 0 0 5px 1px black;
-    }
-
-    #images img.img_dragging {
-        opacity: 0.4;
-    }
-
-    [draggable] {
-        -moz-user-select: none;
-        -khtml-user-select: none;
-        -webkit-user-select: none;
-        user-select: none;
-        -khtml-user-drag: element;
-        -webkit-user-drag: element;
-        cursor: move;
-    }
-    .deleteBtn{
-        height: 30px;
-        width: 30px;
-    }
-    .custom-menu {
-        display: none;
-        z-index: 1000;
-        position: absolute;
-        overflow: hidden;
-        border: 1px solid #CCC;
-        white-space: nowrap;
-        font-family: sans-serif;
-        background: #FFF;
-        color: #333;
-        border-radius: 5px;
-    }
-
-    .custom-menu li {
-        padding: 8px 12px;
-        cursor: pointer;
-    }
-
-    .custom-menu li:hover {
-        background-color: #DEF;
-    }
-    .box-margin{
-        margin-bottom: 8px;
-    }
-    .brand-margin{
-        margin-bottom: 5px !important;
-    }
-    label.error {
-        color: #B94A48;
-        margin-top: 2px;
-    }
-
-
-</style>
 <div class="market-segments-form">
+    <form id="tabForm">
+        <input type="hidden" value="0" name="first" id="first"> 
+        <input type="hidden" value="0" name="second" id="second"> 
+        <input type="hidden" value="0" name="third" id="third"> 
+    </form>
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
@@ -136,9 +29,9 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                     <div id="validationWizard" class="basic-wizard">
 
                         <ul class="nav nav-pills nav-justified nav-disabled-click">
-                            <li class="active"><a href="#vtab1" data-toggle="tab">CREATE YOUR DISPLAY</a></li>
-                            <li><a href="#vtab2" data-toggle="tab">DIFINE PRODUCTS</a></li>
-                            <li><a href="#vtab3" data-toggle="tab">CONFIGURATION</a></li>
+                            <li class="active"><a href="#vtab1" data-toggle="tab" id="tab1" onclick="hideShowDiv(this.id)">CREATE YOUR DISPLAY</a></li>
+                            <li><a href="#vtab1" data-toggle="tab" id="tab2" onclick="hideShowDiv(this.id)">DIFINE PRODUCTS</a></li>
+                            <li><a href="#vtab1" data-toggle="tab" id="tab3" onclick="hideShowDiv(this.id)">CONFIGURATION</a></li>
                         </ul>
 
                         <div class="tab-content" id="tabs">
@@ -160,7 +53,7 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                 </div>
                                             </div>
                                         </section>
-                                        <section class="col-md-5">
+                                        <section class="col-md-5" id="tab1Content">
                                             <div class="box box-danger">
                                                 <div>
                                                     <span><b style="text-align:center"> Display </b></span>
@@ -266,10 +159,174 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                 </div>
                                             </div>
                                         </section>
+                                        <section class="col-md-5" id="tab2Content">
+                                            <div class="box box-danger">
+                                                <div>
+                                                    <span><b style="text-align:center"> Display </b></span>
+                                                </div>
+                                                <div class="box-body with-borde">
+
+                                                    <div class="box box-shelf">
+                                                        <div class="box-header with-border">
+                                                            <h3 class="box-title shelf-color " >PRODUCTS SKU</h3>
+                                                            <div class="box-tools pull-right">
+                                                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+                                                                    <i class="fa fa-minus"></i></button>
+                                                            </div>
+                                                        </div>
+                                                        <?php Pjax::begin(['id' => 'employee', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>
+
+                                                        <div class="box-body">
+                                                            <?=
+                                                            GridView::widget([
+                                                                'dataProvider' => $dataProvider,
+                                                                'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-12"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
+                                                                'columns' => [
+                                                                        [
+                                                                        'class' => 'yii\grid\SerialColumn'],
+                                                                        [
+                                                                        'class' => 'yii\grid\CheckboxColumn', 'checkboxOptions' => function($model) {
+                                                                            return ['value' => $model['id'], 'selection' => true, 'class' => 'checked'];
+                                                                        },
+                                                                    ],
+                                                                        [
+                                                                        'label' => 'Product',
+                                                                        'attribute' => 'short_name',
+                                                                        'value' => 'short_name'
+                                                                    ],
+                                                                        [
+                                                                        'label' => 'Product type',
+                                                                        'attribute' => 'productType',
+                                                                        'value' => 'productType.title'
+                                                                    ],
+                                                                    'market_share',
+                                                                        [
+                                                                        'label' => 'Product Category',
+                                                                        'attribute' => 'productCategory',
+                                                                        'value' => 'productCategory'
+                                                                    ],
+                                                                        [
+                                                                        'attribute' => 'top_shelf',
+                                                                        'format' => 'raw',
+                                                                        'value' => function($model) {
+                                                                            $value = ($model['top_shelf'] == 0) ? false : true;
+                                                                            $dvalue = ($model['top_shelf'] == 0) ? "0" : "1";
+                                                                            return '<div class="idDiv" dvalue="' . $dvalue . '" id="' . $model["id"] . '">' . SwitchInput::widget([
+                                                                                    'name' => 'status_41[]',
+                                                                                    'value' => $value,
+                                                                                    'pluginOptions' => [
+                                                                                        'onText' => 'Yes',
+                                                                                        'offText' => 'No'
+                                                                                    ]
+                                                                                ]) . '</div>';
+                                                                        }
+                                                                    ]
+                                                                ],
+                                                            ]);
+                                                            ?>
+                                                        </div>
+                                                        <script type="text/javascript">
+                                                            $(document).ready(function () {
+                                                                $('input[name="selection[]"]').each(function (skey, sval) {
+                                                                    var sobj = {};
+                                                                    sobj["sel"] = false;
+                                                                    sobj["shelf"] = 'undefined';
+                                                                    if (typeof (productObject[$(sval).val()]) === 'undefined')
+                                                                    {
+                                                                        productObject[$(sval).val()] = sobj;
+                                                                    }
+                                                                    if (typeof (productObject[$(sval).val()]) !== 'undefined' && productObject[$(sval).val()]["sel"] === true)
+                                                                    {
+                                                                        $('input[type="checkbox"][value="' + $(sval).val() + '"]').attr('checked', true).iCheck('update');
+                                                                    }
+                                                                    if ((productObject[$(sval).val()] !== 'undefined') && productObject[$(sval).val()]["shelf"] === true)
+                                                                    {
+                                                                        $('div#' + $(sval).val() + ' input[name="status_41[]"]').bootstrapSwitch('state', true);
+//                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', true);
+                                                                    }
+                                                                    if ((productObject[$(sval).val()] !== 'undefined') && productObject[$(sval).val()]["shelf"] === false)
+                                                                    {
+                                                                        $('div#' + $(sval).val() + ' input[name="status_41[]"]').bootstrapSwitch('state', false);
+//                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', true);
+                                                                    }
+//                                                                    if(productObject[$(sval).val()]["shelf"] === false)
+//                                                                    {                                                                            
+//                                                                 
+//                                                                   console.log($(sval).val());
+//                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', false);
+//                                                                    }
+//                                                                    if(productObject[$(sval).val()]["shelf"] === false)
+//                                                                    {                                                                            
+//                                                                   
+//                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', false, false);
+//                                                                    }
+                                                                    //productArry.push({$(sval).val()});
+                                                                });
+                                                                console.log(productObject);
+                                                            });
+
+                                                            $('.select-on-check-all').on('ifChecked', function (event) {
+
+                                                                $('input[name="selection[]"]').iCheck('check');
+
+                                                            });
+
+                                                            $('.select-on-check-all').on('ifUnchecked', function (event) {
+                                                              
+                                                                $('input[name="selection[]"]').iCheck('uncheck');
+
+
+                                                            });
+                                                            $('input[name="selection[]"]').on('ifChecked', function (event) {
+
+                                                                if (typeof (productObject[$(this).val()]) !== 'undefined')
+                                                                {
+                                                                    productArry.push($(this).val());
+                                                                    var id = $(this).val();
+                                                                    var switchValue = $("div#" + id).attr("dvalue");
+                                                                    var switchFlag = (switchValue == "1") ? true : false;
+                                                                    productObject[$(this).val()]['sel'] = true;
+                                                                    productObject[$(this).val()]['shelf'] = switchFlag;
+                                                                }
+                                                            });
+                                                            $('input[name="selection[]"]').on('ifUnchecked', function (event) {
+                                                                popedValue = productArry.indexOf($(this).val());
+                                                                productArry.splice(popedValue, 1);
+                                                                if (typeof (productObject[$(this).val()]) !== 'undefined')
+                                                                {
+                                                                    var id = $(this).val();
+                                                                    var switchValue = $("div#" + id).attr("dvalue");
+                                                                    var switchFlag = (switchValue == "1") ? true : false;
+                                                                    productObject[$(this).val()]['sel'] = false;
+                                                                    productObject[$(this).val()]['shelf'] = switchFlag;
+                                                                }
+                                                            });
+                                                            $('input[name="status_41[]"]').on('switchChange.bootstrapSwitch', function (event, state) {
+                                                                var id = $(this).closest('div.idDiv').attr("id");
+                                                                if ($(this).bootstrapSwitch('state')) {
+                                                                    productObject[id]['shelf'] = true;
+                                                                    $("div#" + id).attr("dvalue", "1")
+                                                                } else {
+                                                                    productObject[id]['shelf'] = false;
+                                                                    $("div#" + id).attr("dvalue", "0")
+                                                                }
+                                                            });
+                                                            /*productArry.forEach(function(item){
+                                                             $("input[type=checkbox][value=" +item+ "]").attr("checked", "true")
+                                                             });*/
+
+                                                        </script>
+                                                        <?php Pjax::end(); ?>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </section>
                                     </div>
                                 </form>
                             </div>
-                            <div class="tab-pane" id="vtab2">
+                      <div class="tab-pane" id="vtab3">
                                 <form id="secondForm"> 
                                     <div class="row" style="margin-top:10px">
                                         <section class="col-md-6">
@@ -401,7 +458,7 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                             });
 
                                                             $('.select-on-check-all').on('ifUnchecked', function (event) {
-                                                                alert(1);
+                                                              
                                                                 $('input[name="selection[]"]').iCheck('uncheck');
 
 
@@ -454,10 +511,6 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                         </section>
                                     </div>
                                 </form>
-                            </div>
-
-                            <div class="tab-pane" id="vtab3">
-
 
                             </div>
 
@@ -480,7 +533,30 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
 
 <script type="text/javascript">
     getRack();
+$("#tab2Content").hide();
 
+function hideShowDiv(data){
+   if(data == 'tab1'){
+        $("#tab2Content").hide();
+        $("#tab1Content").show();
+        $("#tab3Content").hide();
+   }else if(data == 'tab2'){
+       var isFirstComplete = $("#first").val();
+       alert(isFirstComplete);
+      if(isFirstComplete == 0){
+          $("#tab2").parents('li').removeClass('active');
+            $("#tab1").closest('li').removeClass('active');
+            return false;
+      }
+       $("#tab2Content").show();
+       $("#tab1Content").hide();
+       $("#tab3Content").hide();
+   }else if(data == 'tab3'){
+       $("#tab2Content").hide();
+       $("#tab1Content").hide();
+       $("#tab3Content").show();
+   }
+}
     $(function () {
         var mySlider = $("#ex6").slider();
         $("#ex6").on("slide", function (slideEvt) {
@@ -645,12 +721,16 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                     return false;
                 } else {
                     if (index == 1) {
+                     
+                    
                         url = '<?php echo $formUrl ?>';
                         $.ajax({
                             type: 'POST',
                             url: url,
                             data: $("#firstForm").serialize(),
                             success: function (data) {
+                                $("#tab1Content").hide();
+                                $("#tab2Content").show();
                                 $.pjax.reload({container: '#employee'});
 
                             }
@@ -658,6 +738,8 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
 
                     }
                     if (index == 2) {
+                         
+                       return false;
                         url = '<?php echo $secondFormUrl ?>';
                        
                         $.ajax({
@@ -665,13 +747,17 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                             url: url,
                             data:{productObject : productObject},
                             success: function (data) {
-                                alert(data);
-                                return false;
-//                                $.pjax.reload({container: '#employee'});
-
+                             
+                              if(data == '1'){
+                                 
+                                  return true;
+                              }else{
+                                  return false;
+                              }
+                           
                             }
                         });
-                        return false;
+                       
                     }
                 }
             }
