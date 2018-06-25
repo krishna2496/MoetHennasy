@@ -93,6 +93,7 @@ class StoreConfigRepository extends Repository {
 
             if ($storeModel->save(false)) {
                 $configId = $storeModel->id;
+               
                 //question and answer
                 if(!empty($questionArray)){                   
                 foreach ($questionArray as $key => $value) {
@@ -146,8 +147,9 @@ class StoreConfigRepository extends Repository {
             }
         } else {
             $this->apiCode = 0;
-            if (isset($model->errors) && $model->errors) {
-                $this->apiMessage = $model->errors;
+          
+            if (isset($storeModel->errors) && $storeModel->errors) {
+                $this->apiMessage = $storeModel->errors;
             }
         }
 

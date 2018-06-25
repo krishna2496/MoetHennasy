@@ -141,8 +141,8 @@ class StoresConfigController extends BaseApiController {
 
         $data = Yii::$app->request->post('config');
 
-        $configData = json_decode(trim($data,'"') ,true);
-    
+        $configData = json_decode(stripcslashes(trim($data,'"')) ,true);
+        
         $storeConfig = new StoreConfigRepository();
         if(isset($configData['config_id']) && ($configData['config_id'] != '')){
         $returnData = $storeConfig->updateConfig($configData);

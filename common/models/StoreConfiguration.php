@@ -37,7 +37,7 @@ class StoreConfiguration extends BaseModel
     public function rules()
     {
         return [
-            [['store_id', 'config_name', 'shelf_thumb'], 'required'],
+            [['store_id', 'config_name'], 'required'],
             [['store_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['config_name'], 'string', 'max' => 100],
