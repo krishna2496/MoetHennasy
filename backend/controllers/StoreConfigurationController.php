@@ -15,11 +15,31 @@ use common\repository\QuestionsRepository;
 use common\repository\MarketRulesRepository;
 use common\repository\MarketRepository;
 use common\models\CataloguesSearch;
+use common\models\Stores;
+use common\models\StoresSearch;
+use yii\filters\AccessControl;
+use common\repository\MarketRepository;
+
 
 class StoreConfigurationController extends Controller {
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => \common\components\AccessRule::className(),
+                ],
+                'rules' => [
+                    [
+                        'actions' => ['index','listing','create','update','view','delete'],
+                        'allow' => true,
+                        'roles' => ['&'],
+                    ],
+                   
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -28,9 +48,42 @@ class StoreConfigurationController extends Controller {
             ],
         ];
     }
+    
+    public function actionListing($id) {
+        
+        $stores=Stores::findOne($id);
+        if($stores){
+        $filters = Yii::$app->request->queryParams;
+        if(!isset($filters['limit'])){
+            $filters['limit'] = Yii::$app->params['pageSize'];
+        }       
+        $filters['store_id']=$id;
+        $searchModel = new StoreConfigurationSearch();
+        $dataProvider = $searchModel->search($filters);
+        $dataProvider->pagination->pageSize = $filters['limit'];
+        
+        return $this->render('listing', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'filters'=>$filters,
+            'id' => $id
+        ]);
+        }else{
+            throw new NotFoundHttpException('The requested page does not exist.'); 
+        }
+        
+    }
 
-    public function actionIndex() {
-
+    public function actionIndex($id) {
+        $stores=Stores::find(['id' => $id])->asArray()->one();
+        if($stores){
+        $marketFilter = array();
+        
+        $marketRules = new MarketRules();
+        $marketFilter['market_id'] = $stores['market_id'];
+        $marketFilter['market_segment_id'] = $stores['market_segment_id'];
+        echo '<pre>';
+        print_r($marketFilter);exit;
         $currentUser = CommonHelper::getUser();
         $marketId = '';
         if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
@@ -73,7 +126,11 @@ class StoreConfigurationController extends Controller {
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
                 'brand' => $brand,
+                'store_id' => $id,
         ]);
+        }else{
+             throw new NotFoundHttpException('The requested page does not exist.'); 
+        }
     }
 
     public function actionSaveData() {
@@ -102,32 +159,41 @@ class StoreConfigurationController extends Controller {
                     $searchModel = new CataloguesSearch();
                     $filters['products_id'] = $key;
                     $dataProvider = $searchModel->search($filters);
-                   
                     $data =$dataProvider->getModels();
-                    $productsArray = $marketRule = $rulesArray = array();
+                    $productsArray = $marketRule = $rulesArray = $rulesId = array();
                     $market = $data[0]['market'];
                     
                        
                         $marketRule['markt_title'] = $market['title'];
-                        $rules =$market['marketSegmentData'][0]['marketSegment']['marketRules'];
-                        foreach ($rules as $ruleKey => $ruleValue){
-                            $rulesArray[$ruleKey] = $ruleValue['rules'];
-                        }
-                        $marketRule['rules'] = $rulesArray;
+//                        $rules =$market['marketSegmentData'][0]['marketSegment']['marketRules'];
+//                        foreach ($rules as $ruleKey => $ruleValue){
+//                            $rulesArray[$ruleKey] = $ruleValue['rules'];
+//                        }
+//                     
+//        
+//                foreach ($rulesArray as $rulekey => $rulevalue){
+//                   
+//                    $rulesId[$rulekey]=$rulevalue['id'];
+//                    
+//                }
+               
+                
+//                        $marketRule['rules'] = $rulesId;
                   
-                    
+                     
                     unset($data[0]['market']);
-                    $dataIds[$key]['products']=$data[0];
-                    $dataIds[$key]['products']['top_shlef']= $value['shelf'];
-                    $dataIds[$key]['products']['market']= $marketRule;
+                    $dataIds[$key]=$data[0];
+                    $dataIds[$key]['top_shlef']= $value['shelf'];
+                    $dataIds[$key]['market']= $marketRule;
                     
                  }
             }
         }
-
-        $_SESSION['config']['products'] =$dataIds;
         
-        return $flag;
+        $_SESSION['config']['products'] =$dataIds;
+        echo '<pre>';
+        print_r($_SESSION['config']['products']);exit;
+       
     }
 
     public function actionView($id) {

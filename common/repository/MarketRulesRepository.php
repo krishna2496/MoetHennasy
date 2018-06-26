@@ -12,8 +12,12 @@ class MarketRulesRepository extends Repository {
 
         $this->apiCode = 1;
         $query = MarketRules::find();
-
-
+        if(isset($data['market_id']) && ($data['market_id'] != '')){
+             $query->andWhere(['market_id' => $data['market_id']]);
+        }
+        if(isset($data['market_segment_id']) && ($data['market_segment_id'] != '')){
+             $query->andWhere(['market_segment_id' => $data['market_segment_id']]);
+        }
         $data = array();
         $data['market_rules'] = $query->asArray()->all();
         $this->apiData = $data;

@@ -55,7 +55,8 @@ return [
                 'help-categories/delete/<id:\d+>' => 'help-categories/delete',
                 'help-categories/view/<id:\d+>' => 'help-categories/view',
                 'market-contacts/index/<id:\d+>' => 'market-contacts/index',
-               
+                'store-configuration/listing/<id:\d+>' => 'store-configuration/listing',
+                'store-configuration/index/<id:\d+>' => 'store-configuration/index',
                 'product-types/index/<id:\d+>' => 'product-types/index',
                 'product-types/view/<id:\d+>' => 'product-types/view',
                 'product-types/update/<id:\d+>' => 'product-types/update',
@@ -73,10 +74,16 @@ return [
                 
                 'helps/update/<id:\d+>/<categoryId:\d+>' => 'helps/update',
                 'helps/create/<id:\d+>' => 'helps/create',
+                
+                
+                
                 'helps/delete/<id:\d+>/<categoryId:\d+>' => 'helps/delete',
                 'helps/view/<id:\d+>/<categoryId:\d+>' => 'helps/view',
                 'configs/update/<id:\d+>/<storeId:\d+>' => 'configs/update',
                 'configs/create/<id:\d+>' => 'configs/create',
+                
+               
+                
                 'configs/delete/<id:\d+>/<storeId:\d+>' => 'configs/delete',
                 'configs/review/<id:\d+>/<storeId:\d+>' => 'configs/review',
                 'configs/view/<id:\d+>/<storeId:\d+>' => 'configs/view',
@@ -84,10 +91,11 @@ return [
                 'users/view/<id:\d+>/<parentId:\d+>' => 'users/view',
                 'users/delete/<id:\d+>/<parentId:\d+>' => 'users/delete',
                 'help/index/<id:\d+>' => 'help/index',
+              
                 'market-contacts/index/<id:\d+>/<contactId:\d+>' => 'market-contacts/index',
                 'market-contacts/view/<id:\d+>/<contactId:\d+>' => 'market-contacts/view',
                 'market-contacts/delete/<id:\d+>/<contactId:\d+>' => 'market-contacts/delete',
-                
+               
                
              
                

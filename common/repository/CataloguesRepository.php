@@ -11,7 +11,7 @@ class CataloguesRepository extends Repository {
     public function listing($data = array()) {
        
         $this->apiCode = 1;
-        $query = Catalogues::find()->joinWith(['market.marketSegmentData.marketSegment.marketRules.rules', 'brand','productType','productCategory']);
+        $query = Catalogues::find()->joinWith(['market', 'brand','productType','productCategory']);
 
         if (isset($data['serachText']) && ($data['serachText'] != '')) {
             $data['search'] = $data['serachText'];

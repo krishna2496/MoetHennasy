@@ -160,9 +160,7 @@ class StoresConfigController extends BaseApiController {
         $user = CommonHelper::getUser();
        
         if(!isset($data['store_id']) || ($data['store_id'] == 0)){
-            
             $userObj = new User;
-           
            
             $childUser = $userObj->getAllChilds(array($user->id));
             array_push($childUser, $user->id);

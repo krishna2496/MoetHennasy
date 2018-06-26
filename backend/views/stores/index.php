@@ -103,7 +103,7 @@ if(isset($urlData[1]) && $urlData[1]){
                                    return Html::a('Config', ['configs/index/'.$model['id']], ['class'=>'btn btn-primary','style'=>'margin-left: 15px;']);
                                 }, 
                                 'congiguration' => function ($url, $model) {
-                                   return Html::a('Configuration', ['/store-configuration'], ['class'=>'btn btn-primary','style'=>'margin-left: 15px;']);
+                                   return Html::a('Configuration', ['/store-configuration/listing/'.$model['id']], ['class'=>'btn btn-primary','style'=>'margin-left: 15px;']);
                                 }, 
                             ],
                         ],

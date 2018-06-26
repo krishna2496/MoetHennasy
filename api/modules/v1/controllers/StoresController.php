@@ -11,6 +11,7 @@ use common\helpers\CommonHelper;
 use common\repository\StoreRepository;
 use yii\data\ArrayDataProvider;
 use common\models\StoresSearch;
+use common\models\User;
 
 class StoresController extends BaseApiController
 {
@@ -83,6 +84,7 @@ class StoresController extends BaseApiController
     
     public function actionListStores(){
         $currentUser = CommonHelper::getUser();
+        
         $data = array();
         $data['pageNumber'] = Yii::$app->request->get('pageNumber');
         $data['search'] = Yii::$app->request->get('serachText');
@@ -96,7 +98,15 @@ class StoresController extends BaseApiController
             $data['market_id'] = explode(',', Yii::$app->request->get('marketIdArray'));
         }
         $data['sort'] = Yii::$app->request->get('sort');
-        $data['assign_to'] = $currentUser->id;
+       
+        $userObj = new User;
+           
+        $childUser = $userObj->getAllChilds(array($currentUser->id));
+        array_push($childUser, $currentUser->id);
+      
+        $data['assign_to'] = $childUser;
+        
+        
         $limit = Yii::$app->params['pageSize'];
         $data['per-page'] = Yii::$app->params['pageSize'];
 
