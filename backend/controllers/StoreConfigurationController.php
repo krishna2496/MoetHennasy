@@ -28,9 +28,9 @@ class StoreConfigurationController extends Controller {
             ],
         ];
     }
-    
+
     public function actionIndex() {
-       
+
         $currentUser = CommonHelper::getUser();
         $marketId = '';
         if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
@@ -51,29 +51,28 @@ class StoreConfigurationController extends Controller {
                         $brand[$key]['id'] = $value['brand']['id'];
                         $brand[$key]['name'] = $value['brand']['name'];
                         $brand[$key]['image'] = $value['brand']['image'];
-                        $brandId[]=$value['brand']['id'];
+                        $brandId[] = $value['brand']['id'];
                     }
                 }
             }
         }
-       
+
         $filterProduct['brand_id'] = $brandId;
-        if(!isset($filterProduct['limit'])){
+        if (!isset($filterProduct['limit'])) {
             $filterProduct['limit'] = Yii::$app->params['pageSize'];
         }
-        
-        if(isset($_SESSION['config']['brands']) && ($_SESSION['config']['brands'] != '')){
+
+        if (isset($_SESSION['config']['brands']) && ($_SESSION['config']['brands'] != '')) {
             $filterProduct['brand_id'] = $_SESSION['config']['brands'];
         }
-        
+
         $searchModel = new CataloguesSearch();
         $dataProvider = $searchModel->search($filterProduct);
-        
+
         return $this->render('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
                 'brand' => $brand,
-               
         ]);
     }
 
@@ -82,35 +81,51 @@ class StoreConfigurationController extends Controller {
 
         $_SESSION['config']['num_of_shelves'] = $post['num_of_shelves'];
         $_SESSION['config']['height_of_shelves'] = $post['height_of_shelves'];
-        $_SESSION['config']['width_of_shelves'] = $post['width_of_shelves'];        
+        $_SESSION['config']['width_of_shelves'] = $post['width_of_shelves'];
         $_SESSION['config']['depth_of_shelves'] = $post['depth_of_shelves'];
         $_SESSION['config']['brands'] = $post['brands'];
         $_SESSION['config']['display_name'] = $post['display_name'];
-       
     }
-    
+
     public function actionSaveProductData() {
         $post = Yii::$app->request->post('productObject');
-        
+
         $flag = 0;
-        $productArry= array();
-        
-        if(!empty($post)){
-        $flag = 1;
-        foreach ($post as $key => $value){
+        $productArry = array();
+
+        if (!empty($post)) {
+            $flag = 1;
+            foreach ($post as $key => $value) {
             
-           if($value['sel'] == 'true'){
-               
-               $searchModel = new CataloguesSearch();
-               $filters['products_id'] = $key;
-               $dataProvider = $searchModel->search($filters);
-             
-                $_SESSION['config']['products'][$key] = $dataProvider->allModels[0];
-                $_SESSION['config']['products'][$key]['top_shlef'] = $value['shelf'];
-                
-           } 
+                if ($value['sel'] == 'true') {
+
+                    $searchModel = new CataloguesSearch();
+                    $filters['products_id'] = $key;
+                    $dataProvider = $searchModel->search($filters);
+                   
+                    $data =$dataProvider->getModels();
+                    $productsArray = $marketRule = $rulesArray = array();
+                    $market = $data[0]['market'];
+                    
+                       
+                        $marketRule['markt_title'] = $market['title'];
+                        $rules =$market['marketSegmentData'][0]['marketSegment']['marketRules'];
+                        foreach ($rules as $ruleKey => $ruleValue){
+                            $rulesArray[$ruleKey] = $ruleValue['rules'];
+                        }
+                        $marketRule['rules'] = $rulesArray;
+                  
+                    
+                    unset($data[0]['market']);
+                    $dataIds[$key]['products']=$data[0];
+                    $dataIds[$key]['products']['top_shlef']= $value['shelf'];
+                    $dataIds[$key]['products']['market']= $marketRule;
+                    
+                 }
+            }
         }
-        }
+
+        $_SESSION['config']['products'] =$dataIds;
         
         return $flag;
     }

@@ -10,6 +10,11 @@ use kartik\switchinput\SwitchInput;
 
 $formUrl = Url::to(['store-configuration/save-data']);
 $secondFormUrl = Url::to(['store-configuration/save-product-data']);
+if(isset($_SESSION['config']['products'])){
+    $products = json_encode($_SESSION['config']['products'],true);
+}
+//echo '<pre>';
+//print_r($_SESSION['config']);exit;
 ?>
 <script>
     var productArry = [];
@@ -52,10 +57,6 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
             </div>
 
 <div class="box-body">
-<?php 
-//    echo '<pre>';
-//    print_r($_SESSION);exit;
-?>
             <form id="firstForm"> 
                 <div class="setup-content" >
                     <div class="panel-body" id="tabs">
@@ -66,9 +67,7 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                         <div class="box-header">
                                             <b>  Display 1 :
                                                 <span id="getName">
-                                                    <?=
-                                                      isset($_SESSION['config']['display_name']) ? $_SESSION['config']['display_name'] : '';
-                                                    ?>
+                                               
                                                 </span>
                                             </b>
                                         </div>
@@ -105,10 +104,10 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                                 <label>Number of shelves*</label>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <input type="text" value="<?= isset($_SESSION['config']['num_of_shelves']) ? $_SESSION['config']['num_of_shelves'] : yii::$app->params['shelfConfig']['1'];  ?>" id="ex6SliderVal" name="num_of_shelves" class="form-control" required=""/>
+                                                                <input type="text" value="<?=  yii::$app->params['shelfConfig']['1'];  ?>" id="ex6SliderVal" name="num_of_shelves" class="form-control" required=""/>
                                                             </div>
                                                             <div class="col-md-12">
-                                                                <input id="ex6" type="text" data-slider-min="<?= yii::$app->params['num_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['num_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?=  isset($_SESSION['config']['num_of_shelves']) ? $_SESSION['config']['num_of_shelves'] : yii::$app->params['shelfConfig']['1'] ; ?>"/>
+                                                                <input id="ex6" type="text" data-slider-min="<?= yii::$app->params['num_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['num_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?=  yii::$app->params['shelfConfig']['1'] ; ?>"/>
                                                             </div>
                                                         </div>
                                                     </div><hr>
@@ -119,10 +118,10 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                                 <label>Height of shelves*</label>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <input type="text" value="<?= isset($_SESSION['config']['height_of_seleves']) ? $_SESSION['config']['height_of_seleves'] : yii::$app->params['shelfConfig']['0'];  ?>" id="hex6SliderVal" name="height_of_shelves" class="form-control" required="" />
+                                                                <input type="text" value="<?= yii::$app->params['shelfConfig']['0'];  ?>" id="hex6SliderVal" name="height_of_shelves" class="form-control" required="" />
                                                             </div>
                                                             <div class="col-md-12">
-                                                                <input id="hex6" type="text" data-slider-min="<?= yii::$app->params['height_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['height_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= isset($_SESSION['config']['height_of_seleves']) ? $_SESSION['config']['height_of_seleves'] : yii::$app->params['shelfConfig']['0'];  ?>"/>
+                                                                <input id="hex6" type="text" data-slider-min="<?= yii::$app->params['height_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['height_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= yii::$app->params['shelfConfig']['0'];  ?>"/>
                                                             </div>
                                                         </div>
                                                     </div><hr>
@@ -133,10 +132,10 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                                 <label>Width of shelves*</label>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <input type="text" value="<?= isset($_SESSION['config']['width_of_seleves']) ? $_SESSION['config']['width_of_seleves'] : yii::$app->params['shelfConfig']['0'];  ?>" id="wex6SliderVal" name="width_of_shelves" class="form-control" required="" />
+                                                                <input type="text" value="<?= yii::$app->params['shelfConfig']['0'];  ?>" id="wex6SliderVal" name="width_of_shelves" class="form-control" required="" />
                                                             </div>
                                                             <div class="col-md-12">
-                                                                <input id="wex6" type="text" data-slider-min="<?= yii::$app->params['width_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['width_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= isset($_SESSION['config']['width_of_seleves']) ? $_SESSION['config']['width_of_seleves'] : yii::$app->params['shelfConfig']['0'];  ?>"/>
+                                                                <input id="wex6" type="text" data-slider-min="<?= yii::$app->params['width_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['width_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?=  yii::$app->params['shelfConfig']['0'];  ?>"/>
                                                             </div>
                                                         </div>
                                                     </div><hr>
@@ -147,10 +146,10 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                                 <label>Depth of shelves*</label>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <input type="text" value="<?= isset($_SESSION['config']['depth_of_seleves']) ? $_SESSION['config']['depth_of_seleves'] : yii::$app->params['shelfConfig']['3'];  ?>" id="dex6SliderVal" name="depth_of_shelves" class="form-control" required="" />
+                                                                <input type="text" value="<?= yii::$app->params['shelfConfig']['3'];  ?>" id="dex6SliderVal" name="depth_of_shelves" class="form-control" required="" />
                                                             </div>
                                                             <div class="col-md-12">
-                                                                <input id="dex6" type="text" data-slider-min="<?= yii::$app->params['depth_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['depth_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= isset($_SESSION['config']['depth_of_seleves']) ? $_SESSION['config']['depth_of_seleves'] : yii::$app->params['shelfConfig']['3'];  ?>"/>
+                                                                <input id="dex6" type="text" data-slider-min="<?= yii::$app->params['depth_of_seleves']['min'] ?>" data-slider-max="<?= yii::$app->params['depth_of_seleves']['max'] ?>" data-slider-step="1" data-slider-value="<?= yii::$app->params['shelfConfig']['3'];  ?>"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -326,10 +325,7 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                                                             $("div#" + id).attr("dvalue", "0")
                                                         }
                                                     });
-                                                    /*productArry.forEach(function(item){
-                                                     $("input[type=checkbox][value=" +item+ "]").attr("checked", "true")
-                                                     });*/
-
+                                                   
                                                 </script>
                                                 <?php Pjax::end(); ?>
 
@@ -337,6 +333,9 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
 
                                         </div>
                                     </div>
+                                </section>
+                                <section id="tab3Content">
+                                    
                                 </section>
                             </div>
 
@@ -352,7 +351,7 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                 <li class="next"><a href="javascript:void(0)">Ok</a></li>
             </ul>
 
-        </div><!-- #validationWizard -->
+        </div>
 
 
 
@@ -365,7 +364,7 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
 
     $("#tab2Content").hide();
     $('#tab2').attr('class', 'disabled');
-    $('#tab2').attr('class', 'disabled');
+    $('#tab3').attr('class', 'disabled');
 
     $('#tab2').click(function (event) {
         if ($(this).hasClass('disabled')) {
@@ -545,6 +544,7 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                 return true;
             },
             onNext: function (tab, navigation, index) {
+                
                 if (index == 1) {
                     if ($("#firstForm input:checkbox:checked").length <= 0)
                     {
@@ -585,7 +585,6 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                     }
                     if (index == 2) {
 
-                        return false;
                         url = '<?php echo $secondFormUrl ?>';
 
                         $.ajax({
@@ -595,10 +594,9 @@ $secondFormUrl = Url::to(['store-configuration/save-product-data']);
                             success: function (data) {
 
                                 if (data == '1') {
+                                    alert(data);
                                     $('#tab3').removeClass('disabled');
                                     return true;
-                                } else {
-                                    return false;
                                 }
 
                             }
