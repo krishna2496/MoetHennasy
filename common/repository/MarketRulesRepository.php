@@ -11,7 +11,7 @@ class MarketRulesRepository extends Repository {
     public function listing($data = array()) {
 
         $this->apiCode = 1;
-        $query = MarketRules::find();
+        $query = MarketRules::find()->joinWith(['rules']);
         if(isset($data['market_id']) && ($data['market_id'] != '')){
              $query->andWhere(['market_id' => $data['market_id']]);
         }

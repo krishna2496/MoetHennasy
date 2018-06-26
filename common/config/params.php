@@ -40,4 +40,5 @@ return [
     'depth_of_seleves' => ['min' => '0','max' => '100'],
     'shelfConfig' => ['0' => 100,'1' =>2,'3' =>30],
     'rackWidth' => ['0' => 550],
+    'configArray' => ['top_shelf' => 'top_shelf','market_share' =>'market_share_left_right','size_height' => 'size_height' , 'price' => 'price' , 'gift_box' => 'gift_box'],
     ];

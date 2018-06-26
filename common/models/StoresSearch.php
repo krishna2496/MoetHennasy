@@ -25,8 +25,6 @@ class StoresSearch extends Stores
 
     public function search($params)
     {
-//        echo '<pre>';
-//        print_r($params);exit;
         $storeRepository = new StoreRepository;
         $storeList = array();
         $resultStoreList = $storeRepository->storeList($params);
