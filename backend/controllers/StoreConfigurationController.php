@@ -158,50 +158,37 @@ class StoreConfigurationController extends Controller {
 
     public function actionSaveProductData() {
         $post = Yii::$app->request->post('productObject');
-
         $flag = 0;
         $productArry = array();
-
         if (!empty($post)) {
             $flag = 1;
             foreach ($post as $key => $value) {
-
                 if ($value['sel'] == 'true') {
-
                     $searchModel = new CataloguesSearch();
                     $filters['products_id'] = $key;
                     $dataProvider = $searchModel->search($filters);
-
                     $data = $dataProvider->getModels();
                     $productsArray = $marketRule = $rulesArray = $rulesId = $racksProductArray = array();
                     $market = $data[0]['market'];
-
-
                     $marketRule['markt_title'] = $market['title'];
                     $rules = $market['marketSegmentData'][0]['marketSegment']['marketRules'];
                     foreach ($rules as $ruleKey => $ruleValue) {
                         $rulesArray[$ruleKey] = $ruleValue['rules'];
                     }
-
-
                     foreach ($rulesArray as $rulekey => $rulevalue) {
 
                         $rulesId[$rulekey]['id'] = $rulevalue['id'];
                         $rulesId[$rulekey]['product_fields'] = $rulevalue['product_fields'];
                         $rulesId[$rulekey]['detail'] = $rulevalue['detail'];
                     }
-//                    $marketRule['rules'] = $rulesId;
-
                     unset($data[0]['market']);
                     $dataIds[$key] = $data[0];
-                    $dataIds[$key]['is_top_shelf'] = $value['shelf'];
+                    $dataIds[$key]['is_top_shelf'] = '';
                     $dataIds[$key]['market'] = $marketRule;
                 }
             }
         }
-
-        $_SESSION['config']['products'] = $dataIds;
-        
+        $_SESSION['config']['products'] = $dataIds;        
         foreach ($dataIds as $key=>$value){
            unset($dataIds[$key]['brand']);
            unset($dataIds[$key]['productType']);
@@ -224,50 +211,180 @@ class StoreConfigurationController extends Controller {
            unset($dataIds[$key]['ean']);
            unset($dataIds[$key]['manufacturer']);
          }
+        $selvesWidth = $_SESSION['config']['width_of_shelves'];
+        $selvesHeight =  $_SESSION['config']['height_of_shelves'];
+        $selevesCount = $_SESSION['config']['num_of_shelves'];
         
         if ($this->ifRuleContain(\yii::$app->params['configArray']['top_shelf'])) {
             foreach ($dataIds as $dataKey => $dataValue) {
-                if ($dataValue['is_top_shelf'] == 'true') {
-                $this->ruleTopShelf($dataValue, $racksProductArray[0]);
+                if ($dataValue['top_shelf'] == '1') {
+                $this->ruleTopShelf($dataValue, $racksProductArray[0],$selvesWidth);
                 }
             }
         }
-        echo '<pre>';
-        print_r($racksProductArray);exit;
-        if (count($racksProductArray[0]) > 0) {
-            $this->applySortingRule($racksProductArray[0]);
+        
+        if(isset($racksProductArray[0]) && (!empty($racksProductArray[0]))){
+                if (count($racksProductArray[0]) > 0) {
+                    $this->applySortingRule($racksProductArray[0]);
+                }
         }
        
+        $shelfIndex = (isset($racksProductArray[0]) && count($racksProductArray[0]) > 0 ) ? 1 : 0;
+        foreach ($dataIds as $value){
+          
+           if($value['top_shelf'] == '1'){
+               continue;
+           }
+           $sum = 0;
+           if(!empty($racksProductArray[$shelfIndex])){
+               
+                foreach ($racksProductArray[$shelfIndex] as $rackValue){
+                  $sum = $sum+ $rackValue['width'];
+                }
+           }
+          
+           if(intval($selvesWidth) >= intval(intval($sum) + intval($value['width']))){               
+              
+               if(intval($selvesHeight) >= intval($value['height'])){
+                   if(empty($racksProductArray[$shelfIndex])){
+                       $racksProductArray[$shelfIndex][] = $value;
+                   }else{
+                       array_push($racksProductArray[$shelfIndex], $value);
+                   }
+              
+               }
+           }else{
+               if(intval($shelfIndex) < ((intval($selevesCount))-1)){
+                   $shelfIndex = intval($shelfIndex)+1;
+                   
+               }
+           }
+        }
+        
+        $this->fillUpEmptySpaceOfShelves($racksProductArray,$selvesWidth,$selevesCount);
+        //all repeated products
+     
+        $finalProducuts = $productsId = array();
+        foreach ($racksProductArray as $key =>$value){
+            $tmpProducts = '';
+            foreach ($value as $racksKey =>$racksValue){
+                $tmpProducts .= $racksValue['id'].",";
+                $finalProducuts[$key][$racksValue['id']] = $racksValue;
+                $finalProducutsRack[$key][$racksKey]['id'] = $racksValue['id'];
+                $finalProducutsRack[$key][$racksKey]['image'] = $racksValue['image'];
+                $finalProducutsRack[$key][$racksKey]['height'] = $racksValue['height'];
+                $finalProducutsRack[$key][$racksKey]['width'] = $racksValue['width'];
+            }
+            $productsId[$key]['productIds'] = rtrim($tmpProducts,",");
+        }
+        $_SESSION['config']['final_products'] =$finalProducuts;
+        $_SESSION['config']['shelvesProducts'] =json_encode($productsId);
+        $_SESSION['config']['rackProducts'] =json_encode($finalProducutsRack);
+        
+        
+        echo '<pre>';
+        print_r(json_encode($finalProducutsRack));exit;
+         
     }
 
-    private function ruleTopShelf($dataValue, &$racksProductArray) {
-        
-            $racksProductArray[$dataValue['id']] = $dataValue;
+    private function fillUpEmptySpaceOfShelves(&$racksProductArray,$selvesWidth,$selevesCount){
+        $products=array();
+        $arrayProducts = $racksProductArray;
+        if($this->ifRuleContain(\yii::$app->params['configArray']['market_share_count'])){
+           
+            $productCount = count($racksProductArray);
+            
+            if($productCount != 0){
+                for($i=0;$i<$selevesCount;$i++){
+                    
+                    $products = (isset($racksProductArray[$i]) && (!empty($racksProductArray[$i]))) ? $racksProductArray[$i]  : '';
+                 
+                    if((empty($products)) && ($i>0)){
+                       
+                        $products = $racksProductArray[$i] = $racksProductArray[$i-1];
+                     
+                    }
+
+                    $min =  (min(array_column($products, 'width')) == 0) ? 1 : min(array_column($products, 'width')) ;
+                    $sum =array_sum(array_column($products, 'width'));
+                    $diff = intval($selvesWidth) - $sum;
+                    
+                    
+                    if($diff > $min){
+                        $sumOfMarketShare = array_sum(array_column($products, 'market_share'));
+                       
+                        $noOfPlaces = intval(($selvesWidth)/($min));
+                        foreach ($products as $marketShareValue){
+                            
+                            $repeatCount = round(($marketShareValue['market_share'] * $noOfPlaces)/($sumOfMarketShare));
+                            for($j=0;$j<$repeatCount;$j++){
+                                $tempSum =array_sum(array_column($racksProductArray[$i], 'width'));
+                                if($selvesWidth >= ($tempSum + $marketShareValue['width'])){
+                                   array_push($racksProductArray[$i], $marketShareValue);
+                                }
+                            }
+                        }
+                    }
+                 }
+            }
+        }
+    }
+
+    private function ruleTopShelf($dataValue, &$racksProductArray,$selvesWidth) {
+            $sum = 0;
+            if(!empty($racksProductArray)){
+                $sum= array_sum(array_column($racksProductArray, 'width'));
+            }
+            if($selvesWidth >= ($sum + $dataValue['width'])){
+                $racksProductArray[$dataValue['id']] = $dataValue;
+            }
      
     }
 
     private function applySortingRule(&$racksProductArray) {
 
-
-
-
         if ($this->ifRuleContain(\yii::$app->params['configArray']['market_share'])) {
-
-            rsort($racksProductArray);
+            $sort = SORT_DESC;
+            $this->sort_array_of_array($racksProductArray, 'market_share',$sort);
         }
         //price
         if ($this->ifRuleContain(\yii::$app->params['configArray']['price'])) {
-             rsort($racksProductArray);
+            $sort = SORT_ASC;
+            $this->sort_array_of_array($racksProductArray, 'price',$sort);
         }
 
         //height rule
         if ($this->ifRuleContain(\yii::$app->params['configArray']['size_height'])) {
-             rsort($racksProductArray);
+              $sort = SORT_ASC;
+            $this->sort_array_of_array($racksProductArray, 'height',$sort);
         }
         //gift box 
         if ($this->ifRuleContain(\yii::$app->params['configArray']['gift_box'])) {
-             rsort($racksProductArray);
+          $giftProduct = $otherProduct = array();
+        
+          foreach ($racksProductArray as $key => $value){
+            if($value['box_only'] == 1){
+                array_push($giftProduct, $value);
+            }
+            if($value['box_only'] == 0){
+                array_push($otherProduct, $value);
+            }
+          }
+         $mergedArray= array_merge($giftProduct,$otherProduct);
+         $racksProductArray = $mergedArray;
+          
         }
+    }
+    
+    public function sort_array_of_array(&$array, $subfield ,$sort)
+    {
+                    $sortarray = array();
+                    foreach ($array as $key => $row)
+                    {
+                        $sortarray[$key] = $row[$subfield];
+                    }
+
+                    array_multisort($sortarray, $sort, $array);
     }
 
     private function ifRuleContain($ruleValue) {
