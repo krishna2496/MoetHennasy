@@ -26,7 +26,7 @@ class AppAsset extends AssetBundle
         'theme/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
         'theme/bower_components/bootstrap-daterangepicker/daterangepicker.css',
         
-        
+        'theme/plugins/bootstrap-toggle/bootstrap-toggle.min.css',
       
     ];
     public $js = [
@@ -40,13 +40,18 @@ class AppAsset extends AssetBundle
         'theme/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
         'theme/plugins/iCheck/icheck.min.js',
         'theme/dist/js/adminlte.min.js',
-        'theme/dist/js/demo.js',
+        //'theme/dist/js/demo.js',
   
          'theme/dist/js/jquery.validate.min.js',
          'theme/bower_components/bootstrap-slider/bootstrap-slider.js',
         'theme/plugins/rating/star-rating.min.js',
         'theme/bower_components/select2/dist/js/select2.min.js',
-       
+
+
+        'theme/plugins/bootstrap-toggle/bootstrap-toggle.min.js',
+        'theme/dist/js/bootstrap-wizard.min.js',
+        'js/store-config.js'
+
     ];
     public $depends = [
         'yii\web\YiiAsset',
