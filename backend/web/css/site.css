@@ -70,6 +70,7 @@ a.asc::after, a.desc::after {
 .rating-container div.caption{
     display:none;
 }
+/*
    .box-shelf {
         position: relative !important;
         border-radius: 3px !important;
@@ -156,4 +157,8 @@ a.asc::after, a.desc::after {
     label.error {
         color: #B94A48;
         margin-top: 2px;
+    }
+
+    .shelf-canvas {
+        border: 1px solid limegreen;
     }
