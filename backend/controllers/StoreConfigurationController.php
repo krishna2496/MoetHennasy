@@ -147,20 +147,22 @@ class StoreConfigurationController extends Controller {
 
     public function actionSaveData() {
         $post = Yii::$app->request->post();
-
+        
         $_SESSION['config']['num_of_shelves'] = $post['num_of_shelves'];
         $_SESSION['config']['height_of_shelves'] = $post['height_of_shelves'];
         $_SESSION['config']['width_of_shelves'] = $post['width_of_shelves'];
         $_SESSION['config']['depth_of_shelves'] = $post['depth_of_shelves'];
         $_SESSION['config']['brands'] = $post['brands'];
+        $_SESSION['config']['ratio'] = $post['ratio'];
         $_SESSION['config']['display_name'] = $post['display_name'];
     }
 
     public function actionSaveProductData() {
+       
         $post = Yii::$app->request->post('productObject');
         $flag = 0;
         $productArry = array();
-        if (!empty($post)) {
+        if (!empty($post)) { 
             $flag = 1;
             foreach ($post as $key => $value) {
                 if ($value['sel'] == 'true') {
@@ -260,7 +262,7 @@ class StoreConfigurationController extends Controller {
                }
            }
         }
-        
+          
         $this->fillUpEmptySpaceOfShelves($racksProductArray,$selvesWidth,$selevesCount);
         //all repeated products
      
@@ -271,19 +273,18 @@ class StoreConfigurationController extends Controller {
                 $tmpProducts .= $racksValue['id'].",";
                 $finalProducuts[$key][$racksValue['id']] = $racksValue;
                 $finalProducutsRack[$key][$racksKey]['id'] = $racksValue['id'];
-                $finalProducutsRack[$key][$racksKey]['image'] = $racksValue['image'];
+                $finalProducutsRack[$key][$racksKey]['image'] = CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES.$racksValue['image']);
                 $finalProducutsRack[$key][$racksKey]['height'] = $racksValue['height'];
                 $finalProducutsRack[$key][$racksKey]['width'] = $racksValue['width'];
             }
             $productsId[$key]['productIds'] = rtrim($tmpProducts,",");
         }
+          
         $_SESSION['config']['final_products'] =$finalProducuts;
         $_SESSION['config']['shelvesProducts'] =json_encode($productsId);
         $_SESSION['config']['rackProducts'] =json_encode($finalProducutsRack);
-        
-        
-        echo '<pre>';
-        print_r(json_encode($finalProducutsRack));exit;
+  
+       
          
     }
 
@@ -308,15 +309,16 @@ class StoreConfigurationController extends Controller {
                     $min =  (min(array_column($products, 'width')) == 0) ? 1 : min(array_column($products, 'width')) ;
                     $sum =array_sum(array_column($products, 'width'));
                     $diff = intval($selvesWidth) - $sum;
-                    
-                    
+
                     if($diff > $min){
-                        $sumOfMarketShare = array_sum(array_column($products, 'market_share'));
-                       
+                        $sumOfMarketShare = array_sum(array_column($products, 'market_share'));                        
+                        $sumOfMarketShare = ($sumOfMarketShare == 0) ? 1 : $sumOfMarketShare;
+//                        if($sumOfMarketShare != 0){
                         $noOfPlaces = intval(($selvesWidth)/($min));
+                      
                         foreach ($products as $marketShareValue){
-                            
                             $repeatCount = round(($marketShareValue['market_share'] * $noOfPlaces)/($sumOfMarketShare));
+                            echo 'in'. ''.$repeatCount;
                             for($j=0;$j<$repeatCount;$j++){
                                 $tempSum =array_sum(array_column($racksProductArray[$i], 'width'));
                                 if($selvesWidth >= ($tempSum + $marketShareValue['width'])){
@@ -324,10 +326,12 @@ class StoreConfigurationController extends Controller {
                                 }
                             }
                         }
+//                    }
                     }
                  }
             }
         }
+//        exit;
     }
 
     private function ruleTopShelf($dataValue, &$racksProductArray,$selvesWidth) {

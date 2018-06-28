@@ -1,8 +1,34 @@
 $('#tab2').click(function(event) {
     if ($(this).attr('disabled')) {
         return false;
+    }else{
+        numOfSelves =$("#ex6SliderVal").val();
+        if(numOfSelves != 0){
+           
+            for(i=0;i<numOfSelves;i++){
+               $("#canvas-container-"+i).empty();
+            }
+            
+        }
+          $("#tab3").attr('disabled', 'true');
     }
 });
+
+$('#tab1').click(function(event) {
+    if ($(this).attr('disabled')) {
+        return false;
+    }else{
+        numOfSelves =$("#ex6SliderVal").val();
+        if(numOfSelves != 0){
+            for(i=0;i<numOfSelves;i++){
+               $("#canvas-container-"+i).empty();
+            }
+        }
+       $("#tab2").attr('disabled','true');
+       $("#tab3").attr('disabled', 'true');
+    }
+});
+
 $('#tab3').click(function(event) {
     if ($(this).attr('disabled')) {
         return false;
@@ -28,6 +54,7 @@ function hideShowDiv(data) {
         if ($("#tab3").attr('disabled')) {
             return false;
         } else {
+           
             $("#tab-step-2").hide();
             $("#tab-step-1").hide();
             $("#tab-step-3").show();
@@ -37,6 +64,7 @@ function hideShowDiv(data) {
 $(function() {
     getRack();
     $("#tab-step-2").hide();
+    $("#tab-step-3").hide();
     $('#tab2').attr('disabled', 'disabled');
     $('#tab3').attr('disabled', 'disabled');
 
@@ -132,6 +160,7 @@ function getRack() {
 function getRatio(width) {
     var widthValue = rackWidthValue;
     var ratio = (parseInt(widthValue) / parseInt(width));
+    $("#ratio").val(ratio);
     return ratio;
 }
 
@@ -143,6 +172,10 @@ jQuery(document).ready(function() {
     $("#tabs").tabs({active: 2});
     // Basic Wizard
     $("#tab-step-1 .next").click(function(e) {
+        $('#validationWizard').bootstrapWizard('next');
+        e.preventDefault();
+    });
+    $("#tab-step-2 .next").click(function(e) {
         $('#validationWizard').bootstrapWizard('next');
         e.preventDefault();
     });
@@ -233,14 +266,15 @@ jQuery(document).ready(function() {
                             
                             $("#tab-step-1").hide();
                             $("#tab-step-2").show();
-//                            $('#tab2').removeClass('disabled');
+                         
+                            var productObject = {};
                             $.pjax.reload({container: '#employee'});
-
+                            $("#tab2").removeAttr('disabled');
                         }
                     });
                 }
                 if (index == 2) {
-                    alert(index);return false;
+                   
                     url = rackProductFromURL;
 
                     $.ajax({
@@ -249,12 +283,12 @@ jQuery(document).ready(function() {
                         data: {productObject: productObject},
                         success: function(data) {
 
-                            if (data == '1') {
-                                $('#tab3').removeClass('disabled');
-                                return true;
-                            } else {
-                                return false;
-                            }
+                        $("#tab-step-2").hide();
+                        $("#tab-step-3").show();
+                        $.pjax.reload({container: '#productsData'});
+                        $('#tab3').removeAttr('disabled');
+                        $("#tab2").removeAttr('disabled');
+                        $("#third").val(1);
                         }
                     });
                 }

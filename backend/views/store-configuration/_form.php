@@ -10,6 +10,7 @@ use yii\widgets\Pjax;
 
 $formUrl = Url::to(['store-configuration/save-data']);
 $secondFormUrl = Url::to(['store-configuration/save-product-data']);
+$noOfSelves = isset($_SESSION['config']['products']) ? isset($_SESSION['config']['products']) : '1';
 if(isset($_SESSION['config']['products'])){
     $products = json_encode($_SESSION['config']['products'],true);
 }
@@ -113,4 +114,25 @@ $session = Yii::$app->session;
 	var rackWidthValue = '<?php echo yii::$app->params['rackWidth'][0] ?>';
 	var rackFromURL = '<?php echo $formUrl ?>';
 	var rackProductFromURL = '<?php echo $secondFormUrl ?>';
+        var nimOfSelves = '<?php echo $noOfSelves ?>';;
+        
+$('#tab2').click(function(event) {
+    if ($(this).attr('disabled')) {
+        return false;
+    }else{
+        
+    }
+});
+
+$('#tab1').click(function(event) {
+    if ($(this).attr('disabled')) {
+        return false;
+    }
+});
+
+$('#tab3').click(function(event) {
+    if ($(this).attr('disabled')) {
+        return false;
+    }
+});
 </script>

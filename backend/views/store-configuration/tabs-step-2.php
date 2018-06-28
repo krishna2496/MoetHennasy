@@ -2,7 +2,11 @@
 use yii\widgets\Pjax;
 use yii\grid\GridView;
 use kartik\switchinput\SwitchInput;
+
 ?>
+<script>
+ 
+</script>
 <div class="col-sm-5 pull-right" id="tab-step-2">
 	<!-- Frame Filter section -->
 	<div class="frame-filter-section">
@@ -85,11 +89,12 @@ use kartik\switchinput\SwitchInput;
 									]);
                                                                                         ?>
                                             <script type="text/javascript">
+                                                
 						$(document).ready(function () {
 							$('input[name="selection[]"]').each(function (skey, sval) {
 								var sobj = {};
 								sobj["sel"] = false;
-								sobj["shelf"] = 'undefined';
+								sobj["shelf"] = false;
 								if (typeof (productObject[$(sval).val()]) === 'undefined')
 								{
 									productObject[$(sval).val()] = sobj;
@@ -98,16 +103,7 @@ use kartik\switchinput\SwitchInput;
 								{
 									$('input[type="checkbox"][value="' + $(sval).val() + '"]').attr('checked', true).iCheck('update');
 								}
-								if ((productObject[$(sval).val()] !== 'undefined') && productObject[$(sval).val()]["shelf"] === true)
-								{
-									$('div#' + $(sval).val() + ' input[name="status_41[]"]').bootstrapSwitch('state', true);
-									//                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', true);
-								}
-								if ((productObject[$(sval).val()] !== 'undefined') && productObject[$(sval).val()]["shelf"] === false)
-								{
-									$('div#' + $(sval).val() + ' input[name="status_41[]"]').bootstrapSwitch('state', false);
-									//                                                                         $('div#'+$(sval).val()+' input[name="status_41[]"]').bootstrapSwitch('toggleState', true);
-								}
+								
 								//                                                                    
 							});
 							console.log(productObject);
