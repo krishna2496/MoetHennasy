@@ -166,7 +166,6 @@
     padding: 10px 10px;
 }
 
-
 /*EndStep wizard css*/
 
 
@@ -207,7 +206,7 @@
     left: -24px;
     bottom: -40px;
     right: -81px;
-    background-image: url(../../images/farme/shadow.png);
+    background-image: url(../images/farme/shadow.png);
     height: 85px;
     background-size: cover;
 }
@@ -217,7 +216,7 @@
     right: 0px;
     top: 0px;
     height: 97px;
-    background-image: url(../../images/farme/f-topbg.jpg);
+    background-image: url(../images/farme/f-topbg.jpg);
     background-repeat: repeat-x;
 }
 
@@ -226,7 +225,7 @@
     right: 50px;
     top: 0px;
     height: 48px;
-    background-image: url(../../images/farme/top-md.png);
+    background-image: url(../images/farme/top-md.png);
     background-repeat: repeat-x;
 }
 
@@ -235,7 +234,7 @@
     bottom: 27px;
     top: 48px;
     width: 52px;
-    background-image: url(../../images/farme/left-md.jpg);
+    background-image: url(../images/farme/left-md.jpg);
     z-index: 1;
 }
 
@@ -244,7 +243,7 @@
     right: 0px;
     top: 47px;
     width: 50px;
-    background-image: url(../../images/farme/right-md.png);
+    background-image: url(../images/farme/right-md.png);
     z-index: 1;
 }
 
@@ -253,7 +252,7 @@
     right: 49px;
     bottom: 0px;
     height: 30px;
-    background-image: url(../../images/farme/bottom-md.png);
+    background-image: url(../images/farme/bottom-md.png);
     z-index: 2;
 }
 
@@ -264,7 +263,7 @@
     position: absolute;
     top: -48px;
     display: inline-block;
-    background-image: url(../../images/farme/left-tp.jpg);
+    background-image: url(../images/farme/left-tp.jpg);
 }
 
 .frame-content .bg-border.left-bg .left-bt {
@@ -274,7 +273,7 @@
     position: absolute;
     bottom: -27px;
     display: inline-block;
-    background-image: url(../../images/farme/left-bt.jpg);
+    background-image: url(../images/farme/left-bt.jpg);
 }
 
 .frame-content .bg-border.right-bg .right-tp {
@@ -284,7 +283,7 @@
     position: absolute;
     top: -47px;
     display: inline-block;
-    background-image: url(../../images/farme/right-tp.png);
+    background-image: url(../images/farme/right-tp.png);
 }
 
 .frame-content .bg-border.right-bg .right-bt {
@@ -294,7 +293,7 @@
     position: absolute;
     bottom: -29px;
     display: inline-block;
-    background-image: url(../../images/farme/right-bt.png);
+    background-image: url(../images/farme/right-bt.png);
 }
 
 .frame-content .bg-border.bottom-bg .bottom-lt {
@@ -304,7 +303,7 @@
     position: absolute;
     top: 0px;
     display: inline-block;
-    background-image: url(../../images/farme/bottom-lt.png);
+    background-image: url(../images/farme/bottom-lt.png);
 }
 
 .frame-content .bg-border.bottom-bg .bottom-rt {
@@ -314,7 +313,7 @@
     position: absolute;
     bottom: 0px;
     display: inline-block;
-    background-image: url(../../images/farme/bottom-rt.png);
+    background-image: url(../images/farme/bottom-rt.png);
 }
 
 .frame-content .bg-border.top-inner-bg .top-in-lt {
@@ -324,7 +323,7 @@
     position: absolute;
     top: 0px;
     display: inline-block;
-    background-image: url(../../images/farme/top-lt.png);
+    background-image: url(../images/farme/top-lt.png);
     background-repeat: no-repeat;
 }
 
@@ -335,7 +334,7 @@
     position: absolute;
     bottom: 0px;
     display: inline-block;
-    background-image: url(../../images/farme/top-rt.png);
+    background-image: url(../images/farme/top-rt.png);
     background-repeat: no-repeat;
 }
 
@@ -371,7 +370,7 @@
     bottom: 0px;
     height: 30px;
     display: inline-block;
-    background-image: url(../../images/farme/midsec-md.png);
+    background-image: url(../images/farme/midsec-md.png);
     z-index: 2;
 }
 
@@ -382,7 +381,7 @@
     position: absolute;
     top: 0px;
     display: inline-block;
-    background-image: url(../../images/farme/midsec-lt.png);
+    background-image: url(../images/farme/midsec-lt.png);
     background-repeat: no-repeat;
 }
 
@@ -393,7 +392,7 @@
     position: absolute;
     bottom: 0px;
     display: inline-block;
-    background-image: url(../../images/farme/midsec-rt.png);
+    background-image: url(../images/farme/midsec-rt.png);
     background-repeat: no-repeat;
 }
 
