@@ -201,8 +201,11 @@ jQuery(document).ready(function() {
             return true;
         },
         onNext: function(tab, navigation, index) {
+          
+           
             if (index == 1) {
-                if ($("#firstForm input:checkbox:checked").length <= 0)
+               
+                if ($("#firstForm input[name='brands[]']:checkbox:checked").length <= 0)
                 {
                     alert("Please Select at least one brand");
                     return false;
@@ -227,16 +230,17 @@ jQuery(document).ready(function() {
                         url: url,
                         data: $("#firstForm").serialize(),
                         success: function(data) {
-                            $("#tab1Content").hide();
-                            $("#tab2Content").show();
-                            $('#tab2').removeClass('disabled');
+                            
+                            $("#tab-step-1").hide();
+                            $("#tab-step-2").show();
+//                            $('#tab2').removeClass('disabled');
                             $.pjax.reload({container: '#employee'});
 
                         }
                     });
                 }
                 if (index == 2) {
-                    return false;
+                    alert(index);return false;
                     url = rackProductFromURL;
 
                     $.ajax({

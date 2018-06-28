@@ -318,6 +318,11 @@ font-weight: 600;}
 .btn:active{box-shadow: none;}
 /*Step 3 Product section*/
 .product-table thead tr th{background-color:#9c8058; color: #fff; font-weight: 600; text-transform: uppercase; vertical-align: middle; }
+.product-table thead tr th a{color: #fff; font-weight: 600; text-transform: uppercase; vertical-align: middle; }
+.product-table thead tr th a.asc{color: #fff !important; font-weight: 600; }
+.product-table thead tr th a.desc{color: #fff !important; font-weight: 600;}
+
+
 .product-table .checkbox{margin: 0px !important; display: inline-block;}
 
 .toggle.btn{min-width: 65px;     border-radius: 20px; min-height: 30px; }

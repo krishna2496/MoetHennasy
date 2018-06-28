@@ -51,9 +51,9 @@ $session = Yii::$app->session;
 						</ul>
 					</div>
 				</div>
-
+                                <form id="firstForm"> 
 				<div class="box-body">
-					<form id="firstForm"> 
+					
 						<div class="setup-content" >
 							<div class="panel-body" id="tabs">
 								<!--<div class="tab-pane active" id="vtab1">-->
@@ -62,7 +62,7 @@ $session = Yii::$app->session;
 										<div class="col-sm-7">
 											<div class="frame-design">
 												<div class="frame-title text-center">														
-													<h3>Display 1: <span id="getName"><?=$session->get('config')['display_name'] !='' ? $session->get('config')['display_name'] : '[Name of the display]';?></span></h3>
+													<h3>Display 1: <span id="getName"></span></h3>
 												</div>
 												<div class="frame-content" id="div-frame-content">
 													<div class="top-bg bg-border">
@@ -90,16 +90,21 @@ $session = Yii::$app->session;
 													</div>
 												</div>
 											</div>
-										</div>										
+										</div>	
+                                                                           
 										<?php include_once("tabs-step-1.php"); ?>
+                                                                           
+                                                                           
 										<?php include_once("tabs-step-2.php"); ?>
+                                                                                     <?php include_once("tabs-step-3.php"); ?>
 									</div>
 								</div>
 							</div>
 						</div>
-					</form>		
+						
 				</div><!-- #validationWizard -->
-
+                                
+                                </form>	
 			</div>
 		</div>
 	</div>
