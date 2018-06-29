@@ -6,6 +6,8 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\StoreConfiguration;
+use common\repository\StoreConfigRepository;
+use yii\data\ArrayDataProvider;
 
 /**
  * StoreConfigurationSearch represents the model behind the search form of `common\models\StoreConfiguration`.
@@ -41,39 +43,44 @@ class StoreConfigurationSearch extends StoreConfiguration
      */
     public function search($params)
     {
-        $query = StoreConfiguration::find();
-
-        // add conditions that should always apply here
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
-        $this->load($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
+        $userRepository = new StoreConfigRepository();
+        $userList = array();
+        $resultUserList = $userRepository->listing($params);
+        
+        if ($resultUserList['status']['success'] == 1) {
+            if ($resultUserList['data']['stores_config']) {
+                foreach ($resultUserList['data']['stores_config'] as $key => $value) {
+                   
+                    $temp = $value;
+                   
+                    $userList[] = $temp;
+                    
+                }
+            }
         }
-
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'store_id' => $this->store_id,
-            'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by,
-            'deleted_by' => $this->deleted_by,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+        if(!isset($params['limit'])){
+            $params['limit'] = count($userList);
+        }
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $userList,
+            'pagination' => [
+                'pageSize' => $params['limit'],
+            ],
+            'sort' => [
+                'attributes' =>
+                    [
+                    'sku',
+                    'ean',
+                    'short_name',
+                    'productCategory',
+                  
+                    'marketName',
+                    'brandName',
+                    'price'
+                ],
+            ]
         ]);
-
-        $query->andFilterWhere(['like', 'config_name', $this->config_name])
-            ->andFilterWhere(['like', 'shelf_thumb', $this->shelf_thumb])
-            ->andFilterWhere(['like', 'star_ratings', $this->star_ratings])
-            ->andFilterWhere(['like', 'is_verified', $this->is_verified])
-            ->andFilterWhere(['like', 'is_autofill', $this->is_autofill]);
+       
 
         return $dataProvider;
     }
