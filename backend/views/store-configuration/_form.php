@@ -66,8 +66,15 @@ $session = Yii::$app->session;
 													<h3>Display 1: <span id="getName"></span></h3>
 												</div>
 												<div class="frame-content" id="div-frame-content">
-													<div class="top-bg bg-border">
-													</div>
+                                                                                                    <div class="top-bg bg-border">
+                                                                                                        <ul class="brand-drop ">
+                                                                                                            
+                                                                                                            <li class="active">
+                                                                                                                <h6>BRAND 1</h6>
+                                                                                                                <img src="" alt="Select Brand" id="brandImage">
+                                                                                                            </li>
+                                                                                                        </ul>
+                                                                                                    </div>
 													<div class="farme-start-content">
 														<div class="top-inner-bg bg-border">
 															<span class="top-in-lt"></span>

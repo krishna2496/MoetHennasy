@@ -10,8 +10,11 @@ $('#tab2').click(function(event) {
             }
             
         }
-          $("#tab3").attr('disabled', 'true');
+         $(".brand-drop").hide();
+         $("#brandImage").attr("src",'');
+         $("#tab3").attr('disabled', 'true');
     }
+     $.pjax.reload({container: '#employee'});
 });
 
 $('#tab1').click(function(event) {
@@ -24,6 +27,8 @@ $('#tab1').click(function(event) {
                $("#canvas-container-"+i).empty();
             }
         }
+        $(".brand-drop").hide();
+         $("#brandImage").attr("src",'');
        $("#tab2").attr('disabled','true');
        $("#tab3").attr('disabled', 'true');
     }
@@ -32,6 +37,8 @@ $('#tab1').click(function(event) {
 $('#tab3').click(function(event) {
     if ($(this).attr('disabled')) {
         return false;
+    }else{
+         $(".brand-drop").show();
     }
 });
 
@@ -48,13 +55,14 @@ function hideShowDiv(data) {
             $("#tab-step-2").show();
             $("#tab-step-1").hide();
             $("#tab-step-3").hide();
+            $.pjax.reload({container: '#employee'});
         }
     }
     else if (data === 'tab3') {
         if ($("#tab3").attr('disabled')) {
             return false;
         } else {
-           
+         
             $("#tab-step-2").hide();
             $("#tab-step-1").hide();
             $("#tab-step-3").show();
@@ -62,6 +70,7 @@ function hideShowDiv(data) {
     }
 }
 $(function() {
+    $(".brand-drop").hide();
     getRack();
     $("#tab-step-2").hide();
     $("#tab-step-3").hide();
@@ -168,7 +177,32 @@ $("#dispaly_name").on('keyup', function() {
     $("#getName").text($("#dispaly_name").val());
 });
 
+function changeBrand(data){
+     
+ var id =data.id;
+
+ if( $(".display"+id).hasClass("displayBlock")){
+     
+      $(".display"+id).css('display','none');
+      $(".display"+id).removeClass('displayBlock');
+      $("#brandImage").attr("src",'');
+ }else{
+ 
+     $(".display"+id).css('display','block');
+     $(".display"+id).addClass('displayBlock');
+     $('img.brand-selected').not(".display"+id).css('display','none');
+     $('img.brand-selected').not(".display"+id).removeClass('displayBlock');
+     $("#brandImage").attr("src",data.src);
+ }
+ 
+
+
+}
+
 jQuery(document).ready(function() {
+    
+    
+    
     $("#tabs").tabs({active: 2});
     // Basic Wizard
     $("#tab-step-1 .next").click(function(e) {
@@ -179,44 +213,7 @@ jQuery(document).ready(function() {
         $('#validationWizard').bootstrapWizard('next');
         e.preventDefault();
     });
-    /*jQuery('#basicWizard').bootstrapWizard();
-     
-     // Progress Wizard
-     $('#progressWizard').bootstrapWizard({
-     'nextSelector': '.next',
-     'previousSelector': '.previous',
-     onNext: function (tab, navigation, index) {
-     
-     var $total = navigation.find('li').length;
-     var $current = index + 1;
-     var $percent = ($current / $total) * 100;
-     jQuery('#progressWizard').find('.progress-bar').css('width', $percent + '%');
-     },
-     onPrevious: function (tab, navigation, index) {
-     var $total = navigation.find('li').length;
-     var $current = index + 1;
-     var $percent = ($current / $total) * 100;
-     jQuery('#progressWizard').find('.progress-bar').css('width', $percent + '%');
-     },
-     onTabShow: function (tab, navigation, index) {
-     var $total = navigation.find('li').length;
-     var $current = index + 1;
-     var $percent = ($current / $total) * 100;
-     jQuery('#progressWizard').find('.progress-bar').css('width', $percent + '%');
-     }
-     });*/
-
-    // Disabled Tab Click Wizard
-    /*
-     jQuery('#disabledTabWizard').bootstrapWizard({
-     //tabClass: 'nav nav-pills nav-justified nav-disabled-click',
-     tabClass: 'nav-justified nav-disabled-click',
-     onTabClick: function (tab, navigation, index) {
-     return false;
-     }
-     });
-     */
-
+   
     // With Form Validation Wizard
     var $validator = jQuery("#firstForm").validate({
         highlight: function(element) {
@@ -285,7 +282,11 @@ jQuery(document).ready(function() {
 
                         $("#tab-step-2").hide();
                         $("#tab-step-3").show();
-                        $.pjax.reload({container: '#productsData'});
+                         $(".brand-drop").show();
+                        $.pjax.reload({container:"#productsBrand"});
+                        $.pjax.xhr = null;
+                        $.pjax.reload({container:"#productsData"});
+                        $.pjax.xhr = null;
                         $('#tab3').removeAttr('disabled');
                         $("#tab2").removeAttr('disabled');
                         $("#third").val(1);

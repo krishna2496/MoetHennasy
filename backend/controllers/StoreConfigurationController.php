@@ -17,6 +17,7 @@ use common\repository\MarketRepository;
 use common\models\CataloguesSearch;
 use yii\filters\AccessControl;
 use common\models\Stores;
+use common\repository\BrandRepository;
 
 class StoreConfigurationController extends Controller {
 
@@ -153,8 +154,18 @@ class StoreConfigurationController extends Controller {
         $_SESSION['config']['width_of_shelves'] = $post['width_of_shelves'];
         $_SESSION['config']['depth_of_shelves'] = $post['depth_of_shelves'];
         $_SESSION['config']['brands'] = $post['brands'];
+        
         $_SESSION['config']['ratio'] = $post['ratio'];
         $_SESSION['config']['display_name'] = $post['display_name'];
+        
+        $searchModel = new BrandRepository();
+        $filters['brand_id'] = $_SESSION['config']['brands'];
+        $dataProvider = $searchModel->listing($filters);
+        $brandsData = array();
+        if($dataProvider['status']['success'] == 1 && (!empty($dataProvider['data']['brand']))){
+           $brandsData = $dataProvider['data']['brand'];
+        }
+       $_SESSION['config']['brands_data'] = $brandsData;
     }
 
     public function actionSaveProductData() {
@@ -266,7 +277,7 @@ class StoreConfigurationController extends Controller {
         $this->fillUpEmptySpaceOfShelves($racksProductArray,$selvesWidth,$selevesCount);
         //all repeated products
      
-        $finalProducuts = $productsId = array();
+        $finalProducuts = $finalProducutsRack = $productsId = array();
         foreach ($racksProductArray as $key =>$value){
             $tmpProducts = '';
             foreach ($value as $racksKey =>$racksValue){
@@ -279,13 +290,10 @@ class StoreConfigurationController extends Controller {
             }
             $productsId[$key]['productIds'] = rtrim($tmpProducts,",");
         }
-          
+      
         $_SESSION['config']['final_products'] =$finalProducuts;
         $_SESSION['config']['shelvesProducts'] =json_encode($productsId);
         $_SESSION['config']['rackProducts'] =json_encode($finalProducutsRack);
-  
-       
-         
     }
 
     private function fillUpEmptySpaceOfShelves(&$racksProductArray,$selvesWidth,$selevesCount){
@@ -313,12 +321,11 @@ class StoreConfigurationController extends Controller {
                     if($diff > $min){
                         $sumOfMarketShare = array_sum(array_column($products, 'market_share'));                        
                         $sumOfMarketShare = ($sumOfMarketShare == 0) ? 1 : $sumOfMarketShare;
-//                        if($sumOfMarketShare != 0){
                         $noOfPlaces = intval(($selvesWidth)/($min));
                       
                         foreach ($products as $marketShareValue){
                             $repeatCount = round(($marketShareValue['market_share'] * $noOfPlaces)/($sumOfMarketShare));
-                            echo 'in'. ''.$repeatCount;
+                        
                             for($j=0;$j<$repeatCount;$j++){
                                 $tempSum =array_sum(array_column($racksProductArray[$i], 'width'));
                                 if($selvesWidth >= ($tempSum + $marketShareValue['width'])){
@@ -326,12 +333,10 @@ class StoreConfigurationController extends Controller {
                                 }
                             }
                         }
-//                    }
                     }
                  }
             }
         }
-//        exit;
     }
 
     private function ruleTopShelf($dataValue, &$racksProductArray,$selvesWidth) {

@@ -16,6 +16,9 @@ class BrandRepository extends Repository
         	$data['search'] = trim($data['search']);
         	$query->andWhere(['like','name',$data['search']]);
         }
+        if(isset($data['brand_id']) && $data['brand_id']){
+        	$query->andWhere(['id'=>$data['brand_id']]);
+        }
 
         $data = array();
         $data['brand'] = $query->asArray()->all();
