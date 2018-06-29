@@ -18,7 +18,8 @@ $(function () {
     });
 });
 $(document).on("ready pjax:end", function() {
-       $("[data-toggle='toggle']").bootstrapToggle();
+    $("[data-toggle='toggle']").bootstrapToggle();
+    $('.collapse').collapse();
     $('input[type="checkbox"]').iCheck({
       checkboxClass: 'icheckbox_square-blue',
       radioClass: 'iradio_square-blue',

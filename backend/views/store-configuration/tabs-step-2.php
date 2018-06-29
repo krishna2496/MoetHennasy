@@ -33,10 +33,10 @@ use kartik\switchinput\SwitchInput;
 								<!-- /.box-tools -->
 							</div>
 							<!-- /.box-header -->
-							<?php Pjax::begin(['id' => 'employee', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>
+							
 							<div class="box-body">
 								<label class="barnd-select-msg">Select the products that wil be present on the display<sup class="text-red">*</sup>:</label>
-
+<?php Pjax::begin(['id' => 'employee', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>
 								<?=
 								GridView::widget([
 									'dataProvider' => $dataProvider,
@@ -207,9 +207,8 @@ use kartik\switchinput\SwitchInput;
 										</tfoot>
 								</table>
 								-->
-							</div>
-							<!-- /.box-body -->
-                                                        <?php Pjax::end(); ?>
+							  <?php Pjax::end(); ?>
+                                                          </div> <!-- /.box-body -->
 						</div>
 					</div>
 					<div class="submit-fl wizard">
