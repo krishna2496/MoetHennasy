@@ -29,8 +29,8 @@ class Catalogues extends BaseModel
             [['catalogueImage'], 'file','extensions'=>'jpg,png,jpeg','on' => ['create','update']],
             [['catalogueImage'], 'required','on' => ['create']],
             ['long_name', 'required', 'when' => function ($model) { return $model->short_name == ''; }, 'whenClient' => "function (attribute, value) { return $('#catalogues-short_name').val() == ''; }",'message'=>'Select either Long Product Name or Short Product Name.'],
-            ['short_name', 'required', 'when' => function ($model) { return $model->long_name == ''; }, 'whenClient' => "function (attribute, value) { return $('#catalogues-long_name').val() == ''; }",'message'=>'Select either Long Product Name or Short Product Name.']
-        ];
+            ['short_name', 'required', 'when' => function ($model) { return $model->long_name == ''; }, 'whenClient' => "function (attribute, value) { return $('#catalogues-long_name').val() == ''; }",'message'=>'Select either Long Product Name or Short Product Name.'],
+            [['sku'],'unique']];
     }
 
     /**
