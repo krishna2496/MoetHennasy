@@ -22,6 +22,7 @@ class HelpCategories extends BaseModel
             [['created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['title'], 'string', 'max' => 110],
+            [['title'], 'unique']
         ];
     }
 

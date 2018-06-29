@@ -27,6 +27,7 @@ class MarketSegments extends BaseModel
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['title','description'],'required','on' => ['create','update']],
             [['title'], 'string', 'max' => 255],
+            [['title'], 'unique']
         ];
     }
 

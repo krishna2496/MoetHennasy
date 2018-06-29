@@ -25,6 +25,7 @@ class Helps extends BaseModel
             [['category_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['question', 'answer'], 'string'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
+            [['question'], 'unique']
         ];
     }
 
