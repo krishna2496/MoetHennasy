@@ -397,7 +397,19 @@ class UsersController extends BaseBackendController
 
     public function actionDelete($id, $parentId = '')
     {   
-        $model = $this->findModel($id);
+        $currentUser = CommonHelper::getUser();
+        
+        $parentUpdate = false;
+        if(!$parentId && $currentUser->role_id != Yii::$app->params['superAdminRole']){
+            $parentId = $currentUser->id;
+        } else {
+            $parentUpdate = true;
+            if($currentUser->role_id != Yii::$app->params['superAdminRole']){
+                $this->findModel($parentId,$currentUser->id);
+            }
+        }
+        
+        $model = $this->findModel($id,$parentId);
         
         $ImagePath = CommonHelper::getPath('upload_path').UPLOAD_PATH_USER_IMAGES.$model->profile_photo;
         
@@ -409,7 +421,7 @@ class UsersController extends BaseBackendController
             }
             Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'user')]));
             parent::userActivity('delete_user',$description='');
-            if($parentId){
+            if($parentUpdate){
                 return $this->redirect(['users/index/'.$parentId]);    
             }
         }else{

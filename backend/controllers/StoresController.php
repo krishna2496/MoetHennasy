@@ -405,9 +405,24 @@ class StoresController extends BaseBackendController
         ]);
     }
 
-    public function actionDelete($id)
+    public function actionDelete($id, $parentId='')
     {
-        if($this->findModel($id)->delete()){
+        $currentUser = CommonHelper::getUser();
+        
+        if(!$parentId && $currentUser->role_id != Yii::$app->params['superAdminRole']){
+            $parentId = $currentUser->id;
+        }
+        else 
+        {
+            if($currentUser->role_id != Yii::$app->params['superAdminRole']){
+                $this->findModel($parentId,$currentUser->id);
+            }
+        }
+        
+        $model = $this->findModel($id,$parentId);
+        
+        if($model->delete())
+        {
             Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'store')]));
             parent::userActivity('delete_store',$description='');
             return $this->redirect(['index']);
