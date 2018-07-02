@@ -169,7 +169,7 @@ use yii\widgets\ActiveForm;
                         if(value.id == '<?php echo $model->assign_to; ?>'){
                             var selectedUser = 'selected';
                         }
-                        userStr += "<option value="+value.id+" "+selectedUser+">"+value.first_name+" "+value.last_name+"</option>";
+                        userStr += "<option value="+value.id+" "+selectedUser+">"+value.first_name+" "+value.last_name+" - "+value.email+"</option>";
                     });
                 }
             }

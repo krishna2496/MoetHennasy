@@ -211,48 +211,72 @@ class StoresController extends BaseBackendController
         if($countriesData['status']['success'] == 1){
             $countries = CommonHelper::getDropdown($countriesData['data']['countries'], ['id', 'name']);
         }
-
+        
         $model = new Stores();
 
-        if (Yii::$app->request->post()) {
+        if (Yii::$app->request->post()) 
+        {
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('Stores');
-            $data['photo'] = '';
-            if(UploadedFile::getInstance($model,'storeImage')) {
-                $fileData = array();
-                $fileData['files'][0] = UploadedFile::getInstance($model,'storeImage');
-                $fileData['type'] = 'stores';
-                $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
-                $uploadRepository = new UploadRepository;
-                $uploadData = $uploadRepository->store($fileData);
-                if($uploadData['status']['success'] == 1){
-                    $data['storeImage'] = $data['photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
-                } else {
-                    return $this->redirect(['index']);
-                    Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
+            
+            $is_create = 1;
+            if($currentUser->role_id != Yii::$app->params['superAdminRole'])
+            {
+                $assign_to = !empty($data['assign_to'])?$data['assign_to']:'';
+                
+                $userObj = new User;
+                $childUser = $userObj->getAllChilds(array($currentUser->id));
+                $childUser[] = $currentUser->id;
+                
+                if(!empty($childUser) && !in_array($assign_to, $childUser))
+                {
+                    $is_create = 2;
                 }
             }
             
-            $storeRepository = new StoreRepository;
-            $address1 = isset($data['address1']) ? $data['address1'] : '';
-            $address2 = isset($data['address2']) ? $data['address2'] : '';
-            $countryName = isset($countries[$data['country_id']]) ? $countries[$data['country_id']] : '';
-            $map = Yii::$app->placesSearch->text($address1.' '.$address2.' '.$countryName);           
-            $data['latitude'] = $data['longitude']='';
-            if(strtolower($map->status) == 'ok'){
-                 $data['latitude'] = $map->results[0]->geometry->location->lat;
-                 $data['longitude'] = $map->results[0]->geometry->location->lng;
-            }
-          
-            $returnData = $storeRepository->createStore($data);
-            if($returnData['status']['success'] == 1)
+            if($is_create == 1)
             {
-                parent::userActivity('create_store',$description='');
-                Yii::$app->session->setFlash('success', $returnData['status']['message']);
-                return $this->redirect(['index']);
-            } else {
+                $data['photo'] = '';
+                if(UploadedFile::getInstance($model,'storeImage')) {
+                    $fileData = array();
+                    $fileData['files'][0] = UploadedFile::getInstance($model,'storeImage');
+                    $fileData['type'] = 'stores';
+                    $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
+                    $uploadRepository = new UploadRepository;
+                    $uploadData = $uploadRepository->store($fileData);
+                    if($uploadData['status']['success'] == 1){
+                        $data['storeImage'] = $data['photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
+                    } else {
+                        return $this->redirect(['index']);
+                        Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
+                    }
+                }
 
-                Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+                $storeRepository = new StoreRepository;
+                $address1 = isset($data['address1']) ? $data['address1'] : '';
+                $address2 = isset($data['address2']) ? $data['address2'] : '';
+                $countryName = isset($countries[$data['country_id']]) ? $countries[$data['country_id']] : '';
+                $map = Yii::$app->placesSearch->text($address1.' '.$address2.' '.$countryName);           
+                $data['latitude'] = $data['longitude']='';
+                if(strtolower($map->status) == 'ok'){
+                     $data['latitude'] = $map->results[0]->geometry->location->lat;
+                     $data['longitude'] = $map->results[0]->geometry->location->lng;
+                }
+
+                $returnData = $storeRepository->createStore($data);
+                if($returnData['status']['success'] == 1)
+                {
+                    parent::userActivity('create_store',$description='');
+                    Yii::$app->session->setFlash('success', $returnData['status']['message']);
+                    return $this->redirect(['index']);
+                } else {
+
+                    Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+                }
+            }
+            else
+            {
+                Yii::$app->session->setFlash('danger', 'Please select proper Assign To user.');
             }
         }
 
@@ -301,52 +325,76 @@ class StoresController extends BaseBackendController
             $countries = CommonHelper::getDropdown($countriesData['data']['countries'], ['id', 'name']);
         }
 
-        if (Yii::$app->request->post()) {
+        if (Yii::$app->request->post())
+        {
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('Stores');
-            $data['id'] = $id;
-         
-            $address1 = isset($data['address1']) ? $data['address1'] : '';
-            $address2 = isset($data['address2']) ? $data['address2'] : '';
-            $countryName = isset($countries[$data['country_id']]) ? $countries[$data['country_id']] : '';
             
-            $map = Yii::$app->placesSearch->text($address1.' '.$address2.' '.$countryName);           
-            $data['latitude'] = $data['longitude']='';
-            if(strtolower($map->status) == 'ok'){
-                 $data['latitude'] = $map->results[0]->geometry->location->lat;
-                 $data['longitude'] = $map->results[0]->geometry->location->lng;
-            }
-           
-            if(UploadedFile::getInstance($model,'storeImage')) {
-                $fileData = array();
-                $fileData['files'][0] = UploadedFile::getInstance($model,'storeImage');
-                $fileData['type'] = 'stores';
-                $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
-                $uploadRepository = new UploadRepository;
-                $uploadData = $uploadRepository->store($fileData);
-                if($uploadData['status']['success'] == 1){
-                    $data['photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
-                } else {
-                    return $this->redirect(['index']);
-                    Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
+            $is_create = 1;
+            if($currentUser->role_id != Yii::$app->params['superAdminRole'])
+            {
+                $assign_to = !empty($data['assign_to'])?$data['assign_to']:'';
+                
+                $userObj = new User;
+                $childUser = $userObj->getAllChilds(array($currentUser->id));
+                $childUser[] = $currentUser->id;
+                
+                if(!empty($childUser) && !in_array($assign_to, $childUser))
+                {
+                    $is_create = 2;
                 }
             }
-
-            $storeRepository = new StoreRepository;
-            $returnData = $storeRepository->updateStore($data);
-            if($returnData['status']['success'] == 1)
+            
+            if($is_create == 1)
             {
-                if(isset($data['photo']) && $data['photo']){
-                    if(file_exists($oldImagePath)){
-                        @unlink($oldImagePath);
+                 $data['id'] = $id;
+         
+                $address1 = isset($data['address1']) ? $data['address1'] : '';
+                $address2 = isset($data['address2']) ? $data['address2'] : '';
+                $countryName = isset($countries[$data['country_id']]) ? $countries[$data['country_id']] : '';
+
+                $map = Yii::$app->placesSearch->text($address1.' '.$address2.' '.$countryName);           
+                $data['latitude'] = $data['longitude']='';
+                if(strtolower($map->status) == 'ok'){
+                     $data['latitude'] = $map->results[0]->geometry->location->lat;
+                     $data['longitude'] = $map->results[0]->geometry->location->lng;
+                }
+
+                if(UploadedFile::getInstance($model,'storeImage')) {
+                    $fileData = array();
+                    $fileData['files'][0] = UploadedFile::getInstance($model,'storeImage');
+                    $fileData['type'] = 'stores';
+                    $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
+                    $uploadRepository = new UploadRepository;
+                    $uploadData = $uploadRepository->store($fileData);
+                    if($uploadData['status']['success'] == 1){
+                        $data['photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
+                    } else {
+                        return $this->redirect(['index']);
+                        Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
                     }
                 }
-                parent::userActivity('update_store',$description='');
-                Yii::$app->session->setFlash('success', $returnData['status']['message']);
-                return $this->redirect(['index']);
-            } else {
 
-                Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+                $storeRepository = new StoreRepository;
+                $returnData = $storeRepository->updateStore($data);
+                if($returnData['status']['success'] == 1)
+                {
+                    if(isset($data['photo']) && $data['photo']){
+                        if(file_exists($oldImagePath)){
+                            @unlink($oldImagePath);
+                        }
+                    }
+                    parent::userActivity('update_store',$description='');
+                    Yii::$app->session->setFlash('success', $returnData['status']['message']);
+                    return $this->redirect(['index']);
+                } else {
+
+                    Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+                }
+            }
+            else
+            {
+                Yii::$app->session->setFlash('danger', 'Please select proper Assign To user.');
             }
         }
 
@@ -411,11 +459,18 @@ class StoresController extends BaseBackendController
 
     protected function findModel($id, $parentID = '')
     {
+        $currentUser = CommonHelper::getUser();
+        
         $query = Stores::find()            
             ->andWhere(['id' => $id]);
 
-        if($parentID){
-            $query->andWhere(['created_by' => $parentID]);
+        if($parentID && $currentUser->role_id != Yii::$app->params['superAdminRole'])
+        {
+            $userObj = new User;
+            $childUser = $userObj->getAllChilds(array($currentUser->id));
+            $childUser[] = $currentUser->id;
+            
+            $query->andWhere(['assign_to' => $childUser]);
         }
 
         $model = $query->one();
