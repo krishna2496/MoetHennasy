@@ -42,7 +42,7 @@ $formUrl = Url::to(['rule-administration/index']);
                                 <?= $form->field($model, 'market_cluster_id')->dropDownList($brands, ['prompt' => 'Select One', 'id' => 'market_segment_id']); ?>  
                             </div>
                             <div class="col-md-6">
-                                <?= $form->field($model, 'brand_id')->dropDownList($brands, ['multiple' => 'multiple', 'prompt' => 'Select Brand', 'class' => 'form-control select2']); ?>  
+                                <?= $form->field($model, 'brand_id')->dropDownList($brands, ['multiple' => 'multiple', 'class' => 'form-control select2']); ?>  
                             </div>
                             <div class="col-md-6">
                                 <?= $form->field($model, 'product_category_id')->dropDownList($productCategory, ['prompt' => 'Select One']); ?>  
@@ -132,10 +132,13 @@ $formUrl = Url::to(['rule-administration/index']);
         </div>
         <?php ActiveForm::end(); ?>
     </div>
-    <script>
-       $(document).ready(function () {
-            $('.select2').select2();
-        });
+<script>
+
+$( document ).ready(function() {
+    $('.select2').select2({
+        placeholder: "Select Brand" 
+    });
+});
         
 <?php
 if (isset($filters['selection']) && (!empty($filters['selection']))) {

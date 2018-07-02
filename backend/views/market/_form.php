@@ -50,9 +50,10 @@ use common\helpers\CommonHelper;
     </div>
 </div>
 <script type="text/javascript">
-    $( document ).ready(function() {
-    $('.select2').select2({
-       placeholder: "Select Market Cluster" 
+    $( document ).ready(function() 
+    {
+        $('.select2').select2({
+            placeholder: "Select Market Cluster" 
+        });
     });
-});
     </script>

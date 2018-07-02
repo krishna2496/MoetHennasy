@@ -29,7 +29,7 @@ $formUrl=Url::to('products');
                               <?= $form->field($model, 'market_cluster_id')->dropDownList($brands, ['prompt' => 'Select One','id' => 'market_segment_id']); ?>  
                         </div>
                         <div class="col-md-6">
-                               <?= $form->field($model, 'brand_id')->dropDownList($brands, ['multiple'=>'multiple','prompt' => 'Select Brand','class'=>'form-control select2']); ?>  
+                               <?= $form->field($model, 'brand_id')->dropDownList($brands, ['multiple'=>'multiple','class'=>'form-control select2']); ?>  
                         </div>
                         <div class="col-md-6">
                                <?= $form->field($model, 'product_category_id')->dropDownList($productCategory, ['prompt' => 'Select One']); ?>  
@@ -60,9 +60,11 @@ $this->registerJs(
 ?>
 <?php yii\widgets\Pjax::end() ?>
 <script type="text/javascript">
-     $( document ).ready(function() {
-    $('.select2').select2()
-});
+    $( document ).ready(function() {
+        $('.select2').select2({
+            placeholder: "Select Brand" 
+        });
+    });
     function getMarketSegments(data){
         var str = "<option value>Select Cluster</option>";
         moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>stores/ajax-get-segment",data,'post').then(function(result){
