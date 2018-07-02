@@ -257,9 +257,24 @@ class CataloguesController extends BaseBackendController
     }
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        parent::userActivity('delete_catalogue',$description='');
-        Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'catalogues')]));
+        $model = $this->findModel($id);
+    
+        $ImagePath = CommonHelper::getPath('upload_path').UPLOAD_PATH_CATALOGUES_IMAGES.$model->image;
+        
+        if($model->delete())
+        {
+            if(file_exists($ImagePath))
+            {
+                @unlink($ImagePath);
+            }
+            parent::userActivity('delete_catalogue',$description='');
+            Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'catalogues')]));
+        }
+        else
+        {
+            Yii::$app->session->setFlash('danger', $model['errors']['title'][0]);
+        }
+        
         return $this->redirect(['index']);
     }
 

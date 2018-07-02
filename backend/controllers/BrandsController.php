@@ -68,10 +68,14 @@ class BrandsController extends BaseBackendController
     {
         $model = new Brands();
 
-        if(Yii::$app->request->post()) {          
+        if(Yii::$app->request->post()) 
+        {
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('Brands');
-             if(UploadedFile::getInstance($model,'brandImage')) {
+            $data['image'] = '';
+            
+            if(UploadedFile::getInstance($model,'brandImage')) 
+            {
                 $fileData = array();
                 $fileData['files'][0] = UploadedFile::getInstance($model,'brandImage');
                 $fileData['type'] = 'brands';
@@ -105,20 +109,31 @@ class BrandsController extends BaseBackendController
     {
         $model = $this->findModel($id);
 
-        if(Yii::$app->request->post()) {          
+        if(Yii::$app->request->post())
+        {          
+            $oldImagePath = CommonHelper::getPath('upload_path').UPLOAD_PATH_BRANDS_IMAGES.$model->image;
+            
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('Brands');
             $data['id'] = $id;
-            if(UploadedFile::getInstance($model,'brandImage')) {
+            
+            if(UploadedFile::getInstance($model,'brandImage')) 
+            {
                 $fileData = array();
                 $fileData['files'][0] = UploadedFile::getInstance($model,'brandImage');
                 $fileData['type'] = 'brands';
                 $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
                 $uploadRepository = new UploadRepository();
                 $uploadData = $uploadRepository->store($fileData);
-                if($uploadData['status']['success'] == 1){
+                if($uploadData['status']['success'] == 1)
+                {
                     $data['brandImage'] = $data['image'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
-                } else {
+                    if(file_exists($oldImagePath)){
+                        @unlink($oldImagePath);
+                    }
+                }
+                else 
+                {
                     return $this->redirect(['index']);
                     Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
                 }
@@ -143,13 +158,23 @@ class BrandsController extends BaseBackendController
     {  
         $model = $this->findModel($id);
     
-        if($model->delete()){
+        $ImagePath = CommonHelper::getPath('upload_path').UPLOAD_PATH_BRANDS_IMAGES.$model->image;
+        
+        if($model->delete())
+        {
+            if(file_exists($ImagePath))
+            {
+                @unlink($ImagePath);
+            }
             parent::userActivity('delete_brand',$description='');
             Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'brand')]));
-        }else{
+        }
+        else
+        {
             Yii::$app->session->setFlash('danger', $model['errors']['title'][0]);
         }
-           return $this->redirect(['index']);
+        
+        return $this->redirect(['index']);
     }
 
     protected function findModel($id)

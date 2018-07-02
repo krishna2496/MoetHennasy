@@ -119,7 +119,7 @@ use common\helpers\CommonHelper;
 			if(result.status.success == 1) {
 				if(result.data.users.length > 0) {
 					$.each(result.data.users, function(key, value){
-						str += "<option value="+value.id+">"+value.first_name+" "+value.last_name+"</option>";
+						str += "<option value="+value.id+">"+value.first_name+" "+value.last_name+" - "+value.email+"</option>";
 					});
 				}
 			}

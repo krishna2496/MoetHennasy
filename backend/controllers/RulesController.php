@@ -151,9 +151,24 @@ class RulesController extends BaseBackendController
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        parent::userActivity('delete_rule',$description='');
-        Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'rules')]));
+        $model = $this->findModel($id);
+    
+        $ImagePath = CommonHelper::getPath('upload_path').UPLOAD_PATH_RULES_IMAGES.$model->image;
+        
+        if($model->delete())
+        {
+            if(file_exists($ImagePath))
+            {
+                @unlink($ImagePath);
+            }
+            parent::userActivity('delete_rule',$description='');
+            Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'rules')]));
+        }
+        else
+        {
+            Yii::$app->session->setFlash('danger', $model['errors']['title'][0]);
+        }
+        
         return $this->redirect(['index']);
     }
 

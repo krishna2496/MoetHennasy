@@ -351,7 +351,15 @@ class UsersController extends BaseBackendController
     public function actionDelete($id, $parentId = '')
     {   
         $model = $this->findModel($id);
-        if($model->delete()){
+        
+        $ImagePath = CommonHelper::getPath('upload_path').UPLOAD_PATH_USER_IMAGES.$model->profile_photo;
+        
+        if($model->delete())
+        {
+            if(file_exists($ImagePath))
+            {
+                @unlink($ImagePath);
+            }
             Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'user')]));
             parent::userActivity('delete_user',$description='');
             if($parentId){
