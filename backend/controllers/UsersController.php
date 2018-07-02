@@ -137,47 +137,70 @@ class UsersController extends BaseBackendController
             $markets = CommonHelper::getDropdown($marketsData['data']['markets'], ['id', 'title']);
         }
 
-        if(Yii::$app->request->post()) {          
+        if(Yii::$app->request->post()) 
+        {   
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('User');
-            $data['device_type'] = Yii::$app->params['deviceType']['web'];
-            $data['profile_photo'] = '';
-            if(UploadedFile::getInstance($model,'userImage')) {
-                $fileData = array();
-                $fileData['files'][0] = UploadedFile::getInstance($model,'userImage');
-                $fileData['type'] = 'profile';
-                $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
-                $uploadRepository = new UploadRepository;
-                $uploadData = $uploadRepository->store($fileData);
-                if($uploadData['status']['success'] == 1){
-                    $data['userImage'] = $data['profile_photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
-                } else {
-                    return $this->redirect(['index']);
-                    Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
+            
+            $is_create = 1;
+            if($currentUser->role_id != Yii::$app->params['superAdminRole'])
+            {
+                $parent_user_id = !empty($data['parent_user_id'])?$data['parent_user_id']:'';
+                
+                $userObj = new User;
+                $childUser = $userObj->getAllChilds(array($currentUser->id));
+                $childUser[] = $currentUser->id;
+                
+                if(!empty($childUser) && !in_array($parent_user_id, $childUser))
+                {
+                    $is_create = 2;
                 }
             }
-
-            $userRepository = new UserRepository;
-            $returnData = $userRepository->createUser($data);
-            if($returnData['status']['success'] == 1)
+            
+            if($is_create == 1)
             {
-                parent::userActivity('create_users',$description='');
-                Yii::$app->session->setFlash('success', $returnData['status']['message']);
-                return $this->redirect(['index']);
-            } else {
-                if($model->role_id != Yii::$app->params['marketAdministratorRole']){
-                    $userListeFilter = array();
-                    $userListeFilter['role_id'] = $model->role_id;
-                    $resultUserList = $this->actionAjaxGetUsers($userListeFilter);
-                    if($resultUserList['status']['success'] == 1){
-                        $userList = CommonHelper::getDropdown($resultUserList['data']['users'], ['id', ['first_name','last_name']]);
+                $data['device_type'] = Yii::$app->params['deviceType']['web'];
+                $data['profile_photo'] = '';
+                if(UploadedFile::getInstance($model,'userImage')) {
+                    $fileData = array();
+                    $fileData['files'][0] = UploadedFile::getInstance($model,'userImage');
+                    $fileData['type'] = 'profile';
+                    $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
+                    $uploadRepository = new UploadRepository;
+                    $uploadData = $uploadRepository->store($fileData);
+                    if($uploadData['status']['success'] == 1){
+                        $data['userImage'] = $data['profile_photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
+                    } else {
+                        return $this->redirect(['index']);
+                        Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
                     }
-                    $parentUserClass = '';
                 }
-                Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+
+                $userRepository = new UserRepository;
+                $returnData = $userRepository->createUser($data);
+                if($returnData['status']['success'] == 1)
+                {
+                    parent::userActivity('create_users',$description='');
+                    Yii::$app->session->setFlash('success', $returnData['status']['message']);
+                    return $this->redirect(['index']);
+                } else {
+                    if($model->role_id != Yii::$app->params['marketAdministratorRole']){
+                        $userListeFilter = array();
+                        $userListeFilter['role_id'] = $model->role_id;
+                        $resultUserList = $this->actionAjaxGetUsers($userListeFilter);
+                        if($resultUserList['status']['success'] == 1){
+                            $userList = CommonHelper::getDropdown($resultUserList['data']['users'], ['id', ['first_name','last_name']]);
+                        }
+                        $parentUserClass = '';
+                    }
+                    Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+                }
+            }
+            else
+            {
+                Yii::$app->session->setFlash('danger', 'Please select proper Parent User.');
             }
         }
-
 
         return $this->render('create', [
             'model' => $model,
@@ -269,53 +292,77 @@ class UsersController extends BaseBackendController
             $parentUserClass = '';
         }
 
-        if(Yii::$app->request->post()) {
+        if(Yii::$app->request->post()) 
+        {
             $oldImagePath = CommonHelper::getPath('upload_path').UPLOAD_PATH_USER_IMAGES.$model->profile_photo;
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('User');
-            $data['id'] = $id;
-            $data['device_type'] = Yii::$app->params['deviceType']['web'];
             
-            $data['profile_photo'] = '';
-            if(UploadedFile::getInstance($model,'userImage')) {
-                $fileData = array();
-                $fileData['files'][0] = UploadedFile::getInstance($model,'userImage');
-                $fileData['type'] = 'profile';
-                $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
-                $uploadRepository = new UploadRepository;
-                $uploadData = $uploadRepository->store($fileData);
-                if($uploadData['status']['success'] == 1){
-                    $data['profile_photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
-                    if(file_exists($oldImagePath)){
-                        @unlink($oldImagePath);
-                    }
-                } else {
-                    return $this->redirect(['index']);
-                    Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
+            $is_create = 1;
+            if($currentUser->role_id != Yii::$app->params['superAdminRole'])
+            {
+                $parent_user_id = !empty($data['parent_user_id'])?$data['parent_user_id']:'';
+                
+                $userObj = new User;
+                $childUser = $userObj->getAllChilds(array($currentUser->id));
+                $childUser[] = $currentUser->id;
+                
+                if(!empty($childUser) && !in_array($parent_user_id, $childUser))
+                {
+                    $is_create = 2;
                 }
             }
-
-            $userRepository = new UserRepository;
-            $returnData = $userRepository->updateUser($data);
-            if($returnData['status']['success'] == 1)
+            
+            if($is_create == 1)
             {
-                parent::userActivity('update_users',$description='');
-                Yii::$app->session->setFlash('success', $returnData['status']['message']);
-                if($parentUpdate){
-                    return $this->redirect(['users/index/'.$parentId]);    
-                }
-                return $this->redirect(['index']);
-            } else {
-                if($model->role_id != Yii::$app->params['marketAdministratorRole']){
-                    $userListeFilter = array();
-                    $userListeFilter['role_id'] = $model->role_id;
-                    $resultUserList = $this->actionAjaxGetUsers($userListeFilter);
-                    if($resultUserList['status']['success'] == 1){
-                        $userList = CommonHelper::getDropdown($resultUserList['data']['users'], ['id', ['first_name','last_name']]);
+                $data['id'] = $id;
+                $data['device_type'] = Yii::$app->params['deviceType']['web'];
+
+                $data['profile_photo'] = '';
+                if(UploadedFile::getInstance($model,'userImage')) {
+                    $fileData = array();
+                    $fileData['files'][0] = UploadedFile::getInstance($model,'userImage');
+                    $fileData['type'] = 'profile';
+                    $uploadUrl = CommonHelper::getPath('upload_url').$fileData['type'].'/';
+                    $uploadRepository = new UploadRepository;
+                    $uploadData = $uploadRepository->store($fileData);
+                    if($uploadData['status']['success'] == 1){
+                        $data['profile_photo'] = str_replace($uploadUrl,"",$uploadData['data']['uploadedFile'][0]['name']);
+                        if(file_exists($oldImagePath)){
+                            @unlink($oldImagePath);
+                        }
+                    } else {
+                        return $this->redirect(['index']);
+                        Yii::$app->session->setFlash('danger', $uploadData['status']['message']);
                     }
-                    $parentUserClass = '';
                 }
-                Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+
+                $userRepository = new UserRepository;
+                $returnData = $userRepository->updateUser($data);
+                if($returnData['status']['success'] == 1)
+                {
+                    parent::userActivity('update_users',$description='');
+                    Yii::$app->session->setFlash('success', $returnData['status']['message']);
+                    if($parentUpdate){
+                        return $this->redirect(['users/index/'.$parentId]);    
+                    }
+                    return $this->redirect(['index']);
+                } else {
+                    if($model->role_id != Yii::$app->params['marketAdministratorRole']){
+                        $userListeFilter = array();
+                        $userListeFilter['role_id'] = $model->role_id;
+                        $resultUserList = $this->actionAjaxGetUsers($userListeFilter);
+                        if($resultUserList['status']['success'] == 1){
+                            $userList = CommonHelper::getDropdown($resultUserList['data']['users'], ['id', ['first_name','last_name']]);
+                        }
+                        $parentUserClass = '';
+                    }
+                    Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+                }
+            }
+            else
+            {
+                Yii::$app->session->setFlash('danger', 'Please select proper Parent User.');
             }
         }
 

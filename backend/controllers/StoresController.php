@@ -394,7 +394,7 @@ class StoresController extends BaseBackendController
             }
             else
             {
-                Yii::$app->session->setFlash('danger', 'Please select proper Assign To user.');
+                Yii::$app->session->setFlash('danger', 'Please select proper Assign To User.');
             }
         }
 
