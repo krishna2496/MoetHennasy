@@ -46,10 +46,11 @@ class MarketRepository extends Repository {
         $this->apiCode = 0;
         $model = new Markets;
 
-        $model->scenario = 'create';
         $model->title = $data['title'];
 
-        if ($model->validate(false)) {
+        if($model->validate()) 
+        {
+            $model->scenario = 'create';
             $modelSegment = new MarketSegmentData;
             if ($model->save(false)) {
                 $id = $model->id;

@@ -27,7 +27,7 @@ use common\helpers\CommonHelper;
                     </div>
                      <div class="row">
                         <div class="col-md-6">
-                            <?= $form->field($model, 'market_segment_id')->dropDownList($marketSegmentList,['multiple'=>'multiple','prompt' => 'Select Market Cluster','class'=>'form-control select2']); ?>
+                            <?= $form->field($model, 'market_segment_id')->dropDownList($marketSegmentList,['multiple'=>'multiple','class'=>'form-control select2']); ?>
                            
                         </div>
                     </div>
@@ -51,6 +51,8 @@ use common\helpers\CommonHelper;
 </div>
 <script type="text/javascript">
     $( document ).ready(function() {
-    $('.select2').select2()
+    $('.select2').select2({
+       placeholder: "Select Market Cluster" 
+    });
 });
     </script>
