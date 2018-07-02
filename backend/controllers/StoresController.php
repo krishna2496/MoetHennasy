@@ -52,8 +52,7 @@ class StoresController extends BaseBackendController
     }
 
     public function actionIndex()  
-    {
-    
+    {    
         $currentUser = CommonHelper::getUser();
 
         //filters
@@ -168,11 +167,23 @@ class StoresController extends BaseBackendController
         }
     }
 
-    public function actionView($id)
+    public function actionView($id, $parentId = '')
     {
+        $currentUser = CommonHelper::getUser();
+        
+        if(!$parentId && $currentUser->role_id != Yii::$app->params['superAdminRole']){
+            $parentId = $currentUser->id;
+        }
+        else 
+        {
+            if($currentUser->role_id != Yii::$app->params['superAdminRole']){
+                $this->findModel($parentId,$currentUser->id);
+            }
+        }
+        
         parent::userActivity('view_store',$description='');
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($id,$parentId),
         ]);
     }
 
@@ -252,10 +263,21 @@ class StoresController extends BaseBackendController
         ]);
     }
 
-    public function actionUpdate($id)
+    public function actionUpdate($id, $parentId = '')
     {
         $currentUser = CommonHelper::getUser();
-        $model = $this->findModel($id);
+        
+        if(!$parentId && $currentUser->role_id != Yii::$app->params['superAdminRole']){
+            $parentId = $currentUser->id;
+        }
+        else 
+        {
+            if($currentUser->role_id != Yii::$app->params['superAdminRole']){
+                $this->findModel($parentId,$currentUser->id);
+            }
+        }
+        
+        $model = $this->findModel($id,$parentId);
         $oldImagePath = CommonHelper::getPath('upload_path').UPLOAD_PATH_STORE_IMAGES.$model->photo;
         //markets
         $marketFilter = array();
@@ -387,9 +409,17 @@ class StoresController extends BaseBackendController
         return $returnData;
     }
 
-    protected function findModel($id)
+    protected function findModel($id, $parentID = '')
     {
-        if (($model = Stores::findOne($id)) !== null) {
+        $query = Stores::find()            
+            ->andWhere(['id' => $id]);
+
+        if($parentID){
+            $query->andWhere(['created_by' => $parentID]);
+        }
+
+        $model = $query->one();
+        if ($model !== null) {
             return $model;
         }
 
