@@ -23,7 +23,7 @@ class Stores extends BaseModel
             [['photo', 'store_manager_first_name', 'store_manager_last_name', 'store_manager_email'], 'string', 'max' => 255],
             [['store_manager_phone_number'], 'number'],
             [['latitude', 'longitude'], 'double'],
-            [['store_manager_phone_code'], 'number', 'max' => 4],
+            [['store_manager_phone_code'], 'number'],
             [['storeImage'], 'file','extensions'=>'jpg,png,jpeg'],
             [['store_manager_email'], 'email'],
             [['store_manager_email'], 'unique'],

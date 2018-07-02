@@ -36,9 +36,14 @@ class SiteController extends BaseBackendController
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index','edit-profile'],
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['edit-profile'],
+                        'allow' => true,
+                        'roles' => ['&'],
                     ],
                 ],
             ],
