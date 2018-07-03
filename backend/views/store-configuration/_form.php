@@ -199,11 +199,22 @@ $('.edit-modal').on('show.bs.modal', function(event) {
       
             if(result.flag == 1) {
                 if((result.action == 'edit')){
-                     var width = product.width * ratio + "px";
-                    $("#canvas-container-"+dataShelves+" img#"+dataKey).attr('src',product.image);
-                    $("#canvas-container-"+dataShelves+" img#"+dataKey).css('width',width);
+                    numOfSelves =$("#ex6SliderVal").val();
+                     for(i=0;i<numOfSelves;i++){
+                         alert(i);
+               $("#canvas-container-"+i).empty();
+            }
+//                     var width = product.width * ratio + "px";
+//                    $("#canvas-container-"+dataShelves+" img#"+dataKey).attr('src',product.image);
+//                    $("#canvas-container-"+dataShelves+" img#"+dataKey).css('width',width);
+ alert(result.msg);
+                     $.pjax.reload({container:"#productsData"});
                 }
-                alert(result.msg);
+                if(result.action == 'remove'){
+                      $("#canvas-container-"+dataShelves+" img#"+dataKey).remove();
+                      $.pjax.reload({container:"#productsData"});
+                }
+               
             }else{
                 alert(result.msg);
             }
