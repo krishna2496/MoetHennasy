@@ -188,7 +188,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                         {
                                             var height = titem.height* ratio +"px";
                                             var width = titem.width * ratio + "px";
-                                            var data = '<img src="' + titem.image + '" style="width:' + width + '; height:' + height + ';position: absolute; bottom:14px; left:'+test+'px;" id='+k+'>';
+                                            var data = '<img src="' + titem.image + '" style="width:' + width + '; height:' + height + ';position: absolute; bottom:5px; left:'+test+'px;" id='+k+'>';
                                             $("#canvas-container-" + i).append(data);
 
                                             test = test+(titem.width * ratio);

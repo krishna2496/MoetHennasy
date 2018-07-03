@@ -374,7 +374,7 @@
     height: 30px;
     display: inline-block;
     background-image: url(../images/farme/midsec-md.png);
-    z-index: 2;
+    z-index: 1;
 }
 
 .frame-content .frame-mid-section .mid-sec-frames .fms-bt .fms-lt {
