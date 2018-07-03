@@ -125,6 +125,10 @@ $(function() {
     });
 });
 
+
+
+
+
 function getRack() {
     var noOfShelves = parseInt($("#ex6SliderVal").val());
     var rackHeight = parseInt($("#hex6SliderVal").val());
@@ -180,28 +184,21 @@ $("#dispaly_name").on('keyup', function() {
 function changeBrand(data){
      
  var id =data.id;
-
  if( $(".display"+id).hasClass("displayBlock")){
      
       $(".display"+id).css('display','none');
       $(".display"+id).removeClass('displayBlock');
       $("#brandImage").attr("src",'');
  }else{
- 
      $(".display"+id).css('display','block');
      $(".display"+id).addClass('displayBlock');
      $('img.brand-selected').not(".display"+id).css('display','none');
      $('img.brand-selected').not(".display"+id).removeClass('displayBlock');
      $("#brandImage").attr("src",data.src);
  }
- 
-
-
 }
 
 jQuery(document).ready(function() {
-    
-    
     
     $("#tabs").tabs({active: 2});
     // Basic Wizard
@@ -232,7 +229,6 @@ jQuery(document).ready(function() {
         },
         onNext: function(tab, navigation, index) {
           
-           
             if (index == 1) {
                
                 if ($("#firstForm input[name='brands[]']:checkbox:checked").length <= 0)

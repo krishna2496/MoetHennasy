@@ -30,7 +30,7 @@ class StoreConfigurationController extends Controller {
                 ],
                 'rules' => [
                         [
-                        'actions' => ['index', 'listing', 'create', 'update', 'view', 'delete', 'save-data', 'save-product-data'],
+                        'actions' => ['index', 'listing', 'create', 'update', 'view', 'delete', 'save-data', 'save-product-data','modal-content','get-products','edit-products'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -293,9 +293,89 @@ class StoreConfigurationController extends Controller {
       
         $_SESSION['config']['final_products'] =$finalProducuts;
         $_SESSION['config']['shelvesProducts'] =json_encode($productsId);
-        $_SESSION['config']['rackProducts'] =json_encode($finalProducutsRack);
+        $_SESSION['config']['rackProducts'] =$finalProducutsRack;
+    }
+    
+    public function actionModalContent($id){
+    
+      return $this->renderPartial('modal-content', [
+                    'id' => $id,
+                   
+            ],true);
     }
 
+    public function actionGetProducts(){
+        $data =array();
+        $data = Yii::$app->request->post();
+        $data['brand_id'] =$data['id'];
+        $repository = new CataloguesRepository();
+        $returnData = $repository->listing($data);
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return $returnData;
+    }
+    
+    public function actionEditProducts(){
+        $response = array();
+        $response['flag'] = 0;
+        $response['msg'] = 'Plz try again later';
+        $data =array();
+        $data = Yii::$app->request->post();
+        $shelvesNo = $data['dataShelves'];
+        $productKey = $data['dataKey'];
+        $replacedProductId =$data['product']; 
+        if($data['remove'] == 'true'){
+            
+            $id = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'];
+            $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] = array();
+            $response['flag'] =1;
+            $response['msg'] ='Product Removed Successfully';
+            $response['action'] = 'remove';
+            $response['replacedId'] = $id;
+            
+        }
+        if($data['edit'] == 'true'){
+            $height = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['height'];
+            $width = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['width'];
+            $id = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'];
+            $repository = new CataloguesRepository();
+            $filterData['products_id'] = $replacedProductId;
+        
+            $returnData = $repository->listing($filterData);
+                if($returnData['status']['success'] == 1){
+                   
+                            if( ($width >= intval($returnData['data']['catalogues'][0]['width'])) && (($_SESSION['config']['height_of_shelves']) >= $returnData['data']['catalogues'][0]['height'])){
+                                 $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] = '';
+                                 $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] =array(
+                                     'id' => $replacedProductId,
+                                     'image' => CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES.$returnData['data']['catalogues'][0]['image']),
+                                     'height' => $returnData['data']['catalogues'][0]['height'],
+                                     'width' => $returnData['data']['catalogues'][0]['width'],
+                                     'test' =>'sf',
+                                 );
+                                 
+                            unset($returnData['data']['catalogues'][0]['market']['marketSegmentData']);
+                            unset($returnData['data']['catalogues'][0]['market']['productCategory']);
+                            unset($returnData['data']['catalogues'][0]['market']['market']);
+                          
+                            $returnData['data']['catalogues'][0]['productCategory'] = $returnData['data']['catalogues'][0]['productCategory']['name'];
+                            $returnData['data']['catalogues'][0]['marketName'] = $returnData['data']['catalogues'][0]['market']['title'];
+                            $returnData['data']['catalogues'][0]['brandName'] = $returnData['data']['catalogues'][0]['brand']['name'];
+                            $returnData['data']['catalogues'][0]['market'] = array('markt_title' => $returnData['data']['catalogues'][0]['market']['title']);
+                            $_SESSION['config']['products'][$replacedProductId]  =    $returnData['data']['catalogues'][0];
+                            $response['flag'] =1;
+                            $response['msg'] ='Product Edited Successfully';
+                            $response['action'] = 'edit';
+                            $response['replacedId'] = $id;
+                            $response['product']= '';
+                            }
+                }
+                
+        }
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return $response;
+       
+    }
+    
     private function fillUpEmptySpaceOfShelves(&$racksProductArray,$selvesWidth,$selevesCount){
         $products=array();
         $arrayProducts = $racksProductArray;
@@ -313,16 +393,18 @@ class StoreConfigurationController extends Controller {
                         $products = $racksProductArray[$i] = $racksProductArray[$i-1];
                      
                     }
-
+                    $min = $sum = 0;
+                    if(!empty($products)){
                     $min =  (min(array_column($products, 'width')) == 0) ? 1 : min(array_column($products, 'width')) ;
                     $sum =array_sum(array_column($products, 'width'));
+                    }
                     $diff = intval($selvesWidth) - $sum;
-
+ if(!empty($products)){
                     if($diff > $min){
                         $sumOfMarketShare = array_sum(array_column($products, 'market_share'));                        
                         $sumOfMarketShare = ($sumOfMarketShare == 0) ? 1 : $sumOfMarketShare;
                         $noOfPlaces = intval(($selvesWidth)/($min));
-                      
+                     
                         foreach ($products as $marketShareValue){
                             $repeatCount = round(($marketShareValue['market_share'] * $noOfPlaces)/($sumOfMarketShare));
                         
@@ -333,6 +415,7 @@ class StoreConfigurationController extends Controller {
                                 }
                             }
                         }
+                      }
                     }
                  }
             }

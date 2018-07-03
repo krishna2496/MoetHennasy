@@ -118,10 +118,11 @@ $session = Yii::$app->session;
 	</div>
 </div>
 <script type="text/javascript">
-	var rackWidthValue = '<?php echo yii::$app->params['rackWidth'][0] ?>';
+	
 	var rackFromURL = '<?php echo $formUrl ?>';
 	var rackProductFromURL = '<?php echo $secondFormUrl ?>';
-        var nimOfSelves = '<?php echo $noOfSelves ?>';;
+        var nimOfSelves = '<?php echo $noOfSelves ?>';
+        
         
 $('#tab2').click(function(event) {
     if ($(this).attr('disabled')) {
@@ -141,5 +142,74 @@ $('#tab3').click(function(event) {
     if ($(this).attr('disabled')) {
         return false;
     }
+});
+$('.edit-modal').on('show.bs.modal', function(event) {
+  
+    var dataURL = $(event.relatedTarget).attr('data-href');
+    var dataKey = $(event.relatedTarget).attr('data-key');
+    var dataShelves = $(event.relatedTarget).attr('data-shelves');
+    
+    $('.modal-content').load(dataURL,function(){
+     $('input[type="checkbox"]').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%'
+    });
+    $('#remove').on('ifChecked', function () { 
+       
+        $('input[name="permissionscheck"]').filter('[value="edit"]').iCheck('uncheck');
+    });
+    $('#edit').on('ifChecked', function () { 
+     $('input[name="permissionscheck"]').filter('[value="remove"]').iCheck('uncheck');
+    });
+    
+    $('#getProducts').on('change',function(){
+        var id = $(this).val();
+        var str = "<option value>Select Products</option>";
+        var data = {id : id};
+        moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>store-configuration/get-products",data,'post').then(function(result){
+         
+            if(result.status.success == 1) {
+                if(result.data.catalogues.length > 0) {
+                    $.each(result.data.catalogues, function(key, value){
+                         str += "<option value="+value.id+">"+value.short_name+"</option>";
+                    });
+                }
+            }
+            $('#products').html(str);
+        },function(result){
+            alert('Fail');
+        });
+   
+    });
+    
+    $('#changeData').on('click',function(){
+        var remove = $('#remove').is(':checked'); 
+        var edit = $('#edit').is(':checked'); 
+        var product = $("#products").val();
+       
+        var data = {remove : remove,edit : edit,product:product,dataKey:dataKey,dataShelves:dataShelves};
+       
+        
+      
+        moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>store-configuration/edit-products",data,'post').then(function(result){
+         alert(result.flag);
+            if(result.flag == 1) {
+                alert(result.msg);
+            }else{
+                alert(result.msg);
+            }
+          
+        },function(result){
+            alert('Fail');
+        });
+   
+    });
+    
+      moet.hideLoader();
+        });
+    setTimeout(function() {
+      $('.modal-backdrop').css('z-index', 0);
+    }, 10);
 });
 </script>

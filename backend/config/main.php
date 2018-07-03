@@ -61,6 +61,7 @@ return [
                 'product-types/view/<id:\d+>' => 'product-types/view',
                 'product-types/update/<id:\d+>' => 'product-types/update',
                 'product-types/delete/<id:\d+>' => 'product-types/delete',
+                'store-configuration/modal-content/<id:\d+>' => 'store-configuration/modal-content',
                 
                 'market/rules/<id:\d+>' => 'market/rules',
                 

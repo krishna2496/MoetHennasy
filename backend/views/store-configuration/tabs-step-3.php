@@ -7,9 +7,14 @@ use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
+
 //use kartik\switchinput\SwitchInput;
-$rackProducts = isset($_SESSION['config']['rackProducts']) ? $_SESSION['config']['rackProducts'] : '';
+$rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSION['config']['rackProducts']) : '';
 $ratio = isset($_SESSION['config']['ratio']) ? $_SESSION['config']['ratio'] : '1';
+$products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] :'';
+$shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
+//echo '<pre>';
+//print_r($_SESSION['config']);exit;
 ?>
 
 <div class="col-sm-5 pull-right" id="tab-step-3">
@@ -76,448 +81,150 @@ $ratio = isset($_SESSION['config']['ratio']) ? $_SESSION['config']['ratio'] : '1
                             </div>
                             <div class="box-body">
                                 <?php Pjax::begin(['id' => 'productsData', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>
-                               <div class="box box-default product-list collapsed-box">
-            <div class="box-header with-border">
-                <h3 class="box-title">SHELF 4</h3>
-                <div class="pull-right">
-                    <button type="button" class="btn"><i class="fa fa-plus"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="box-body" style="display:block">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p class="direction-text">From left to right</p>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="view-btn">
-                            <a href="#grid-section4" title="grid-view" class="grid-btn"><img src="images/grid-btn.png" alt="grid-view"></a>
-                            <a href="#list-section4" title="list-view" class="list-btn"><img src="images/list-gray-btn.png" alt="list-view"></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <ul class="grid-itmes" id="grid-section4">
-                            <li>
-                                <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                    <img src="images/bottle1.png" alt="brand-image" class="btl-img">
-                                    <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                    <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                    <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                    <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                    <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                    <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                    <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                    <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                    <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                    <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                    <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                    <img src="images/bottle1.png" alt="brand-image" class="btl-img">
-                                    <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                    <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                    <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                    <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                    <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                    <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                    <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                    <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                    <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                    <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                    <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="list-items" id="list-section4">
-                            <table id="list-table" class="table  table-striped product-table">
-                                <thead>
-                                    <tr>
-                                        <th>Products</th>
-                                        <th>Product Types</th>
-                                        <th>Market share</th>
-                                        <th>WPS</th>
-                                        <th>Product Category</th>
-                                        <th>Top shelf</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <a href="#" title="Edit-Modal" class="media" data-toggle="modal" data-target="#modal-2">
-                                                <div class="media-left">
-                                                    <div class="list-product">
-                                                        <img src="images/bottle1.png" class="media-object">
+                                <?php
+                                if (!empty($shelvesData)) {
+                                    foreach ($shelvesData as $key => $value) {
+                                        ?>
+                                        <div class="box box-default product-list collapsed-box">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">SHELF <?= $key+1 ?></h3>
+                                                <div class="box-tools pull-right">
+                                                    <button class="btn btn-box-tool" type="button" data-toggle="collapse" data-target="#collapseExample<?= $key?>" aria-expanded="false" aria-controls="collapseExample">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="collapse" id="collapseExample<?= $key?>">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="direction-text">From left to right</p>
                                                     </div>
-                                                </div>
-                                                <div class="media-body">
-                                                    <h4 class="media-heading">Dom perignon vintage 2006</h4>
-                                                </div>
-                                            </a>
-                                        </td>
-                                        <td>Eg.nectar</td>
-                                        <td>1-10</td>
-                                        <td>Num</td>
-                                        <td>Campagne</td>
-                                        <td>Yes</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="#" title="Edit-Modal" class="media" data-toggle="modal" data-target="#modal-2">
-                                                <div class="media-left">
-                                                    <div class="list-product">
-                                                        <img src="images/bottle1.png" class="media-object">
+                                                    <div class="col-md-6">
+                                                        <div class="view-btn">
+                                                            <a href="#grid-section2" title="grid-view" class="grid-btn"><img src="images/grid-btn.png" alt="grid-view"></a>
+                                                            <a href="#list-section2" title="list-view" class="list-btn"><img src="images/list-gray-btn.png" alt="list-view"></a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="media-body">
-                                                    <h4 class="media-heading">Dom perignon vintage 2006</h4>
-                                                </div>
-                                            </a>
-                                        </td>
-                                        <td>Eg.nectar</td>
-                                        <td>1-10</td>
-                                        <td>Num</td>
-                                        <td>Campagne</td>
-                                        <td>Yes</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="#" title="Edit-Modal" class="media" data-toggle="modal" data-target="#modal-2">
-                                                <div class="media-left">
-                                                    <div class="list-product">
-                                                        <img src="images/bottle1.png" class="media-object">
-                                                    </div>
-                                                </div>
-                                                <div class="media-body">
-                                                    <h4 class="media-heading">Dom perignon vintage 2006</h4>
-                                                </div>
-                                            </a>
-                                        </td>
-                                        <td>Eg.nectar</td>
-                                        <td>1-10</td>
-                                        <td>Num</td>
-                                        <td>Campagne</td>
-                                        <td>Yes</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="#" title="Edit-Modal" class="media" data-toggle="modal" data-target="#modal-2">
-                                                <div class="media-left">
-                                                    <div class="list-product">
-                                                        <img src="images/bottle1.png" class="media-object">
-                                                    </div>
-                                                </div>
-                                                <div class="media-body">
-                                                    <h4 class="media-heading">Dom perignon vintage 2006</h4>
-                                                </div>
-                                            </a>
-                                        </td>
-                                        <td>Eg.nectar</td>
-                                        <td>1-10</td>
-                                        <td>Num</td>
-                                        <td>Campagne</td>
-                                        <td>Yes</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="#" title="Edit-Modal" class="media" data-toggle="modal" data-target="#modal-2">
-                                                <div class="media-left">
-                                                    <div class="list-product">
-                                                        <img src="images/bottle1.png" class="media-object">
-                                                    </div>
-                                                </div>
-                                                <div class="media-body">
-                                                    <h4 class="media-heading">Dom perignon vintage 2006</h4>
-                                                </div>
-                                            </a>
-                                        </td>
-                                        <td>Eg.nectar</td>
-                                        <td>1-10</td>
-                                        <td>Num</td>
-                                        <td>Campagne</td>
-                                        <td>Yes</td>
-                                    </tr>
+                                                </div>   
+                                                <?php
+                                                $ids = explode(',', $value['productIds']);
+                                                if (!empty($ids)) { ?>
+                                                 <div class="row">
+                                                            <div class="col-md-12">
+                                                                <ul class="grid-itmes with-tool-tip" id="grid-section2">
+                                                <?php    foreach ($ids as $key1 => $value1) {
+                                                    $url = CommonHelper::getPath('admin_url').'store-configuration/modal-content/'.$products[$value1]['id'];
+//                                                        echo '<pre>';
+//                                                        print_r($products);exit;
+                                                        ?>
+                                                        <!--$products[$value]['id'];-->
 
-                                </tbody></table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-                                <?php Pjax::end(); ?>
+                                                       
+                                                                    <li>
+                                                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
+                                                                          
+                                                                            <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" alt="Selected"   class="btl-img">
+                                                                            <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $products[$value1]['image']; ?>" >
+                                                                        </a>
+                                                                    </li>
+                                                               
+<!--                                                                <div class="list-items" id="list-section2">
+                                                                    <table id="list-table" class="table  table-striped product-table">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Products</th>
+                                                                                <th>Product Types</th>
+                                                                                <th>Market share</th>
+                                                                                <th>WPS</th>
+                                                                                <th>Product Category</th>
+                                                                                <th>Top shelf</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <a href="#" title="Edit-Modal" class="media" data-toggle="modal" data-target="#modal-2">
+                                                                                        <div class="media-left">
+                                                                                            <div class="list-product">
+                                                                                                <img src="images/bottle1.png" class="media-object">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="media-body">
+                                                                                            <h4 class="media-heading">Dom perignon vintage 2006</h4>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td>Eg.nectar</td>
+                                                                                <td>1-10</td>
+                                                                                <td>Num</td>
+                                                                                <td>Campagne</td>
+                                                                                <td>Yes</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>-->
+                                                          
+                                                    <?php
+                                                    } ?>
+                                                     </ul>
+                                                             </div>
+
+
+
+                                                        </div>
+                                              <?php  }
+                                                ?>
+                                            </div>
+                                        </div>
+                                    <?php
+                                    }
+                                }
+                                ?>
+                                <script type="text/javascript">
+                                    var rackProducts = '<?php echo $rackProducts; ?>';
+                                    var ratio = '<?php echo $ratio; ?>';
+
+                                    if (rackProducts != '')
+                                    {
+                                        rackProducts = JSON.parse(rackProducts);
+                                        $.each(rackProducts, function (i, item) {
+                                            $.each(item, function (k, titem) {
+                                                //                console.log(titem.id);
+                                                //var height = titem.height*5.5+"px";
+                                                var width = titem.width * ratio + "px";
+
+                                                var data = '<img src="' + titem.image + '" style="width:' + width + '" id='+titem.id+'>';
+                                                $("#canvas-container-" + i).append(data);
+                                            });
+                                        });
+                                    }
+                                </script>
+<?php Pjax::end(); ?>  
+
+
                             </div>
-
                         </div>
-                    </div>
-                    <div class="submit-fl">
-                        <button class="btn reset-btn">Reset</button>
-                        <button class="btn" >OK</button>
-                    </div>
+                        <div class="submit-fl">
+                            <button class="btn reset-btn">Reset</button>
+                            <button class="btn" >OK</button>
+                        </div>
                 </form>
 
 
 
-                <div class="box box-default product-list collapsed-box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">SHELF 4</h3>
-                        <div class="box-tools pull-right">
-                            <!--                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                                        </button>-->
-                            <button type="button" class="btn btn-box-tool" data-toggle="collapse" data-target="#collapseOnze" aria-expanded="true" aria-controls="collapseOne">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="box-body" id="#collapseOnze">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="direction-text">From left to right</p>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="view-btn">
-                                    <a href="#grid-section4" title="grid-view" class="grid-btn"><img src="images/grid-btn.png" alt="grid-view"></a>
-                                    <a href="#list-section4" title="list-view" class="list-btn"><img src="images/list-gray-btn.png" alt="list-view"></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <ul class="grid-itmes" id="grid-section4">
-                                    <li>
-                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                            <img src="images/bottle1.png" alt="brand-image" class="btl-img">
-                                            <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                            <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                            <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                            <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                            <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                            <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                            <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                            <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                            <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                            <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                            <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                            <img src="images/bottle1.png" alt="brand-image" class="btl-img">
-                                            <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                            <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                            <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                            <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                            <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                            <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                            <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                            <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                            <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-default">
-                                            <img src="images/bottle1.png" alt="bottle-image" class="btl-img">
-                                            <img src="images/right-icon.png" alt="Selected" class="brand-selected">
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="list-items" id="list-section4">
-                                    <table id="list-table" class="table  table-striped product-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Products</th>
-                                                <th>Product Types</th>
-                                                <th>Market share</th>
-                                                <th>WPS</th>
-                                                <th>Product Category</th>
-                                                <th>Top shelf</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <a href="#" title="Edit-Modal" class="media" data-toggle="modal" data-target="#modal-2">
-                                                        <div class="media-left">
-                                                            <div class="list-product">
-                                                                <img src="images/bottle1.png" class="media-object">
-                                                            </div>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h4 class="media-heading">Dom perignon vintage 2006</h4>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td>Eg.nectar</td>
-                                                <td>1-10</td>
-                                                <td>Num</td>
-                                                <td>Campagne</td>
-                                                <td>Yes</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="#" title="Edit-Modal" class="media" data-toggle="modal" data-target="#modal-2">
-                                                        <div class="media-left">
-                                                            <div class="list-product">
-                                                                <img src="images/bottle1.png" class="media-object">
-                                                            </div>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h4 class="media-heading">Dom perignon vintage 2006</h4>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td>Eg.nectar</td>
-                                                <td>1-10</td>
-                                                <td>Num</td>
-                                                <td>Campagne</td>
-                                                <td>Yes</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="#" title="Edit-Modal" class="media" data-toggle="modal" data-target="#modal-2">
-                                                        <div class="media-left">
-                                                            <div class="list-product">
-                                                                <img src="images/bottle1.png" class="media-object">
-                                                            </div>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h4 class="media-heading">Dom perignon vintage 2006</h4>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td>Eg.nectar</td>
-                                                <td>1-10</td>
-                                                <td>Num</td>
-                                                <td>Campagne</td>
-                                                <td>Yes</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="#" title="Edit-Modal" class="media" data-toggle="modal" data-target="#modal-2">
-                                                        <div class="media-left">
-                                                            <div class="list-product">
-                                                                <img src="images/bottle1.png" class="media-object">
-                                                            </div>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h4 class="media-heading">Dom perignon vintage 2006</h4>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td>Eg.nectar</td>
-                                                <td>1-10</td>
-                                                <td>Num</td>
-                                                <td>Campagne</td>
-                                                <td>Yes</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="#" title="Edit-Modal" class="media" data-toggle="modal" data-target="#modal-2">
-                                                        <div class="media-left">
-                                                            <div class="list-product">
-                                                                <img src="images/bottle1.png" class="media-object">
-                                                            </div>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <h4 class="media-heading">Dom perignon vintage 2006</h4>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td>Eg.nectar</td>
-                                                <td>1-10</td>
-                                                <td>Num</td>
-                                                <td>Campagne</td>
-                                                <td>Yes</td>
-                                            </tr>
-
-                                        </tbody></table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
             </div>
+                    <div class="modal fade edit-modal" id="modal-defaults" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+              
+            </div>
+            <!-- /.modal-content -->
         </div>
-        <!--adde-->
-        
-        <!--added-->
+        <!-- /.modal-dialog -->
+    </div>
+                </form>
+        </div>
+       
     </div>	
 </div>
