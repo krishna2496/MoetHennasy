@@ -261,7 +261,7 @@ jQuery(document).ready(function()
                             $("#tab-step-2").show();
                          
                             var productObject = {};
-                            $.pjax.reload({container: '#employee'});
+                            $.pjax.reload({container: '#employee',async:false});
                             $("#tab2").removeAttr('disabled');
                         }
                     });
