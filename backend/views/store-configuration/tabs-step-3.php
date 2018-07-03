@@ -14,7 +14,7 @@ $rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSI
 $products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] :'';
 $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
 //echo '<pre>';
-//print_r($_SESSION['config']['shelvesProducts']);exit;
+//print_r($_SESSION['config']['shelvesProducts']);exit;fg
 ?>
 
 <div class="col-sm-5 pull-right" id="tab-step-3">

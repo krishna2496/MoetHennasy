@@ -358,13 +358,14 @@ class StoreConfigurationController extends Controller {
 //                                }
 //                            }
             $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
-            
+           
             
         }
         if($data['edit'] == 'true'){
             $height = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['height'];
             $width = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['width'];
             $id = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'];
+            
             $repository = new CataloguesRepository();
             $filterData['products_id'] = $replacedProductId;
         
@@ -395,21 +396,28 @@ class StoreConfigurationController extends Controller {
                             $response['action'] = 'edit';
                             $response['replacedId'] = $id;
                             $response['product']= json_encode($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
-                          
+                             
+                           
                             $replacedData =array();
+                             
                             foreach ($productsData as $key => $value){
                                 $ids = explode(',', $value['productIds']);
                                 $tmpProducts = '';
                                 foreach ($ids as $k =>$v){
+                                  echo $id;exit;
                                     $replacedData[$key]['productIds'][$k] = $v;
-                                    if(($shelvesNo == $key) && ($k == $productKey)){
+                                    if(($shelvesNo == $key) && ($k == $productKey)){  
+                                      
                                          $tmpProducts .= $id.",";
                                     }else{
                                          $tmpProducts .= $v.",";
                                     }
-                                    $replacedData[$key]['productIds'] = rtrim($tmpProducts,",");
+                                   
+                                   
                                 }
+                                 $replacedData[$key]['productIds'] = rtrim($tmpProducts,",");
                             }
+                           
                              $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
                            
                             }
