@@ -280,9 +280,9 @@ jQuery(document).ready(function() {
                         $("#tab-step-3").show();
                          $(".brand-drop").show();
                         $.pjax.reload({container:"#productsBrand",async:false});
-                        $.pjax.xhr = null;
+                        
                         $.pjax.reload({container:"#productsData" ,async:false});
-                        $.pjax.xhr = null;
+                      
                         $('#tab3').removeAttr('disabled');
                         $("#tab2").removeAttr('disabled');
                         $("#third").val(1);
@@ -292,4 +292,29 @@ jQuery(document).ready(function() {
             }
         }
     });
+    
+    //Added by Hardik on 03-07-2018
+    $(".list-btn").click(function(e) {
+        e.preventDefault();
+        $(this).children('img').attr("src", "images/list-btn.png");
+        $(this).siblings('.grid-btn').children('img').attr("src", "images/grid-gray-btn.png");
+        var list_id = $(this).attr("href");
+        $(list_id).show();
+        $(list_id).siblings(".grid-itmes").hide();
+    });
+    $(".grid-btn").click(function(e) {
+        e.preventDefault();
+        $(this).children('img').attr("src", "images/grid-btn.png");
+        $(this).siblings('.list-btn').children('img').attr("src", "images/list-gray-btn.png");
+        var grid_id = $(this).attr("href");
+        $(grid_id).show();
+        $(grid_id).siblings(".list-items").hide();
+    });
+    $(".grid-itmes li").click(function(e) {
+        e.preventDefault();
+        $(".grid-itmes li").removeClass('active');
+        $(this).addClass('active');
+    });
+    //
+    
 });

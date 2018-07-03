@@ -11,6 +11,7 @@ use yii\widgets\Pjax;
 $formUrl = Url::to(['store-configuration/save-data']);
 $secondFormUrl = Url::to(['store-configuration/save-product-data']);
 $noOfSelves = isset($_SESSION['config']['products']) ? isset($_SESSION['config']['products']) : '1';
+$ratio = isset($_SESSION['config']['ratio']) ? $_SESSION['config']['ratio'] : '1';
 if(isset($_SESSION['config']['products'])){
     $products = json_encode($_SESSION['config']['products'],true);
 }
@@ -187,19 +188,20 @@ $('.edit-modal').on('show.bs.modal', function(event) {
         var remove = $('#remove').is(':checked'); 
         var edit = $('#edit').is(':checked'); 
         var product = $("#products").val();
+        var ratio = '<?php echo $ratio; ?>';
        
         var data = {remove : remove,edit : edit,product:product,dataKey:dataKey,dataShelves:dataShelves};
        
         
       
         moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>store-configuration/edit-products",data,'post').then(function(result){
-         console.log(result);
-         console.log(dataKey);
-         return false;
+        product= JSON.parse(result.product);
+      
             if(result.flag == 1) {
                 if((result.action == 'edit')){
-                    $("#canvas-container-1 img#0").attr('src','adad');
-                    $("#canvas-container-1 img#0").css('width','30');
+                     var width = product.width * ratio + "px";
+                    $("#canvas-container-"+dataShelves+" img#"+dataKey).attr('src',product.image);
+                    $("#canvas-container-"+dataShelves+" img#"+dataKey).css('width',width);
                 }
                 alert(result.msg);
             }else{

@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 
 //use kartik\switchinput\SwitchInput;
 $rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSION['config']['rackProducts']) : '';
-$ratio = isset($_SESSION['config']['ratio']) ? $_SESSION['config']['ratio'] : '1';
+
 $products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] :'';
 $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
 //echo '<pre>';
