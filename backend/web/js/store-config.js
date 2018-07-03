@@ -14,7 +14,7 @@ $('#tab2').click(function(event) {
          $("#brandImage").attr("src",'');
          $("#tab3").attr('disabled', 'true');
     }
-     $.pjax.reload({container: '#employee'});
+    $.pjax.reload({container: '#employee',async:false});
 });
 
 $('#tab1').click(function(event) {
@@ -42,33 +42,50 @@ $('#tab3').click(function(event) {
     }
 });
 
-function hideShowDiv(data) {
-    if (data === 'tab1') {
+function hideShowDiv(data) 
+{
+    if (data === 'tab1') 
+    {
+        addSuccessClass(data);
         $("#tab-step-2").hide();
         $("#tab-step-1").show();
         $("#tab-step-3").hide();
     }
-    else if (data === 'tab2') {
+    else if (data === 'tab2') 
+    {
         if ($("#tab2").attr('disabled')) {
             return false;
-        } else {
+        }
+        else 
+        {
+            addSuccessClass(data);
             $("#tab-step-2").show();
             $("#tab-step-1").hide();
             $("#tab-step-3").hide();
-            $.pjax.reload({container: '#employee'});
+            $.pjax.reload({container: '#employee',async:false});
         }
     }
-    else if (data === 'tab3') {
+    else if (data === 'tab3') 
+    {
         if ($("#tab3").attr('disabled')) {
             return false;
-        } else {
-         
+        }
+        else 
+        {           
+            addSuccessClass(data);
             $("#tab-step-2").hide();
             $("#tab-step-1").hide();
             $("#tab-step-3").show();
         }
     }
 }
+
+function addSuccessClass(data)
+{
+     $(".stepwizard-step a").removeClass("btn-success");
+     $("#"+data).addClass("btn-success");
+}
+
 $(function() {
     $(".brand-drop").hide();
     getRack();
@@ -248,14 +265,18 @@ jQuery(document).ready(function()
             if (!$valid) {
                 $validator.focusInvalid();
                 return false;
-            } else {
-                if (index == 1) {
+            } else 
+            {
+                if (index == 1) 
+                {
                     url = rackFromURL;
                     $.ajax({
                         type: 'POST',
                         url: url,
                         data: $("#firstForm").serialize(),
-                        success: function(data) {
+                        success: function(data)
+                        {
+                            addSuccessClass('tab2');
                             
                             $("#tab-step-1").hide();
                             $("#tab-step-2").show();
@@ -274,25 +295,32 @@ jQuery(document).ready(function()
                         type: 'POST',
                         url: url,
                         data: {productObject: productObject},
-                        success: function(data) {
+                        success: function(data) 
+                        {
+                            addSuccessClass('tab3');
+                            
+                            $("#tab-step-2").hide();
+                            $("#tab-step-3").show();
+                            $(".brand-drop").show();
+                            $.pjax.reload({container:"#productsBrand",async:false});
 
-                        $("#tab-step-2").hide();
-                        $("#tab-step-3").show();
-                        $(".brand-drop").show();
-                        $.pjax.reload({container:"#productsBrand",async:false});
-                        
-                        $.pjax.reload({container:"#productsData" ,async:false});
-                      
-                        $('#tab3').removeAttr('disabled');
-                        $("#tab2").removeAttr('disabled');
-                        $("#third").val(1);
+                            $.pjax.reload({container:"#productsData" ,async:false});
+
+                            $('#tab3').removeAttr('disabled');
+                            $("#tab2").removeAttr('disabled');
+                            $("#third").val(1);
                         }
                     });
                 }
             }
         }
     });
-    
+});
+
+
+
+$(document).on('ready pjax:success', function() 
+{
     //Added by Hardik on 03-07-2018
     $(".list-btn").click(function(e) {
         e.preventDefault();
@@ -327,5 +355,4 @@ jQuery(document).ready(function()
         }
     });
     //
-    
 });
