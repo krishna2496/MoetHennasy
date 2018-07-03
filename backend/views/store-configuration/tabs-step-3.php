@@ -175,6 +175,11 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                     }
                                 ?>
                                 <script type="text/javascript">
+                                var rackProducts = '<?php echo $rackProducts; ?>';
+                                var ratio = '<?php echo $ratio; ?>';
+
+                                if (rackProducts != '')
+                                {
                                     rackProducts = JSON.parse(rackProducts);
                                     $.each(rackProducts, function (i, item) 
                                     {      
@@ -189,6 +194,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                             test = test+(titem.width * ratio);
                                         });
                                     });
+                                }                                    
                                 </script>
                                 <?php Pjax::end(); ?>  
                             </div>
