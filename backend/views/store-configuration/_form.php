@@ -36,7 +36,7 @@ $session = Yii::$app->session;
 						<ul class="stepwizard-row setup-panel list-unstyled list-inline">
 
 							<li class="stepwizard-step" id="3">
-								<a href="#vtab1" data-toggle="tab" id="tab1" type="button" class="btn btn-success btn-circle" onclick="hideShowDiv(this.id)">
+								<a href="#vtab1" data-toggle="tab" id="tab1" type="button" class="btn btn-success btn-default btn-circle" onclick="hideShowDiv(this.id)">
 									<span class="stepnum">1</span> <span class="stepname">CREATE YOUR DISPLAY</span>
 								</a>
 							</li>
