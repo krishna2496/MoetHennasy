@@ -323,14 +323,42 @@ class StoreConfigurationController extends Controller {
         $shelvesNo = $data['dataShelves'];
         $productKey = $data['dataKey'];
         $replacedProductId =$data['product']; 
+        $productsData = json_decode($_SESSION['config']['shelvesProducts'],true);
         if($data['remove'] == 'true'){
             
-            $id = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'];
+            $id = isset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id']) ? $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'] :'';
+        
             $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] = array();
             $response['flag'] =1;
             $response['msg'] ='Product Removed Successfully';
             $response['action'] = 'remove';
             $response['replacedId'] = $id;
+            
+            $replacedData =array();
+                            foreach ($productsData as $key => $value){
+                                $ids = explode(',', $value['productIds']);
+                                foreach ($ids as $k =>$v){
+                                    $replacedData[$key]['productIds'][$k] = $v;
+                                    if(($shelvesNo == $key) && ($k == $productKey)){
+                                         unset($replacedData[$key]['productIds'][$k]);
+                                    }
+                                }
+                            }
+//                            foreach ($productsData as $key => $value){
+//                                $ids = explode(',', $value['productIds']);
+//                                $tmpProducts = '';
+//                                foreach ($ids as $k =>$v){
+//                                    $replacedData[$key]['productIds'][$k] = $v;
+//                                    if(($shelvesNo == $key) && ($k == $productKey)){
+//                                         $tmpProducts .= $id.",";
+//                                    }else{
+//                                         $tmpProducts .= $racksValue['id'].",";
+//                                    }
+//                                    $replacedData[$key]['productIds'] = rtrim($tmpProducts,",");
+//                                }
+//                            }
+            $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
+            
             
         }
         if($data['edit'] == 'true'){
@@ -367,6 +395,23 @@ class StoreConfigurationController extends Controller {
                             $response['action'] = 'edit';
                             $response['replacedId'] = $id;
                             $response['product']= json_encode($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
+                          
+                            $replacedData =array();
+                            foreach ($productsData as $key => $value){
+                                $ids = explode(',', $value['productIds']);
+                                $tmpProducts = '';
+                                foreach ($ids as $k =>$v){
+                                    $replacedData[$key]['productIds'][$k] = $v;
+                                    if(($shelvesNo == $key) && ($k == $productKey)){
+                                         $tmpProducts .= $id.",";
+                                    }else{
+                                         $tmpProducts .= $v.",";
+                                    }
+                                    $replacedData[$key]['productIds'] = rtrim($tmpProducts,",");
+                                }
+                            }
+                             $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
+                           
                             }
                 }
                 
@@ -481,11 +526,14 @@ class StoreConfigurationController extends Controller {
 
     private function ifRuleContain($ruleValue) {
 
-        $rules = $_SESSION['config']['rules'];
+      
         $rulesArray = array();
+       if(isset($_SESSION['config']['rules']) && !empty($_SESSION['config']['rules'])) {
+        $rules = $_SESSION['config']['rules'];
         foreach ($rules as $key => $value) {
             $rulesArray[] = $value['product_fields'];
         }
+       }
 
         if (in_array($ruleValue, $rulesArray)) {
             return true;

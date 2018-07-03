@@ -14,7 +14,7 @@ $rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSI
 $products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] :'';
 $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
 //echo '<pre>';
-//print_r($_SESSION['config']);exit;
+//print_r($_SESSION['config']['shelvesProducts']);exit;
 ?>
 
 <div class="col-sm-5 pull-right" id="tab-step-3">
@@ -52,8 +52,6 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                     if (isset($_SESSION['config']['brands_data']) && (!empty($_SESSION['config']['brands_data']))) {
                                         foreach ($_SESSION['config']['brands_data'] as $key => $value) {
                                             ?>
-
-
                                             <li>
                                                 <a title="<?= $value['name'] ?>">
                                                     <img src="<?= CommonHelper::getImage(UPLOAD_PATH_BRANDS_IMAGES . $value['image']); ?>" alt="brand-image" class="brand-images" id="<?= $value['id'] ?>" onclick="changeBrand(this)">
@@ -188,11 +186,9 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                     {
                                         rackProducts = JSON.parse(rackProducts);
                                         $.each(rackProducts, function (i, item) {
-                                            
+                                             
                                             $.each(item, function (k, titem) {
-                                                
-                                                //                console.log(titem.id);
-                                                //var height = titem.height*5.5+"px";
+                                              
                                                 var width = titem.width * ratio + "px";
 
                                                 var data = '<img src="' + titem.image + '" style="width:' + width + '" id='+k+'>';

@@ -195,11 +195,11 @@ $('.edit-modal').on('show.bs.modal', function(event) {
         
       
         moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>store-configuration/edit-products",data,'post').then(function(result){
-        product= JSON.parse(result.product);
       
+        numOfSelves =$("#ex6SliderVal").val();
             if(result.flag == 1) {
                 if((result.action == 'edit')){
-                    numOfSelves =$("#ex6SliderVal").val();
+                  
                      for(i=0;i<numOfSelves;i++){
                          alert(i);
                $("#canvas-container-"+i).empty();
@@ -207,11 +207,15 @@ $('.edit-modal').on('show.bs.modal', function(event) {
 //                     var width = product.width * ratio + "px";
 //                    $("#canvas-container-"+dataShelves+" img#"+dataKey).attr('src',product.image);
 //                    $("#canvas-container-"+dataShelves+" img#"+dataKey).css('width',width);
- alert(result.msg);
+                    alert(result.msg);
                      $.pjax.reload({container:"#productsData"});
                 }
                 if(result.action == 'remove'){
-                      $("#canvas-container-"+dataShelves+" img#"+dataKey).remove();
+                     alert(numOfSelves);
+                       for(i=0;i<numOfSelves;i++){
+                           alert(0);
+                            $("#canvas-container-"+i).empty();
+                         }
                       $.pjax.reload({container:"#productsData"});
                 }
                
