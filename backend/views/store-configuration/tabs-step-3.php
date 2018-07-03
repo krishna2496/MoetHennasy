@@ -175,26 +175,20 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                     }
                                 ?>
                                 <script type="text/javascript">
-                                    var rackProducts = '<?php echo $rackProducts; ?>';
-                                    var ratio = '<?php echo $ratio; ?>';
+                                    rackProducts = JSON.parse(rackProducts);
+                                    $.each(rackProducts, function (i, item) 
+                                    {      
+                                        test = 0;
+                                        $.each(item, function (k, titem) 
+                                        {
+                                            var height = titem.height* ratio +"px";
+                                            var width = titem.width * ratio + "px";
+                                            var data = '<img src="' + titem.image + '" style="width:' + width + '; height:' + height + ';position: absolute; bottom:14px; left:'+test+'px;" id='+k+'>';
+                                            $("#canvas-container-" + i).append(data);
 
-                                    if (rackProducts != '')
-                                    {
-                                        rackProducts = JSON.parse(rackProducts);
-                                        $.each(rackProducts, function (i, item) 
-                                        {      
-                                            test = 0;
-                                            $.each(item, function (k, titem) 
-                                            {
-                                                var height = titem.height* ratio +"px";
-                                                var width = titem.width * ratio + "px";
-                                                var data = '<img src="' + titem.image + '" style="width:' + width + '; height:' + height + ';position: absolute; bottom:14px; left:'+test+'px;" id='+k+'>';
-                                                $("#canvas-container-" + i).append(data);
-                                                
-                                                test = test+(titem.width * ratio);
-                                            });
+                                            test = test+(titem.width * ratio);
                                         });
-                                    }
+                                    });
                                 </script>
                                 <?php Pjax::end(); ?>  
                             </div>

@@ -258,7 +258,7 @@ class StoreConfigurationController extends Controller {
           
            if(intval($selvesWidth) >= intval(intval($sum) + intval($value['width']))){               
               
-               if(intval($selvesHeight) >= intval($value['height'])){
+               if(intval(($selvesHeight)/($selevesCount)) >= intval($value['height'])){
                    if(empty($racksProductArray[$shelfIndex])){
                        $racksProductArray[$shelfIndex][] = $value;
                    }else{
@@ -315,6 +315,8 @@ class StoreConfigurationController extends Controller {
     }
     
     public function actionEditProducts(){
+//        echo '<pre>';
+//        print_r($_SESSION['config']['']);
         $response = array();
         $response['flag'] = 0;
         $response['msg'] = 'Plz try again later';
@@ -327,23 +329,29 @@ class StoreConfigurationController extends Controller {
         if($data['remove'] == 'true'){
             
             $id = isset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id']) ? $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'] :'';
-        
-            $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] = array();
+            unset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
             $response['flag'] =1;
             $response['msg'] ='Product Removed Successfully';
             $response['action'] = 'remove';
-            $response['replacedId'] = $id;
+            $response['replacedId'] = $replacedProductId;
             
             $replacedData =array();
                             foreach ($productsData as $key => $value){
                                 $ids = explode(',', $value['productIds']);
+                                $tmpProducts = '';
                                 foreach ($ids as $k =>$v){
                                     $replacedData[$key]['productIds'][$k] = $v;
+                                    
                                     if(($shelvesNo == $key) && ($k == $productKey)){
                                          unset($replacedData[$key]['productIds'][$k]);
-                                    }
+                                    }else{
+                                        $tmpProducts .= $v.",";
+                                      }
                                 }
+                                 $replacedData[$key]['productIds'] = rtrim($tmpProducts,",");
+                                
                             }
+                         
 //                            foreach ($productsData as $key => $value){
 //                                $ids = explode(',', $value['productIds']);
 //                                $tmpProducts = '';
@@ -371,7 +379,7 @@ class StoreConfigurationController extends Controller {
         
             $returnData = $repository->listing($filterData);
                 if($returnData['status']['success'] == 1){
-                   
+                   $racksWidth = array_sum(array_column($_SESSION['rackProducts'][$shelvesNo], 'width'));
                             if( ($width >= intval($returnData['data']['catalogues'][0]['width'])) && (($_SESSION['config']['height_of_shelves']) >= $returnData['data']['catalogues'][0]['height'])){
                                  $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] = '';
                                  $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] =array(
@@ -379,7 +387,6 @@ class StoreConfigurationController extends Controller {
                                      'image' => CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES.$returnData['data']['catalogues'][0]['image']),
                                      'height' => $returnData['data']['catalogues'][0]['height'],
                                      'width' => $returnData['data']['catalogues'][0]['width'],
-                                     'test' =>'sf',
                                  );
                                  
                             unset($returnData['data']['catalogues'][0]['market']['marketSegmentData']);
@@ -394,7 +401,7 @@ class StoreConfigurationController extends Controller {
                             $response['flag'] =1;
                             $response['msg'] ='Product Edited Successfully';
                             $response['action'] = 'edit';
-                            $response['replacedId'] = $id;
+                            $response['replacedId'] = $replacedProductId;
                             $response['product']= json_encode($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
                              
                            
@@ -404,11 +411,11 @@ class StoreConfigurationController extends Controller {
                                 $ids = explode(',', $value['productIds']);
                                 $tmpProducts = '';
                                 foreach ($ids as $k =>$v){
-                                  echo $id;exit;
+                                
                                     $replacedData[$key]['productIds'][$k] = $v;
                                     if(($shelvesNo == $key) && ($k == $productKey)){  
                                       
-                                         $tmpProducts .= $id.",";
+                                         $tmpProducts .= $replacedProductId.",";
                                     }else{
                                          $tmpProducts .= $v.",";
                                     }
