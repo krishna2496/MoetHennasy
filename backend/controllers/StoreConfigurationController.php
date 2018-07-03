@@ -330,6 +330,10 @@ class StoreConfigurationController extends Controller {
             
             $id = isset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id']) ? $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'] :'';
             unset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
+            echo '<pre>';
+            print_r($_SESSION['config']['rackProducts'][$shelvesNo]);
+            array_values($_SESSION['config']['rackProducts'][$shelvesNo]);
+            print_r($_SESSION['config']['rackProducts'][$shelvesNo]);exit;
             $response['flag'] =1;
             $response['msg'] ='Product Removed Successfully';
             $response['action'] = 'remove';
@@ -365,11 +369,14 @@ class StoreConfigurationController extends Controller {
 //                                    $replacedData[$key]['productIds'] = rtrim($tmpProducts,",");
 //                                }
 //                            }
+                         
             $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
            
             
         }
         if($data['edit'] == 'true'){
+//            echo '<pre>';
+//            print_r($_SESSION['config']['rackProducts']);exit;
             $height = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['height'];
             $width = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['width'];
             $id = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'];
@@ -379,8 +386,10 @@ class StoreConfigurationController extends Controller {
         
             $returnData = $repository->listing($filterData);
                 if($returnData['status']['success'] == 1){
-                   $racksWidth = array_sum(array_column($_SESSION['rackProducts'][$shelvesNo], 'width'));
-                            if( ($width >= intval($returnData['data']['catalogues'][0]['width'])) && (($_SESSION['config']['height_of_shelves']) >= $returnData['data']['catalogues'][0]['height'])){
+                   $racksWidth = array_sum(array_column($_SESSION['config']['rackProducts'][$shelvesNo], 'width'));
+                   $countWidth = intval($racksWidth - $width); 
+                  
+                            if( ($_SESSION['config']['width_of_shelves'] >= ($countWidth + intval($returnData['data']['catalogues'][0]['width'])))){
                                  $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] = '';
                                  $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] =array(
                                      'id' => $replacedProductId,
