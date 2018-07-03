@@ -23,7 +23,7 @@ $session = Yii::$app->session;
 			<div class="box-header with-border">
 				<h3 class="box-title">Display 1 <i class="fa fa-info-circle"></i></h3>
 				<div class="box-tools pull-right">
-					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-angle-down fa-3x"></i></button>
+					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-angle-up fa-3x"></i></button>
 				</div>
 				<!-- /.box-tools -->
 			</div>
@@ -40,7 +40,7 @@ $session = Yii::$app->session;
 							<div class="box-header with-border">
 								<h3 class="box-title">SHELF's store</h3>
 								<div class="box-tools pull-right">
-									<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-2x fa-angle-down"></i>
+									<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-2x fa-angle-up"></i>
 									</button>
 								</div>
 								<!-- /.box-tools -->
