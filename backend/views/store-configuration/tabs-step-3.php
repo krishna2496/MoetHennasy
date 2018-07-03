@@ -25,7 +25,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
             <div class="box-header with-border">
                 <h3 class="box-title">Display 3 <i class="fa fa-info-circle"></i></h3>
                 <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-angle-down fa-3x"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-angle-up fa-3x"></i></button>
                 </div>
                 <!-- /.box-tools -->
             </div>

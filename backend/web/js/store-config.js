@@ -198,8 +198,8 @@ function changeBrand(data){
  }
 }
 
-jQuery(document).ready(function() {
-    
+jQuery(document).ready(function()
+{    
     $("#tabs").tabs({active: 2});
     // Basic Wizard
     $("#tab-step-1 .next").click(function(e) {
