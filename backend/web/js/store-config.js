@@ -279,9 +279,9 @@ jQuery(document).ready(function() {
                         $("#tab-step-2").hide();
                         $("#tab-step-3").show();
                          $(".brand-drop").show();
-                        $.pjax.reload({container:"#productsBrand"});
+                        $.pjax.reload({container:"#productsBrand",async:false});
                         $.pjax.xhr = null;
-                        $.pjax.reload({container:"#productsData"});
+                        $.pjax.reload({container:"#productsData" ,async:false});
                         $.pjax.xhr = null;
                         $('#tab3').removeAttr('disabled');
                         $("#tab2").removeAttr('disabled');

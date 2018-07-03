@@ -193,8 +193,14 @@ $('.edit-modal').on('show.bs.modal', function(event) {
         
       
         moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>store-configuration/edit-products",data,'post').then(function(result){
-         alert(result.flag);
+         console.log(result);
+         console.log(dataKey);
+         return false;
             if(result.flag == 1) {
+                if((result.action == 'edit')){
+                    $("#canvas-container-1 img#0").attr('src','adad');
+                    $("#canvas-container-1 img#0").css('width','30');
+                }
                 alert(result.msg);
             }else{
                 alert(result.msg);

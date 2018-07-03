@@ -188,12 +188,14 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                     {
                                         rackProducts = JSON.parse(rackProducts);
                                         $.each(rackProducts, function (i, item) {
+                                            
                                             $.each(item, function (k, titem) {
+                                                
                                                 //                console.log(titem.id);
                                                 //var height = titem.height*5.5+"px";
                                                 var width = titem.width * ratio + "px";
 
-                                                var data = '<img src="' + titem.image + '" style="width:' + width + '" id='+titem.id+'>';
+                                                var data = '<img src="' + titem.image + '" style="width:' + width + '" id='+k+'>';
                                                 $("#canvas-container-" + i).append(data);
                                             });
                                         });

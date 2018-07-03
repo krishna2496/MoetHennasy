@@ -366,7 +366,7 @@ class StoreConfigurationController extends Controller {
                             $response['msg'] ='Product Edited Successfully';
                             $response['action'] = 'edit';
                             $response['replacedId'] = $id;
-                            $response['product']= '';
+                            $response['product']= json_encode($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
                             }
                 }
                 
