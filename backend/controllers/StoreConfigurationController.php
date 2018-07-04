@@ -56,13 +56,11 @@ public function actionSaveImage(){
     list($type, $data) = explode(';', $data);
     list(, $data)      = explode(',', $data);
     $data = base64_decode($data);
-    $randomName =rand().'.jpeg';
+    $randomName =rand().'.png';
     $uploadUrl = CommonHelper::getPath('upload_path');
-    $imagePath = $uploadUrl.UPLOAD_PATH_STORE_CONFIG_ORIGINAL_IMAGES.$randomName;
+    $imagePath = $uploadUrl.UPLOAD_PATH_STORE_CONFIG_IMAGES.$randomName;
     $savefile = file_put_contents($imagePath, $data);
-    
-//    resizeImage($fileuploadname, $saved_filname, $height, $width, $path , $min = true)
-    CommonHelper::resizeImage(UPLOAD_PATH_STORE_CONFIG_ORIGINAL_IMAGES.$randomName,$randomName,64,64,UPLOAD_PATH_STORE_CONFIG_IMAGES);
+    CommonHelper::resizeImage(UPLOAD_PATH_STORE_CONFIG_IMAGES.$randomName,$randomName,64,64,UPLOAD_PATH_STORE_CONFIG_IMAGES);
 }
 
 public function actionListing($id) {

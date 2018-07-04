@@ -9,7 +9,7 @@ use yii\widgets\Pjax;
 
 //use kartik\switchinput\SwitchInput;
 $rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSION['config']['rackProducts']) : '';
-$submitUrl = CommonHelper::getPath('admin_url')."store-configuration/save-config-data";
+$submitUrl = CommonHelper::getPath('admin_url') . "store-configuration/save-config-data";
 $products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] : '';
 $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
 ?>
@@ -103,7 +103,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                                 $ids = explode(',', $value['productIds']);
                                                 if (!empty($ids)) {
                                                     ?>
-                                                       <div class="row">
+                                                    <div class="row">
                                                         <div class="col-md-12">
                                                             <ul class="grid-itmes with-tool-tip" id="grid-section<?= $key ?>">
                                                                 <?php
@@ -125,7 +125,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                                                                 <p>Category: <?= $products[$value1]['productCategory'] ?></p>
                                                                                 <p>Top shelf: <?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></p>
                                                                                 <p>width: <?= $products[$value1]['width'] ?></p>
-                                                                                   <p>height: <?= $products[$value1]['height'] ?></p>
+                                                                                <p>height: <?= $products[$value1]['height'] ?></p>
                                                                             </div>
                                                                         </a>
                                                                     </li>
@@ -147,30 +147,31 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                                                     </thead>
                                                                     <tbody>
                                                                         <?php
-                                                                foreach ($ids as $key1 => $value1) {
+                                                                        foreach ($ids as $key1 => $value1) {
 
-                                                                    $url = CommonHelper::getPath('admin_url') . 'store-configuration/modal-content/' . $products[$value1]['id'];  ?>
-                                                                        
-                                                                        <tr>
-                                                                            <td>
-                                                                                <a href="#" title="bottle-image" class="product-image media" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
-                                                                                    <div class="media-left">
-                                                                                        <div class="list-product">
-                                                                                            <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" class="media-object">
+                                                                            $url = CommonHelper::getPath('admin_url') . 'store-configuration/modal-content/' . $products[$value1]['id'];
+                                                                            ?>
+
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <a href="#" title="bottle-image" class="product-image media" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
+                                                                                        <div class="media-left">
+                                                                                            <div class="list-product">
+                                                                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" class="media-object">
+                                                                                            </div>
                                                                                         </div>
-                                                                                    </div>
-                                                                                    <div class="media-body">
-                                                                                        <h4 class="media-heading"><?= $products[$value1]['short_name'] ?></h4>
-                                                                                    </div>
-                                                                                </a>
-                                                                            </td>
-                                                                            <td><?= $products[$value1]['productType']['title'] ?></td>
-                                                                            <td><?= $products[$value1]['market_share']; ?></td>
-                                                                            <td><?= $products[$value1]['price'] ?></td>
-                                                                            <td><?= $products[$value1]['productCategory'] ?></td>
-                                                                            <td><?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></td>
-                                                                        </tr>
-                                                                    <?php } ?>
+                                                                                        <div class="media-body">
+                                                                                            <h4 class="media-heading"><?= $products[$value1]['short_name'] ?></h4>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td><?= $products[$value1]['productType']['title'] ?></td>
+                                                                                <td><?= $products[$value1]['market_share']; ?></td>
+                                                                                <td><?= $products[$value1]['price'] ?></td>
+                                                                                <td><?= $products[$value1]['productCategory'] ?></td>
+                                                                                <td><?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></td>
+                                                                            </tr>
+            <?php } ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -207,7 +208,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                     }
 
                                 </script>
-                                <?php Pjax::end(); ?>  
+<?php Pjax::end(); ?>  
                             </div>
                         </div>
                         <div class="submit-fl">
@@ -230,95 +231,94 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
     </div>
 </div>
 
-    <script type="text/javascript">
-$(document).ready(function()
-{
-    $('.edit-modal').on('show.bs.modal', function (event) 
+<script type="text/javascript">
+    $(document).ready(function ()
     {
-        var dataURL = $(event.relatedTarget).attr('data-href');
-        var dataKey = $(event.relatedTarget).attr('data-key');
-        var dataShelves = $(event.relatedTarget).attr('data-shelves');
-
-        $('.modal-content').load(dataURL, function () 
+        $('.edit-modal').on('show.bs.modal', function (event)
         {
-            $('input[type="checkbox"]').iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue',
-                increaseArea: '20%'
-            });
-            $('#remove').on('ifChecked', function () {
+            var dataURL = $(event.relatedTarget).attr('data-href');
+            var dataKey = $(event.relatedTarget).attr('data-key');
+            var dataShelves = $(event.relatedTarget).attr('data-shelves');
 
-                $('input[name="permissionscheck"]').filter('[value="edit"]').iCheck('uncheck');
-            });
-            $('#edit').on('ifChecked', function () {
-                $('input[name="permissionscheck"]').filter('[value="remove"]').iCheck('uncheck');
-            });
-
-            $('#getProducts').on('change', function () {
-
-                var id = $(this).val();
-                var str = "<option value>Select Products</option>";
-                var data = {id: id};
-                moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/get-products", data, 'post').then(function (result) {
-
-                    if (result.status.success == 1) {
-                        if (result.data.catalogues.length > 0) {
-                            $.each(result.data.catalogues, function (key, value) {
-                                str += "<option value=" + value.id + ">" + value.short_name + "</option>";
-                            });
-                        }
-                    }
-                    $('#products').html(str);
-                }, function (result) {
-                    alert('Fail');
-                });
-
-            });
-
-            $('#changeData').on('click', function (e) 
+            $('.modal-content').load(dataURL, function ()
             {
-                e.stopImmediatePropagation();
+                $('input[type="checkbox"]').iCheck({
+                    checkboxClass: 'icheckbox_square-blue',
+                    radioClass: 'iradio_square-blue',
+                    increaseArea: '20%'
+                });
+                $('#remove').on('ifChecked', function () {
 
-                var remove = $('#remove').is(':checked');
-                var edit = $('#edit').is(':checked');
-                var product = $("#products").val();
-                var ratio = '<?php echo $ratio; ?>';
-
-                var data = {remove: remove, edit: edit, product: product, dataKey: dataKey, dataShelves: dataShelves};
-                moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/edit-products", data, 'post').then(function (result) {
-
-                    numOfSelves = $("#ex6SliderVal").val();
-                    if (result.flag == 1) {
-                        if ((result.action == 'edit')) {
-
-                            for (i = 0; i < numOfSelves; i++) {
-                                $("#canvas-container-" + i).empty();
-                            }
-                            $.pjax.reload({container: "#productsData",async:false});
-                        }
-                        if (result.action == 'remove') {
-
-                            for (i = 0; i < numOfSelves; i++) {
-                                $("#canvas-container-" + i).empty();
-                            }
-                            $.pjax.reload({container: "#productsData",async:false});
-                        }
-
-                    } else {
-                        alert(result.msg);
-                    }
-
-                }, function (result) {
-                    alert('Fail');
+                    $('input[name="permissionscheck"]').filter('[value="edit"]').iCheck('uncheck');
+                });
+                $('#edit').on('ifChecked', function () {
+                    $('input[name="permissionscheck"]').filter('[value="remove"]').iCheck('uncheck');
                 });
 
-            });
+                $('#getProducts').on('change', function () {
 
-            moet.hideLoader();
+                    var id = $(this).val();
+                    var str = "<option value>Select Products</option>";
+                    var data = {id: id};
+                    moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/get-products", data, 'post').then(function (result) {
+
+                        if (result.status.success == 1) {
+                            if (result.data.catalogues.length > 0) {
+                                $.each(result.data.catalogues, function (key, value) {
+                                    str += "<option value=" + value.id + ">" + value.short_name + "</option>";
+                                });
+                            }
+                        }
+                        $('#products').html(str);
+                    }, function (result) {
+                        alert('Fail');
+                    });
+
+                });
+
+                $('#changeData').on('click', function (e)
+                {
+                    e.stopImmediatePropagation();
+
+                    var remove = $('#remove').is(':checked');
+                    var edit = $('#edit').is(':checked');
+                    var product = $("#products").val();
+                    var ratio = '<?php echo $ratio; ?>';
+
+                    var data = {remove: remove, edit: edit, product: product, dataKey: dataKey, dataShelves: dataShelves};
+                    moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/edit-products", data, 'post').then(function (result) {
+
+                        numOfSelves = $("#ex6SliderVal").val();
+                        if (result.flag == 1) {
+                            if ((result.action == 'edit')) {
+
+                                for (i = 0; i < numOfSelves; i++) {
+                                    $("#canvas-container-" + i).empty();
+                                }
+                                $.pjax.reload({container: "#productsData", async: false});
+                            }
+                            if (result.action == 'remove') {
+
+                                for (i = 0; i < numOfSelves; i++) {
+                                    $("#canvas-container-" + i).empty();
+                                }
+                                $.pjax.reload({container: "#productsData", async: false});
+                            }
+                            $('.edit-modal').modal('hide');
+                        } else {
+
+                            alert(result.msg);
+                        }
+
+                    }, function (result) {
+                        alert('Fail');
+                    });
+                });
+                moet.hideLoader();
+            });
+            setTimeout(function () {
+                $('.modal-backdrop').css('z-index', 0);
+            }, 10);
         });
-        setTimeout(function () {
-            $('.modal-backdrop').css('z-index', 0);
-        }, 10);
     });
-});
 </script>
