@@ -30,7 +30,7 @@ class StoreConfigurationController extends Controller {
                 ],
                 'rules' => [
                         [
-                        'actions' => ['index', 'listing', 'create', 'update', 'view', 'delete', 'save-data', 'save-product-data','modal-content','get-products','edit-products'],
+                        'actions' => ['index', 'listing', 'create', 'update', 'view', 'delete', 'save-data', 'save-product-data','modal-content','get-products','edit-products','save-config-data'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -44,8 +44,12 @@ class StoreConfigurationController extends Controller {
             ],
         ];
     }
+public function actionSaveConfigData(){
+    echo '<pre>';
+    print_r($_SESSION['config']);exit;
+}
 
-    public function actionListing($id) {
+public function actionListing($id) {
 
         $stores = Stores::findOne($id);
         if ($stores) {
@@ -70,7 +74,7 @@ class StoreConfigurationController extends Controller {
     }
 
     public function actionIndex($id) {
-
+        $storeId= $id;
         $stores = Stores::find()->where(['id' => $id])->asArray()->one();
 
         if ($stores) {
@@ -94,8 +98,10 @@ class StoreConfigurationController extends Controller {
                     }
 
                     $_SESSION['config']['rules'] = $rulesArray;
+                    
                 }
             }
+            $_SESSION['config']['storeId'] = $storeId;
             $currentUser = CommonHelper::getUser();
             $marketId = '';
             if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {

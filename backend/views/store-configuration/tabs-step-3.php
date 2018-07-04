@@ -9,7 +9,7 @@ use yii\widgets\Pjax;
 
 //use kartik\switchinput\SwitchInput;
 $rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSION['config']['rackProducts']) : '';
-
+$submitUrl = CommonHelper::getPath('admin_url')."store-configuration/save-config-data";
 $products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] : '';
 $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
 ?>
@@ -28,7 +28,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
             </div>
 
             <div class="box-body">
-                <form class="frame-filt-form">
+                <form class="frame-filt-form" action="<?= $submitUrl?>" method="post" name="step_3" id="step_3">
                     <div class="frame-chose-option">
                         <p class="auto-config">MH REF 356 - 15/06/2018 - Automatic configuration</p>
                         <div class="box box-default shelfs-store">
@@ -103,11 +103,12 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                                 $ids = explode(',', $value['productIds']);
                                                 if (!empty($ids)) {
                                                     ?>
-                                                    <div class="row">
+                                                       <div class="row">
                                                         <div class="col-md-12">
                                                             <ul class="grid-itmes with-tool-tip" id="grid-section<?= $key ?>">
                                                                 <?php
                                                                 foreach ($ids as $key1 => $value1) {
+
                                                                     $url = CommonHelper::getPath('admin_url') . 'store-configuration/modal-content/' . $products[$value1]['id'];
                                                                     //echo '<pre>';
                                                                     //print_r($products);exit;
@@ -116,6 +117,14 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                                                         <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
                                                                             <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" alt="Selected"   class="btl-img">
                                                                             <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $products[$value1]['image']; ?>" >
+                                                                            <div class="product-tooltip">
+                                                                                <h5><?= $products[$value1]['short_name'] ?></h5>
+                                                                                <p>Product Type: <?= $products[$value1]['productType']['title'] ?></p>
+                                                                                <p>Market Share: <?= $products[$value1]['market_share']; ?></p>
+                                                                                <p>WSP: <?= $products[$value1]['price'] ?></p>
+                                                                                <p>Category: <?= $products[$value1]['productCategory'] ?></p>
+                                                                                <p>Top shelf: <?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></p>
+                                                                            </div>
                                                                         </a>
                                                                     </li>
                                                                 <?php }
@@ -135,25 +144,31 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
+                                                                        <?php
+                                                                foreach ($ids as $key1 => $value1) {
+
+                                                                    $url = CommonHelper::getPath('admin_url') . 'store-configuration/modal-content/' . $products[$value1]['id'];  ?>
+                                                                        
                                                                         <tr>
                                                                             <td>
-                                                                                <a href="#" title="Edit-Modal" class="media" data-toggle="modal" data-target="#modal-2">
+                                                                                <a href="#" title="bottle-image" class="product-image media" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
                                                                                     <div class="media-left">
                                                                                         <div class="list-product">
-                                                                                            <img src="images/bottle1.png" class="media-object">
+                                                                                            <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" class="media-object">
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="media-body">
-                                                                                        <h4 class="media-heading">Dom perignon vintage 2006</h4>
+                                                                                        <h4 class="media-heading"><?= $products[$value1]['short_name'] ?></h4>
                                                                                     </div>
                                                                                 </a>
                                                                             </td>
-                                                                            <td>Eg.nectar</td>
-                                                                            <td>1-10</td>
-                                                                            <td>Num</td>
-                                                                            <td>Campagne</td>
-                                                                            <td>Yes</td>
+                                                                            <td><?= $products[$value1]['productType']['title'] ?></td>
+                                                                            <td><?= $products[$value1]['market_share']; ?></td>
+                                                                            <td><?= $products[$value1]['price'] ?></td>
+                                                                            <td><?= $products[$value1]['productCategory'] ?></td>
+                                                                            <td><?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></td>
                                                                         </tr>
+                                                                    <?php } ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -188,13 +203,14 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                             });
                                         });
                                     }
+
                                 </script>
                                 <?php Pjax::end(); ?>  
                             </div>
                         </div>
                         <div class="submit-fl">
-                            <button class="btn reset-btn">Reset</button>
-                            <button class="btn" >OK</button>
+                            <button class="btn reset-btn" onclick="reset()">Reset</button>
+                            <button class="btn next" >OK</button>
                         </div>
                     </div>
                     <div class="modal fade edit-modal" id="modal-defaults" style="display: none;">
@@ -211,7 +227,8 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
         </div> 
     </div>
 </div>
-<script type="text/javascript">
+<script>
+    <script type="text/javascript">
 $(document).ready(function()
 {
     $('.edit-modal').on('show.bs.modal', function (event) 
@@ -259,7 +276,7 @@ $(document).ready(function()
             $('#changeData').on('click', function (e) 
             {
                 e.stopImmediatePropagation();
-                
+
                 var remove = $('#remove').is(':checked');
                 var edit = $('#edit').is(':checked');
                 var product = $("#products").val();
@@ -302,4 +319,10 @@ $(document).ready(function()
         }, 10);
     });
 });
+</script>
+function reset(){
+    alert(0);
+    return false;
+}
+
 </script>
