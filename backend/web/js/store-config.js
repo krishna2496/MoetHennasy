@@ -276,13 +276,25 @@ jQuery(document).ready(function()
     });
     
     
-    $("#tab-step-1 .reset-btn").click(function(e) {
-        alert("0");
+  $("#tab-step-1 .reset-btn").click(function(e) 
+    {
+        $('#dispaly_name').val('');
+        $('#ex6SliderVal').val(2);
+        $('#ex6').slider('setValue', 2);
+        $('#hex6SliderVal').val(100);
+        $('#hex6').slider('setValue', 100);
+        $('#wex6SliderVal').val(100);
+        $('#wex6').slider('setValue', 100);
+        $('#dex6SliderVal').val(30);        
+        $('#dex6').slider('setValue', 30);
+        $('.brand-list').iCheck('uncheck');
+        getRack();
         return false;
     });
-    
-    $("#tab-step-2 .reset-btn").click(function(e) {
-        alert("0");
+
+    $("#tab-step-2 .reset-btn").click(function(e) 
+    {
+        $('#employee').iCheck('uncheck');
         return false;
     });
     
