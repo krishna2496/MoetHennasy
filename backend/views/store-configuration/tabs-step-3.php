@@ -53,12 +53,12 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                                     <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $value['id']; ?>"  style="display:none">
                                                 </a>
                                             </li>
-        <?php
-    }
-}
-?>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
                                 </ul>
-                                    <?php Pjax::end(); ?>
+                                <?php Pjax::end(); ?>
                             </div>
                             <!-- /.box-body -->
                         </div>
@@ -73,7 +73,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                 <!-- /.box-tools -->
                             </div>
                             <div class="box-body">
-<?php Pjax::begin(['id' => 'productsData', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST']]) ?>
+                                <?php Pjax::begin(['id' => 'productsData', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST']]) ?>
                                 <?php
                                 if (!empty($shelvesData)) {
                                     foreach ($shelvesData as $key => $value) {
@@ -99,27 +99,27 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                                         </div>
                                                     </div>
                                                 </div>   
-        <?php
-        $ids = explode(',', $value['productIds']);
-        if (!empty($ids)) {
-            ?>
+                                                <?php
+                                                $ids = explode(',', $value['productIds']);
+                                                if (!empty($ids)) {
+                                                    ?>
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <ul class="grid-itmes with-tool-tip" id="grid-section<?= $key ?>">
-                                                    <?php
-                                                    foreach ($ids as $key1 => $value1) {
-                                                        $url = CommonHelper::getPath('admin_url') . 'store-configuration/modal-content/' . $products[$value1]['id'];
-                                                        //echo '<pre>';
-                                                        //print_r($products);exit;
-                                                        ?>
+                                                                <?php
+                                                                foreach ($ids as $key1 => $value1) {
+                                                                    $url = CommonHelper::getPath('admin_url') . 'store-configuration/modal-content/' . $products[$value1]['id'];
+                                                                    //echo '<pre>';
+                                                                    //print_r($products);exit;
+                                                                    ?>
                                                                     <li>
                                                                         <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
                                                                             <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" alt="Selected"   class="btl-img">
                                                                             <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $products[$value1]['image']; ?>" >
                                                                         </a>
                                                                     </li>
-                <?php }
-            ?>
+                                                                <?php }
+                                                                ?>
                                                             </ul>
 
                                                             <div class="list-items" id="list-section<?= $key ?>">
@@ -159,14 +159,14 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                                             </div>
                                                         </div>
                                                     </div>
-        <?php }
-        ?>
+                                                <?php }
+                                                ?>
                                             </div>
                                         </div>
-        <?php
-    }
-}
-?>
+                                        <?php
+                                    }
+                                }
+                                ?>
                                 <script type="text/javascript">
                                     var rackProducts = '<?php echo $rackProducts; ?>';
                                     var ratio = '<?php echo $ratio; ?>';
@@ -176,20 +176,21 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                         rackProducts = JSON.parse(rackProducts);
                                         $.each(rackProducts, function (i, item)
                                         {
-                                            test = 0;
+                                            bottleLeft = 0;
                                             $.each(item, function (k, titem)
                                             {
                                                 var height = titem.height * ratio + "px";
                                                 var width = titem.width * ratio + "px";
-                                                var data = '<img src="' + titem.image + '" style="width:' + width + '; height:' + height + ';position: absolute; bottom:5px; left:' + test + 'px;" id=' + k + '>';
+                                                var data = '<img src="' + titem.image + '" style="width:' + width + '; height:' + height + ';position: absolute; bottom:5px; left:' + bottleLeft + 'px;" id=' + k + '>';
                                                 $("#canvas-container-" + i).append(data);
 
-                                                test = test + (titem.width * ratio);
+                                                bottleLeft = bottleLeft + (titem.width * ratio);
                                             });
                                         });
                                     }
 
-                                    $('.edit-modal').on('show.bs.modal', function (event) {
+                                    $('.edit-modal').on('show.bs.modal', function (event) 
+                                    {
                                         alert("show");
                                         var dataURL = $(event.relatedTarget).attr('data-href');
                                         var dataKey = $(event.relatedTarget).attr('data-key');
@@ -210,7 +211,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                             });
 
                                             $('#getProducts').on('change', function () {
-                                               
+
                                                 var id = $(this).val();
                                                 var str = "<option value>Select Products</option>";
                                                 var data = {id: id};
@@ -238,23 +239,23 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                                 var ratio = '<?php echo $ratio; ?>';
 
                                                 var data = {remove: remove, edit: edit, product: product, dataKey: dataKey, dataShelves: dataShelves};
-                                                 moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/edit-products", data, 'post').then(function (result) {
+                                                moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/edit-products", data, 'post').then(function (result) {
 
                                                     numOfSelves = $("#ex6SliderVal").val();
                                                     if (result.flag == 1) {
                                                         if ((result.action == 'edit')) {
 
                                                             for (i = 0; i < numOfSelves; i++) {
-                                                                    $("#canvas-container-" + i).empty();
+                                                                $("#canvas-container-" + i).empty();
                                                             }
-                                                            $.pjax.reload({container: "#productsData"});
+                                                            $.pjax.reload({container: "#productsData",async:false});
                                                         }
                                                         if (result.action == 'remove') {
 
                                                             for (i = 0; i < numOfSelves; i++) {
-                                                              $("#canvas-container-" + i).empty();
+                                                                $("#canvas-container-" + i).empty();
                                                             }
-                                                            $.pjax.reload({container: "#productsData"});
+                                                            $.pjax.reload({container: "#productsData",async:false});
                                                         }
 
                                                     } else {
@@ -274,7 +275,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                         }, 10);
                                     });
                                 </script>
-<?php Pjax::end(); ?>  
+                                <?php Pjax::end(); ?>  
                             </div>
                         </div>
                         <div class="submit-fl">

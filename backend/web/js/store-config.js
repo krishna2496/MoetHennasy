@@ -172,8 +172,12 @@ function getRack() {
 
     for (i = 0; i < noOfShelves; i++) {
         //rack.push('<div id="main-rack"><div id="canvas-container-' + i + '" style="width:' + parseInt(newRackWidth) + 'px; height:' + parseInt(newRackHeight) + 'px"><canvas id="real-canvas-' + i + '" style="width:' + parseInt(newRackWidth) + 'px; height:' + parseInt(newRackHeight) + 'px" width="' + parseInt(newRackWidth) + 'px" height="' + parseInt(newRackHeight) + ';"></canvas></div></div>');
-        var prepareRack = '<div class="mid-sec-frames" style="' + canvasFrameWidth + ';' + canvasFrameHeight + ';">';
-        prepareRack += '<div class="bottle-sec" id="canvas-container-' + i + '" style="' + canvasInternalWidth + ';' + canvasInternalHeight + ';">';
+        
+        /*var prepareRack = '<div class="mid-sec-frames" style="' + canvasFrameWidth + ';' + canvasFrameHeight + ';">';
+        prepareRack += '<div class="bottle-sec" id="canvas-container-' + i + '" style="' + canvasInternalWidth + ';' + canvasInternalHeight + ';">';*/
+        
+        var prepareRack = '<div class="mid-sec-frames" style="' + canvasFrameHeight + ';">';
+        prepareRack += '<div class="bottle-sec" id="canvas-container-' + i + '" style="' + canvasInternalHeight + ';">';
         //prepareRack += '<canvas class="shelf-canvas" id="real-canvas-' + i + '" style="' + canvasInternalWidth + ';' + canvasInternalHeight + ';"></canvas>'; // Not in use so commented canvas         
         prepareRack += '</div>';
         prepareRack += '<div class="fms-bt"><span class="fms-lt"></span><span class="fms-rt"></span></div>';
