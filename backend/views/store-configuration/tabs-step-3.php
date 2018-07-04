@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\helpers\CommonHelper;
@@ -9,9 +10,8 @@ use yii\widgets\Pjax;
 //use kartik\switchinput\SwitchInput;
 $rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSION['config']['rackProducts']) : '';
 
-$products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] :'';
+$products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] : '';
 $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
-
 ?>
 
 <div class="col-sm-5 pull-right" id="tab-step-3">
@@ -26,7 +26,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                 </div>
                 <!-- /.box-tools -->
             </div>
-            
+
             <div class="box-body">
                 <form class="frame-filt-form">
                     <div class="frame-chose-option">
@@ -44,27 +44,25 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                 <?php Pjax::begin(['id' => 'productsBrand', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>
                                 <ul class="brand-list-box" style="list-style: none !important;">
                                     <?php
-                                    if (isset($_SESSION['config']['brands_data']) && (!empty($_SESSION['config']['brands_data']))) 
-                                        {
-                                            foreach ($_SESSION['config']['brands_data'] as $key => $value) 
-                                            {
-                                    ?>
+                                    if (isset($_SESSION['config']['brands_data']) && (!empty($_SESSION['config']['brands_data']))) {
+                                        foreach ($_SESSION['config']['brands_data'] as $key => $value) {
+                                            ?>
                                             <li>
                                                 <a title="<?= $value['name'] ?>">
                                                     <img src="<?= CommonHelper::getImage(UPLOAD_PATH_BRANDS_IMAGES . $value['image']); ?>" alt="brand-image" class="brand-images" id="<?= $value['id'] ?>" onclick="changeBrand(this)">
                                                     <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $value['id']; ?>"  style="display:none">
                                                 </a>
                                             </li>
-                                    <?php
-                                            }
-                                        }
-                                    ?>
+        <?php
+    }
+}
+?>
                                 </ul>
-                                <?php Pjax::end(); ?>
+                                    <?php Pjax::end(); ?>
                             </div>
                             <!-- /.box-body -->
                         </div>
-                        
+
                         <div class="box box-default shelfs-store2">
                             <div class="box-header with-border">
                                 <h3 class="box-title">PRODUCTS CONFIGURATION</h3>
@@ -75,127 +73,208 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                 <!-- /.box-tools -->
                             </div>
                             <div class="box-body">
-                                <?php Pjax::begin(['id' => 'productsData', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>
+<?php Pjax::begin(['id' => 'productsData', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST']]) ?>
                                 <?php
-                                    if (!empty($shelvesData)) 
-                                    {
-                                        foreach ($shelvesData as $key => $value) 
-                                        {
-                                ?>
-                                            <div class="box box-default product-list collapsed-box">
-                                                <div class="box-header with-border">
-                                                    <h3 class="box-title">SHELF <?= $key+1 ?></h3>
-                                                    <div class="box-tools pull-right">
-                                                        <button class="btn btn-box-tool" type="button" data-toggle="collapse" data-target="#collapseExample<?= $key?>" aria-expanded="false" aria-controls="collapseExample">
-                                                            <i class="fa fa-plus"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="collapse" id="collapseExample<?= $key?>">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <p class="direction-text">From left to right</p>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="view-btn">
-                                                                <a href="#grid-section<?= $key?>" title="grid-view" class="grid-btn"><img src="<?php echo Yii::$app->request->baseUrl.'/images/grid-btn.png'; ?>" alt="grid-view"></a>
-                                                                <a href="#list-section<?= $key?>" title="list-view" class="list-btn"><img src="<?php echo Yii::$app->request->baseUrl.'/images/list-gray-btn.png'; ?>" alt="list-view"></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>   
-                                                    <?php
-                                                    $ids = explode(',', $value['productIds']);
-                                                        if(!empty($ids)) 
-                                                        { 
-                                                    ?>
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <ul class="grid-itmes with-tool-tip" id="grid-section<?= $key?>">
-                                                                    <?php 
-                                                                    foreach ($ids as $key1 => $value1) 
-                                                                    {
-                                                                        $url = CommonHelper::getPath('admin_url').'store-configuration/modal-content/'.$products[$value1]['id'];
-                                                                        //echo '<pre>';
-                                                                        //print_r($products);exit;
-                                                                    ?>
-                                                                        <li>
-                                                                            <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
-                                                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" alt="Selected"   class="btl-img">
-                                                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $products[$value1]['image']; ?>" >
-                                                                            </a>
-                                                                        </li>
-                                                               <?php
-                                                               } ?>
-                                                                    </ul>
-                                                                    
-                                                                    <div class="list-items" id="list-section<?= $key?>">
-                                                                        <table id="list-table" class="table  table-striped product-table">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <th>Products</th>
-                                                                                    <th>Product Types</th>
-                                                                                    <th>Market share</th>
-                                                                                    <th>WPS</th>
-                                                                                    <th>Product Category</th>
-                                                                                    <th>Top shelf</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <a href="#" title="Edit-Modal" class="media" data-toggle="modal" data-target="#modal-2">
-                                                                                            <div class="media-left">
-                                                                                                <div class="list-product">
-                                                                                                    <img src="images/bottle1.png" class="media-object">
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="media-body">
-                                                                                                <h4 class="media-heading">Dom perignon vintage 2006</h4>
-                                                                                            </div>
-                                                                                        </a>
-                                                                                    </td>
-                                                                                    <td>Eg.nectar</td>
-                                                                                    <td>1-10</td>
-                                                                                    <td>Num</td>
-                                                                                    <td>Campagne</td>
-                                                                                    <td>Yes</td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                  <?php  }
-                                                    ?>
+                                if (!empty($shelvesData)) {
+                                    foreach ($shelvesData as $key => $value) {
+                                        ?>
+                                        <div class="box box-default product-list collapsed-box">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">SHELF <?= $key + 1 ?></h3>
+                                                <div class="box-tools pull-right">
+                                                    <button class="btn btn-box-tool" type="button" data-toggle="collapse" data-target="#collapseExample<?= $key ?>" aria-expanded="false" aria-controls="collapseExample">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
                                                 </div>
                                             </div>
-                                <?php
-                                        }
-                                    }
-                                ?>
+                                            <div class="collapse" id="collapseExample<?= $key ?>">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="direction-text">From left to right</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="view-btn">
+                                                            <a href="#grid-section<?= $key ?>" title="grid-view" class="grid-btn"><img src="<?php echo Yii::$app->request->baseUrl . '/images/grid-btn.png'; ?>" alt="grid-view"></a>
+                                                            <a href="#list-section<?= $key ?>" title="list-view" class="list-btn"><img src="<?php echo Yii::$app->request->baseUrl . '/images/list-gray-btn.png'; ?>" alt="list-view"></a>
+                                                        </div>
+                                                    </div>
+                                                </div>   
+        <?php
+        $ids = explode(',', $value['productIds']);
+        if (!empty($ids)) {
+            ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <ul class="grid-itmes with-tool-tip" id="grid-section<?= $key ?>">
+                                                    <?php
+                                                    foreach ($ids as $key1 => $value1) {
+                                                        $url = CommonHelper::getPath('admin_url') . 'store-configuration/modal-content/' . $products[$value1]['id'];
+                                                        //echo '<pre>';
+                                                        //print_r($products);exit;
+                                                        ?>
+                                                                    <li>
+                                                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
+                                                                            <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" alt="Selected"   class="btl-img">
+                                                                            <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $products[$value1]['image']; ?>" >
+                                                                        </a>
+                                                                    </li>
+                <?php }
+            ?>
+                                                            </ul>
+
+                                                            <div class="list-items" id="list-section<?= $key ?>">
+                                                                <table id="list-table" class="table  table-striped product-table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Products</th>
+                                                                            <th>Product Types</th>
+                                                                            <th>Market share</th>
+                                                                            <th>WPS</th>
+                                                                            <th>Product Category</th>
+                                                                            <th>Top shelf</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <a href="#" title="Edit-Modal" class="media" data-toggle="modal" data-target="#modal-2">
+                                                                                    <div class="media-left">
+                                                                                        <div class="list-product">
+                                                                                            <img src="images/bottle1.png" class="media-object">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="media-body">
+                                                                                        <h4 class="media-heading">Dom perignon vintage 2006</h4>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>Eg.nectar</td>
+                                                                            <td>1-10</td>
+                                                                            <td>Num</td>
+                                                                            <td>Campagne</td>
+                                                                            <td>Yes</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+        <?php }
+        ?>
+                                            </div>
+                                        </div>
+        <?php
+    }
+}
+?>
                                 <script type="text/javascript">
-                                var rackProducts = '<?php echo $rackProducts; ?>';
-                                var ratio = '<?php echo $ratio; ?>';
+                                    var rackProducts = '<?php echo $rackProducts; ?>';
+                                    var ratio = '<?php echo $ratio; ?>';
 
-                                if (rackProducts != '')
-                                {
-                                    rackProducts = JSON.parse(rackProducts);
-                                    $.each(rackProducts, function (i, item) 
-                                    {      
-                                        test = 0;
-                                        $.each(item, function (k, titem) 
+                                    if (rackProducts != '')
+                                    {
+                                        rackProducts = JSON.parse(rackProducts);
+                                        $.each(rackProducts, function (i, item)
                                         {
-                                            var height = titem.height* ratio +"px";
-                                            var width = titem.width * ratio + "px";
-                                            var data = '<img src="' + titem.image + '" style="width:' + width + '; height:' + height + ';position: absolute; bottom:5px; left:'+test+'px;" id='+k+'>';
-                                            $("#canvas-container-" + i).append(data);
+                                            test = 0;
+                                            $.each(item, function (k, titem)
+                                            {
+                                                var height = titem.height * ratio + "px";
+                                                var width = titem.width * ratio + "px";
+                                                var data = '<img src="' + titem.image + '" style="width:' + width + '; height:' + height + ';position: absolute; bottom:5px; left:' + test + 'px;" id=' + k + '>';
+                                                $("#canvas-container-" + i).append(data);
 
-                                            test = test+(titem.width * ratio);
+                                                test = test + (titem.width * ratio);
+                                            });
                                         });
+                                    }
+
+                                    $('.edit-modal').on('show.bs.modal', function (event) {
+                                        alert("show");
+                                        var dataURL = $(event.relatedTarget).attr('data-href');
+                                        var dataKey = $(event.relatedTarget).attr('data-key');
+                                        var dataShelves = $(event.relatedTarget).attr('data-shelves');
+
+                                        $('.modal-content').load(dataURL, function () {
+                                            $('input[type="checkbox"]').iCheck({
+                                                checkboxClass: 'icheckbox_square-blue',
+                                                radioClass: 'iradio_square-blue',
+                                                increaseArea: '20%'
+                                            });
+                                            $('#remove').on('ifChecked', function () {
+
+                                                $('input[name="permissionscheck"]').filter('[value="edit"]').iCheck('uncheck');
+                                            });
+                                            $('#edit').on('ifChecked', function () {
+                                                $('input[name="permissionscheck"]').filter('[value="remove"]').iCheck('uncheck');
+                                            });
+
+                                            $('#getProducts').on('change', function () {
+                                               
+                                                var id = $(this).val();
+                                                var str = "<option value>Select Products</option>";
+                                                var data = {id: id};
+                                                moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/get-products", data, 'post').then(function (result) {
+
+                                                    if (result.status.success == 1) {
+                                                        if (result.data.catalogues.length > 0) {
+                                                            $.each(result.data.catalogues, function (key, value) {
+                                                                str += "<option value=" + value.id + ">" + value.short_name + "</option>";
+                                                            });
+                                                        }
+                                                    }
+                                                    $('#products').html(str);
+                                                }, function (result) {
+                                                    alert('Fail');
+                                                });
+
+                                            });
+
+                                            $('#changeData').on('click', function () {
+                                                alert("change");
+                                                var remove = $('#remove').is(':checked');
+                                                var edit = $('#edit').is(':checked');
+                                                var product = $("#products").val();
+                                                var ratio = '<?php echo $ratio; ?>';
+
+                                                var data = {remove: remove, edit: edit, product: product, dataKey: dataKey, dataShelves: dataShelves};
+                                                 moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/edit-products", data, 'post').then(function (result) {
+
+                                                    numOfSelves = $("#ex6SliderVal").val();
+                                                    if (result.flag == 1) {
+                                                        if ((result.action == 'edit')) {
+
+                                                            for (i = 0; i < numOfSelves; i++) {
+                                                                    $("#canvas-container-" + i).empty();
+                                                            }
+                                                            $.pjax.reload({container: "#productsData"});
+                                                        }
+                                                        if (result.action == 'remove') {
+
+                                                            for (i = 0; i < numOfSelves; i++) {
+                                                              $("#canvas-container-" + i).empty();
+                                                            }
+                                                            $.pjax.reload({container: "#productsData"});
+                                                        }
+
+                                                    } else {
+                                                        alert(result.msg);
+                                                    }
+
+                                                }, function (result) {
+                                                    alert('Fail');
+                                                });
+
+                                            });
+
+                                            moet.hideLoader();
+                                        });
+                                        setTimeout(function () {
+                                            $('.modal-backdrop').css('z-index', 0);
+                                        }, 10);
                                     });
-                                }                                    
                                 </script>
-                                <?php Pjax::end(); ?>  
+<?php Pjax::end(); ?>  
                             </div>
                         </div>
                         <div class="submit-fl">
@@ -217,3 +296,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
         </div> 
     </div>
 </div>
+<script>
+
+
+</script>

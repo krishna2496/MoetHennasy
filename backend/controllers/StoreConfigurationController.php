@@ -330,10 +330,13 @@ class StoreConfigurationController extends Controller {
             
             $id = isset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id']) ? $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'] :'';
             unset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
-            echo '<pre>';
-            print_r($_SESSION['config']['rackProducts'][$shelvesNo]);
-            array_values($_SESSION['config']['rackProducts'][$shelvesNo]);
-            print_r($_SESSION['config']['rackProducts'][$shelvesNo]);exit;
+           
+            $rackArrayProduct =array();
+            foreach ($_SESSION['config']['rackProducts'][$shelvesNo] as $key =>$value){
+                $rackArrayProduct[] = $value;
+            }
+            $_SESSION['config']['rackProducts'][$shelvesNo] = $rackArrayProduct;
+           
             $response['flag'] =1;
             $response['msg'] ='Product Removed Successfully';
             $response['action'] = 'remove';

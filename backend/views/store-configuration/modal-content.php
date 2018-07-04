@@ -35,8 +35,10 @@ use common\helpers\CommonHelper;
                                 <label>Brand</label>
                               
                                 <select class="form-control" id="getProducts">
+                                    <option disabled="disabled" selected="selected">Select Brand</option>
                                       <?php
                                       foreach ($_SESSION['config']['brands_data'] as $key=>$value){
+                                          
                                       ?>
                                      <option value="<?= $value['id'];?>"><?= $value['name'];?></option>
                                    <?php } ?>
