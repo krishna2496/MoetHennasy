@@ -124,6 +124,8 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                                                                 <p>WSP: <?= $products[$value1]['price'] ?></p>
                                                                                 <p>Category: <?= $products[$value1]['productCategory'] ?></p>
                                                                                 <p>Top shelf: <?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></p>
+                                                                                <p>width: <?= $products[$value1]['width'] ?></p>
+                                                                                   <p>height: <?= $products[$value1]['height'] ?></p>
                                                                             </div>
                                                                         </a>
                                                                     </li>

@@ -231,6 +231,58 @@ jQuery(document).ready(function()
         $('#validationWizard').bootstrapWizard('next');
         e.preventDefault();
     });
+    
+    $("#tab-step-3 .next").click(function(e) {
+//       frame-design
+// html2canvas($(".frame-design"), 
+//                    { 
+//                        onrendered: function (canvas) 
+//                        {                            
+//                            var myImage = canvas.toDataURL("image/png");
+////                           window.location.href = myImage;
+//                       } 
+//                    });
+
+  var node = document.getElementById('tab-step-3');
+  return false;
+    var options = {
+        quality: 1,     
+    };
+
+    domtoimage.toPng(node, options).then(function (dataUrl) 
+    {
+        $.ajax({
+        url:"upload.php",
+        type:"POST",
+        dataType:'JSON',
+        data :{'imageData':dataUrl},        
+        success:function(r)
+        {
+
+        }
+        });
+    });
+
+                   
+    });
+    
+    
+    $("#tab-step-1 .reset-btn").click(function(e) {
+        alert("0");
+        return false;
+    });
+    
+    $("#tab-step-2 .reset-btn").click(function(e) {
+        alert("0");
+        return false;
+    });
+    
+    $("#tab-step-3 .reset-btn").click(function(e) {
+        alert("0");
+        return false;
+       
+    });
+    
    
     // With Form Validation Wizard
     var $validator = jQuery("#firstForm").validate({
@@ -249,7 +301,11 @@ jQuery(document).ready(function()
             return true;
         },
         onNext: function(tab, navigation, index) {
-          
+            if(index == 3){
+                alert(index);
+                return false;
+            }
+         
             if (index == 1) {
                
                 if ($("#firstForm input[name='brands[]']:checkbox:checked").length <= 0)
@@ -307,9 +363,7 @@ jQuery(document).ready(function()
                             $("#tab-step-3").show();
                             $(".brand-drop").show();
                             $.pjax.reload({container:"#productsBrand",async:false});
-
                             $.pjax.reload({container:"#productsData" ,async:false});
-
                             $('#tab3').removeAttr('disabled');
                             $("#tab2").removeAttr('disabled');
                             $("#third").val(1);
