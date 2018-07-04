@@ -188,92 +188,6 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                             });
                                         });
                                     }
-
-                                    $('.edit-modal').on('show.bs.modal', function (event) 
-                                    {
-                                        alert("show");
-                                        var dataURL = $(event.relatedTarget).attr('data-href');
-                                        var dataKey = $(event.relatedTarget).attr('data-key');
-                                        var dataShelves = $(event.relatedTarget).attr('data-shelves');
-
-                                        $('.modal-content').load(dataURL, function () {
-                                            $('input[type="checkbox"]').iCheck({
-                                                checkboxClass: 'icheckbox_square-blue',
-                                                radioClass: 'iradio_square-blue',
-                                                increaseArea: '20%'
-                                            });
-                                            $('#remove').on('ifChecked', function () {
-
-                                                $('input[name="permissionscheck"]').filter('[value="edit"]').iCheck('uncheck');
-                                            });
-                                            $('#edit').on('ifChecked', function () {
-                                                $('input[name="permissionscheck"]').filter('[value="remove"]').iCheck('uncheck');
-                                            });
-
-                                            $('#getProducts').on('change', function () {
-
-                                                var id = $(this).val();
-                                                var str = "<option value>Select Products</option>";
-                                                var data = {id: id};
-                                                moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/get-products", data, 'post').then(function (result) {
-
-                                                    if (result.status.success == 1) {
-                                                        if (result.data.catalogues.length > 0) {
-                                                            $.each(result.data.catalogues, function (key, value) {
-                                                                str += "<option value=" + value.id + ">" + value.short_name + "</option>";
-                                                            });
-                                                        }
-                                                    }
-                                                    $('#products').html(str);
-                                                }, function (result) {
-                                                    alert('Fail');
-                                                });
-
-                                            });
-
-                                            $('#changeData').on('click', function () {
-                                                alert("change");
-                                                var remove = $('#remove').is(':checked');
-                                                var edit = $('#edit').is(':checked');
-                                                var product = $("#products").val();
-                                                var ratio = '<?php echo $ratio; ?>';
-
-                                                var data = {remove: remove, edit: edit, product: product, dataKey: dataKey, dataShelves: dataShelves};
-                                                moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/edit-products", data, 'post').then(function (result) {
-
-                                                    numOfSelves = $("#ex6SliderVal").val();
-                                                    if (result.flag == 1) {
-                                                        if ((result.action == 'edit')) {
-
-                                                            for (i = 0; i < numOfSelves; i++) {
-                                                                $("#canvas-container-" + i).empty();
-                                                            }
-                                                            $.pjax.reload({container: "#productsData",async:false});
-                                                        }
-                                                        if (result.action == 'remove') {
-
-                                                            for (i = 0; i < numOfSelves; i++) {
-                                                                $("#canvas-container-" + i).empty();
-                                                            }
-                                                            $.pjax.reload({container: "#productsData",async:false});
-                                                        }
-
-                                                    } else {
-                                                        alert(result.msg);
-                                                    }
-
-                                                }, function (result) {
-                                                    alert('Fail');
-                                                });
-
-                                            });
-
-                                            moet.hideLoader();
-                                        });
-                                        setTimeout(function () {
-                                            $('.modal-backdrop').css('z-index', 0);
-                                        }, 10);
-                                    });
                                 </script>
                                 <?php Pjax::end(); ?>  
                             </div>
@@ -297,7 +211,95 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
         </div> 
     </div>
 </div>
-<script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+    $('.edit-modal').on('show.bs.modal', function (event) 
+    {
+        var dataURL = $(event.relatedTarget).attr('data-href');
+        var dataKey = $(event.relatedTarget).attr('data-key');
+        var dataShelves = $(event.relatedTarget).attr('data-shelves');
 
+        $('.modal-content').load(dataURL, function () 
+        {
+            $('input[type="checkbox"]').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%'
+            });
+            $('#remove').on('ifChecked', function () {
 
+                $('input[name="permissionscheck"]').filter('[value="edit"]').iCheck('uncheck');
+            });
+            $('#edit').on('ifChecked', function () {
+                $('input[name="permissionscheck"]').filter('[value="remove"]').iCheck('uncheck');
+            });
+
+            $('#getProducts').on('change', function () {
+
+                var id = $(this).val();
+                var str = "<option value>Select Products</option>";
+                var data = {id: id};
+                moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/get-products", data, 'post').then(function (result) {
+
+                    if (result.status.success == 1) {
+                        if (result.data.catalogues.length > 0) {
+                            $.each(result.data.catalogues, function (key, value) {
+                                str += "<option value=" + value.id + ">" + value.short_name + "</option>";
+                            });
+                        }
+                    }
+                    $('#products').html(str);
+                }, function (result) {
+                    alert('Fail');
+                });
+
+            });
+
+            $('#changeData').on('click', function (e) 
+            {
+                e.stopImmediatePropagation();
+                
+                var remove = $('#remove').is(':checked');
+                var edit = $('#edit').is(':checked');
+                var product = $("#products").val();
+                var ratio = '<?php echo $ratio; ?>';
+
+                var data = {remove: remove, edit: edit, product: product, dataKey: dataKey, dataShelves: dataShelves};
+                moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/edit-products", data, 'post').then(function (result) {
+
+                    numOfSelves = $("#ex6SliderVal").val();
+                    if (result.flag == 1) {
+                        if ((result.action == 'edit')) {
+
+                            for (i = 0; i < numOfSelves; i++) {
+                                $("#canvas-container-" + i).empty();
+                            }
+                            $.pjax.reload({container: "#productsData",async:false});
+                        }
+                        if (result.action == 'remove') {
+
+                            for (i = 0; i < numOfSelves; i++) {
+                                $("#canvas-container-" + i).empty();
+                            }
+                            $.pjax.reload({container: "#productsData",async:false});
+                        }
+
+                    } else {
+                        alert(result.msg);
+                    }
+
+                }, function (result) {
+                    alert('Fail');
+                });
+
+            });
+
+            moet.hideLoader();
+        });
+        setTimeout(function () {
+            $('.modal-backdrop').css('z-index', 0);
+        }, 10);
+    });
+});
 </script>
