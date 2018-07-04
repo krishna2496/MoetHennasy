@@ -227,7 +227,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
         </div> 
     </div>
 </div>
-<script>
+
     <script type="text/javascript">
 $(document).ready(function()
 {
@@ -319,10 +319,4 @@ $(document).ready(function()
         }, 10);
     });
 });
-</script>
-function reset(){
-    alert(0);
-    return false;
-}
-
 </script>
