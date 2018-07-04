@@ -51,6 +51,7 @@ function hideShowDiv(data)
         $("#tab-step-2").hide();
         $("#tab-step-1").show();
         $("#tab-step-3").hide();
+        $('.shelf').hide();
     }
     else if (data === 'tab2') 
     {
@@ -65,6 +66,7 @@ function hideShowDiv(data)
             $("#tab-step-3").hide();
             $.pjax.reload({container: '#employee',async:false});
         }
+        $('.shelf').hide();
     }
     else if (data === 'tab3') 
     {
