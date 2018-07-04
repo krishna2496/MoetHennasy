@@ -1,4 +1,5 @@
-$('#tab2').click(function(event) {
+$('#tab2').click(function(event) 
+{
     if ($(this).attr('disabled')) {
         return false;
     }else{
@@ -7,8 +8,7 @@ $('#tab2').click(function(event) {
            
             for(i=0;i<numOfSelves;i++){
                $("#canvas-container-"+i).empty();
-            }
-            
+            }            
         }
          $(".brand-drop").hide();
          $("#brandImage").attr("src",'');
@@ -17,7 +17,8 @@ $('#tab2').click(function(event) {
     $.pjax.reload({container: '#employee',async:false});
 });
 
-$('#tab1').click(function(event) {
+$('#tab1').click(function(event) 
+{
     if ($(this).attr('disabled')) {
         return false;
     }else{
@@ -76,6 +77,7 @@ function hideShowDiv(data)
             $("#tab-step-2").hide();
             $("#tab-step-1").hide();
             $("#tab-step-3").show();
+            $('.shelf').show();
         }
     }
 }
@@ -142,11 +144,8 @@ $(function() {
     });
 });
 
-
-
-
-
-function getRack() {
+function getRack() 
+{
     var noOfShelves = parseInt($("#ex6SliderVal").val());
     var rackHeight = parseInt($("#hex6SliderVal").val());
     var rackWidth = parseInt($("#wex6SliderVal").val());
@@ -162,7 +161,9 @@ function getRack() {
 
     var canvasFrameWidth = 'width:' + (parseInt(newRackWidth) + 40) + 'px';
     var canvasFrameHeight = 'height:' + (parseInt(newRackHeight) + 20) + 'px';
-
+    
+    var shelfFrameHeight = 'height:' + (parseInt(newRackHeight) + 5) + 'px';
+    
     var canvasInternalWidth = 'width:' + parseInt(newRackWidth) + 'px';
     var canvasInternalHeight = 'height:' + parseInt(newRackHeight) + 'px';
 
@@ -177,6 +178,7 @@ function getRack() {
         prepareRack += '<div class="bottle-sec" id="canvas-container-' + i + '" style="' + canvasInternalWidth + ';' + canvasInternalHeight + ';">';*/
         
         var prepareRack = '<div class="mid-sec-frames" style="' + canvasFrameHeight + ';">';
+        prepareRack += '<div class="shelf" style="' + shelfFrameHeight + ';display:none;"><span>SHELF '+(i+1)+'</span></div>';
         prepareRack += '<div class="bottle-sec" id="canvas-container-' + i + '" style="' + canvasInternalHeight + ';">';
         //prepareRack += '<canvas class="shelf-canvas" id="real-canvas-' + i + '" style="' + canvasInternalWidth + ';' + canvasInternalHeight + ';"></canvas>'; // Not in use so commented canvas         
         prepareRack += '</div>';
@@ -368,6 +370,7 @@ jQuery(document).ready(function()
                             
                             $("#tab-step-2").hide();
                             $("#tab-step-3").show();
+                            $('.shelf').show();
                             $(".brand-drop").show();
                             $.pjax.reload({container:"#productsBrand",async:false});
                             $.pjax.reload({container:"#productsData" ,async:false});
