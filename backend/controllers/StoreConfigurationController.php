@@ -18,6 +18,7 @@ use common\models\CataloguesSearch;
 use yii\filters\AccessControl;
 use common\models\Stores;
 use common\repository\BrandRepository;
+use common\repository\UploadRepository;
 
 class StoreConfigurationController extends Controller {
 
@@ -55,8 +56,13 @@ public function actionSaveImage(){
     list($type, $data) = explode(';', $data);
     list(, $data)      = explode(',', $data);
     $data = base64_decode($data);
-    $imagePath = time().".jpeg";
+    $randomName =rand().'.jpeg';
+    $uploadUrl = CommonHelper::getPath('upload_path');
+    $imagePath = $uploadUrl.UPLOAD_PATH_STORE_CONFIG_ORIGINAL_IMAGES.$randomName;
     $savefile = file_put_contents($imagePath, $data);
+    
+//    resizeImage($fileuploadname, $saved_filname, $height, $width, $path , $min = true)
+    CommonHelper::resizeImage(UPLOAD_PATH_STORE_CONFIG_ORIGINAL_IMAGES.$randomName,$randomName,64,64,UPLOAD_PATH_STORE_CONFIG_IMAGES);
 }
 
 public function actionListing($id) {
