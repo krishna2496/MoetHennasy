@@ -9,7 +9,7 @@ use yii\widgets\Pjax;
 
 //use kartik\switchinput\SwitchInput;
 $rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSION['config']['rackProducts']) : '';
-$submitUrl = CommonHelper::getPath('admin_url') . "store-configuration/save-config-data";
+$submitUrl = "store-configuration/save-config-data";
 $products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] : '';
 $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
 ?>
@@ -28,7 +28,11 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
             </div>
 
             <div class="box-body">
-                <form class="frame-filt-form"  name="step_3" id="step_3">
+                <?php 
+                $form = ActiveForm::begin(['action' =>[$submitUrl], 'id' => 'step_3', 'method' => 'post','class'=>'frame-filt-form']);
+                ?>
+           
+                    <input type="hidden" name="thumb_image" id="thumb_image" value="adadad"/>
                     <div class="frame-chose-option">
                         <p class="auto-config">MH REF 356 - 15/06/2018 - Automatic configuration</p>
                         <div class="box box-default shelfs-store">
@@ -225,7 +229,9 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                         </div>
                         <!-- /.modal-dialog -->
                     </div>
-                </form>
+               <?php 
+               ActiveForm::end();
+               ?>
             </div>       
         </div> 
     </div>

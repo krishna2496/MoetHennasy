@@ -264,7 +264,12 @@ jQuery(document).ready(function()
                         data :{'imageData':dataUrl},
                         success: function(result)
                         {
-                           
+                            if(result.flag == 1){
+                             $("#thumb_image").val(result.name);
+                              $("#step_3").submit();return false;
+                            }else{
+                                alert("Please Try again later");
+                            }
                         }
                     });
         
