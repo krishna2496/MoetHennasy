@@ -28,7 +28,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
             </div>
 
             <div class="box-body">
-                <form class="frame-filt-form" action="<?= $submitUrl?>" method="post" name="step_3" id="step_3">
+                <form class="frame-filt-form"  name="step_3" id="step_3">
                     <div class="frame-chose-option">
                         <p class="auto-config">MH REF 356 - 15/06/2018 - Automatic configuration</p>
                         <div class="box box-default shelfs-store">

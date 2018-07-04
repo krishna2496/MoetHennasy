@@ -243,26 +243,33 @@ jQuery(document).ready(function()
 //                       } 
 //                    });
 
-  var node = document.getElementById('tab-step-3');
-  return false;
+  var node = document.getElementById('frame-design');
+  
     var options = {
         quality: 1,     
     };
 
+  
     domtoimage.toPng(node, options).then(function (dataUrl) 
-    {
+    { 
+      
+      //
         $.ajax({
-        url:"upload.php",
-        type:"POST",
-        dataType:'JSON',
-        data :{'imageData':dataUrl},        
-        success:function(r)
-        {
-
-        }
-        });
+                        type: 'POST',
+                        url: uploadSelves,
+                        data :{'imageData':dataUrl},
+                        success: function(result)
+                        {
+                           
+                        }
+                    });
+        
+        
+        return false;
+    }).catch(function (error) {
+        console.error('oops, something went wrong!', error);
     });
-
+  return false;
                    
     });
     

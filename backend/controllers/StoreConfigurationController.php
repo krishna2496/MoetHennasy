@@ -30,7 +30,7 @@ class StoreConfigurationController extends Controller {
                 ],
                 'rules' => [
                         [
-                        'actions' => ['index', 'listing', 'create', 'update', 'view', 'delete', 'save-data', 'save-product-data','modal-content','get-products','edit-products','save-config-data'],
+                        'actions' => ['index', 'listing', 'create', 'update', 'view','save-image' ,'delete', 'save-data', 'save-product-data','modal-content','get-products','edit-products','save-config-data'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -47,6 +47,16 @@ class StoreConfigurationController extends Controller {
 public function actionSaveConfigData(){
     echo '<pre>';
     print_r($_SESSION['config']);exit;
+}
+
+public function actionSaveImage(){
+    $post = yii::$app->request->post();
+    $data = $post['imageData']; 
+    list($type, $data) = explode(';', $data);
+    list(, $data)      = explode(',', $data);
+    $data = base64_decode($data);
+    $imagePath = time().".jpeg";
+    $savefile = file_put_contents($imagePath, $data);
 }
 
 public function actionListing($id) {

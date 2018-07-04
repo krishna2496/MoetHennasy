@@ -9,6 +9,7 @@ use yii\widgets\Pjax;
 //use kartik\switchinput\SwitchInput;
 
 $formUrl = Url::to(['store-configuration/save-data']);
+$uploadShelf = Url::to(['store-configuration/save-image']);
 $secondFormUrl = Url::to(['store-configuration/save-product-data']);
 $noOfSelves = isset($_SESSION['config']['products']) ? isset($_SESSION['config']['products']) : '1';
 $ratio = isset($_SESSION['config']['ratio']) ? $_SESSION['config']['ratio'] : '1';
@@ -62,7 +63,7 @@ $session = Yii::$app->session;
 								<div class="adv-form-element-sec active" id="vtab1">
 									<div class="row">
 										<div class="col-sm-7">
-											<div class="frame-design">
+											<div class="frame-design" id="frame-design">
 												<div class="frame-title text-center">														
 													<h3>Display 1: <span id="getName"></span></h3>
 												</div>
@@ -123,6 +124,7 @@ $session = Yii::$app->session;
 	var rackFromURL = '<?php echo $formUrl ?>';
 	var rackProductFromURL = '<?php echo $secondFormUrl ?>';
         var nimOfSelves = '<?php echo $noOfSelves ?>';
+        var uploadSelves = '<?php echo $uploadShelf ?>';
         
         
 $('#tab2').click(function(event) {
