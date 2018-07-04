@@ -61,6 +61,8 @@ public function actionSaveImage(){
     $imagePath = $uploadUrl.UPLOAD_PATH_STORE_CONFIG_IMAGES.$randomName;
     $savefile = file_put_contents($imagePath, $data);
     CommonHelper::resizeImage(UPLOAD_PATH_STORE_CONFIG_IMAGES.$randomName,$randomName,64,64,UPLOAD_PATH_STORE_CONFIG_IMAGES);
+    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    return $randomName;
 }
 
 public function actionListing($id) {
