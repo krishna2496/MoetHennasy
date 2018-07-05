@@ -76,7 +76,7 @@ $session = Yii::$app->session;
                                                                                                             
                                                                                                             <li class="active">
                                                                                                                 <h6>BRAND 1</h6>
-                                                                                                                <img src="" alt="Select Brand" id="brandImage">
+                                                                                                                <div id="brandImageHolder">Select Brand</div>
                                                                                                             </li>
                                                                                                         </ul>
                                                                                                     </div>

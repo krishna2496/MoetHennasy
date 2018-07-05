@@ -19,7 +19,7 @@ $('#tab2').click(function(event)
                 }            
             }
             $(".brand-drop").hide();
-            $("#brandImage").attr("src",'');
+            $('#brandImageHolder').html('Select Brand');
             $("#tab3").attr('disabled', 'true');
             tab3Status = '';
             $.pjax.reload({container: '#employee',async:false});
@@ -43,7 +43,7 @@ $('#tab1').click(function(event)
                 }
             }
             $(".brand-drop").hide();
-            $("#brandImage").attr("src",'');
+            $('#brandImageHolder').html('Select Brand');
             $("#tab2").attr('disabled','true');
             $("#tab3").attr('disabled', 'true');
             tab3Status = '';
@@ -109,11 +109,11 @@ function hideShowDiv(data)
                 $("#tab-step-2").show();
                 $("#tab-step-1").hide();
                 $("#tab-step-3").hide();
+                $('.shelf').hide();
                 $.pjax.reload({container: '#employee',async:false});
                 step1Confirm = 1;
             }
-        }
-        $('.shelf').hide();        
+        }        
     }
     else if (data === 'tab3') 
     {
@@ -136,6 +136,21 @@ function addSuccessClass(data)
 {
      $(".stepwizard-step a").removeClass("btn-success");
      $("#"+data).addClass("btn-success");
+     
+     if(data == 'tab2')
+     {
+         $('#tab-step-2').removeClass('col-sm-5');
+         $('#tab-step-2').addClass('col-sm-6');
+         $('#frame-design').parent().removeClass('col-sm-7');
+         $('#frame-design').parent().addClass('col-sm-6');
+     }
+     else
+     {
+         $('#tab-step-2').removeClass('col-sm-6');
+         $('#tab-step-2').addClass('col-sm-5');
+         $('#frame-design').parent().removeClass('col-sm-6');
+         $('#frame-design').parent().addClass('col-sm-7');
+     }
 }
 
 $(function() {
@@ -261,14 +276,14 @@ function changeBrand(data){
      
       $(".display"+id).css('display','none');
       $(".display"+id).removeClass('displayBlock');
-      $("#brandImage").attr("src",'');
+      $('#brandImageHolder').html('Select Brand');
       $("#brand").val('');
  }else{
      $(".display"+id).css('display','block');
      $(".display"+id).addClass('displayBlock');
      $('img.brand-selected').not(".display"+id).css('display','none');
      $('img.brand-selected').not(".display"+id).removeClass('displayBlock');
-     $("#brandImage").attr("src",data.src);
+     $('#brandImageHolder').html('<img src="'+data.src+'" alt="Select Brand" id="brandImage">');
      $("#brand").val(id);
  }
 }
