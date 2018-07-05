@@ -32,7 +32,8 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                 $form = ActiveForm::begin(['action' =>[$submitUrl], 'id' => 'step_3', 'method' => 'post','class'=>'frame-filt-form']);
                 ?>
            
-                    <input type="hidden" name="thumb_image" id="thumb_image" value="adadad"/>
+                    <input type="hidden" name="thumb_image" id="thumb_image" value=""/>
+                    <input type="hidden" name="brand" id="brand" value=""/>
                     <div class="frame-chose-option">
                         <p class="auto-config">MH REF 356 - 15/06/2018 - Automatic configuration</p>
                         <div class="box box-default shelfs-store">

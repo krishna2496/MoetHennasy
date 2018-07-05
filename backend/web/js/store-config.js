@@ -1,38 +1,54 @@
+var tab3Status = '';
+var step2Confirm = '1';
+var step1Confirm = '1';
+
 $('#tab2').click(function(event) 
-{
+{   
     if ($(this).attr('disabled')) {
         return false;
-    }else{
-        numOfSelves =$("#ex6SliderVal").val();
-        if(numOfSelves != 0){
-           
-            for(i=0;i<numOfSelves;i++){
-               $("#canvas-container-"+i).empty();
-            }            
-        }
-         $(".brand-drop").hide();
-         $("#brandImage").attr("src",'');
-         $("#tab3").attr('disabled', 'true');
     }
-    $.pjax.reload({container: '#employee',async:false});
+    else
+    {        
+        if(step2Confirm == '1')
+        {
+            numOfSelves =$("#ex6SliderVal").val();
+            if(numOfSelves != 0)
+            {           
+                for(i=0;i<numOfSelves;i++){
+                   $("#canvas-container-"+i).empty();
+                }            
+            }
+            $(".brand-drop").hide();
+            $("#brandImage").attr("src",'');
+            $("#tab3").attr('disabled', 'true');
+            tab3Status = '';
+            $.pjax.reload({container: '#employee',async:false});
+        }
+    }
 });
 
 $('#tab1').click(function(event) 
-{
+{   
     if ($(this).attr('disabled')) {
         return false;
-    }else{
-        numOfSelves =$("#ex6SliderVal").val();
-        if(numOfSelves != 0){
-            for(i=0;i<numOfSelves;i++){
-               $("#canvas-container-"+i).empty();
-            }
-        }
-        $(".brand-drop").hide();
-         $("#brandImage").attr("src",'');
-       $("#tab2").attr('disabled','true');
-       $("#tab3").attr('disabled', 'true');
     }
+    else
+    {        
+        if(step1Confirm == '1')
+        {
+            numOfSelves =$("#ex6SliderVal").val();
+            if(numOfSelves != 0){
+                for(i=0;i<numOfSelves;i++){
+                   $("#canvas-container-"+i).empty();
+                }
+            }
+            $(".brand-drop").hide();
+            $("#brandImage").attr("src",'');
+            $("#tab2").attr('disabled','true');
+            $("#tab3").attr('disabled', 'true');
+            tab3Status = '';
+        }
+    }    
 });
 
 $('#tab3').click(function(event) {
@@ -47,11 +63,26 @@ function hideShowDiv(data)
 {
     if (data === 'tab1') 
     {
-        addSuccessClass(data);
-        $("#tab-step-2").hide();
-        $("#tab-step-1").show();
-        $("#tab-step-3").hide();
-        $('.shelf').hide();
+        if(tab3Status == '1')
+        {
+            if(!confirm('Are you sure you want to change your Display ? Your current configuration will be reset.')) 
+            {
+                step1Confirm = '';
+            }
+            else
+            {
+                step1Confirm = '1';
+            }
+        }
+        
+        if(step1Confirm == '1')
+        {
+            addSuccessClass(data);
+            $("#tab-step-2").hide();
+            $("#tab-step-1").show();
+            $("#tab-step-3").hide();
+            $('.shelf').hide();        
+        }
     }
     else if (data === 'tab2') 
     {
@@ -60,13 +91,29 @@ function hideShowDiv(data)
         }
         else 
         {
-            addSuccessClass(data);
-            $("#tab-step-2").show();
-            $("#tab-step-1").hide();
-            $("#tab-step-3").hide();
-            $.pjax.reload({container: '#employee',async:false});
+            if(tab3Status == '1')
+            {
+                if(!confirm('Are you sure you want to change Define Products ? Your current configuration will be reset.')) 
+                {
+                    step2Confirm = '';
+                }
+                else
+                {
+                    step2Confirm = '1';
+                }
+            }
+            
+            if(step2Confirm == '1')
+            {
+                addSuccessClass(data);
+                $("#tab-step-2").show();
+                $("#tab-step-1").hide();
+                $("#tab-step-3").hide();
+                $.pjax.reload({container: '#employee',async:false});
+                step1Confirm = 1;
+            }
         }
-        $('.shelf').hide();
+        $('.shelf').hide();        
     }
     else if (data === 'tab3') 
     {
@@ -79,6 +126,7 @@ function hideShowDiv(data)
             $("#tab-step-2").hide();
             $("#tab-step-1").hide();
             $("#tab-step-3").show();
+            tab3Status = '1';
             $('.shelf').show();
         }
     }
@@ -214,12 +262,14 @@ function changeBrand(data){
       $(".display"+id).css('display','none');
       $(".display"+id).removeClass('displayBlock');
       $("#brandImage").attr("src",'');
+      $("#brand").val('');
  }else{
      $(".display"+id).css('display','block');
      $(".display"+id).addClass('displayBlock');
      $('img.brand-selected').not(".display"+id).css('display','none');
      $('img.brand-selected').not(".display"+id).removeClass('displayBlock');
      $("#brandImage").attr("src",data.src);
+     $("#brand").val(id);
  }
 }
 
@@ -236,54 +286,56 @@ jQuery(document).ready(function()
         e.preventDefault();
     });
     
-    $("#tab-step-3 .next").click(function(e) {
-//       frame-design
-// html2canvas($(".frame-design"), 
-//                    { 
-//                        onrendered: function (canvas) 
-//                        {                            
-//                            var myImage = canvas.toDataURL("image/png");
-////                           window.location.href = myImage;
-//                       } 
-//                    });
-
-  var node = document.getElementById('frame-design');
+    $("#tab-step-3 .next").click(function(e) 
+    {
+        var node = document.getElementById('frame-design');
   
-    var options = {
-        quality: 1,     
-    };
-
+        var options = { quality: 1  };
   
-    domtoimage.toPng(node, options).then(function (dataUrl) 
-    { 
-      
-      //
-        $.ajax({
-                        type: 'POST',
-                        url: uploadSelves,
-                        data :{'imageData':dataUrl},
-                        success: function(result)
-                        {
-                            if(result.flag == 1){
-                             $("#thumb_image").val(result.name);
-                              $("#step_3").submit();return false;
-                            }else{
-                                alert("Please Try again later");
-                            }
-                        }
-                    });
-        
-        
+        domtoimage.toPng(node, options).then(function (dataUrl) 
+        { 
+            $.ajax({
+                type: 'POST',
+                url: uploadSelves,
+                data :{'imageData':dataUrl},
+                success: function(result)
+                {
+                    if(result.flag == 1){
+                     $("#thumb_image").val(result.name);
+                      $("#step_3").submit();return false;
+                    }else{
+                        alert("Please Try again later");
+                    }
+                }
+            });
+            return false;
+        }).catch(function (error) {
+            console.error('oops, something went wrong!', error);
+        });
         return false;
-    }).catch(function (error) {
-        console.error('oops, something went wrong!', error);
-    });
-  return false;
-                   
-    });
+    });    
     
-    
-  
+    $("#tab-step-1 .reset-btn").click(function(e) 
+    {
+        $('#dispaly_name').val('');
+        $('#ex6SliderVal').val(2);
+        $('#ex6').slider('setValue', 2);
+        $('#hex6SliderVal').val(100);
+        $('#hex6').slider('setValue', 100);
+        $('#wex6SliderVal').val(100);
+        $('#wex6').slider('setValue', 100);
+        $('#dex6SliderVal').val(30);        
+        $('#dex6').slider('setValue', 30);
+        $('.brand-list').iCheck('uncheck');
+        getRack();
+        return false;
+    });
+
+    $("#tab-step-2 .reset-btn").click(function(e) 
+    {
+        $('#employee').iCheck('uncheck');
+        return false;
+    });
     
     $("#tab-step-3 .reset-btn").click(function(e) {
         alert("0");
@@ -369,6 +421,7 @@ jQuery(document).ready(function()
                             
                             $("#tab-step-2").hide();
                             $("#tab-step-3").show();
+                            tab3Status = '1';
                             $('.shelf').show();
                             $(".brand-drop").show();
                             $.pjax.reload({container:"#productsBrand",async:false});

@@ -97,6 +97,8 @@ return [
                 'market-contacts/view/<id:\d+>/<contactId:\d+>' => 'market-contacts/view',
                 'market-contacts/delete/<id:\d+>/<contactId:\d+>' => 'market-contacts/delete',
                
+                'store-configuration/update-config/<storeId:\d+>/<id:\d+>' => 'store-configuration/update-config',
+                'store-configuration/delete/<storeId:\d+>/<id:\d+>' => 'store-configuration/delete',
                
              
                

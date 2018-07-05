@@ -9,11 +9,6 @@ $(document).ajaxComplete(function(){
 $('form').on('beforeSubmit',function(){
     moet.showLoader();
 });
-
-
-$('#remove').on('ifChecked', function () { 
-alert(0);    
-});
 $(function () {
     $('input[type="checkbox"]').iCheck({
       checkboxClass: 'icheckbox_square-blue',

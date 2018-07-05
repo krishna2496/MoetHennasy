@@ -53,16 +53,14 @@ $formUrl = Url::to(['store-configuration/listing']);
                             [
                             'class' => 'yii\grid\ActionColumn',
                             'header' => 'Actions',
-                            'template' => '{view} {update} {delete}',
+                            'template' => '{update} {delete}',
                             'buttons' => [
-                                'view' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['catalogues/view/' . $model['id']]);
+                                
+                                'update' => function ($url, $model)use($id) {
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['store-configuration/update-config/'.$id.'/'. $model['id']]);
                                 },
-                                'update' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['catalogues/update/' . $model['id']]);
-                                },
-                                'delete' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['catalogues/delete/' . $model['id']], ['data-method' => 'post', 'data-confirm' => 'Are you sure want to delete this catalogues?']);
+                                'delete' => function ($url, $model)use($id) {
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['store-configuration/delete/'.$id.'/'. $model['id']], ['data-method' => 'post', 'data-confirm' => 'Are you sure want to delete this catalogues?']);
                                 },
                             ],
                         ],
