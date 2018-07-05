@@ -2,6 +2,16 @@ var tab3Status = '';
 var step2Confirm = '1';
 var step1Confirm = '1';
 
+if(isUpdate == 1){
+   
+    $("#tab1").attr('disabled', 'true');
+    $("#tab2").attr('disabled', 'true');
+    $("#tab3").attr('disabled', 'false');
+    $("#tab3").parent('li').addClass('active');
+     $("#tab3").parent('li').removeClass('active');
+  
+}
+
 $('#tab2').click(function(event) 
 {   
     if ($(this).attr('disabled')) {
