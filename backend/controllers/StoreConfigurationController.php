@@ -21,6 +21,7 @@ use common\repository\BrandRepository;
 use common\repository\UploadRepository;
 use common\repository\StoreConfigRepository;
 use common\repository\UserRepository;
+use Mpdf\Mpdf;
 
 class StoreConfigurationController extends Controller {
 
@@ -107,7 +108,7 @@ class StoreConfigurationController extends Controller {
     }
 
     public function actionUpdateConfig($id, $storeId) {
-
+        $configId = $id;
         $stores = Stores::find()->where(['id' => $storeId])->asArray()->one();
 
         if ($stores) {
@@ -120,12 +121,18 @@ class StoreConfigurationController extends Controller {
             $configData = $configRepository->listing($storeFilter);
             if ($configData['status']['success'] == 1) {
                 $storeData = $configData['data']['stores_config'][0];
+//                echo '<pre>';
+//                print_r($storeData);exit;
                 $_SESSION['config']['storeId'] = $storeData['store_id'];
 
                 $_SESSION['config']['display_name'] = $storeData['config_name'];
                 $brandThumbId = $storeData['shelfDisplay'][0]['brand_thumb_id'];
 
-
+                $_SESSION['config']['no_of_shelves'] = $storeData['shelfDisplay'][0]['no_of_shelves'];
+                $_SESSION['config']['height_of_shelves'] = $storeData['shelfDisplay'][0]['height_of_shelves'];
+                $_SESSION['config']['width_of_shelves'] = $storeData['shelfDisplay'][0]['width_of_shelves'];
+                $_SESSION['config']['depth_of_shelves'] = $storeData['shelfDisplay'][0]['depth_of_shelves'];
+                    
 
                 $_SESSION['config']['shelvesProducts'] = $products = $storeData['shelfDisplay'][0]['shelf_config'];
                 $productsArray = json_decode($products, true);
@@ -149,7 +156,7 @@ class StoreConfigurationController extends Controller {
                         $filterListing['marketName'] = $marketTitle;
                         $filterListing['brandName'] = $filterListing['brand']['name'];
                         $productsData[$value] = $filterListing;
-
+                        $_SESSION['config']['ratio'] =5.5;
                         $rackProducts[$key][$k]['id'] = $value;
                         $rackProducts[$key][$k]['image'] = CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $filterListing['image']);
                         $rackProducts[$key][$k]['height'] = $filterListing['height'];
@@ -242,7 +249,8 @@ class StoreConfigurationController extends Controller {
                         'dataProvider' => $dataProvider,
                         'brand' => $brand,
                         'store_id' => $storeId,
-                        'is_update' => 1
+                        'is_update' => 1,
+                        'configId' => $configId
                 ]);
             } else {
                 throw new NotFoundHttpException('The requested page does not exist.');
@@ -349,7 +357,8 @@ class StoreConfigurationController extends Controller {
                     'dataProvider' => $dataProvider,
                     'brand' => $brand,
                     'store_id' => $id,
-                    'is_update' => 0
+                    'is_update' => 0,
+                    'configId' => 0,
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -506,6 +515,13 @@ class StoreConfigurationController extends Controller {
         $_SESSION['config']['shelvesProducts'] = json_encode($productsId);
         $_SESSION['config']['rackProducts'] = $finalProducutsRack;
     }
+    
+    public function actionUpdateConfigData(){
+          $data = Yii::$app->request->post();
+          echo '<pre>';
+          print_r($data);
+          print_r($_SESSION['config']);exit;
+    }
 
     public function actionModalContent($id) {
 
@@ -536,6 +552,7 @@ class StoreConfigurationController extends Controller {
         $productKey = $data['dataKey'];
         $replacedProductId = $data['product'];
         $productsData = json_decode($_SESSION['config']['shelvesProducts'], true);
+       
         if ($data['remove'] == 'true') {
 
             $id = isset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id']) ? $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'] : '';
@@ -641,7 +658,7 @@ class StoreConfigurationController extends Controller {
                         }
                         $replacedData[$key]['productIds'] = rtrim($tmpProducts, ",");
                     }
-
+                  
                     $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
                 }
             }
@@ -814,6 +831,13 @@ class StoreConfigurationController extends Controller {
     }
 
     public function actionSendMail() {
+        
+        
+        $mpdf = new Mpdf();
+        $mpdf->WriteHTML($this->renderPartial('mpdf'));
+        $mpdf->Output();
+        exit;
+        
         $user = CommonHelper::getUser();
         $userEmail = $user['email'];
         $parentEmail = '';

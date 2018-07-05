@@ -12,7 +12,7 @@ $formUrl = Url::to(['store-configuration/save-data']);
 $uploadShelf = Url::to(['store-configuration/save-image']);
 $secondFormUrl = Url::to(['store-configuration/save-product-data']);
 $noOfSelves = isset($_SESSION['config']['products']) ? isset($_SESSION['config']['products']) : '1';
-$ratio = isset($_SESSION['config']['ratio']) ? $_SESSION['config']['ratio'] : '1';
+$ratio = isset($_SESSION['config']['ratio']) ? $_SESSION['config']['ratio'] : 5.5;
 if(isset($_SESSION['config']['products'])){
     $products = json_encode($_SESSION['config']['products'],true);
 }
@@ -126,7 +126,7 @@ $session = Yii::$app->session;
 	
 	var rackFromURL = '<?php echo $formUrl ?>';
 	var rackProductFromURL = '<?php echo $secondFormUrl ?>';
-        var nimOfSelves = '<?php echo $noOfSelves ?>';
+        var numOfSelves = '<?php echo $noOfSelves ?>';
         var uploadSelves = '<?php echo $uploadShelf ?>';
         
         

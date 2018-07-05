@@ -8,10 +8,13 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 //use kartik\switchinput\SwitchInput;
-$rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSION['config']['rackProducts']) : '';
+
+if($configId == 0){
 $submitUrl = "store-configuration/save-config-data";
-$products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] : '';
-$shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
+}else{
+$submitUrl = "store-configuration/update-config-data";
+}
+
 ?>
 
 <div class="col-sm-5 pull-right" id="tab-step-3">
@@ -34,6 +37,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
            
                     <input type="hidden" name="thumb_image" id="thumb_image" value=""/>
                     <input type="hidden" name="brand" id="brand" value=""/>
+                    <input type="hidden" name="config_id" id="config_id" value="<?= $configId?>"/>
                     <div class="frame-chose-option">
                         <p class="auto-config"><?= isset($_SESSION['config']['display_name']) ? $_SESSION['config']['display_name'] :''?>- Automatic configuration</p>
                         <div class="box box-default shelfs-store">
@@ -78,8 +82,16 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                 <!-- /.box-tools -->
                             </div>
                             <div class="box-body">
-                                <?php Pjax::begin(['id' => 'productsData', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST']]) ?>
+                                <?php 
+                              
+                                Pjax::begin(['id' => 'productsData', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST']]) ?>
                                 <?php
+                               
+                                $rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSION['config']['rackProducts']) : '';
+                                
+                                $products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] : '';
+                                $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
+                                
                                 if (!empty($shelvesData)) {
                                     foreach ($shelvesData as $key => $value) {
                                         ?>
@@ -191,7 +203,8 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                 }
                                 ?>
                                 <script type="text/javascript">
-                                    var rackProducts = '<?php echo $rackProducts; ?>';
+                                    var rackProducts = '<?php echo json_encode($_SESSION['config']['rackProducts']); ?>';
+                                   alert($rackProducts);
                                     var ratio = '<?php echo $ratio; ?>';
 
                                     if (rackProducts != '')
@@ -202,6 +215,7 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                             bottleLeft = 0;
                                             $.each(item, function (k, titem)
                                             {
+                                                
                                                 var height = titem.height * ratio + "px";
                                                 var width = titem.width * ratio + "px";
                                                 var data = '<img src="' + titem.image + '" style="width:' + width + '; height:' + height + ';position: absolute; bottom:5px; left:' + bottleLeft + 'px;" id=' + k + '>';
@@ -305,9 +319,8 @@ $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SES
                                 $.pjax.reload({container: "#productsData", async: false});
                             }
                             if (result.action == 'remove') {
-
                                 for (i = 0; i < numOfSelves; i++) {
-                                    $("#canvas-container-" + i).empty();
+                                     $("#canvas-container-" + i).empty();
                                 }
                                 $.pjax.reload({container: "#productsData", async: false});
                             }

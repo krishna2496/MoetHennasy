@@ -13,7 +13,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'dataProvider' => $dataProvider,
                 'brand' => $brand,
                 'store_id' => $store_id,
-                'is_update'=>$is_update
+                'is_update'=>$is_update,
+                'configId' => $configId
                 
     ]) ?>
 
