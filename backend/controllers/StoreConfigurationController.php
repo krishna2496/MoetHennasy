@@ -120,12 +120,10 @@ public function actionSaveConfigData(){
             if($configData['status']['success'] == 1){
                 $storeData = $configData['data']['stores_config'][0];
                 $_SESSION['config']['storeId'] = $storeData['store_id'];
-                $_SESSION['config']['num_of_shelves'] = $storeData['shelfDisplay'][0]['no_of_shelves'];
-                $_SESSION['config']['height_of_shelves'] = $storeData['shelfDisplay'][0]['height_of_shelves'];
-                $_SESSION['config']['width_of_shelves'] = $storeData['shelfDisplay'][0]['width_of_shelves'];
-                $_SESSION['config']['depth_of_shelves'] = $storeData['shelfDisplay'][0]['depth_of_shelves'];
+                
                 $_SESSION['config']['display_name'] = $storeData['config_name'];
-                     
+                $brandThumbId = $storeData['shelfDisplay'][0]['brand_thumb_id'];
+               $_SESSION['config']['shelvesProducts'] = $products = $storeData['shelfDisplay'][0]['brand_thumb_id'];
             
             echo '<pre>';
             print_r($configData);exit;

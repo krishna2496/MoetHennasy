@@ -57,8 +57,11 @@ class StoreConfigRepository extends Repository {
     }
 
     public function createConfig($data = array()) {
+       
+       
         $returnData = array();
         $this->apiCode = 0;
+       
         $storeModel = new StoreConfiguration();
         $questionModel = new ConfigFeedback();
         $questionArray = $shelfDisplayArray = array();
@@ -137,6 +140,7 @@ class StoreConfigRepository extends Repository {
                     $displayModel->save(false);
                 }
                 }
+               
                 $dataValue = $this->getConfigObject($configId);
                 $this->apiData = $dataValue;
                 $this->apiCode = 1;
@@ -323,7 +327,7 @@ class StoreConfigRepository extends Repository {
                     $query->andWhere(['store_configuration.id' => $configId]);
                 }
                 $tmpDataValues = $query->asArray()->all();
-             
+              
                 $dataValue = $tmpDataValues[0];
                
                 $tempShelfConfig = array();
