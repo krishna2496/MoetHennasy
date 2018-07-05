@@ -19,6 +19,9 @@ if(isset($_SESSION['config']['products'])){
 $session = Yii::$app->session;
 ?>
 <script>
+ 
+    var isUpdate = '<?php echo $is_update; ?>';
+  
     var productArry = [];
     var productObject = {};
 </script>
