@@ -55,9 +55,9 @@ $session = Yii::$app->session;
 										</span>
 									</div>
 									<div class="slider-content">
-										<span class="start-val">0</span>
+										<span class="start-val"><?= yii::$app->params['num_of_shelves']['min'] ?></span>
 										<input id="ex6" class="slider" type="text" data-slider-min="<?= yii::$app->params['num_of_shelves']['min'] ?>" data-slider-max="<?= yii::$app->params['num_of_shelves']['max'] ?>" data-slider-step="1" data-slider-value="<?= yii::$app->params['shelfConfig']['1']; ?>" data-slider-id="golden" />
-										<span class="end-val">50</span>
+										<span class="end-val"><?= yii::$app->params['num_of_shelves']['max'] ?></span>
 									</div>
 								</div>
 								<div class="form-group">																			
@@ -69,9 +69,9 @@ $session = Yii::$app->session;
 										</span>
 									</div>
 									<div class="slider-content">
-										<span class="start-val">0 cm</span>
+										<span class="start-val"><?= yii::$app->params['height_of_shelves']['min'] ?> cm</span>
 										<input id="hex6" class="slider" type="text" data-slider-min="<?= yii::$app->params['height_of_shelves']['min'] ?>" data-slider-max="<?= yii::$app->params['height_of_shelves']['max'] ?>" data-slider-step="1" data-slider-value="<?=  yii::$app->params['shelfConfig']['0']; ?>" data-slider-id="golden" />
-										<span class="end-val">50 cm</span>
+										<span class="end-val"><?= yii::$app->params['height_of_shelves']['max'] ?> cm</span>
 									</div>
 								</div>
 
@@ -84,9 +84,9 @@ $session = Yii::$app->session;
 										</span>
 									</div>
 									<div class="slider-content">
-										<span class="start-val">0 cm</span>
+										<span class="start-val"><?= yii::$app->params['width_of_shelves']['min'] ?> cm</span>
 										<input id="wex6" class="slider" type="text" data-slider-min="<?= yii::$app->params['width_of_shelves']['min'] ?>" data-slider-max="<?= yii::$app->params['width_of_shelves']['max'] ?>" data-slider-step="1" data-slider-value="<?=  yii::$app->params['shelfConfig']['0']; ?>" data-slider-id="golden" />
-										<span class="end-val">50 cm</span>
+										<span class="end-val"><?= yii::$app->params['width_of_shelves']['max'] ?> cm</span>
 									</div>
 								</div>
 								<div class="form-group">
@@ -98,9 +98,9 @@ $session = Yii::$app->session;
 										</span>
 									</div>
 									<div class="slider-content">
-										<span class="start-val">0 cm</span>
+										<span class="start-val"><?= yii::$app->params['depth_of_shelves']['min'] ?> cm</span>
 										<input id="dex6" class="slider" type="text" data-slider-min="<?= yii::$app->params['depth_of_shelves']['min'] ?>" data-slider-max="<?= yii::$app->params['depth_of_shelves']['max'] ?>" data-slider-step="1" data-slider-value="<?=  yii::$app->params['shelfConfig']['3']; ?>" data-slider-id="golden" />
-										<span class="end-val">50 cm</span>
+										<span class="end-val"><?= yii::$app->params['depth_of_shelves']['max'] ?> cm</span>
 									</div>
 								</div>
 							</div>
