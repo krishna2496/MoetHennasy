@@ -361,10 +361,7 @@ jQuery(document).ready(function()
             return true;
         },
         onNext: function(tab, navigation, index) {
-            if(index == 3){
-                alert(index);
-                return false;
-            }
+            
          
             if (index == 1) {
                

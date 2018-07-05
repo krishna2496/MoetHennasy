@@ -20,6 +20,7 @@ use common\models\Stores;
 use common\repository\BrandRepository;
 use common\repository\UploadRepository;
 use common\repository\StoreConfigRepository;
+use common\repository\UserRepository;
 
 class StoreConfigurationController extends Controller {
 
@@ -32,7 +33,7 @@ class StoreConfigurationController extends Controller {
                 ],
                 'rules' => [
                         [
-                        'actions' => ['index', 'listing', 'create', 'update','update-config' ,'view','save-image' ,'delete', 'save-data', 'save-product-data','modal-content','get-products','edit-products','save-config-data'],
+                        'actions' => ['index', 'listing','send-mail' ,'create', 'update','update-config' ,'view','save-image' ,'delete', 'save-data', 'save-product-data','modal-content','get-products','edit-products','save-config-data'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -77,6 +78,7 @@ public function actionSaveConfigData(){
         }
        if($returnData['status']['success'] == 1){
             Yii::$app->session->setFlash('success', $returnData['status']['message']);
+          
        }else{
             Yii::$app->session->setFlash('danger', $returnData['status']['message']);  
        }
@@ -118,10 +120,10 @@ public function actionSaveConfigData(){
             if($configData['status']['success'] == 1){
                 $storeData = $configData['data']['stores_config'][0];
                 $_SESSION['config']['storeId'] = $storeData['store_id'];
-                $_SESSION['config']['num_of_shelves'] = $storeData['shelfDisplay']['no_of_shelves'];
-                $_SESSION['config']['height_of_shelves'] = $storeData['shelfDisplay']['height_of_shelves'];
-                $_SESSION['config']['width_of_shelves'] = $storeData['shelfDisplay']['width_of_shelves'];
-                $_SESSION['config']['depth_of_shelves'] = $storeData['shelfDisplay']['depth_of_shelves'];
+                $_SESSION['config']['num_of_shelves'] = $storeData['shelfDisplay'][0]['no_of_shelves'];
+                $_SESSION['config']['height_of_shelves'] = $storeData['shelfDisplay'][0]['height_of_shelves'];
+                $_SESSION['config']['width_of_shelves'] = $storeData['shelfDisplay'][0]['width_of_shelves'];
+                $_SESSION['config']['depth_of_shelves'] = $storeData['shelfDisplay'][0]['depth_of_shelves'];
                 $_SESSION['config']['display_name'] = $storeData['config_name'];
                      
             
@@ -235,6 +237,7 @@ public function actionSaveConfigData(){
         $stores = Stores::find()->where(['id' => $id])->asArray()->one();
 
         if ($stores) {
+          
             $marketFilter = array();
 
             $marketRules = new MarketRulesRepository();
@@ -441,8 +444,10 @@ public function actionSaveConfigData(){
         //all repeated products
      
         $finalProducuts = $finalProducutsRack = $productsId = array();
+       
         foreach ($racksProductArray as $key =>$value){
             $tmpProducts = '';
+            if(!empty($value)){
             foreach ($value as $racksKey =>$racksValue){
                 $tmpProducts .= $racksValue['id'].",";
                 $finalProducuts[$key][$racksValue['id']] = $racksValue;
@@ -450,6 +455,7 @@ public function actionSaveConfigData(){
                 $finalProducutsRack[$key][$racksKey]['image'] = CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES.$racksValue['image']);
                 $finalProducutsRack[$key][$racksKey]['height'] = $racksValue['height'];
                 $finalProducutsRack[$key][$racksKey]['width'] = $racksValue['width'];
+            }
             }
             $productsId[$key]['productIds'] = rtrim($tmpProducts,",");
         }
@@ -663,7 +669,9 @@ public function actionSaveConfigData(){
                 $sum= array_sum(array_column($racksProductArray, 'width'));
             }
             if($selvesWidth >= ($sum + $dataValue['width'])){
+              if(intval(($_SESSION['config']['height_of_shelves'])/($_SESSION['config']['num_of_shelves'])) >= intval($dataValue['height'])){
                 $racksProductArray[$dataValue['id']] = $dataValue;
+              }
             }
      
     }
@@ -775,6 +783,41 @@ public function actionSaveConfigData(){
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    
+    public function actionSendMail(){
+        $user = CommonHelper::getUser();
+        $userEmail = $user['email'];
+        $parentEmail = '';
+        $userRepository = new UserRepository();
+        if($user['parent_user_id'] != ''){ 
+            $fiterUser = array();
+            $fiterUser['id'] = $user['parent_user_id'];
+            $parentUser =$userRepository->userList();
+            if($parentUser['status']['success'] == 1){
+            $parentEmail = $parentUser['data']['users'][0]['email'];
+            }
+        }
+        
+        echo '<pre>';
+        print_r($user);exit;
+         $mail = new Email();
+                        $mail->email = $model->email;
+
+                        $siteUrl = CommonHelper::getPath('site_url');
+                        $userString = array();
+                        $userString[] = $model->first_name;
+                        $userString[] = $model->last_name;
+                        $mail->body = $this->renderPartial('mail');
+                        $mail->setFrom = Yii::$app->params['supportEmail'];
+                        $mail->subject = 'Create User';
+                        $mail->set("USERNAME", $model->username);
+                        $mail->set("NAME", implode(' ', $userString));
+                        if (isset($password)) {
+                            $mail->set("PASSWORD", $password);
+                        }
+                        $mail->send();
     }
 
 }
