@@ -12,7 +12,7 @@ use yii\widgets\Pjax;
 if($configId == 0){
 $submitUrl = "store-configuration/save-config-data";
 }else{
-$submitUrl = "store-configuration/update-config-data";
+$submitUrl = "store-configuration/save-config-data";
 }
 
 ?>
@@ -88,7 +88,6 @@ $submitUrl = "store-configuration/update-config-data";
                                 <?php
                                
                                 $rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSION['config']['rackProducts']) : '';
-                                
                                 $products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] : '';
                                 $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
                                 
@@ -203,8 +202,8 @@ $submitUrl = "store-configuration/update-config-data";
                                 }
                                 ?>
                                 <script type="text/javascript">
-                                    var rackProducts = '<?php echo json_encode($_SESSION['config']['rackProducts']); ?>';
-                                   alert($rackProducts);
+                                    var rackProducts = '<?php echo $rackProducts; ?>';
+                                   
                                     var ratio = '<?php echo $ratio; ?>';
 
                                     if (rackProducts != '')
