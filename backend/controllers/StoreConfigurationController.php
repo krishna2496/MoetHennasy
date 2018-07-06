@@ -292,7 +292,7 @@ class StoreConfigurationController extends Controller {
         $stores = Stores::find()->where(['id' => $id])->asArray()->one();
 
         if ($stores) {
-
+           
             $marketFilter = array();
 
             $marketRules = new MarketRulesRepository();
@@ -835,16 +835,11 @@ class StoreConfigurationController extends Controller {
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function actionSendMail() {
-        
-        
+    public function actionSendMail() 
+    {                
         $mpdf = new Mpdf();
-        $mpdf->WriteHTML($this->renderPartial('mpdf'));
-        $mpdf->Output();
-        exit;
-        
-        $user = CommonHelper::getUser();
-        $userEmail = $user['email'];
+
+        $user = CommonHelper::getUser();        
         $parentEmail = '';
         $userRepository = new UserRepository();
         if ($user['parent_user_id'] != '') {
@@ -856,24 +851,28 @@ class StoreConfigurationController extends Controller {
             }
         }
 
-        echo '<pre>';
-        print_r($user);
-        exit;
-        $mail = new Email();
-        $mail->email = $model->email;
+        $userEmail = 'hardik.devariya@tatvasoft.com';
+        $firstName = !empty($user['first_name'])?$user['first_name']:'';
+        $lastName = !empty($user['last_name'])?$user['last_name']:'';        
+        $userId = !empty($user['id'])?$user['id']:'';
+        $shelfImage = CommonHelper::getPath('upload_path').UPLOAD_PATH_STORE_CONFIG_ORIGINAL_IMAGES.'15480.png';
 
-        $siteUrl = CommonHelper::getPath('site_url');
+        $pdfFileName = CommonHelper::getPath('upload_path').UPLOAD_PATH_STORE_CONFIG_PDF.Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s')).''.$userId.'.pdf';
+
+        $mpdf->WriteHTML($this->renderPartial('shelfPdf', ['image' => $shelfImage], true));
+        $mpdf->Output($pdfFileName, 'F');
+
+        $mail = new Email();
+        $mail->email = $userEmail;
+
         $userString = array();
-        $userString[] = $model->first_name;
-        $userString[] = $model->last_name;
-        $mail->body = $this->renderPartial('mail');
+        $userString[] = $firstName;
+        $userString[] = $lastName;
+        $mail->body = $this->renderPartial('shelfMail');
         $mail->setFrom = Yii::$app->params['supportEmail'];
-        $mail->subject = 'Create User';
-        $mail->set("USERNAME", $model->username);
-        $mail->set("NAME", implode(' ', $userString));
-        if (isset($password)) {
-            $mail->set("PASSWORD", $password);
-        }
+        $mail->subject = 'Store Shelf PDF';
+        $mail->attachment = (Array($pdfFileName));        
+        $mail->set("NAME", implode(' ', $userString));        
         $mail->send();
     }
 

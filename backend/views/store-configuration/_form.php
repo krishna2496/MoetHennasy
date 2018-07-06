@@ -68,7 +68,7 @@ $session = Yii::$app->session;
 										<div class="col-sm-7">
 											<div class="frame-design" id="frame-design">
 												<div class="frame-title text-center">														
-													<h3>Display 1: <span id="getName"></span></h3>
+                                                                                                    <h3>Display: <span id="getName"><?= isset($_SESSION['config']['display_name']) ? $_SESSION['config']['display_name']: ''?></span></h3>
 												</div>
 												<div class="frame-content" id="div-frame-content">
                                                                                                     <div class="top-bg bg-border">
@@ -151,10 +151,5 @@ $('#tab3').click(function(event) {
         return false;
     }
 });
-
-$("document").ready(function(){
-    alert(0);
-    
-})
 
 </script>
