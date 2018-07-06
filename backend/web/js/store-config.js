@@ -374,8 +374,9 @@ jQuery(document).ready(function ()
         $.pjax.reload({container: "#productsBrand", async: false});
         $.pjax.reload({container: "#productsData", async: false});
         $('#tab3').removeAttr('disabled');
-        $("#tab2").removeAttr('disabled');
+       
         $("#third").val(1);
+        $("#displayName").text($("#getName").text());
     }
 
     // With Form Validation Wizard
@@ -460,6 +461,7 @@ jQuery(document).ready(function ()
                             $('#tab3').removeAttr('disabled');
                             $("#tab2").removeAttr('disabled');
                             $("#third").val(1);
+                            $("#displayName").text($("#getName").text());
                         }
                     });
                 }

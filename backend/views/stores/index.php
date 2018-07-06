@@ -88,7 +88,7 @@ if(isset($urlData[1]) && $urlData[1]){
                         [
                            'class' => 'yii\grid\ActionColumn', 'contentOptions'=>[ 'style'=>'width: 15%'],     
                            'header' => 'Actions',
-                           'template' => '{view} {update} {delete}{congiguration}',
+                           'template' => '{view} {update} {delete}{config}{congiguration}',
                            'buttons' => [
                                'view' => function ($url, $model) {
                                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['stores/view/'.$model['id']]);

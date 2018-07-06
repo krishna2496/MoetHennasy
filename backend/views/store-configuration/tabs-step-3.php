@@ -17,7 +17,7 @@ $submitUrl = "store-configuration/save-config-data";
 
 ?>
 
-<div class="col-sm-5 pull-right" id="tab-step-3">
+<div class="col-sm-5 pull-right" id="tab-step-3" style="z-index:5">
     <!-- Frame Filter section -->
     <div class="frame-filter-section">
         <div class="box filter-collapse-panle">
@@ -39,7 +39,7 @@ $submitUrl = "store-configuration/save-config-data";
                     <input type="hidden" name="brand" id="brand" value=""/>
                     <input type="hidden" name="config_id" id="config_id" value="<?= $configId?>"/>
                     <div class="frame-chose-option">
-                        <p class="auto-config"><?= isset($_SESSION['config']['display_name']) ? $_SESSION['config']['display_name'] :''?>- Automatic configuration</p>
+                        <p class="auto-config"><span id="displayName"></span>- Automatic configuration</p>
                         <div class="box box-default shelfs-store">
                             <div class="box-header with-border">
                                 <h3 class="box-title">BRANDS CONFIGURATION </h3>

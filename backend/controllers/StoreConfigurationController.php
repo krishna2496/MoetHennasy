@@ -127,8 +127,8 @@ class StoreConfigurationController extends Controller {
             if ($configData['status']['success'] == 1) {
                 if(!$request->isPjax){
                 $storeData = $configData['data']['stores_config'][0];
-//                echo '<pre>';
-//                print_r($storeData);exit;
+                echo '<pre>';
+                print_r($storeData);exit;
                 $_SESSION['config']['storeId'] = $storeData['store_id'];
 
                 $display_name = $_SESSION['config']['display_name'] = $storeData['config_name'];
@@ -138,7 +138,8 @@ class StoreConfigurationController extends Controller {
                 $_SESSION['config']['height_of_shelves'] = $storeData['shelfDisplay'][0]['height_of_shelves'];
                 $_SESSION['config']['width_of_shelves'] = $storeData['shelfDisplay'][0]['width_of_shelves'];
                 $_SESSION['config']['depth_of_shelves'] = $storeData['shelfDisplay'][0]['depth_of_shelves'];
-                    
+                $ratioWidth = yii::$app->params['rackWidth'][0];
+                $_SESSION['config']['ratio'] =(($ratioWidth)/$storeData['shelfDisplay'][0]['width_of_shelves']);
 
                 $_SESSION['config']['shelvesProducts'] = $products = $storeData['shelfDisplay'][0]['shelf_config'];
                 $productsArray = json_decode($products, true);
@@ -162,7 +163,8 @@ class StoreConfigurationController extends Controller {
                         $filterListing['marketName'] = $marketTitle;
                         $filterListing['brandName'] = $filterListing['brand']['name'];
                         $productsData[$value] = $filterListing;
-                        $_SESSION['config']['ratio'] =5.5;
+                        
+                      
                         $rackProducts[$key][$k]['id'] = $value;
                         $rackProducts[$key][$k]['image'] = CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $filterListing['image']);
                         $rackProducts[$key][$k]['height'] = $filterListing['height'];
