@@ -22,6 +22,7 @@ use common\repository\UploadRepository;
 use common\repository\StoreConfigRepository;
 use common\repository\UserRepository;
 use Mpdf\Mpdf;
+use common\components\Email;
 
 class StoreConfigurationController extends Controller {
 
