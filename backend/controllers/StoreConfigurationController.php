@@ -123,7 +123,7 @@ class StoreConfigurationController extends Controller {
             $configData = $configRepository->listing($storeFilter);
             
             $request = Yii::$app->request;
-            $brandThumbId='';
+            $brandThumbId= $display_name ='';
             if ($configData['status']['success'] == 1) {
                 if(!$request->isPjax){
                 $storeData = $configData['data']['stores_config'][0];
@@ -131,7 +131,7 @@ class StoreConfigurationController extends Controller {
 //                print_r($storeData);exit;
                 $_SESSION['config']['storeId'] = $storeData['store_id'];
 
-                $_SESSION['config']['display_name'] = $storeData['config_name'];
+                $display_name = $_SESSION['config']['display_name'] = $storeData['config_name'];
                 $brandThumbId = $storeData['shelfDisplay'][0]['brand_thumb_id'];
               
                 $_SESSION['config']['no_of_shelves'] = $storeData['shelfDisplay'][0]['no_of_shelves'];
@@ -253,6 +253,7 @@ class StoreConfigurationController extends Controller {
                         'is_update' => 1,
                         'brandThumbId' => $brandThumbId,
                         'configId' => $configId,
+                        'display_name' => $display_name
                        
                        
                  ]);
