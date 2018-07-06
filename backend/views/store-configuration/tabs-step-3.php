@@ -104,6 +104,7 @@ $submitUrl = "store-configuration/save-config-data";
                                                 </div>
                                             </div>
                                             <div class="collapse" id="collapseExample<?= $key ?>">
+                                                <div class="box-body" style="display: block !important;">
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <p class="direction-text">From left to right</p>
@@ -195,6 +196,7 @@ $submitUrl = "store-configuration/save-config-data";
                                                     </div>
                                                 <?php }
                                                 ?>
+                                                </div>
                                             </div>
                                         </div>
                                         <?php
