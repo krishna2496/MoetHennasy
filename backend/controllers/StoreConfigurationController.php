@@ -23,6 +23,7 @@ use common\repository\StoreConfigRepository;
 use common\repository\UserRepository;
 use Mpdf\Mpdf;
 use common\components\Email;
+use common\models\User;
 
 class StoreConfigurationController extends Controller {
 
@@ -35,9 +36,14 @@ class StoreConfigurationController extends Controller {
                 ],
                 'rules' => [
                         [
-                        'actions' => ['index', 'listing', 'send-mail', 'create', 'update', 'update-config', 'view', 'save-image', 'delete', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data'],
+                        'actions' => ['index', 'listing', 'update-config', 'delete'],
                         'allow' => true,
                         'roles' => ['&'],
+                    ],
+                    [
+                        'actions' => ['send-mail', 'create', 'view', 'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data'],
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
                 ],
             ],
@@ -124,11 +130,20 @@ class StoreConfigurationController extends Controller {
             
             $request = Yii::$app->request;
             $brandThumbId= $display_name ='';
+            $reviewFlag = 0;
             if ($configData['status']['success'] == 1) {
                 if(!$request->isPjax){
                 $storeData = $configData['data']['stores_config'][0];
-                echo '<pre>';
-                print_r($storeData);exit;
+//                echo '<pre>';
+//                print_r($storeData);exit;
+                
+                $userData = new User();
+               
+                $userDetail = User::findOne(['id' => $storeData['created_by']]);
+                $configCreatedByRole = $userDetail['role_id'];
+                $configCreatedByParent = ($userDetail['parent_user_id'] == '' ) ? 0 : $userDetail['parent_user_id'];
+               
+                $reviewFlag= 1;
                 $_SESSION['config']['storeId'] = $storeData['store_id'];
 
                 $display_name = $_SESSION['config']['display_name'] = $storeData['config_name'];
@@ -255,7 +270,8 @@ class StoreConfigurationController extends Controller {
                         'is_update' => 1,
                         'brandThumbId' => $brandThumbId,
                         'configId' => $configId,
-                        'display_name' => $display_name
+                        'display_name' => $display_name,
+                        'reviewFlag' => $reviewFlag
                        
                        
                  ]);
@@ -367,6 +383,7 @@ class StoreConfigurationController extends Controller {
                     'is_update' => 0,
                     'brandThumbId' => 0,
                     'configId' => 0,
+                    'reviewFlag' => 0,
                    
             ]);
         } else {

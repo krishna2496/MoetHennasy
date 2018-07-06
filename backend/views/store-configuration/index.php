@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'is_update'=>$is_update,
                 'configId' => $configId,
                 'brandThumbId' => $brandThumbId,
+                'reviewFlag' => $reviewFlag
                 
     ]) ?>
 

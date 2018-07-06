@@ -301,6 +301,24 @@ jQuery(document).ready(function ()
 
     $("#tab-step-3 .next").click(function (e)
     {
+        
+        if(reviewFlag == 1){
+            $('#modalReview').modal('show');
+            $('#modalReview').on('show.bs.modal', function (event)
+            {
+                var dataURL = $(event.relatedTarget).attr('data-href');
+               
+
+                $('#modal-content').load(dataURL, function ()
+                {
+
+
+
+                });
+
+            });
+            return false;
+        }
         var node = document.getElementById('frame-design');
 
         var options = {quality: 1};
@@ -315,7 +333,7 @@ jQuery(document).ready(function ()
                 {
                     if (result.flag == 1) {
                         $("#thumb_image").val(result.name);
-                        $("#step_3").submit();
+//                        $("#step_3").submit();
                         return false;
                     } else {
                         alert("Please Try again later");

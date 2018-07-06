@@ -21,9 +21,10 @@ $session = Yii::$app->session;
 <script>
  
     var isUpdate = '<?php echo $is_update; ?>';
-    var brandThumbId = <?php echo $brandThumbId ?>;
+    var brandThumbId = '<?php echo $brandThumbId ?>';
     var productArry = [];
     var productObject = {};
+    var reviewFlag = '<?php echo  $reviewFlag; ?>';
 </script>
 <div class="row">
 	<div class="col-sm-12 stepwizard-content-section">
@@ -153,3 +154,15 @@ $('#tab3').click(function(event) {
 });
 
 </script>
+<?php
+yii\bootstrap\Modal::begin([
+    'headerOptions' => ['id' => 'modalHeader'],
+    'id' => 'modalReview',
+    'size' => 'modal-lg',
+    //keeps from closing modal with esc key or by clicking out of the modal.
+    // user must click cancel or X to close
+    'clientOptions' => ['backdrop' => 'static', 'keyboard' => FALSE]
+]);
+echo "<div id='modalContent'></div>";
+yii\bootstrap\Modal::end();
+?>
