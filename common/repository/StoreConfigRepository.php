@@ -9,13 +9,31 @@ use common\models\ShelfDisplayBrand;
 use common\models\ShelfDisplay;
 use common\models\ConfigFeedback;
 use yii\web\NotFoundHttpException;
+use common\models\User;
+use common\models\Stores;
 
 class StoreConfigRepository extends Repository {
 
-    public function listing($data = array()) {
+    public function listing($data = array()) 
+    {
+        $currentUser = CommonHelper::getUser();
         $this->apiCode = 1;
         $query = StoreConfiguration::find()->joinWith(['shelfDisplay', 'configFeedBack','stores']);
+        
+        $stores = Stores::find()->where(['id' => $data['store_id']])->asArray()->one();
+        if(!empty($stores))
+        {
+            $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
 
+            $userObj = new User;
+            $childUser = $userObj->getAllChilds(array($currentUser->id));
+            $childUser[] = $currentUser->id;
+
+            if (!empty($childUser) && !in_array($assign_to, $childUser)) {
+                throw new NotFoundHttpException('The requested page does not exist.');
+            }
+        }
+        
         if (isset($data['config_id']) && $data['config_id']) {
             $query->andWhere(['store_configuration.id' => $data['config_id']]);
         }
@@ -286,20 +304,36 @@ class StoreConfigRepository extends Repository {
         return $this->response();
     }
     
-    public function createRating($data = array()){
+    public function createRating($data = array())
+    {
        $returnData = array();
        $this->apiCode = 0;
+       $currentUser = CommonHelper::getUser();
        
-       $storeModel = StoreConfiguration::findOne($data['config_id']);
-
+        $storeModel = StoreConfiguration::findOne($data['config_id']);
+       
         if (!$storeModel) {
             throw new NotFoundHttpException('The requested page does not exist.');
         } 
       
-       if(isset($data['star_ratings']) && ($data['star_ratings'])){
-           $storeModel->star_ratings = $data['star_ratings'];
-       }
-       if ($storeModel->validate(false)) {
+        $stores = Stores::find()->where(['id' => $storeModel['store_id']])->asArray()->one();
+        if(!empty($stores))
+        {
+            $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
+
+            $userObj = new User;
+            $childUser = $userObj->getAllChilds(array($currentUser->id));
+            $childUser[] = $currentUser->id;
+
+            if (!empty($childUser) && !in_array($assign_to, $childUser)) {
+                throw new NotFoundHttpException('The requested page does not exist.');
+            }
+        }
+        
+        if(isset($data['star_ratings']) && ($data['star_ratings'])){
+            $storeModel->star_ratings = $data['star_ratings'];
+        }
+        if ($storeModel->validate(false)) {
 
             if ($storeModel->save(false)) {
                 $this->apiData = $returnData;
@@ -310,14 +344,13 @@ class StoreConfigRepository extends Repository {
                 $this->apiMessage = Yii::t('app', 'Something went wrong.');
             }
        
-       }else{
-            $this->apiCode = 0;
-            if (isset($model->errors) && $model->errors) {
-                $this->apiMessage = $model->errors;
-            }
-       }
-       return $this->response();
-
+        }else{
+             $this->apiCode = 0;
+             if (isset($model->errors) && $model->errors) {
+                 $this->apiMessage = $model->errors;
+             }
+        }
+        return $this->response();
 }
 
     private function getConfigObject($configId){

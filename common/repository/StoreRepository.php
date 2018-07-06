@@ -5,10 +5,13 @@ namespace common\repository;
 use Yii;
 use common\helpers\CommonHelper;
 use common\models\Stores;
+use common\models\User;
 
-class StoreRepository extends Repository {
+class StoreRepository extends Repository
+{
 
-    public function storeList($data = array()) {
+    public function storeList($data = array()) 
+    {
         
         $this->apiCode = 1;
         $query = Stores::find()->joinWith(['market','marketSegment','user','city','country','province']);
@@ -53,7 +56,8 @@ class StoreRepository extends Repository {
         return $this->response();
     }
 
-    public function createStore($data = array()) {
+    public function createStore($data = array()) 
+    {
         $this->apiCode = 0;
         $model = new Stores;
 
@@ -113,13 +117,26 @@ class StoreRepository extends Repository {
         return $this->response();
     }
 
-    public function updateStore($data = array()) {
+    public function updateStore($data = array()) 
+    {
         $this->apiCode = 0;
         $model = Stores::findOne($data['id']);
+        $currentUser = CommonHelper::getUser();
+        
         if(!$model){
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+        
+        $assign_to = !empty($model['assign_to']) ? $model['assign_to'] : '';
 
+        $userObj = new User;
+        $childUser = $userObj->getAllChilds(array($currentUser->id));
+        $childUser[] = $currentUser->id;
+
+        if (!empty($childUser) && !in_array($assign_to, $childUser)) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        
         if(isset($data['name'])){
             $model->name = $data['name'];
         }

@@ -153,7 +153,8 @@ class StoresConfigController extends BaseApiController {
         return $returnData;
     }
     
-    public function actionListing() {
+    public function actionListing() 
+    {
         $storeConfig = new StoreConfigRepository();
        
         $data = Yii::$app->request->post();
