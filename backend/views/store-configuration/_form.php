@@ -162,7 +162,7 @@ yii\bootstrap\Modal::begin([
     'size' => 'modal-lg',
     //keeps from closing modal with esc key or by clicking out of the modal.
     // user must click cancel or X to close
-    'clientOptions' => ['backdrop' => 'static', 'keyboard' => true]
+    'clientOptions' => ['keyboard' => true]
 ]);
 echo "<div id='content'></div>";
 yii\bootstrap\Modal::end();
