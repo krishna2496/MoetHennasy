@@ -20,17 +20,20 @@ class StoreConfigRepository extends Repository {
         $this->apiCode = 1;
         $query = StoreConfiguration::find()->joinWith(['shelfDisplay', 'configFeedBack','stores']);
         
-        $stores = Stores::find()->where(['id' => $data['store_id']])->asArray()->one();
-        if(!empty($stores))
+        if(!empty($data['store_id']))
         {
-            $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
+            $stores = Stores::find()->where(['id' => $data['store_id']])->asArray()->one();
+            if(!empty($stores))
+            {
+                $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
 
-            $userObj = new User;
-            $childUser = $userObj->getAllChilds(array($currentUser->id));
-            $childUser[] = $currentUser->id;
+                $userObj = new User;
+                $childUser = $userObj->getAllChilds(array($currentUser->id));
+                $childUser[] = $currentUser->id;
 
-            if (!empty($childUser) && !in_array($assign_to, $childUser)) {
-                throw new NotFoundHttpException('The requested page does not exist.');
+                if (!empty($childUser) && !in_array($assign_to, $childUser)) {
+                    throw new NotFoundHttpException('The requested page does not exist.');
+                }
             }
         }
         
