@@ -58,7 +58,8 @@ class StoreConfigurationController extends Controller {
         ];
     }
 
-    public function actionSaveConfigData() {
+    public function actionSaveConfigData() 
+    {
         $post = yii::$app->request->post();
         $shelfThumb = isset($post['thumb_image']) ? $post['thumb_image'] : '';
         $brandId = isset($post['brand']) ? $post['brand'] : '';
@@ -132,11 +133,26 @@ class StoreConfigurationController extends Controller {
         return $returnData;
     }
 
-    public function actionUpdateConfig($id, $storeId) {
+    public function actionUpdateConfig($id, $storeId) 
+    {
         $configId = $id;
         $stores = Stores::find()->where(['id' => $storeId])->asArray()->one();
+        $currentUser = CommonHelper::getUser();
 
-        if ($stores) {
+        if ($stores) 
+        {
+            if ($currentUser->role_id != Yii::$app->params['superAdminRole']) {
+                $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
+
+                $userObj = new User;
+                $childUser = $userObj->getAllChilds(array($currentUser->id));
+                $childUser[] = $currentUser->id;
+
+                if (!empty($childUser) && !in_array($assign_to, $childUser)) {
+                    throw new NotFoundHttpException('The requested page does not exist.');
+                }
+            }
+            
             //CONGig Data
             $storeFilter = array();
             $storeFilter['store_id'] = $storeId;
@@ -300,10 +316,25 @@ class StoreConfigurationController extends Controller {
         }
     }
 
-    public function actionListing($id) {
-
+    public function actionListing($id)
+    {
         $stores = Stores::findOne($id);
-        if ($stores) {
+        $currentUser = CommonHelper::getUser();
+        
+        if ($stores) 
+        {
+            if ($currentUser->role_id != Yii::$app->params['superAdminRole']) {
+                $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
+
+                $userObj = new User;
+                $childUser = $userObj->getAllChilds(array($currentUser->id));
+                $childUser[] = $currentUser->id;
+
+                if (!empty($childUser) && !in_array($assign_to, $childUser)) {
+                    throw new NotFoundHttpException('The requested page does not exist.');
+                }
+            }
+            
             $filters = Yii::$app->request->queryParams;
             if (!isset($filters['limit'])) {
                 $filters['limit'] = Yii::$app->params['pageSize'];
@@ -324,12 +355,26 @@ class StoreConfigurationController extends Controller {
         }
     }
 
-    public function actionIndex($id) {
+    public function actionIndex($id) 
+    {
         $storeId = $id;
         $stores = Stores::find()->where(['id' => $id])->asArray()->one();
+        $currentUser = CommonHelper::getUser();
 
-        if ($stores) {
-           
+        if ($stores) 
+        {
+            if ($currentUser->role_id != Yii::$app->params['superAdminRole']) {
+                $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
+
+                $userObj = new User;
+                $childUser = $userObj->getAllChilds(array($currentUser->id));
+                $childUser[] = $currentUser->id;
+
+                if (!empty($childUser) && !in_array($assign_to, $childUser)) {
+                    throw new NotFoundHttpException('The requested page does not exist.');
+                }
+            }
+            
             $marketFilter = array();
 
             $marketRules = new MarketRulesRepository();
@@ -912,6 +957,11 @@ class StoreConfigurationController extends Controller {
         $mail->attachment = (Array($pdfFileName));        
         $mail->set("NAME", implode(' ', $userString));        
         $mail->send();
+        
+        if(file_exists($pdfFileName))
+        {
+            @unlink($pdfFileName);
+        }
     }
 
 }
