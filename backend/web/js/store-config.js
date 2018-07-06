@@ -306,13 +306,53 @@ jQuery(document).ready(function ()
 //            $('#modalReview').modal('show');
             var dataURL= reviewStoreUrl;
             $('#modalReview').modal('show').find('#modalContent').load(dataURL, function (){
+                
+//                    $('.toggle').bootstrapToggle();
+                
                  $('input[type="checkbox"]').iCheck({
                     checkboxClass: 'icheckbox_square-blue',
                     radioClass: 'iradio_square-blue',
                     increaseArea: '20%'
                 });
+          
+                $('#submitQuestion').on('click', function (e)
+                {
+                    e.stopImmediatePropagation();
+
+                    var remove = $('#remove').is(':checked');
+                    var edit = $('#edit').is(':checked');
+                    var product = $("#products").val();
+                 
+                    var data = {remove: remove, edit: edit, product: product, dataKey: dataKey, dataShelves: dataShelves};
+                    moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/edit-products", data, 'post').then(function (result) {
+
+                        numOfSelves = $("#ex6SliderVal").val();
+                        if (result.flag == 1) {
+                            if ((result.action == 'edit')) {
+
+                                for (i = 0; i < numOfSelves; i++) {
+                                    $("#canvas-container-" + i).empty();
+                                }
+                                $.pjax.reload({container: "#productsData", async: false});
+                            }
+                            if (result.action == 'remove') {
+                                for (i = 0; i < numOfSelves; i++) {
+                                     $("#canvas-container-" + i).empty();
+                                }
+                                $.pjax.reload({container: "#productsData", async: false});
+                            }
+                            $('.edit-modal').modal('hide');
+                        } else {
+
+                            alert(result.msg);
+                        }
+
+                    }, function (result) {
+                        alert('Fail');
+                    });
+                });
                 
-                  $(".toggle").toggle();
+                $(".toggle").toggle();
             });
             
             
