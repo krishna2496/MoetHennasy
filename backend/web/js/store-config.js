@@ -266,6 +266,7 @@ $("#dispaly_name").on('keyup', function () {
     $("#getName").text($("#dispaly_name").val());
 });
 
+
 function changeBrand(data) {
 
     var id = data.id;
@@ -505,5 +506,15 @@ $(document).on('ready pjax:success', function ()
             $(this).children('i').addClass("fa-plus");
         }
     });
+    if(brandThumbId != 0){
+        var  id= brandThumbId;
+        var imgSrc = $('.brand-images[id="'+id+'"]').attr('src');
+        $(".display" + id).css('display', 'block');
+        $(".display" + id).addClass('displayBlock');
+        $('img.brand-selected').not(".display" + id).css('display', 'none');
+        $('img.brand-selected').not(".display" + id).removeClass('displayBlock');
+        $('#brandImageHolder').html('<img src="' + imgSrc + '" alt="Select Brand" id="brandImage">');
+        $("#brand").val(id);
+}
     //
 });

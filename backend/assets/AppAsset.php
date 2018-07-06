@@ -41,6 +41,7 @@ class AppAsset extends AssetBundle
         'theme/dist/js/adminlte.min.js',
         //'theme/dist/js/demo.js',
         'theme/dist/js/jquery.validate.min.js',
+        'theme/dist/js/dom-to-image.js',
         'theme/bower_components/bootstrap-slider/bootstrap-slider.js',
         'theme/plugins/rating/star-rating.min.js',
         'theme/bower_components/select2/dist/js/select2.min.js',

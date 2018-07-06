@@ -21,7 +21,7 @@ $session = Yii::$app->session;
 <script>
  
     var isUpdate = '<?php echo $is_update; ?>';
-  
+    var brandThumbId = <?php echo $brandThumbId ?>;
     var productArry = [];
     var productObject = {};
 </script>
@@ -138,6 +138,8 @@ $('#tab2').click(function(event) {
     }
 });
 
+
+
 $('#tab1').click(function(event) {
     if ($(this).attr('disabled')) {
         return false;
@@ -149,5 +151,10 @@ $('#tab3').click(function(event) {
         return false;
     }
 });
+
+$("document").ready(function(){
+    alert(0);
+    
+})
 
 </script>

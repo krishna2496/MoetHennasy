@@ -72,8 +72,9 @@ class StoreConfigurationController extends Controller {
             ),
         );
 
-        if (isset($post['config_id']) && ($post['config_id'] != '')) {
-            $returnData = $storeConfig->updateConfig($configData);
+        if (isset($post['config_id']) && ($post['config_id'] != 0)) {
+           $configData['config_id'] = $post['config_id'];
+           $returnData = $storeConfig->updateConfig($configData);
         } else {
             $returnData = $storeConfig->createConfig($configData);
         }
@@ -119,7 +120,11 @@ class StoreConfigurationController extends Controller {
             $configRepository = new StoreConfigRepository();
             $cataloguesRepository = new CataloguesRepository();
             $configData = $configRepository->listing($storeFilter);
+            
+            $request = Yii::$app->request;
+            $brandThumbId='';
             if ($configData['status']['success'] == 1) {
+                if(!$request->isPjax){
                 $storeData = $configData['data']['stores_config'][0];
 //                echo '<pre>';
 //                print_r($storeData);exit;
@@ -127,7 +132,7 @@ class StoreConfigurationController extends Controller {
 
                 $_SESSION['config']['display_name'] = $storeData['config_name'];
                 $brandThumbId = $storeData['shelfDisplay'][0]['brand_thumb_id'];
-
+              
                 $_SESSION['config']['no_of_shelves'] = $storeData['shelfDisplay'][0]['no_of_shelves'];
                 $_SESSION['config']['height_of_shelves'] = $storeData['shelfDisplay'][0]['height_of_shelves'];
                 $_SESSION['config']['width_of_shelves'] = $storeData['shelfDisplay'][0]['width_of_shelves'];
@@ -177,17 +182,12 @@ class StoreConfigurationController extends Controller {
 
                 $_SESSION['config']['products'] = $productsData;
                 $_SESSION['config']['rackProducts'] = $rackProducts;
+                }
                 $marketFilter = array();
 
                 $marketRules = new MarketRulesRepository();
                 $marketFilter['market_id'] = $stores['market_id'];
                 $marketFilter['market_segment_id'] = $stores['market_segment_id'];
-
-
-//                echo '<pre>';
-//                print_r($brandsArray);
-//                exit;
-
                 $marketRuleData = $marketRules->listing($marketFilter);
 
                 $rulesArray = array();
@@ -243,15 +243,18 @@ class StoreConfigurationController extends Controller {
 
                 $searchModel = new CataloguesSearch();
                 $dataProvider = $searchModel->search($filterProduct);
-
+               
                 return $this->render('index', [
                         'searchModel' => $searchModel,
                         'dataProvider' => $dataProvider,
                         'brand' => $brand,
                         'store_id' => $storeId,
                         'is_update' => 1,
-                        'configId' => $configId
-                ]);
+                        'brandThumbId' => $brandThumbId,
+                        'configId' => $configId,
+                       
+                       
+                 ]);
             } else {
                 throw new NotFoundHttpException('The requested page does not exist.');
             }
@@ -358,7 +361,9 @@ class StoreConfigurationController extends Controller {
                     'brand' => $brand,
                     'store_id' => $id,
                     'is_update' => 0,
+                    'brandThumbId' => 0,
                     'configId' => 0,
+                   
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -661,6 +666,7 @@ class StoreConfigurationController extends Controller {
                   
                     $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
                 }
+                
             }
         }
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -781,7 +787,6 @@ class StoreConfigurationController extends Controller {
         if (in_array($ruleValue, $rulesArray)) {
             return true;
         } else {
-
             return false;
         }
     }
