@@ -306,7 +306,13 @@ jQuery(document).ready(function ()
 //            $('#modalReview').modal('show');
             var dataURL= reviewStoreUrl;
             $('#modalReview').modal('show').find('#modalContent').load(dataURL, function (){
+                 $('input[type="checkbox"]').iCheck({
+                    checkboxClass: 'icheckbox_square-blue',
+                    radioClass: 'iradio_square-blue',
+                    increaseArea: '20%'
+                });
                 
+                  $(".toggle").toggle();
             });
             
             
