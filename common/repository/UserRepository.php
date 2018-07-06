@@ -122,6 +122,7 @@ class UserRepository extends Repository
     }
 
     public function userList($data = array()){
+       
         $this->apiCode = 1;
         $query = User::find()->joinWith(['role','market'])->andWhere(['!=','role_id',Yii::$app->params['superAdminRole']]);
         if(isset($data['role_id']) && $data['role_id']){

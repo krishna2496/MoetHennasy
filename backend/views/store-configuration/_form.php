@@ -131,7 +131,7 @@ $session = Yii::$app->session;
         if(isUpdate == 1){
         var reviewStoreUrl = '<?= Url::to(['store-configuration/review-store/'.$configId]); ?>';
          }
-        
+        var questionUrl = '<?= Url::to(['store-configuration/feedback/'.$configId]); ?>';
 $('#tab2').click(function(event) {
     if ($(this).attr('disabled')) {
         return false;
@@ -162,8 +162,8 @@ yii\bootstrap\Modal::begin([
     'size' => 'modal-lg',
     //keeps from closing modal with esc key or by clicking out of the modal.
     // user must click cancel or X to close
-    'clientOptions' => ['backdrop' => 'static', 'keyboard' => FALSE]
+    'clientOptions' => ['backdrop' => 'static', 'keyboard' => true]
 ]);
-echo "<div id='modalContent'></div>";
+echo "<div id='content'></div>";
 yii\bootstrap\Modal::end();
 ?>

@@ -301,91 +301,101 @@ jQuery(document).ready(function ()
 
     $("#tab-step-3 .next").click(function (e)
     {
-        
-        if(reviewFlag == 1){
+
+        if (reviewFlag == 1) {
+             alert("in3");
+              setTimeout(function () {
+                $('.modal-backdrop').css('z-index', 5);
+            }, 10);
 //            $('#modalReview').modal('show');
-            var dataURL= reviewStoreUrl;
-            $('#modalReview').modal('show').find('#modalContent').load(dataURL, function (){
-                
-//                    $('.toggle').bootstrapToggle();
-                
-                 $('input[type="checkbox"]').iCheck({
-                    checkboxClass: 'icheckbox_square-blue',
-                    radioClass: 'iradio_square-blue',
-                    increaseArea: '20%'
-                });
-          
+            var url = reviewStoreUrl;
+            $('#modalReview').modal('show').find('#content').load(url, function () {
+                alert("in");
+                $("#rating").hide();
+                $('.toggle').bootstrapToggle();
+
+
                 $('#submitQuestion').on('click', function (e)
                 {
+                    var rating = feedBack = 0;
                     e.stopImmediatePropagation();
 
-                    var remove = $('#remove').is(':checked');
-                    var edit = $('#edit').is(':checked');
-                    var product = $("#products").val();
-                 
-                    var data = {remove: remove, edit: edit, product: product, dataKey: dataKey, dataShelves: dataShelves};
-                    moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/edit-products", data, 'post').then(function (result) {
+                    if ($('#review').is(':visible')) {
+                        var arrayData = [];
+                        $("input:checkbox[name=answer]:checked").each(function () {
+                            console.log(this);
+                            arrayData.push($(this).attr('ans'));
+                        });
 
-                        numOfSelves = $("#ex6SliderVal").val();
-                        if (result.flag == 1) {
-                            if ((result.action == 'edit')) {
+                        var action = 'feedback';
+                        var feedBack = 1;
+                        var data = {action: action, data: arrayData};
+                    } else {
+                        var star = $('span.filled-stars').width();
+                        var starRating = parseInt(star) / 32;
 
-                                for (i = 0; i < numOfSelves; i++) {
-                                    $("#canvas-container-" + i).empty();
-                                }
-                                $.pjax.reload({container: "#productsData", async: false});
+                        var action = 'rating';
+                        var rating = 1;
+                        var data = {action: action, data: starRating};
+                    }
+
+                    moet.ajax(questionUrl, data, 'post').then(function (result) {
+                        $("#ratings-rating").rating({min: 0, max: 10, step: 1, stars: 10, size: 'xs'});
+
+                        if (result == 1) {
+                            if (feedBack == 1) {
+                                alert("Feeback Saved Succesfully");
+                                $("#review").hide();
+                                $("#rating").show();
+                            } else {
+                                alert("Rating Saved Succesfully");
+                                 uploadConfigImage();
                             }
-                            if (result.action == 'remove') {
-                                for (i = 0; i < numOfSelves; i++) {
-                                     $("#canvas-container-" + i).empty();
-                                }
-                                $.pjax.reload({container: "#productsData", async: false});
-                            }
-                            $('.edit-modal').modal('hide');
                         } else {
-
-                            alert(result.msg);
+                            alert("Please Try again later");
                         }
 
                     }, function (result) {
                         alert('Fail');
                     });
                 });
-                
-                $(".toggle").toggle();
+
+
             });
-            
-            
-            
             return false;
+        }else{
+            uploadConfigImage();
         }
-        var node = document.getElementById('frame-design');
 
-        var options = {quality: 1};
-
-        domtoimage.toPng(node, options).then(function (dataUrl)
-        {
-            $.ajax({
-                type: 'POST',
-                url: uploadSelves,
-                data: {'imageData': dataUrl},
-                success: function (result)
-                {
-                    if (result.flag == 1) {
-                        $("#thumb_image").val(result.name);
-//                        $("#step_3").submit();
-                        return false;
-                    } else {
-                        alert("Please Try again later");
-                    }
-                }
-            });
-            return false;
-        }).catch(function (error) {
-            console.error('oops, something went wrong!', error);
-        });
-        return false;
     });
+    
+    function uploadConfigImage(){
+         var node = document.getElementById('frame-design');
+                                var options = {quality: 1};
+
+                                domtoimage.toPng(node, options).then(function (dataUrl)
+                                {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: uploadSelves,
+                                        data: {'imageData': dataUrl},
+                                        success: function (result)
+                                        {
+                                            if (result.flag == 1) {
+                                                $("#thumb_image").val(result.name);
+                        $("#step_3").submit();
+                                                return false;
+                                            } else {
+                                                alert("Please Try again later");
+                                            }
+                                        }
+                                    });
+                                    return false;
+                                }).catch(function (error) {
+                                    console.error('oops, something went wrong!', error);
+                                });
+                                return false;
+    }
 
     $("#tab-step-1 .reset-btn").click(function (e)
     {
@@ -432,7 +442,7 @@ jQuery(document).ready(function ()
         $.pjax.reload({container: "#productsBrand", async: false});
         $.pjax.reload({container: "#productsData", async: false});
         $('#tab3').removeAttr('disabled');
-       
+
         $("#third").val(1);
         $("#displayName").text($("#getName").text());
     }
@@ -566,15 +576,15 @@ $(document).on('ready pjax:success', function ()
             $(this).children('i').addClass("fa-plus");
         }
     });
-    if(brandThumbId != 0){
-        var  id= brandThumbId;
-        var imgSrc = $('.brand-images[id="'+id+'"]').attr('src');
+    if (brandThumbId != 0) {
+        var id = brandThumbId;
+        var imgSrc = $('.brand-images[id="' + id + '"]').attr('src');
         $(".display" + id).css('display', 'block');
         $(".display" + id).addClass('displayBlock');
         $('img.brand-selected').not(".display" + id).css('display', 'none');
         $('img.brand-selected').not(".display" + id).removeClass('displayBlock');
         $('#brandImageHolder').html('<img src="' + imgSrc + '" alt="Select Brand" id="brandImage">');
         $("#brand").val(id);
-}
+    }
     //
 });
