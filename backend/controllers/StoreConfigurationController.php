@@ -25,7 +25,7 @@ use Mpdf\Mpdf;
 use common\components\Email;
 use common\models\User;
 use common\models\Questions;
-
+use common\models\ConfigFeedback;
 
 class StoreConfigurationController extends Controller {
 
@@ -42,8 +42,8 @@ class StoreConfigurationController extends Controller {
                         'allow' => true,
                         'roles' => ['&'],
                     ],
-                    [
-                        'actions' => ['send-mail', 'create', 'view','review-store' ,'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data'],
+                        [
+                        'actions' => ['send-mail', 'feedback', 'create', 'view', 'review-store', 'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -58,8 +58,7 @@ class StoreConfigurationController extends Controller {
         ];
     }
 
-    public function actionSaveConfigData() 
-    {
+    public function actionSaveConfigData() {
         $post = yii::$app->request->post();
         $shelfThumb = isset($post['thumb_image']) ? $post['thumb_image'] : '';
         $brandId = isset($post['brand']) ? $post['brand'] : '';
@@ -83,8 +82,8 @@ class StoreConfigurationController extends Controller {
         );
 
         if (isset($post['config_id']) && ($post['config_id'] != 0)) {
-           $configData['config_id'] = $post['config_id'];
-           $returnData = $storeConfig->updateConfig($configData);
+            $configData['config_id'] = $post['config_id'];
+            $returnData = $storeConfig->updateConfig($configData);
         } else {
             $returnData = $storeConfig->createConfig($configData);
         }
@@ -97,22 +96,78 @@ class StoreConfigurationController extends Controller {
         return $this->redirect(['store-configuration/listing/' . $storeId]);
     }
 
-    public function actionReviewStore($id){
-      $storeConfig =new StoreConfigRepository();
-      $filter =array();
-      $filter['config_id']=$id;
-      $configData = $storeConfig->listing($filter);
-      
-       $questionsModel = new Questions();
-       $questions = $questionsModel::find()->indexBy('id')->asArray()->all();
-      
-    return $this->renderPartial('review-content', [
+    public function actionReviewStore($id) {
+        $storeConfig = new StoreConfigRepository();
+        $filter = array();
+        $filter['config_id'] = $id;
+        $configData = $storeConfig->listing($filter);
+
+        $questionsModel = new Questions();
+        $questions = $questionsModel::find()->indexBy('id')->asArray()->all();
+
+        return $this->renderPartial('review-content', [
                 'questions' => $questions,
                 ], true);
-     
     }
 
-        public function actionSaveImage() {
+    public function actionFeedback($id) {
+        $config_id = $id;
+        $flag =0;
+        $post = yii::$app->request->post();
+        
+        $user = CommonHelper::getUser();
+        $questionArray = isset($post['data']) ? $post['data'] : array();
+        $ansArray = array();
+        $questionsModel = new Questions();
+        $questions = $questionsModel::find()->indexBy('id')->asArray()->all();
+
+
+        
+   
+        if ($post['action'] == 'feedback') {
+            foreach ($questions as $key => $value) {
+            $ansArray[$key]['question_id'] = $value['id'];
+            if (in_array($value['id'], $questionArray)) {
+                $ansArray[$key]['ans'] = 1;
+            } else {
+                $ansArray[$key]['ans'] = 0;
+            }
+        }
+        
+                $questionModel = new ConfigFeedback();
+                ConfigFeedback::deleteAll(['config_id' => $config_id]);
+                foreach ($ansArray as $key => $value) {
+
+                    $questionModel = new ConfigFeedback();
+                    $questionModel->config_id = $config_id;
+                    $questionModel->que_id = $value['question_id'];
+                    $questionModel->answer = $value['ans'];
+                    $questionModel->reviewed_by = $user['id'];
+                    $questionModel->save(false);
+                }
+               
+          
+             $flag =1;
+        }
+        
+        
+        if ($post['action'] == 'rating') {
+            
+            $raingRepository = new StoreConfigRepository();
+            $data['config_id'] = $config_id;
+            $data['star_ratings'] = $post['data'];
+            $returnData =$raingRepository->createRating($data);
+            if($returnData['status']['success'] == 1){
+                  Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+                  $flag =1;
+           }
+        }
+        
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return $flag;
+    }
+
+    public function actionSaveImage() {
         $returnData = array();
         $returnData['flag'] = 0;
         $post = yii::$app->request->post();
@@ -133,14 +188,12 @@ class StoreConfigurationController extends Controller {
         return $returnData;
     }
 
-    public function actionUpdateConfig($id, $storeId) 
-    {
+    public function actionUpdateConfig($id, $storeId) {
         $configId = $id;
         $stores = Stores::find()->where(['id' => $storeId])->asArray()->one();
         $currentUser = CommonHelper::getUser();
 
-        if ($stores) 
-        {
+        if ($stores) {
             if ($currentUser->role_id != Yii::$app->params['superAdminRole']) {
                 $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
 
@@ -152,7 +205,7 @@ class StoreConfigurationController extends Controller {
                     throw new NotFoundHttpException('The requested page does not exist.');
                 }
             }
-            
+
             //CONGig Data
             $storeFilter = array();
             $storeFilter['store_id'] = $storeId;
@@ -160,79 +213,79 @@ class StoreConfigurationController extends Controller {
             $configRepository = new StoreConfigRepository();
             $cataloguesRepository = new CataloguesRepository();
             $configData = $configRepository->listing($storeFilter);
-            
+
             $request = Yii::$app->request;
-            $brandThumbId= $display_name ='';
+            $brandThumbId = $display_name = '';
             $reviewFlag = 0;
             if ($configData['status']['success'] == 1) {
-                if(!$request->isPjax){
-                $storeData = $configData['data']['stores_config'][0];
+                if (!$request->isPjax) {
+                    $storeData = $configData['data']['stores_config'][0];
 //                echo '<pre>';
 //                print_r($storeData);exit;
-                
-                $userData = new User();
-               
-                $userDetail = User::findOne(['id' => $storeData['created_by']]);
-                $configCreatedByRole = $userDetail['role_id'];
-                $configCreatedByParent = ($userDetail['parent_user_id'] == '' ) ? 0 : $userDetail['parent_user_id'];
-               
-                $reviewFlag= 1;
-                $_SESSION['config']['storeId'] = $storeData['store_id'];
 
-                $display_name = $_SESSION['config']['display_name'] = $storeData['config_name'];
-                $brandThumbId = $storeData['shelfDisplay'][0]['brand_thumb_id'];
-              
-                $_SESSION['config']['no_of_shelves'] = $storeData['shelfDisplay'][0]['no_of_shelves'];
-                $_SESSION['config']['height_of_shelves'] = $storeData['shelfDisplay'][0]['height_of_shelves'];
-                $_SESSION['config']['width_of_shelves'] = $storeData['shelfDisplay'][0]['width_of_shelves'];
-                $_SESSION['config']['depth_of_shelves'] = $storeData['shelfDisplay'][0]['depth_of_shelves'];
-                $ratioWidth = yii::$app->params['rackWidth'][0];
-                $_SESSION['config']['ratio'] =(($ratioWidth)/$storeData['shelfDisplay'][0]['width_of_shelves']);
+                    $userData = new User();
 
-                $_SESSION['config']['shelvesProducts'] = $products = $storeData['shelfDisplay'][0]['shelf_config'];
-                $productsArray = json_decode($products, true);
-                $productsData = array();
-                $rackProducts = array();
-                $brandsArray = array();
-                foreach ($productsArray as $key => $v) {
-                    $ids = explode(',', $v['productIds']);
-                    $filterProduct = array();
-                    foreach ($ids as $k => $value) {
+                    $userDetail = User::findOne(['id' => $storeData['created_by']]);
+                    $configCreatedByRole = $userDetail['role_id'];
+                    $configCreatedByParent = ($userDetail['parent_user_id'] == '' ) ? 0 : $userDetail['parent_user_id'];
 
-                        $filterProduct['products_id'] = $value;
-                        $listing = $cataloguesRepository->listing($filterProduct);
-                        $filterListing = $listing['data']['catalogues'][0];
-                        $marketTitle = $filterListing['market']['title'];
-                        unset($filterListing['market']);
-                        $filterListing['market'] = array('markt_title' => $marketTitle);
-                        $category = $filterListing['productCategory']['name'];
-                        unset($filterListing['productCategory']);
-                        $filterListing['productCategory'] = $category;
-                        $filterListing['marketName'] = $marketTitle;
-                        $filterListing['brandName'] = $filterListing['brand']['name'];
-                        $productsData[$value] = $filterListing;
-                        
-                      
-                        $rackProducts[$key][$k]['id'] = $value;
-                        $rackProducts[$key][$k]['image'] = CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $filterListing['image']);
-                        $rackProducts[$key][$k]['height'] = $filterListing['height'];
-                        $rackProducts[$key][$k]['width'] = $filterListing['width'];
+                    $reviewFlag = 1;
+                    $_SESSION['config']['storeId'] = $storeData['store_id'];
 
-                        $brandsArray[$filterListing['brand']['id']] = $filterListing['brand'];
+                    $display_name = $_SESSION['config']['display_name'] = $storeData['config_name'];
+                    $brandThumbId = $storeData['shelfDisplay'][0]['brand_thumb_id'];
+
+                    $_SESSION['config']['no_of_shelves'] = $storeData['shelfDisplay'][0]['no_of_shelves'];
+                    $_SESSION['config']['height_of_shelves'] = $storeData['shelfDisplay'][0]['height_of_shelves'];
+                    $_SESSION['config']['width_of_shelves'] = $storeData['shelfDisplay'][0]['width_of_shelves'];
+                    $_SESSION['config']['depth_of_shelves'] = $storeData['shelfDisplay'][0]['depth_of_shelves'];
+                    $ratioWidth = yii::$app->params['rackWidth'][0];
+                    $_SESSION['config']['ratio'] = (($ratioWidth) / $storeData['shelfDisplay'][0]['width_of_shelves']);
+
+                    $_SESSION['config']['shelvesProducts'] = $products = $storeData['shelfDisplay'][0]['shelf_config'];
+                    $productsArray = json_decode($products, true);
+                    $productsData = array();
+                    $rackProducts = array();
+                    $brandsArray = array();
+                    foreach ($productsArray as $key => $v) {
+                        $ids = explode(',', $v['productIds']);
+                        $filterProduct = array();
+                        foreach ($ids as $k => $value) {
+
+                            $filterProduct['products_id'] = $value;
+                            $listing = $cataloguesRepository->listing($filterProduct);
+                            $filterListing = $listing['data']['catalogues'][0];
+                            $marketTitle = $filterListing['market']['title'];
+                            unset($filterListing['market']);
+                            $filterListing['market'] = array('markt_title' => $marketTitle);
+                            $category = $filterListing['productCategory']['name'];
+                            unset($filterListing['productCategory']);
+                            $filterListing['productCategory'] = $category;
+                            $filterListing['marketName'] = $marketTitle;
+                            $filterListing['brandName'] = $filterListing['brand']['name'];
+                            $productsData[$value] = $filterListing;
+
+
+                            $rackProducts[$key][$k]['id'] = $value;
+                            $rackProducts[$key][$k]['image'] = CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $filterListing['image']);
+                            $rackProducts[$key][$k]['height'] = $filterListing['height'];
+                            $rackProducts[$key][$k]['width'] = $filterListing['width'];
+
+                            $brandsArray[$filterListing['brand']['id']] = $filterListing['brand'];
+                        }
                     }
-                }
-                $brandRepository = new BrandRepository();
-                $brandFilter = array();
-                $brandFilter['brand_id'] = $brandThumbId;
-                $brandData = $brandRepository->listing($brandFilter);
-                if ($brandData['status']['success'] == 1) {
+                    $brandRepository = new BrandRepository();
+                    $brandFilter = array();
+                    $brandFilter['brand_id'] = $brandThumbId;
+                    $brandData = $brandRepository->listing($brandFilter);
+                    if ($brandData['status']['success'] == 1) {
 
-                    $brandsArray[$brandData['data']['brand'][0]['id']] = $brandData['data']['brand'][0];
-                }
-                $_SESSION['config']['brands_data'] = $brandsArray;
+                        $brandsArray[$brandData['data']['brand'][0]['id']] = $brandData['data']['brand'][0];
+                    }
+                    $_SESSION['config']['brands_data'] = $brandsArray;
 
-                $_SESSION['config']['products'] = $productsData;
-                $_SESSION['config']['rackProducts'] = $rackProducts;
+                    $_SESSION['config']['products'] = $productsData;
+                    $_SESSION['config']['rackProducts'] = $rackProducts;
                 }
                 $marketFilter = array();
 
@@ -294,7 +347,7 @@ class StoreConfigurationController extends Controller {
 
                 $searchModel = new CataloguesSearch();
                 $dataProvider = $searchModel->search($filterProduct);
-               
+
                 return $this->render('index', [
                         'searchModel' => $searchModel,
                         'dataProvider' => $dataProvider,
@@ -305,9 +358,7 @@ class StoreConfigurationController extends Controller {
                         'configId' => $configId,
                         'display_name' => $display_name,
                         'reviewFlag' => $reviewFlag
-                       
-                       
-                 ]);
+                ]);
             } else {
                 throw new NotFoundHttpException('The requested page does not exist.');
             }
@@ -316,13 +367,11 @@ class StoreConfigurationController extends Controller {
         }
     }
 
-    public function actionListing($id)
-    {
+    public function actionListing($id) {
         $stores = Stores::findOne($id);
         $currentUser = CommonHelper::getUser();
-        
-        if ($stores) 
-        {
+
+        if ($stores) {
             if ($currentUser->role_id != Yii::$app->params['superAdminRole']) {
                 $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
 
@@ -334,7 +383,7 @@ class StoreConfigurationController extends Controller {
                     throw new NotFoundHttpException('The requested page does not exist.');
                 }
             }
-            
+
             $filters = Yii::$app->request->queryParams;
             if (!isset($filters['limit'])) {
                 $filters['limit'] = Yii::$app->params['pageSize'];
@@ -355,14 +404,12 @@ class StoreConfigurationController extends Controller {
         }
     }
 
-    public function actionIndex($id) 
-    {
+    public function actionIndex($id) {
         $storeId = $id;
         $stores = Stores::find()->where(['id' => $id])->asArray()->one();
         $currentUser = CommonHelper::getUser();
 
-        if ($stores) 
-        {
+        if ($stores) {
             if ($currentUser->role_id != Yii::$app->params['superAdminRole']) {
                 $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
 
@@ -374,7 +421,7 @@ class StoreConfigurationController extends Controller {
                     throw new NotFoundHttpException('The requested page does not exist.');
                 }
             }
-            
+
             $marketFilter = array();
 
             $marketRules = new MarketRulesRepository();
@@ -446,7 +493,6 @@ class StoreConfigurationController extends Controller {
                     'brandThumbId' => 0,
                     'configId' => 0,
                     'reviewFlag' => 0,
-                   
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -603,12 +649,13 @@ class StoreConfigurationController extends Controller {
         $_SESSION['config']['shelvesProducts'] = json_encode($productsId);
         $_SESSION['config']['rackProducts'] = $finalProducutsRack;
     }
-    
-    public function actionUpdateConfigData(){
-          $data = Yii::$app->request->post();
-          echo '<pre>';
-          print_r($data);
-          print_r($_SESSION['config']);exit;
+
+    public function actionUpdateConfigData() {
+        $data = Yii::$app->request->post();
+        echo '<pre>';
+        print_r($data);
+        print_r($_SESSION['config']);
+        exit;
     }
 
     public function actionModalContent($id) {
@@ -640,7 +687,7 @@ class StoreConfigurationController extends Controller {
         $productKey = $data['dataKey'];
         $replacedProductId = $data['product'];
         $productsData = json_decode($_SESSION['config']['shelvesProducts'], true);
-       
+
         if ($data['remove'] == 'true') {
 
             $id = isset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id']) ? $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'] : '';
@@ -690,8 +737,6 @@ class StoreConfigurationController extends Controller {
             $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
         }
         if ($data['edit'] == 'true') {
-//            echo '<pre>';
-//            print_r($_SESSION['config']['rackProducts']);exit;
             $height = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['height'];
             $width = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['width'];
             $id = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'];
@@ -746,10 +791,9 @@ class StoreConfigurationController extends Controller {
                         }
                         $replacedData[$key]['productIds'] = rtrim($tmpProducts, ",");
                     }
-                  
+
                     $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
                 }
-                
             }
         }
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -918,11 +962,10 @@ class StoreConfigurationController extends Controller {
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function actionSendMail() 
-    {                
+    public function actionSendMail() {
         $mpdf = new Mpdf();
 
-        $user = CommonHelper::getUser();        
+        $user = CommonHelper::getUser();
         $parentEmail = '';
         $userRepository = new UserRepository();
         if ($user['parent_user_id'] != '') {
@@ -935,12 +978,12 @@ class StoreConfigurationController extends Controller {
         }
 
         $userEmail = 'hardik.devariya@tatvasoft.com';
-        $firstName = !empty($user['first_name'])?$user['first_name']:'';
-        $lastName = !empty($user['last_name'])?$user['last_name']:'';        
-        $userId = !empty($user['id'])?$user['id']:'';
-        $shelfImage = CommonHelper::getPath('upload_path').UPLOAD_PATH_STORE_CONFIG_ORIGINAL_IMAGES.'15480.png';
+        $firstName = !empty($user['first_name']) ? $user['first_name'] : '';
+        $lastName = !empty($user['last_name']) ? $user['last_name'] : '';
+        $userId = !empty($user['id']) ? $user['id'] : '';
+        $shelfImage = CommonHelper::getPath('upload_path') . UPLOAD_PATH_STORE_CONFIG_ORIGINAL_IMAGES . '15480.png';
 
-        $pdfFileName = CommonHelper::getPath('upload_path').UPLOAD_PATH_STORE_CONFIG_PDF.Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s')).''.$userId.'.pdf';
+        $pdfFileName = CommonHelper::getPath('upload_path') . UPLOAD_PATH_STORE_CONFIG_PDF . Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s')) . '' . $userId . '.pdf';
 
         $mpdf->WriteHTML($this->renderPartial('shelfPdf', ['image' => $shelfImage], true));
         $mpdf->Output($pdfFileName, 'F');
@@ -954,12 +997,11 @@ class StoreConfigurationController extends Controller {
         $mail->body = $this->renderPartial('shelfMail');
         $mail->setFrom = Yii::$app->params['supportEmail'];
         $mail->subject = 'Store Shelf PDF';
-        $mail->attachment = (Array($pdfFileName));        
-        $mail->set("NAME", implode(' ', $userString));        
+        $mail->attachment = (Array($pdfFileName));
+        $mail->set("NAME", implode(' ', $userString));
         $mail->send();
-        
-        if(file_exists($pdfFileName))
-        {
+
+        if (file_exists($pdfFileName)) {
             @unlink($pdfFileName);
         }
     }

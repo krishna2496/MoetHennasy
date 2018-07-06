@@ -20,7 +20,7 @@ use Yii;
  * @property string $updated_at
  * @property string $deleted_at
  */
-class ConfigFeedback extends \yii\db\ActiveRecord
+class ConfigFeedback extends BaseModel
 {
     /**
      * @inheritdoc
