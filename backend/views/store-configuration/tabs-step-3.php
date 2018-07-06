@@ -49,7 +49,7 @@ $submitUrl = "store-configuration/save-config-data";
                                 <!-- /.box-tools -->
                             </div>
                             <!-- /.box-header -->                            
-                            <div class="box-body">
+                            <div class="box-body" style="padding-top: 0px; padding-bottom: 0px;">
                                 <?php Pjax::begin(['id' => 'productsBrand', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>
                                 <ul class="brand-list-box" style="list-style: none !important;">
                                     <?php
