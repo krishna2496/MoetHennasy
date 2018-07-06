@@ -303,20 +303,14 @@ jQuery(document).ready(function ()
     {
         
         if(reviewFlag == 1){
-            $('#modalReview').modal('show');
-            $('#modalReview').on('show.bs.modal', function (event)
-            {
-                var dataURL = $(event.relatedTarget).attr('data-href');
-               
-
-                $('#modal-content').load(dataURL, function ()
-                {
-
-
-
-                });
-
+//            $('#modalReview').modal('show');
+            var dataURL= reviewStoreUrl;
+            $('#modalReview').modal('show').find('#modalContent').load(dataURL, function (){
+                
             });
+            
+            
+            
             return false;
         }
         var node = document.getElementById('frame-design');

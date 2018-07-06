@@ -24,6 +24,8 @@ use common\repository\UserRepository;
 use Mpdf\Mpdf;
 use common\components\Email;
 use common\models\User;
+use common\models\Questions;
+
 
 class StoreConfigurationController extends Controller {
 
@@ -41,7 +43,7 @@ class StoreConfigurationController extends Controller {
                         'roles' => ['&'],
                     ],
                     [
-                        'actions' => ['send-mail', 'create', 'view', 'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data'],
+                        'actions' => ['send-mail', 'create', 'view','review-store' ,'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -94,7 +96,22 @@ class StoreConfigurationController extends Controller {
         return $this->redirect(['store-configuration/listing/' . $storeId]);
     }
 
-    public function actionSaveImage() {
+    public function actionReviewStore($id){
+      $storeConfig =new StoreConfigRepository();
+      $filter =array();
+      $filter['config_id']=$id;
+      $configData = $storeConfig->listing($filter);
+      
+       $questionsModel = new Questions();
+       $questions = $questionsModel::find()->indexBy('id')->asArray()->all();
+      
+    return $this->renderPartial('review-content', [
+                'questions' => $questions,
+                ], true);
+     
+    }
+
+        public function actionSaveImage() {
         $returnData = array();
         $returnData['flag'] = 0;
         $post = yii::$app->request->post();

@@ -10,6 +10,7 @@ use yii\widgets\Pjax;
 
 $formUrl = Url::to(['store-configuration/save-data']);
 $uploadShelf = Url::to(['store-configuration/save-image']);
+//$reviewUrl = Url::to(['store-configuration/review-store']);
 $secondFormUrl = Url::to(['store-configuration/save-product-data']);
 $noOfSelves = isset($_SESSION['config']['products']) ? isset($_SESSION['config']['products']) : '1';
 $ratio = isset($_SESSION['config']['ratio']) ? $_SESSION['config']['ratio'] : 5.5;
@@ -107,10 +108,8 @@ $session = Yii::$app->session;
 										</div>	
                                                                            
 										<?php include_once("tabs-step-1.php"); ?>
-                                                                           
-                                                                           
-										<?php include_once("tabs-step-2.php"); ?>
-                                                                                     <?php include_once("tabs-step-3.php"); ?>
+                                                                                <?php include_once("tabs-step-2.php"); ?>
+                                                                                <?php include_once("tabs-step-3.php"); ?>
 									</div>
 								</div>
 							</div>
@@ -129,7 +128,9 @@ $session = Yii::$app->session;
 	var rackProductFromURL = '<?php echo $secondFormUrl ?>';
         var numOfSelves = '<?php echo $noOfSelves ?>';
         var uploadSelves = '<?php echo $uploadShelf ?>';
-        
+        if(isUpdate == 1){
+        var reviewStoreUrl = '<?= Url::to(['store-configuration/review-store/'.$configId]); ?>';
+         }
         
 $('#tab2').click(function(event) {
     if ($(this).attr('disabled')) {

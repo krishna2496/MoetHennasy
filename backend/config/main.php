@@ -62,7 +62,7 @@ return [
                 'product-types/update/<id:\d+>' => 'product-types/update',
                 'product-types/delete/<id:\d+>' => 'product-types/delete',
                 'store-configuration/modal-content/<id:\d+>' => 'store-configuration/modal-content',
-                
+                   'store-configuration/review-store/<id:\d+>' => 'store-configuration/review-store/',
                 'market/rules/<id:\d+>' => 'market/rules',
                 
                 'rule-administration/product/<id:\d+>' => 'rule-administration/product',
@@ -99,6 +99,7 @@ return [
                
                 'store-configuration/update-config/<storeId:\d+>/<id:\d+>' => 'store-configuration/update-config',
                 'store-configuration/delete/<storeId:\d+>/<id:\d+>' => 'store-configuration/delete',
+              
                
              
                
