@@ -58,7 +58,7 @@ class StoreConfigurationController extends Controller {
             ],
         ];
     }
-
+//create and update config data
     public function actionSaveConfigData() {
         $post = yii::$app->request->post();
         $shelfThumb = isset($post['thumb_image']) ? $post['thumb_image'] : '';
@@ -89,6 +89,8 @@ class StoreConfigurationController extends Controller {
             $returnData = $storeConfig->createConfig($configData);
         }
         if ($returnData['status']['success'] == 1) {
+            //send config mail
+//            $this->actionSendMail($returnData['data']['shelf_thumb']);
             Yii::$app->session->setFlash('success', $returnData['status']['message']);
             unset($_SESSION['config']);
         } else {
@@ -96,7 +98,7 @@ class StoreConfigurationController extends Controller {
         }
         return $this->redirect(['store-configuration/listing/' . $storeId]);
     }
-
+    
     public function actionReviewStore($id) {
         $storeConfig = new StoreConfigRepository();
         $filter = array();
@@ -106,21 +108,21 @@ class StoreConfigurationController extends Controller {
 
         $questionsModel = new Questions();
         $feedback = new ConfigFeedback();
-        
+
         $feedBackList = ConfigFeedback::find()->andWhere(['config_id' => $id])->asArray()->all();
-        
-        
+
+
         $rating = new Ratings();
         $ratingData = StoreConfiguration::findOne($id);
         $storeRating = $ratingData['star_ratings'];
-    
-        foreach ($feedBackList as $key => $value){
+
+        foreach ($feedBackList as $key => $value) {
             $feedBackResponse[$value['que_id']] = $value['answer'];
         }
-        
+
         $questions = $questionsModel::find()->indexBy('id')->asArray()->all();
 
-        
+
         return $this->renderPartial('review-content', [
                 'questions' => $questions,
                 'feedBackResponse' => $feedBackResponse,
@@ -128,11 +130,12 @@ class StoreConfigurationController extends Controller {
                 ], true);
     }
 
+//send feedback and give rating by superior  
     public function actionFeedback($id) {
         $config_id = $id;
-        $flag =0;
+        $flag = 0;
         $post = yii::$app->request->post();
-        
+
         $user = CommonHelper::getUser();
         $questionArray = isset($post['data']) ? $post['data'] : array();
         $ansArray = array();
@@ -140,51 +143,51 @@ class StoreConfigurationController extends Controller {
         $questions = $questionsModel::find()->indexBy('id')->asArray()->all();
 
 
-        
-   
+
+
         if ($post['action'] == 'feedback') {
             foreach ($questions as $key => $value) {
-            $ansArray[$key]['question_id'] = $value['id'];
-            if (in_array($value['id'], $questionArray)) {
-                $ansArray[$key]['ans'] = 1;
-            } else {
-                $ansArray[$key]['ans'] = 0;
-            }
-        }
-        
-                $questionModel = new ConfigFeedback();
-                ConfigFeedback::deleteAll(['config_id' => $config_id]);
-                foreach ($ansArray as $key => $value) {
-
-                    $questionModel = new ConfigFeedback();
-                    $questionModel->config_id = $config_id;
-                    $questionModel->que_id = $value['question_id'];
-                    $questionModel->answer = $value['ans'];
-                    $questionModel->reviewed_by = $user['id'];
-                    $questionModel->save(false);
+                $ansArray[$key]['question_id'] = $value['id'];
+                if (in_array($value['id'], $questionArray)) {
+                    $ansArray[$key]['ans'] = 1;
+                } else {
+                    $ansArray[$key]['ans'] = 0;
                 }
-               
-          
-             $flag =1;
+            }
+
+            $questionModel = new ConfigFeedback();
+            ConfigFeedback::deleteAll(['config_id' => $config_id]);
+            foreach ($ansArray as $key => $value) {
+
+                $questionModel = new ConfigFeedback();
+                $questionModel->config_id = $config_id;
+                $questionModel->que_id = $value['question_id'];
+                $questionModel->answer = $value['ans'];
+                $questionModel->reviewed_by = $user['id'];
+                $questionModel->save(false);
+            }
+
+
+            $flag = 1;
         }
-        
-        
+
+
         if ($post['action'] == 'rating') {
-            
+
             $raingRepository = new StoreConfigRepository();
             $data['config_id'] = $config_id;
             $data['star_ratings'] = $post['data'];
-            $returnData =$raingRepository->createRating($data);
-            if($returnData['status']['success'] == 1){
+            $returnData = $raingRepository->createRating($data);
+            if ($returnData['status']['success'] == 1) {
 //                  Yii::$app->session->setFlash('danger', $returnData['status']['message']);
-                  $flag =1;
-           }
+                $flag = 1;
+            }
         }
-        
+
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $flag;
     }
-
+//save config thumb and original image
     public function actionSaveImage() {
         $returnData = array();
         $returnData['flag'] = 0;
@@ -668,14 +671,7 @@ class StoreConfigurationController extends Controller {
         $_SESSION['config']['rackProducts'] = $finalProducutsRack;
     }
 
-    public function actionUpdateConfigData() {
-        $data = Yii::$app->request->post();
-        echo '<pre>';
-        print_r($data);
-        print_r($_SESSION['config']);
-        exit;
-    }
-
+    //edit and remove product's modal content
     public function actionModalContent($id) {
 
         return $this->renderPartial('modal-content', [
@@ -692,10 +688,8 @@ class StoreConfigurationController extends Controller {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $returnData;
     }
-
+//action of edit and remove products
     public function actionEditProducts() {
-//        echo '<pre>';
-//        print_r($_SESSION['config']['']);
         $response = array();
         $response['flag'] = 0;
         $response['msg'] = 'Plz try again later';
@@ -811,6 +805,8 @@ class StoreConfigurationController extends Controller {
                     }
 
                     $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
+                }else{
+                    $response['msg'] = 'Please Try Other product';
                 }
             }
         }
@@ -980,10 +976,13 @@ class StoreConfigurationController extends Controller {
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function actionSendMail() {
+    public function actionSendMail($thumb) {
         $mpdf = new Mpdf();
+        $thumImage = explode('/', $thumb);
+        $thumb = end($thumImage);
 
         $user = CommonHelper::getUser();
+
         $parentEmail = '';
         $userRepository = new UserRepository();
         if ($user['parent_user_id'] != '') {
@@ -991,24 +990,26 @@ class StoreConfigurationController extends Controller {
             $fiterUser['id'] = $user['parent_user_id'];
             $parentUser = $userRepository->userList();
             if ($parentUser['status']['success'] == 1) {
+
                 $parentEmail = $parentUser['data']['users'][0]['email'];
+                $parentFirstName = $parentUser['data']['users'][0]['first_name'];
+                $parentLastName = $parentUser['data']['users'][0]['last_name'];
             }
         }
-
-        $userEmail = 'hardik.devariya@tatvasoft.com';
+       
+        $userEmail = $user['email'];
         $firstName = !empty($user['first_name']) ? $user['first_name'] : '';
         $lastName = !empty($user['last_name']) ? $user['last_name'] : '';
         $userId = !empty($user['id']) ? $user['id'] : '';
-        $shelfImage = CommonHelper::getPath('upload_path') . UPLOAD_PATH_STORE_CONFIG_ORIGINAL_IMAGES . '15480.png';
+        $shelfImage = CommonHelper::getPath('upload_path') . UPLOAD_PATH_STORE_CONFIG_ORIGINAL_IMAGES . $thumb;
 
         $pdfFileName = CommonHelper::getPath('upload_path') . UPLOAD_PATH_STORE_CONFIG_PDF . Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s')) . '' . $userId . '.pdf';
 
         $mpdf->WriteHTML($this->renderPartial('shelfPdf', ['image' => $shelfImage], true));
         $mpdf->Output($pdfFileName, 'F');
-
+        
         $mail = new Email();
         $mail->email = $userEmail;
-
         $userString = array();
         $userString[] = $firstName;
         $userString[] = $lastName;
@@ -1018,6 +1019,21 @@ class StoreConfigurationController extends Controller {
         $mail->attachment = (Array($pdfFileName));
         $mail->set("NAME", implode(' ', $userString));
         $mail->send();
+
+        //send mail to parent user if exist
+        if ($parentEmail != '') {
+            $mail = new Email();
+            $mail->email = $parentEmail;
+            $userString = array();
+            $userString[] = $parentFirstName;
+            $userString[] = $parentLastName;
+            $mail->body = $this->renderPartial('shelfMail');
+            $mail->setFrom = Yii::$app->params['supportEmail'];
+            $mail->subject = 'Store Shelf PDF';
+            $mail->attachment = (Array($pdfFileName));
+            $mail->set("NAME", implode(' ', $userString));
+            $mail->send();
+        }
 
         if (file_exists($pdfFileName)) {
             @unlink($pdfFileName);
