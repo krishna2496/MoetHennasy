@@ -303,43 +303,114 @@ jQuery(document).ready(function ()
     {
 
         if (reviewFlag == 1) {
-            var url = reviewStoreUrl;
-            $('#modalReview').modal('show');
+//            $('#modalReview').modal('show');
+            var dataURL = reviewStoreUrl;
+            $('#modalReview').modal('show').find('#modalContent').load(dataURL, function () {
+                $("#rating").hide();
+                $('.toggle').bootstrapToggle();
 
+
+                $('#submitQuestion').on('click', function (e)
+                {
+                    var rating = feedBack = 0;
+                    e.stopImmediatePropagation();
+
+                    if ($('#review').is(':visible')) {
+                        var arrayData = [];
+                        $("input:checkbox[name=answer]:checked").each(function () {
+                            console.log(this);
+                            arrayData.push($(this).attr('ans'));
+                        });
+
+                        var action = 'feedback';
+                        var feedBack = 1;
+                        var data = {action: action, data: arrayData};
+                    } else {
+                        var star = $('span.filled-stars').width();
+                        var starRating = parseInt(star) / 32;
+
+                        var action = 'rating';
+                        var rating = 1;
+                        var data = {action: action, data: starRating};
+                    }
+
+                    moet.ajax(questionUrl, data, 'post').then(function (result) {
+                        $("#ratings-rating").rating({min: 0, max: 10, step: 1, stars: 10, size: 'xs'});
+
+                        if (result == 1) {
+                            if (feedBack == 1) {
+                                alert("Feeback Saved Succesfully");
+                                $("#review").hide();
+                                $("#rating").show();
+                            } else {
+                                alert("Rating Saved Succesfully");
+                                var node = document.getElementById('frame-design');
+                                var options = {quality: 1};
+
+                                domtoimage.toPng(node, options).then(function (dataUrl)
+                                {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: uploadSelves,
+                                        data: {'imageData': dataUrl},
+                                        success: function (result)
+                                        {
+                                            if (result.flag == 1) {
+                                                $("#thumb_image").val(result.name);
+                                                $("#step_3").submit();
+                                                return false;
+                                            } else {
+                                                alert("Please Try again later");
+                                            }
+                                        }
+                                    });
+                                    return false;
+                                }).catch(function (error) {
+                                    console.error('oops, something went wrong!', error);
+                                });
+                                return false;
+                            }
+                        } else {
+                            alert("Please Try again later");
+                        }
+
+                    }, function (result) {
+                        alert('Fail');
+                    });
+                });
+
+
+            });
             return false;
-        } else {
-            uploadConfigImage();
+        }else{
+            var node = document.getElementById('frame-design');
+                                var options = {quality: 1};
+
+                                domtoimage.toPng(node, options).then(function (dataUrl)
+                                {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: uploadSelves,
+                                        data: {'imageData': dataUrl},
+                                        success: function (result)
+                                        {
+                                            if (result.flag == 1) {
+                                                $("#thumb_image").val(result.name);
+                                                $("#step_3").submit();
+                                                return false;
+                                            } else {
+                                                alert("Please Try again later");
+                                            }
+                                        }
+                                    });
+                                    return false;
+                                }).catch(function (error) {
+                                    console.error('oops, something went wrong!', error);
+                                });
+                                return false;
         }
 
     });
-
-    function uploadConfigImage() {
-        var node = document.getElementById('frame-design');
-        var options = {quality: 1};
-
-        domtoimage.toPng(node, options).then(function (dataUrl)
-        {
-            $.ajax({
-                type: 'POST',
-                url: uploadSelves,
-                data: {'imageData': dataUrl},
-                success: function (result)
-                {
-                    if (result.flag == 1) {
-                        $("#thumb_image").val(result.name);
-                        $("#step_3").submit();
-                        return false;
-                    } else {
-                        alert("Please Try again later");
-                    }
-                }
-            });
-            return false;
-        }).catch(function (error) {
-            console.error('oops, something went wrong!', error);
-        });
-        return false;
-    }
 
     $("#tab-step-1 .reset-btn").click(function (e)
     {
@@ -531,60 +602,4 @@ $(document).on('ready pjax:success', function ()
         $("#brand").val(id);
     }
     //
-    $('#modalReview').on('show.bs.modal', function (e) {
-
-        var loadurl = reviewStoreUrl;
-        $(this).find('#content').load(loadurl, function () {
-
-            $("#rating").hide();
-            $('.toggle').bootstrapToggle();
-
-
-            $('#submitQuestion').on('click', function (e)
-            {
-                var rating = feedBack = 0;
-                e.stopImmediatePropagation();
-
-                if ($('#review').is(':visible')) {
-                    var arrayData = [];
-                    $("input:checkbox[name=answer]:checked").each(function () {
-                        console.log(this);
-                        arrayData.push($(this).attr('ans'));
-                    });
-
-                    var action = 'feedback';
-                    var feedBack = 1;
-                    var data = {action: action, data: arrayData};
-                } else {
-                    var star = $('span.filled-stars').width();
-                    var starRating = parseInt(star) / 32;
-
-                    var action = 'rating';
-                    var rating = 1;
-                    var data = {action: action, data: starRating};
-                }
-
-                moet.ajax(questionUrl, data, 'post').then(function (result) {
-                    $("#ratings-rating").rating({min: 0, max: 10, step: 1, stars: 10, size: 'xs'});
-
-                    if (result == 1) {
-                        if (feedBack == 1) {
-                            alert("Feeback Saved Succesfully");
-                            $("#review").hide();
-                            $("#rating").show();
-                        } else {
-                            alert("Rating Saved Succesfully");
-                            uploadConfigImage();
-                        }
-                    } else {
-                        alert("Please Try again later");
-                    }
-
-                }, function (result) {
-                    alert('Fail');
-                });
-            });
-
-        });
-    });
 });
