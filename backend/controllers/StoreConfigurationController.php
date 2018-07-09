@@ -600,6 +600,7 @@ class StoreConfigurationController extends Controller {
         }
         $selvesWidth = $_SESSION['config']['width_of_shelves'];
         $selvesHeight = $_SESSION['config']['height_of_shelves'];
+        $selvesDepth =$_SESSION['config']['depth_of_shelves'];
         $selevesCount = $_SESSION['config']['num_of_shelves'];
 
         if ($this->ifRuleContain(\yii::$app->params['configArray']['top_shelf'])) {
@@ -632,7 +633,7 @@ class StoreConfigurationController extends Controller {
 
             if (intval($selvesWidth) >= intval(intval($sum) + intval($value['width']))) {
 
-                if (intval(($selvesHeight) / ($selevesCount)) >= intval($value['height'])) {
+                if ((intval(($selvesHeight) / ($selevesCount)) >= intval($value['height'])) && (intval($selvesDepth) >= intval($value['length']))) {
                     if (empty($racksProductArray[$shelfIndex])) {
                         $racksProductArray[$shelfIndex][] = $value;
                     } else {
@@ -866,7 +867,9 @@ class StoreConfigurationController extends Controller {
         }
         if ($selvesWidth >= ($sum + $dataValue['width'])) {
             if (intval(($_SESSION['config']['height_of_shelves']) / ($_SESSION['config']['num_of_shelves'])) >= intval($dataValue['height'])) {
-                $racksProductArray[$dataValue['id']] = $dataValue;
+                if (intval($_SESSION['config']['depth_of_shelves']) >= intval($dataValue['length'])) {
+                    $racksProductArray[$dataValue['id']] = $dataValue;
+                }
             }
         }
     }

@@ -17,10 +17,7 @@ use common\helpers\CommonHelper;
                         
                     }
                     ?>
-
-
-                    <li class="item">
-                        
+                 <li class="item">
                         <div class="product-info">
                             <div class="row">
                                 <div class="col-md-8" style="float:left"><?= $value['question']; ?></div>
