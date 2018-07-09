@@ -134,7 +134,7 @@ class StoreRepository extends Repository
         $childUser[] = $currentUser->id;
 
         if (!empty($childUser) && !in_array($assign_to, $childUser)) {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('you are not allowed to access this page.');
         }
         
         if(isset($data['name'])){
