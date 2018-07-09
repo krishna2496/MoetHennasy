@@ -254,6 +254,7 @@ $submitUrl = "store-configuration/save-config-data";
 </div>
 
 <script type="text/javascript">
+    var baseUrl = "<?php echo Yii::$app->request->baseUrl; ?>";
     $(document).ready(function ()
     {
         $('.edit-modal').on('show.bs.modal', function (event)
