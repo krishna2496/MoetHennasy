@@ -348,6 +348,7 @@ jQuery(document).ready(function ()
                                 $("#rating").show();
                             } else {
                                 alert("Rating Saved Succesfully");
+                                $('#modalReview').modal('hide');
                                 moet.showLoader();
                                 var node = document.getElementById('frame-design');
                                 var options = {quality: 1};
