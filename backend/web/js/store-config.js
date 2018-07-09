@@ -304,8 +304,8 @@ jQuery(document).ready(function ()
 
         if (reviewFlag == 1) {
 //            $('#modalReview').modal('show');
-            var dataURL = reviewStoreUrl;
-            $('#modalReview').modal('show').find('#modalContent').load(dataURL, function () {
+            var dataURL = reviewStoreUrl;  
+            $('#modalReview').modal('show').find('#content').load(dataURL, function () {
                 $("#rating").hide();
                 $('.toggle').bootstrapToggle();
 
