@@ -237,7 +237,7 @@ $submitUrl = "store-configuration/save-config-data";
                     </div>
                     <div class="modal fade edit-modal" id="modal-defaults" style="display: none;">
                         <div class="modal-dialog">
-                            <div class="modal-content">
+                            <div class="modal-content product-content">
 
                             </div>
                             <!-- /.modal-content -->
@@ -262,7 +262,7 @@ $submitUrl = "store-configuration/save-config-data";
             var dataKey = $(event.relatedTarget).attr('data-key');
             var dataShelves = $(event.relatedTarget).attr('data-shelves');
 
-            $('.modal-content').load(dataURL, function ()
+            $('.product-content').load(dataURL, function ()
             {
                 $('input[type="checkbox"]').iCheck({
                     checkboxClass: 'icheckbox_square-blue',
