@@ -2,9 +2,7 @@
 
 use common\helpers\CommonHelper;
 ?>
-<div class="modal-body">
-    <div class="modal-content" >
-        <div >
+        <div>
         <form class="product-edit">
             <ul class="products-list product-list-in-box" id="review">
                 <?php
@@ -45,7 +43,5 @@ use common\helpers\CommonHelper;
             <button type="button" class="btn btn-primary ok-btn" id="submitQuestion">Ok</button>
         </form>
         </div>
-        
-    </div>
-</div>
+
 

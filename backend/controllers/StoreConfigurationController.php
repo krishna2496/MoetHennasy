@@ -90,7 +90,7 @@ class StoreConfigurationController extends Controller {
         }
         if ($returnData['status']['success'] == 1) {
             //send config mail
-//            $this->actionSendMail($returnData['data']['shelf_thumb']);
+            $this->actionSendMail($returnData['data']['shelf_thumb']);
             Yii::$app->session->setFlash('success', $returnData['status']['message']);
             unset($_SESSION['config']);
         } else {
@@ -1000,7 +1000,7 @@ class StoreConfigurationController extends Controller {
             }
         }
        
-        $userEmail = $user['email'];
+        $userEmail = 'hardik.devariya@tatvasoft.com';
         $firstName = !empty($user['first_name']) ? $user['first_name'] : '';
         $lastName = !empty($user['last_name']) ? $user['last_name'] : '';
         $userId = !empty($user['id']) ? $user['id'] : '';

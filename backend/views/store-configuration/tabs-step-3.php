@@ -9,12 +9,11 @@ use yii\widgets\Pjax;
 
 //use kartik\switchinput\SwitchInput;
 
-if($configId == 0){
-$submitUrl = "store-configuration/save-config-data";
-}else{
-$submitUrl = "store-configuration/save-config-data";
+if ($configId == 0) {
+    $submitUrl = "store-configuration/save-config-data";
+} else {
+    $submitUrl = "store-configuration/save-config-data";
 }
-
 ?>
 
 <div class="col-sm-5 pull-right" id="tab-step-3" style="z-index:5">
@@ -31,80 +30,77 @@ $submitUrl = "store-configuration/save-config-data";
             </div>
 
             <div class="box-body">
-                <?php 
-                $form = ActiveForm::begin(['action' =>[$submitUrl], 'id' => 'step_3', 'method' => 'post','class'=>'frame-filt-form']);
+                <?php
+                $form = ActiveForm::begin(['action' => [$submitUrl], 'id' => 'step_3', 'method' => 'post', 'class' => 'frame-filt-form']);
                 ?>
-           
-                    <input type="hidden" name="thumb_image" id="thumb_image" value=""/>
-                    <input type="hidden" name="brand" id="brand" value=""/>
-                    <input type="hidden" name="config_id" id="config_id" value="<?= $configId?>"/>
-                    <div class="frame-chose-option">
-                        <p class="auto-config"><span id="displayName"></span>- Automatic configuration</p>
-                        <div class="box box-default shelfs-store">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">BRANDS CONFIGURATION </h3>
-                                <div class="box-tools pull-right">
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-2x fa-angle-up"></i></button>
-                                </div>
-                                <!-- /.box-tools -->
-                            </div>
-                            <!-- /.box-header -->                            
-                            <div class="box-body" style="padding-top: 0px; padding-bottom: 0px;">
-                                <?php Pjax::begin(['id' => 'productsBrand', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>
-                                <ul class="brand-list-box" style="list-style: none !important;">
-                                    <?php
-                                    if (isset($_SESSION['config']['brands_data']) && (!empty($_SESSION['config']['brands_data']))) {
-                                        foreach ($_SESSION['config']['brands_data'] as $key => $value) {
-                                            ?>
-                                            <li>
-                                                <a title="<?= $value['name'] ?>">
-                                                    <img src="<?= CommonHelper::getImage(UPLOAD_PATH_BRANDS_IMAGES . $value['image']); ?>" alt="brand-image" class="brand-images" id="<?= $value['id'] ?>" onclick="changeBrand(this)">
-                                                    <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $value['id']; ?>"  style="display:none">
-                                                </a>
-                                            </li>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </ul>
-                                <?php Pjax::end(); ?>
-                            </div>
-                            <!-- /.box-body -->
-                        </div>
 
-                        <div class="box box-default shelfs-store2">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">PRODUCTS CONFIGURATION</h3>
-                                <div class="box-tools pull-right">
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-2x fa-angle-up"></i>
-                                    </button>
-                                </div>
-                                <!-- /.box-tools -->
+                <input type="hidden" name="thumb_image" id="thumb_image" value=""/>
+                <input type="hidden" name="brand" id="brand" value=""/>
+                <input type="hidden" name="config_id" id="config_id" value="<?= $configId ?>"/>
+                <div class="frame-chose-option">
+                    <p class="auto-config"><span id="displayName"></span>- Automatic configuration</p>
+                    <div class="box box-default shelfs-store">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">BRANDS CONFIGURATION </h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-2x fa-angle-up"></i></button>
                             </div>
-                            <div class="box-body">
-                                <?php 
-                              
-                                Pjax::begin(['id' => 'productsData', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST']]) ?>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->                            
+                        <div class="box-body" style="padding-top: 0px; padding-bottom: 0px;">
+                            <?php Pjax::begin(['id' => 'productsBrand', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>
+                            <ul class="brand-list-box" style="list-style: none !important;">
                                 <?php
-                               
-                                $rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSION['config']['rackProducts']) : '';
-                                $products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] : '';
-                                $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
-                                
-                                if (!empty($shelvesData)) {
-                                    foreach ($shelvesData as $key => $value) {
+                                if (isset($_SESSION['config']['brands_data']) && (!empty($_SESSION['config']['brands_data']))) {
+                                    foreach ($_SESSION['config']['brands_data'] as $key => $value) {
                                         ?>
-                                        <div class="box box-default product-list collapsed-box">
-                                            <div class="box-header with-border">
-                                                <h3 class="box-title">SHELF <?= $key + 1 ?></h3>
-                                                <div class="box-tools pull-right">
-                                                    <button class="btn btn-box-tool" type="button" data-toggle="collapse" data-target="#collapseExample<?= $key ?>" aria-expanded="false" aria-controls="collapseExample">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </div>
+                                        <li>
+                                            <a title="<?= $value['name'] ?>">
+                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_BRANDS_IMAGES . $value['image']); ?>" alt="brand-image" class="brand-images" id="<?= $value['id'] ?>" onclick="changeBrand(this)">
+                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $value['id']; ?>"  style="display:none">
+                                            </a>
+                                        </li>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </ul>
+                            <?php Pjax::end(); ?>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+
+                    <div class="box box-default shelfs-store2">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">PRODUCTS CONFIGURATION</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-2x fa-angle-up"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <div class="box-body">
+                            <?php Pjax::begin(['id' => 'productsData', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST']]) ?>
+                            <?php
+                            $rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSION['config']['rackProducts']) : '';
+                            $products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] : '';
+                            $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
+
+                            if (!empty($shelvesData)) {
+                                foreach ($shelvesData as $key => $value) {
+                                    ?>
+                                    <div class="box box-default product-list collapsed-box">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">SHELF <?= $key + 1 ?></h3>
+                                            <div class="box-tools pull-right">
+                                                <button class="btn btn-box-tool" type="button" data-toggle="collapse" data-target="#collapseExample<?= $key ?>" aria-expanded="false" aria-controls="collapseExample">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
                                             </div>
-                                            <div class="collapse" id="collapseExample<?= $key ?>">
-                                                <div class="box-body" style="display: block !important;">
+                                        </div>
+                                        <div class="collapse" id="collapseExample<?= $key ?>">
+                                            <div class="box-body" style="display: block !important;">
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <p class="direction-text">From left to right</p>
@@ -116,38 +112,38 @@ $submitUrl = "store-configuration/save-config-data";
                                                         </div>
                                                     </div>
                                                 </div>   
-                                                <?php
-                                                $ids = explode(',', $value['productIds']);
-                                                if (!empty($ids)) {
-                                                    ?>
+        <?php
+        $ids = explode(',', $value['productIds']);
+        if (!empty($ids)) {
+            ?>
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <ul class="grid-itmes with-tool-tip" id="grid-section<?= $key ?>">
-                                                                <?php
-                                                                foreach ($ids as $key1 => $value1) {
-
-                                                                    $url = CommonHelper::getPath('admin_url') . 'store-configuration/modal-content/' . $products[$value1]['id'];
-                                                                    //echo '<pre>';
-                                                                    //print_r($products);exit;
-                                                                    ?>
-                                                                    <li>
-                                                                        <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
-                                                                            <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" alt="Selected"   class="btl-img">
-                                                                            <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $products[$value1]['image']; ?>" >
-                                                                            <div class="product-tooltip">
-                                                                                <h5><?= $products[$value1]['short_name'] ?></h5>
-                                                                                <p>Product Type: <?= $products[$value1]['productType']['title'] ?></p>
-                                                                                <p>Market Share: <?= $products[$value1]['market_share']; ?></p>
-                                                                                <p>WSP: <?= $products[$value1]['price'] ?></p>
-                                                                                <p>Category: <?= $products[$value1]['productCategory'] ?></p>
-                                                                                <p>Top shelf: <?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></p>
-                                                                                <p>width: <?= $products[$value1]['width'] ?></p>
-                                                                                <p>height: <?= $products[$value1]['height'] ?></p>
-                                                                            </div>
-                                                                        </a>
-                                                                    </li>
-                                                                <?php }
-                                                                ?>
+                                                    <?php
+                                                    foreach ($ids as $key1 => $value1) {
+                                                        if (!empty($value1)) {
+                                                            $url = CommonHelper::getPath('admin_url') . 'store-configuration/modal-content/' . $products[$value1]['id'];
+                                                        
+                                                            ?>
+                                                                        <li>
+                                                                            <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
+                                                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" alt="Selected"   class="btl-img">
+                                                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $products[$value1]['image']; ?>" >
+                                                                                <div class="product-tooltip">
+                                                                                    <h5><?= $products[$value1]['short_name'] ?></h5>
+                                                                                    <p>Product Type: <?= $products[$value1]['productType']['title'] ?></p>
+                                                                                    <p>Market Share: <?= $products[$value1]['market_share']; ?></p>
+                                                                                    <p>WSP: <?= $products[$value1]['price'] ?></p>
+                                                                                    <p>Category: <?= $products[$value1]['productCategory'] ?></p>
+                                                                                    <p>Top shelf: <?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></p>
+                                                                                    <p>width: <?= $products[$value1]['width'] ?></p>
+                                                                                    <p>height: <?= $products[$value1]['height'] ?></p>
+                                                                                </div>
+                                                                            </a>
+                                                                        </li>
+                <?php }
+            }
+            ?>
                                                             </ul>
 
                                                             <div class="list-items" id="list-section<?= $key ?>">
@@ -163,90 +159,95 @@ $submitUrl = "store-configuration/save-config-data";
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <?php
-                                                                        foreach ($ids as $key1 => $value1) {
+            <?php
+            foreach ($ids as $key1 => $value1) {
+                if (!empty($value1)) {
+                    $url = CommonHelper::getPath('admin_url') . 'store-configuration/modal-content/' . $products[$value1]['id'];
+                    ?>
 
-                                                                            $url = CommonHelper::getPath('admin_url') . 'store-configuration/modal-content/' . $products[$value1]['id'];
-                                                                            ?>
-
-                                                                            <tr>
-                                                                                <td>
-                                                                                    <a href="#" title="bottle-image" class="product-image media" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
-                                                                                        <div class="media-left">
-                                                                                            <div class="list-product">
-                                                                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" class="media-object">
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <a href="#" title="bottle-image" class="product-image media" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
+                                                                                            <div class="media-left">
+                                                                                                <div class="list-product">
+                                                                                                    <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" class="media-object">
+                                                                                                </div>
                                                                                             </div>
-                                                                                        </div>
-                                                                                        <div class="media-body">
-                                                                                            <h4 class="media-heading"><?= $products[$value1]['short_name'] ?></h4>
-                                                                                        </div>
-                                                                                    </a>
-                                                                                </td>
-                                                                                <td><?= $products[$value1]['productType']['title'] ?></td>
-                                                                                <td><?= $products[$value1]['market_share']; ?></td>
-                                                                                <td><?= $products[$value1]['price'] ?></td>
-                                                                                <td><?= $products[$value1]['productCategory'] ?></td>
-                                                                                <td><?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></td>
-                                                                            </tr>
-            <?php } ?>
+                                                                                            <div class="media-body">
+                                                                                                <h4 class="media-heading"><?= $products[$value1]['short_name'] ?></h4>
+                                                                                            </div>
+                                                                                        </a>
+                                                                                    </td>
+                                                                                    <td><?= $products[$value1]['productType']['title'] ?></td>
+                                                                                    <td><?= $products[$value1]['market_share']; ?></td>
+                                                                                    <td><?= $products[$value1]['price'] ?></td>
+                                                                                    <td><?= $products[$value1]['productCategory'] ?></td>
+                                                                                    <td><?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></td>
+                                                                                </tr>
+                <?php }
+            } ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                <?php }
-                                                ?>
-                                                </div>
+        <?php }
+        ?>
                                             </div>
                                         </div>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                                <script type="text/javascript">
-                                    var rackProducts = '<?php echo $rackProducts; ?>';
-                                   
-                                    var ratio = '<?php echo $ratio; ?>';
+                                    </div>
+        <?php
+    }
+}
+?>
+                            <script type="text/javascript">
+                                var rackProducts = '<?php echo $rackProducts; ?>';
 
-                                    if (rackProducts != '')
+                                var ratio = '<?php echo $ratio; ?>';
+                           
+                                if (rackProducts != '')
+                                {
+                                    rackProducts = JSON.parse(rackProducts);
+                                    console.log(rackProducts);
+                                    if (rackProducts == '') {
+                                        $(".submitData").attr('disabled', 'true');
+                                    }
+                                    $.each(rackProducts, function (i, item)
                                     {
-                                        rackProducts = JSON.parse(rackProducts);
-                                        $.each(rackProducts, function (i, item)
+                                        bottleLeft = 0;
+                                        $.each(item, function (k, titem)
                                         {
-                                            bottleLeft = 0;
-                                            $.each(item, function (k, titem)
-                                            {
-                                                
-                                                var height = titem.height * ratio + "px";
-                                                var width = titem.width * ratio + "px";
-                                                var data = '<img src="' + titem.image + '" style="width:' + width + '; height:' + height + ';position: absolute; bottom:5px; left:' + bottleLeft + 'px;" id=' + k + '>';
-                                                $("#canvas-container-" + i).append(data);
 
-                                                bottleLeft = bottleLeft + (titem.width * ratio);
-                                            });
+                                            var height = titem.height * ratio + "px";
+                                            var width = titem.width * ratio + "px";
+                                            var data = '<img src="' + titem.image + '" style="width:' + width + '; height:' + height + ';position: absolute; bottom:5px; left:' + bottleLeft + 'px;" id=' + k + '>';
+                                            $("#canvas-container-" + i).append(data);
+
+                                            bottleLeft = bottleLeft + (titem.width * ratio);
                                         });
-                                    }
+                                    });
+                                }
 
-                                </script>
-<?php Pjax::end(); ?>  
-                            </div>
-                        </div>
-                        <div class="submit-fl">                            
-                            <button class="btn next" >OK</button>
+                            </script>
+                            <?php Pjax::end(); ?>  
                         </div>
                     </div>
-                    <div class="modal fade edit-modal" id="modal-defaults" style="display: none;">
-                        <div class="modal-dialog">
-                            <div class="modal-content product-content">
-
-                            </div>
-                            <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
+                    <div class="submit-fl">                            
+                        <button class="btn next submitData" >OK</button>
                     </div>
-               <?php 
-               ActiveForm::end();
-               ?>
+                </div>
+                <div class="modal fade edit-modal" id="modal-defaults" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content product-content">
+
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <?php
+                ActiveForm::end();
+                ?>
             </div>       
         </div> 
     </div>
@@ -321,7 +322,7 @@ $submitUrl = "store-configuration/save-config-data";
                             }
                             if (result.action == 'remove') {
                                 for (i = 0; i < numOfSelves; i++) {
-                                     $("#canvas-container-" + i).empty();
+                                    $("#canvas-container-" + i).empty();
                                 }
                                 $.pjax.reload({container: "#productsData", async: false});
                             }
