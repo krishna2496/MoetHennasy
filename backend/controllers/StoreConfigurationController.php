@@ -26,6 +26,7 @@ use common\components\Email;
 use common\models\User;
 use common\models\Questions;
 use common\models\ConfigFeedback;
+use common\models\Ratings;
 
 class StoreConfigurationController extends Controller {
 
@@ -100,13 +101,30 @@ class StoreConfigurationController extends Controller {
         $storeConfig = new StoreConfigRepository();
         $filter = array();
         $filter['config_id'] = $id;
+        $feedBackResponse = array();
         $configData = $storeConfig->listing($filter);
 
         $questionsModel = new Questions();
+        $feedback = new ConfigFeedback();
+        
+        $feedBackList = ConfigFeedback::find()->andWhere(['config_id' => $id])->asArray()->all();
+        
+        
+        $rating = new Ratings();
+        $ratingData = StoreConfiguration::findOne($id);
+        $storeRating = $ratingData['star_ratings'];
+    
+        foreach ($feedBackList as $key => $value){
+            $feedBackResponse[$value['que_id']] = $value['answer'];
+        }
+        
         $questions = $questionsModel::find()->indexBy('id')->asArray()->all();
 
+        
         return $this->renderPartial('review-content', [
                 'questions' => $questions,
+                'feedBackResponse' => $feedBackResponse,
+                'storeRating' => $storeRating
                 ], true);
     }
 
@@ -158,7 +176,7 @@ class StoreConfigurationController extends Controller {
             $data['star_ratings'] = $post['data'];
             $returnData =$raingRepository->createRating($data);
             if($returnData['status']['success'] == 1){
-                  Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+//                  Yii::$app->session->setFlash('danger', $returnData['status']['message']);
                   $flag =1;
            }
         }

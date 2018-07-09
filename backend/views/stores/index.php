@@ -88,7 +88,7 @@ if(isset($urlData[1]) && $urlData[1]){
                         [
                            'class' => 'yii\grid\ActionColumn', 'contentOptions'=>[ 'style'=>'width: 15%'],     
                            'header' => 'Actions',
-                           'template' => '{view} {update} {delete}{config}{congiguration}',
+                           'template' => '{view} {update} {delete}{congiguration}',
                            'buttons' => [
                                'view' => function ($url, $model) {
                                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['stores/view/'.$model['id']]);
@@ -99,9 +99,7 @@ if(isset($urlData[1]) && $urlData[1]){
                                'delete' => function ($url, $model) {
                                     return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['stores/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this store?']);
                                 },
-                                'config' => function ($url, $model) {
-                                   return Html::a('Config', ['configs/index/'.$model['id']], ['class'=>'btn btn-primary','style'=>'margin-left: 15px;']);
-                                }, 
+                               
                                 'congiguration' => function ($url, $model) {
                                    return Html::a('Configuration', ['/store-configuration/listing/'.$model['id']], ['class'=>'btn btn-primary','style'=>'margin-left: 15px;']);
                                 }, 

@@ -333,9 +333,13 @@ jQuery(document).ready(function ()
                         var rating = 1;
                         var data = {action: action, data: starRating};
                     }
+                    if(starRating == 0){
+                        alert("Rating Can not be blank");
+                        return false;
+                    }
 
                     moet.ajax(questionUrl, data, 'post').then(function (result) {
-                        $("#ratings-rating").rating({min: 0, max: 10, step: 1, stars: 10, size: 'xs'});
+                        $("#ratings-rating").rating({min: 0, max: maxStar, step: 1, stars: maxStar, size: 'xs'});
 
                         if (result == 1) {
                             if (feedBack == 1) {
@@ -344,11 +348,13 @@ jQuery(document).ready(function ()
                                 $("#rating").show();
                             } else {
                                 alert("Rating Saved Succesfully");
+                                moet.showLoader();
                                 var node = document.getElementById('frame-design');
                                 var options = {quality: 1};
 
                                 domtoimage.toPng(node, options).then(function (dataUrl)
                                 {
+                                    moet.hideLoader();
                                     $.ajax({
                                         type: 'POST',
                                         url: uploadSelves,
@@ -366,6 +372,7 @@ jQuery(document).ready(function ()
                                     });
                                     return false;
                                 }).catch(function (error) {
+                                    moet.hideLoader();
                                     console.error('oops, something went wrong!', error);
                                 });
                                 return false;
@@ -383,11 +390,13 @@ jQuery(document).ready(function ()
             });
             return false;
         }else{
+            moet.showLoader();
             var node = document.getElementById('frame-design');
                                 var options = {quality: 1};
 
                                 domtoimage.toPng(node, options).then(function (dataUrl)
                                 {
+                                     moet.hideLoader();
                                     $.ajax({
                                         type: 'POST',
                                         url: uploadSelves,
@@ -405,6 +414,7 @@ jQuery(document).ready(function ()
                                     });
                                     return false;
                                 }).catch(function (error) {
+                                    moet.hideLoader();
                                     console.error('oops, something went wrong!', error);
                                 });
                                 return false;

@@ -129,7 +129,8 @@ $session = Yii::$app->session;
     var rackProductFromURL = '<?php echo $secondFormUrl ?>';
     var numOfSelves = '<?php echo $noOfSelves ?>';
     var uploadSelves = '<?php echo $uploadShelf ?>';
-    if (isUpdate == 1) {
+    var maxStar = '<?php echo yii::$app->params['star_max_size'][0] ;?>'
+    if (isUpdate == 1) { 
         var reviewStoreUrl = '<?= Url::to(['store-configuration/review-store/' . $configId]); ?>';
     }
     var questionUrl = '<?= Url::to(['store-configuration/feedback/' . $configId]); ?>';

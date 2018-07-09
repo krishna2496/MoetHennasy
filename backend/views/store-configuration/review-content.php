@@ -8,11 +8,14 @@ use common\helpers\CommonHelper;
         <form class="product-edit">
             <ul class="products-list product-list-in-box" id="review">
                 <?php
-//                echo '<pre>';
-//                print_r($questions);
-//                exit;
-
                 foreach ($questions as $key => $value) {
+                    $checked = '';
+                    if(!empty($feedBackResponse)){
+                        if($feedBackResponse[$value['id']] == 1){
+                              $checked = 'checked';
+                        }
+                        
+                    }
                     ?>
 
 
@@ -22,7 +25,7 @@ use common\helpers\CommonHelper;
                             <div class="row">
                                 <div class="col-md-8" style="float:left"><?= $value['question']; ?></div>
                            
-                                <div class="col-md-4" ><input  name="answer" type="checkbox" class="toggle"  data-toggle="toggle" data-on="YES" data-off="NO" ans="<?= $value['id'] ?>"></div>
+                                <div class="col-md-4" ><input  name="answer" type="checkbox"  <?= $checked ?> class="toggle"  data-toggle="toggle" data-on="YES" data-off="NO" ans="<?= $value['id'] ?>"></div>
                            </div>
                         </div>
                     </li>
@@ -37,7 +40,7 @@ use common\helpers\CommonHelper;
             <div id="rating">
             
                 
-                    <input type="text" id="ratings-rating" value=''/>
+                    <input type="text" id="ratings-rating" value=<?= $storeRating ?>>
                 
                
         </div>
