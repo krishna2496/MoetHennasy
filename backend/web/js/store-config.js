@@ -561,16 +561,16 @@ $(document).on('ready pjax:success', function ()
     //Added by Hardik on 03-07-2018
     $(".list-btn").click(function (e) {
         e.preventDefault();
-        $(this).children('img').attr("src", "../../images/list-btn.png");
-        $(this).siblings('.grid-btn').children('img').attr("src", "../../images/grid-gray-btn.png");
+        $(this).children('img').attr("src", baseUrl+"/images/list-btn.png");
+        $(this).siblings('.grid-btn').children('img').attr("src", baseUrl+"/images/grid-gray-btn.png");
         var list_id = $(this).attr("href");
         $(list_id).show();
         $(list_id).siblings(".grid-itmes").hide();
     });
     $(".grid-btn").click(function (e) {
         e.preventDefault();
-        $(this).children('img').attr("src", "../../images/grid-btn.png");
-        $(this).siblings('.list-btn').children('img').attr("src", "../../images/list-gray-btn.png");
+        $(this).children('img').attr("src", baseUrl+"/images/grid-btn.png");
+        $(this).siblings('.list-btn').children('img').attr("src", baseUrl+"/images/list-gray-btn.png");
         var grid_id = $(this).attr("href");
         $(grid_id).show();
         $(grid_id).siblings(".list-items").hide();
