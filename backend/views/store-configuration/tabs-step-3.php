@@ -231,8 +231,7 @@ $submitUrl = "store-configuration/save-config-data";
 <?php Pjax::end(); ?>  
                             </div>
                         </div>
-                        <div class="submit-fl">
-                            <button class="btn reset-btn" onclick="reset()">Reset</button>
+                        <div class="submit-fl">                            
                             <button class="btn next" >OK</button>
                         </div>
                     </div>
