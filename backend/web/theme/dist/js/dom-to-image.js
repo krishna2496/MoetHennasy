@@ -159,7 +159,7 @@
                // canvas.getContext('2d').drawImage(image, 0, 0);
                 var ctx = canvas.getContext('2d');
                 if(options.scale){
-                    ctx.scale(6.25,6.25);
+                    ctx.scale(2.5,2.5);
                 }
                 ctx.drawImage(image, 0, 0);
                 return canvas;
@@ -168,8 +168,8 @@
         function newCanvas(domNode) {
             var canvas = document.createElement('canvas');
              if(options.scale){
-                 canvas.width = options.width || 6.25 * util.width(domNode); 
-                 canvas.height = options.height || 6.25 * util.height(domNode); 
+                 canvas.width = options.width || 2.5 * util.width(domNode); 
+                 canvas.height = options.height || 2.5 * util.height(domNode); 
              }
              else{
                 canvas.width = options.width || util.width(domNode);

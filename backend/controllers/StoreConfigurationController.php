@@ -979,7 +979,8 @@ class StoreConfigurationController extends Controller {
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function actionSendMail($thumb) {
+    public function actionSendMail($thumb) 
+    {
         $mpdf = new Mpdf();
         $thumImage = explode('/', $thumb);
         $thumb = end($thumImage);
@@ -1038,7 +1039,8 @@ class StoreConfigurationController extends Controller {
             $mail->send();
         }
 
-        if (file_exists($pdfFileName)) {
+        if (file_exists($pdfFileName)) 
+        {
             @unlink($pdfFileName);
         }
     }

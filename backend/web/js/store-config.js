@@ -351,7 +351,7 @@ jQuery(document).ready(function ()
                                 $('#modalReview').modal('hide');
                                 moet.showLoader();
                                 var node = document.getElementById('frame-design');
-                                var options = {quality: 1};
+                                var options = {scale:true};
 
                                 domtoimage.toPng(node, options).then(function (dataUrl)
                                 {
@@ -393,7 +393,7 @@ jQuery(document).ready(function ()
         }else{
             moet.showLoader();
             var node = document.getElementById('frame-design');
-                                var options = {quality: 1};
+                                var options = {scale:true};
 
                                 domtoimage.toPng(node, options).then(function (dataUrl)
                                 {
