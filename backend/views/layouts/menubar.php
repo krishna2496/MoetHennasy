@@ -214,35 +214,6 @@ array(
         )
     ),
     array(
-        'title' => 'Rule Administration',
-        'permissionName' => array(
-            'Users.Index',
-            'Users.Create',
-        ),
-        'icon' => 'fa fa-user',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'rule-administration'
-        ),
-        'actionId' => array(
-            'index', 'create'
-        ),
-        'childs' => array(
-              array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'Catalogues.Index'
-                ),
-                'icon' => '',
-                'link' => 'rule-administration/index',
-                'controllerId' => 'catalogues',
-                'actionId' => array('index')
-            ),
-        )
-    ),
-    array(
         'title' => 'Catalogue',
         'permissionName' => array(
             'Catalogues.Index',
@@ -466,7 +437,7 @@ array(
             ),
         )
     ),
-        array(
+      /* array(
         'title' => 'Ratings',
         'permissionName' => array(
             'Ratings.Index',
@@ -504,8 +475,8 @@ array(
                 'actionId' => array('create')
             ),
         )
-    ),
-    
+    ), 
+    */
     array(
         'title' => 'Questions',
         'permissionName' => array(
