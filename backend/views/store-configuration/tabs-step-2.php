@@ -1,8 +1,6 @@
 <?php
 use yii\widgets\Pjax;
 use yii\grid\GridView;
-use kartik\switchinput\SwitchInput;
-
 ?>
 
 <div class="col-sm-5 pull-right" id="tab-step-2">
@@ -40,7 +38,6 @@ use kartik\switchinput\SwitchInput;
 									'dataProvider' => $dataProvider,
 									'layout' => '<div class="table-responsive product-table">{items}</div><div class="row"><div class="col-sm-12"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
 									'columns' => [
-											
 											[
 												'class' => 'yii\grid\CheckboxColumn', 'checkboxOptions' => function($model) {
 													return ['value' => $model['id'], 'selection' => true, 'class' => 'checked'];
@@ -66,21 +63,8 @@ use kartik\switchinput\SwitchInput;
 												'attribute' => 'top_shelf',
 												'format' => 'raw',
 												'value' => function($model) {
-                                                                                                    $checked = '';
-                                                                                                    if($model['top_shelf'] == 1){
-                                                                                                       $checked = 'checked'; 
-                                                                                                    }
-                                                                                                    return '<input disabled type="checkbox" class="toggle" '.$checked.' data-toggle="toggle" data-on="YES" data-off="NO">';
-//													$value = ($model['top_shelf'] == 0) ? false : true;
-//													$dvalue = ($model['top_shelf'] == 0) ? "0" : "1";
-//													return '<div class="idDiv" dvalue="' . $dvalue . '" id="' . $model["id"] . '">' . SwitchInput::widget([
-//														'name' => 'status_41[]',
-//														'value' => $value,
-//														'pluginOptions' => [
-//															'onText' => 'Yes',
-//															'offText' => 'No'
-//														]
-//													]) . '</div>';
+													$checked = ($model['top_shelf'] == 1)?'checked':'';
+													return '<input disabled type="checkbox" class="toggle" '.$checked.' data-toggle="toggle" data-on="YES" data-off="NO">';
 												}
 											]
 										],
@@ -101,10 +85,7 @@ use kartik\switchinput\SwitchInput;
 								{
 									$('input[type="checkbox"][value="' + $(sval).val() + '"]').attr('checked', true).iCheck('update');
 								}
-								
-								//                                                                    
 							});
-							console.log(productObject);
 						});
 
 						$('.select-on-check-all').on('ifChecked', function (event) {
@@ -147,10 +128,8 @@ use kartik\switchinput\SwitchInput;
 								productObject[id]['shelf'] = false;
 								$("div#" + id).attr("dvalue", "0")
 							}
-						});
-					
-					</script>
-					
+						});					
+					</script>					
 							  <?php Pjax::end(); ?>
                                                           </div> <!-- /.box-body -->
 						</div>

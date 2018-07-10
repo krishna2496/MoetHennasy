@@ -8,12 +8,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 //use kartik\switchinput\SwitchInput;
-
-if ($configId == 0) {
-    $submitUrl = "store-configuration/save-config-data";
-} else {
-    $submitUrl = "store-configuration/save-config-data";
-}
+$submitUrl = "store-configuration/save-config-data";
 ?>
 
 <div class="col-sm-5 pull-right" id="tab-step-3" style="z-index:5">
@@ -202,13 +197,11 @@ if ($configId == 0) {
 ?>
                             <script type="text/javascript">
                                 var rackProducts = '<?php echo $rackProducts; ?>';
-
                                 var ratio = '<?php echo $ratio; ?>';
                            
                                 if (rackProducts != '')
                                 {
                                     rackProducts = JSON.parse(rackProducts);
-                                    console.log(rackProducts);
                                     if (rackProducts == '') {
                                         $(".submitData").attr('disabled', 'true');
                                     }
@@ -217,12 +210,10 @@ if ($configId == 0) {
                                         bottleLeft = 0;
                                         $.each(item, function (k, titem)
                                         {
-
                                             var height = titem.height * ratio + "px";
                                             var width = titem.width * ratio + "px";
                                             var data = '<img src="' + titem.image + '" style="width:' + width + '; height:' + height + ';position: absolute; bottom:5px; left:' + bottleLeft + 'px;" id=' + k + '>';
                                             $("#canvas-container-" + i).append(data);
-
                                             bottleLeft = bottleLeft + (titem.width * ratio);
                                         });
                                     });
@@ -279,12 +270,10 @@ if ($configId == 0) {
                 });
 
                 $('#getProducts').on('change', function () {
-
                     var id = $(this).val();
                     var str = "<option value>Select Products</option>";
                     var data = {id: id};
                     moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/get-products", data, 'post').then(function (result) {
-
                         if (result.status.success == 1) {
                             if (result.data.catalogues.length > 0) {
                                 $.each(result.data.catalogues, function (key, value) {
