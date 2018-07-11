@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
             <div class="box-body">
                 <div class="row">
                     <div class="col-md-6">
-                          <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+                          <?= $form->field($model, 'title')->textInput() ?>
                     </div>
                 </div>
             </div>

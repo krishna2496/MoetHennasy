@@ -17,9 +17,10 @@ class ProductCategories extends BaseModel
         return [
             [['parent_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
-            [['name'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 100],
             [['name'], 'required'],
             [['name'], 'unique'],
+            [['name'], 'trim']
         ];
     }
 

@@ -35,10 +35,13 @@ class User extends BaseModel implements IdentityInterface
             [['email'], 'email'],
             [['created_by', 'updated_by', 'deleted_by', 'status'], 'integer','on' => ['create','update']],
             [['username','email'], 'unique'],
-            ['username','match', 'pattern' => '/^[a-zA-Z0-9\-_]{0,40}$/', 'message' => 'Username can only contain Alphabet and Numeric'],
+            ['username','match', 'pattern' => '/^[a-zA-Z0-9\-_]{0,255}$/', 'message' => 'Username can only contain Alphabet and Numeric'],
             [['userImage'], 'file','extensions'=>'jpg,png,jpeg','on' => ['create','update']],
             ['parent_user_id', 'required', 'when' => function ($model) { return ($model->role_id != Yii::$app->params['marketAdministratorRole'] && $model->role_id != Yii::$app->params['superAdminRole']); }, 'whenClient' => "function (attribute, value) { return $('#user-role_id').val() != '".Yii::$app->params['marketAdministratorRole']."'; }"],
-            [['phone'], 'number']
+            [['phone'], 'number'],
+            [['phone'], 'string', 'max' => 12],
+            [['first_name','last_name','email'], 'string', 'max' => 255],
+            [['username','first_name','last_name','email','phone','address','company_name'], 'trim'],
         ];
     }
 

@@ -20,9 +20,10 @@ class Brands extends BaseModel
             [['created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['brandImage'], 'file','extensions'=>'jpg,png,jpeg'],
-            [['name'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 100],
             [['name'], 'required'],
             [['name'], 'unique'],
+            [['name'], 'trim']
         ];
     }
 

@@ -24,14 +24,16 @@ class Catalogues extends BaseModel
             [['brand_id', 'product_category_id', 'product_sub_category_id', 'product_type_id', 'market_id', 'market_share', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['width', 'height', 'length', 'scale', 'price'], 'number'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
-            [['sku', 'ean', 'short_name', 'long_name', 'manufacturer'], 'string', 'max' => 255],
+            [['sku', 'ean'], 'string', 'max' => 100],
+            [['short_name', 'long_name', 'manufacturer'], 'string', 'max' => 255],
             [['box_only', 'top_shelf'], 'string', 'max' => 1],
             [['catalogueImage'], 'file','extensions'=>'jpg,png,jpeg','on' => ['create','update']],
             [['catalogueImage'], 'required','on' => ['create']],
             ['long_name', 'required', 'when' => function ($model) { return $model->short_name == ''; }, 'whenClient' => "function (attribute, value) { return $('#catalogues-short_name').val() == ''; }",'message'=>'Select either Long Product Name or Short Product Name.'],
             ['short_name', 'required', 'when' => function ($model) { return $model->long_name == ''; }, 'whenClient' => "function (attribute, value) { return $('#catalogues-long_name').val() == ''; }",'message'=>'Select either Long Product Name or Short Product Name.'],
             [['sku'], 'unique'],
-            ['sku','match', 'pattern' => '/^[a-zA-Z0-9\-_]{0,40}$/', 'message' => 'Sku can only contain Alphabet and Numeric'],
+            ['sku','match', 'pattern' => '/^[a-zA-Z0-9\-_]{0,50}$/', 'message' => 'Sku can only contain Alphabet and Numeric'],
+            [['sku','ean','short_name','long_name','width','height','length','scale','manufacturer','market_share','price'],'trim'],
         ];
     }
 
