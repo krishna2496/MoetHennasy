@@ -29,7 +29,7 @@ class MarketRulesRepository extends Repository {
         $flag=1;
         $marketSegmentData = $data['rule_id'];
         $model = new MarketRules;
-        $model->deleteAll(['market_segment_id' => $data['market_segment_id']],true);
+        $model->deleteAll(['market_segment_id' => $data['market_segment_id'],'market_id' => $data['market_id']],true);
         foreach ($marketSegmentData as $value) {
             $modelSegment = new MarketRules;
             $modelSegment->market_id = $data['market_id'];
