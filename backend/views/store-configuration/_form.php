@@ -7,8 +7,6 @@ use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
-//use kartik\switchinput\SwitchInput;
-
 $formUrl = Url::to(['store-configuration/save-data']);
 $uploadShelf = Url::to(['store-configuration/save-image']);
 //$reviewUrl = Url::to(['store-configuration/review-store']);
@@ -20,8 +18,7 @@ if (isset($_SESSION['config']['products'])) {
 }
 $session = Yii::$app->session;
 ?>
-<script>
-
+<script type="text/javascript">
     var isUpdate = '<?php echo $is_update; ?>';
     var brandThumbId = '<?php echo $brandThumbId ?>';
     var productArry = [];
@@ -123,6 +120,7 @@ $session = Yii::$app->session;
         </div>
     </div>
 </div>
+<div class="modal fade in" id="modalReview"></div><!-- /.modal-dialog -->
 <script type="text/javascript">
 
     var rackFromURL = '<?php echo $formUrl ?>';
@@ -142,8 +140,6 @@ $session = Yii::$app->session;
         }
     });
 
-
-
     $('#tab1').click(function (event) {
         if ($(this).attr('disabled')) {
             return false;
@@ -157,9 +153,11 @@ $session = Yii::$app->session;
     });
 
 </script>
+
 <?php
+/*
 yii\bootstrap\Modal::begin([
-    'headerOptions' => ['id' => 'modalHeader'],
+    //'headerOptions' => ['id' => 'modalHeader'],
     'id' => 'modalReview',
     'size' => 'modal-lg',
     //keeps from closing modal with esc key or by clicking out of the modal.
@@ -168,4 +166,5 @@ yii\bootstrap\Modal::begin([
 ]);
 echo "<div id='content'></div>";
 yii\bootstrap\Modal::end();
+*/
 ?>

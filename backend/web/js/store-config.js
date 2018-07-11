@@ -305,14 +305,15 @@ jQuery(document).ready(function ()
         if (reviewFlag == 1) {
 //            $('#modalReview').modal('show');
             var dataURL = reviewStoreUrl;  
-            $('#modalReview').modal('show').find('#content').load(dataURL, function () {
+            $('#modalReview').modal({ show: true,keyboard: false,backdrop: 'static'}).load(dataURL, function () {
                 $("#rating").hide();
                 $('.toggle').bootstrapToggle();
 
 
                 $('#submitQuestion').on('click', function (e)
                 {
-                    var rating = feedBack = 0;
+                    var rating = 0;
+                    var feedBack = 0;
                     e.stopImmediatePropagation();
 
                     if ($('#review').is(':visible')) {
@@ -323,14 +324,14 @@ jQuery(document).ready(function ()
                         });
 
                         var action = 'feedback';
-                        var feedBack = 1;
+                        feedBack = 1;
                         var data = {action: action, data: arrayData};
                     } else {
                         var star = $('span.filled-stars').width();
                         var starRating = parseInt(star) / 32;
 
                         var action = 'rating';
-                        var rating = 1;
+                        rating = 1;
                         var data = {action: action, data: starRating};
                     }
                     if(starRating == 0){
@@ -343,9 +344,12 @@ jQuery(document).ready(function ()
 
                         if (result == 1) {
                             if (feedBack == 1) {
-                                alert("Feeback Saved Succesfully");
+                                //alert("Feeback Saved Succesfully");
                                 $("#review").hide();
                                 $("#rating").show();
+                                $('.modal-header > .modal-title',$('#modalReview')).html("Review");
+                                $('.modal-body > p:first',$('#modalReview')).html("<strong>Your configuration have been saved.</strong> Could you please rate your configuration:");
+                                $('#submitQuestion').text('Submit Review');
                             } else {
                                 alert("Rating Saved Succesfully");
                                 $('#modalReview').modal('hide');
