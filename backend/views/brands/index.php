@@ -45,7 +45,10 @@ $formUrl = Url::to(['brands/index']);
 
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-                        'name',
+                        [
+                        'attribute' => 'Title',
+                        'value' => 'name'
+                        ],
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',

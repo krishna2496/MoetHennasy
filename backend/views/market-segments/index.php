@@ -48,7 +48,18 @@ $formUrl = Url::to(['market-segments/index']);
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
                         'title',
-                        'description:ntext',
+                        [
+                            'label' => 'Description',
+                            'attribute' => 'description',
+                            'format' => 'html',
+                                'value' =>function($model) {
+                                    if(strlen($model['description']) > 160){
+                                       return  substr($model['description'], 0, 160). "...";
+                                    }else{
+                                        return $model['description'];
+                                    }
+                                },
+                        ],
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',

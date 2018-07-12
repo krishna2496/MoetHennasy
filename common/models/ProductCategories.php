@@ -29,7 +29,7 @@ class ProductCategories extends BaseModel
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'parent_id' => 'Parent ID',
+            'parent_id' => 'Parent Category',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'deleted_by' => 'Deleted By',

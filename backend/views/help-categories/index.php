@@ -19,7 +19,7 @@ $formUrl = Url::to(['help-categories/index']);
                 <div class="row pull-right">
                     <div class="col-md-2">
                         <?php  if(CommonHelper::checkPermission('HelpCategories.Create')){ ?>
-                        <?= Html::a('New Categories', ['create'], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('New Category', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-10">
@@ -50,11 +50,11 @@ $formUrl = Url::to(['help-categories/index']);
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
-                           'template' => '{view} {update} {delete}{question}',
+                           'template' => '{update} {delete}{question}',
                            'buttons' => [
-                               'view' => function ($url, $model) {
-                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['help-categories/view/'.$model['id']],['title'=>'View']);
-                                },
+//                               'view' => function ($url, $model) {
+//                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['help-categories/view/'.$model['id']],['title'=>'View']);
+//                                },
                                'update' => function ($url, $model) {
                                   return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/help-categories/update/'.$model['id']],['title'=>'Update']);
                                 },                                

@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-$this->title = 'Update Market Clusters';
+$this->title = 'Update Market Cluster';
 $this->params['breadcrumbs'][] = ['label' => 'Market Clusters', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title
 

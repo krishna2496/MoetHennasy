@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'update'=>function ($url,$model) { 
                                     if(CommonHelper::checkPermission('Permission.Update')){
                                         
-                                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/permission/update/'.$model['id']]);
+                                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/permission/update/'.$model['id']],[ 'title' => 'Update']);
                                     } 
                                 },
                                 'delete'=>function ($url,$model) { 

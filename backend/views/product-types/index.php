@@ -19,7 +19,7 @@ $formUrl = Url::to(['product-types/index']);
                 <div class="row pull-right">
                <div class="col-md-2">
                         <?php  if(CommonHelper::checkPermission('Market.Create')){ ?>
-                        <?= Html::a('New Product Types', ['create'], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('New Product Type', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-10">

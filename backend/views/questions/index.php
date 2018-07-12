@@ -4,7 +4,7 @@ use yii\grid\GridView;
 use common\helpers\CommonHelper;
 use yii\helpers\Url;
 
-$this->title = 'Questions';
+$this->title = 'Feedback Questions';
 $this->params['breadcrumbs'][] = $this->title;
 $formUrl = Url::to(['questions/index']);
 ?>
@@ -16,12 +16,12 @@ $formUrl = Url::to(['questions/index']);
                     <?= Html::encode($this->title) ?>
                 </h3>
                 <div class="row pull-right">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <?php  if(CommonHelper::checkPermission('Questions.Create')){ ?>
-                        <?= Html::a('New Questions', ['create'], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('New Feedback Questions', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
@@ -45,8 +45,11 @@ $formUrl = Url::to(['questions/index']);
 
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-                         'question',
                        
+                       [
+                             'attribute' => 'question',
+                             'label' =>'Feedback question',  
+                       ],
                         [
                             'attribute' => 'response_type',
                             'value' => function ($model) {
