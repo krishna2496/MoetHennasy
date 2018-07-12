@@ -18,7 +18,7 @@ class Glossary extends BaseModel
             [['title', 'description'], 'required'],
             [['created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
-            
+            [['title'], 'string', 'max' => 100],
         ];
     }
 

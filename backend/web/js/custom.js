@@ -24,3 +24,6 @@ $(document).on("ready pjax:end", function() {
       increaseArea: '20%'
     });
 });
+$('document').ready(function(){
+    $('.select2').select2();
+});

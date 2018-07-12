@@ -14,6 +14,8 @@ $queryString = '';
 if(isset($urlData[1]) && $urlData[1]){
     $queryString = '?'.$urlData[1];
 }
+//echo '<pre>';
+//print_r($dataProvider->totalCount);exit;
 ?>
 <div class="row">
     <div class="col-xs-12">
@@ -30,9 +32,14 @@ if(isset($urlData[1]) && $urlData[1]){
                                     <?= Html::a('New Store', ['create'], ['class' => 'btn btn-primary']) ?>
                                 </div>
                             <?php } ?>
-                            <?php  if(CommonHelper::checkPermission('Stores.Export')){ ?>
+                            <?php  if(CommonHelper::checkPermission('Stores.Export')){
+                                $class = '';
+                                if($dataProvider->totalCount == 0){
+                                    $class = 'disabled';
+                                }
+                                ?>
                                 <div class="col-md-6">
-                                    <?= Html::a('Export', ['export'.$queryString], ['class' => 'btn btn-primary']) ?>
+                                    <?= Html::a('Export', ['export'.$queryString], ['class' => 'btn btn-primary'.' '.$class.'']) ?>
                                 </div>
                             <?php } ?>
                         </div>
@@ -45,16 +52,16 @@ if(isset($urlData[1]) && $urlData[1]){
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'store-text']) ?>
                                 </div>
                                 <div class="col-md-2">
-                                    <?= Html::dropDownList('market_id', isset($filters['market_id']) ? $filters['market_id'] : '' ,$markets,  ['class' => 'form-control', 'id' => 'store-markets','prompt' => 'Select Market']) ?>
+                                    <?= Html::dropDownList('market_id', isset($filters['market_id']) ? $filters['market_id'] : '' ,$markets,  ['class' => 'form-control select2', 'id' => 'store-markets','prompt' => 'Select Market']) ?>
                                 </div>
                                 <div class="col-md-2">
-                                    <?= Html::dropDownList('market_segment_id', isset($filters['market_segment_id']) ? $filters['market_segment_id'] : '' ,$marketSegments,  ['class' => 'form-control', 'id' => 'store-market_segment','prompt' => 'Select Cluster']) ?>
+                                    <?= Html::dropDownList('market_segment_id', isset($filters['market_segment_id']) ? $filters['market_segment_id'] : '' ,$marketSegments,  ['class' => 'form-control select2', 'id' => 'store-market_segment','prompt' => 'Select Cluster']) ?>
                                 </div> 
                                 <div class="col-md-2">
-                                    <?= Html::dropDownList('country_id', isset($filters['country_id']) ? $filters['country_id'] : '' ,$countries,  ['class' => 'form-control', 'id' => 'store-country','prompt' => 'Select Country']) ?>
+                                    <?= Html::dropDownList('country_id', isset($filters['country_id']) ? $filters['country_id'] : '' ,$countries,  ['class' => 'form-control select2', 'id' => 'store-country','prompt' => 'Select Country']) ?>
                                 </div>
                                 <div class="col-md-2">
-                                    <?= Html::dropDownList('city_id', isset($filters['city_id']) ? $filters['city_id'] : '' ,$cities,  ['class' => 'form-control', 'id' => 'store-city','prompt' => 'Select City']) ?>
+                                    <?= Html::dropDownList('city_id', isset($filters['city_id']) ? $filters['city_id'] : '' ,$cities,  ['class' => 'form-control select2', 'id' => 'store-city','prompt' => 'Select City']) ?>
                                 </div>
                                 <div class="col-md-2">
                                     <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'store-limit']) ?>
