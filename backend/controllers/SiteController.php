@@ -72,7 +72,7 @@ class SiteController extends BaseBackendController
     {
        $user=CommonHelper::getUser();
        $data=$filterData=array();
-       if($user->role_id != 1){
+       if($user->role_id != yii::$app->params['superAdminRole']){
             $userData = new User();
             $childUser=$userData->getAllChilds($user->id);
             if(!empty($childUser)){
@@ -99,8 +99,10 @@ class SiteController extends BaseBackendController
             $roleList = CommonHelper::getDropdown($roleData['data']['roles'], ['id', 'title']);
             
        }
-//       echo '<pre>';
-//       print_r($storeData);exit;
+       if($user['role_id'] != yii::$app->params['superAdminRole']){
+           unset($roleList[yii::$app->params['superAdminRole']]);
+       }
+    
        $store=array();
        if($storeData['status']['success'] == 1){
             $storeList = CommonHelper::getDropdown($storeData['data']['stores'], ['id', 'name']);
@@ -132,6 +134,7 @@ class SiteController extends BaseBackendController
 
         $model = new LoginForm();
         if(Yii::$app->request->post()){
+           
             $data = Yii::$app->request->post('LoginForm');
             $data['deviceType'] = Yii::$app->params['deviceType']['web'];
             $data['deviceToken'] = '';

@@ -172,6 +172,7 @@ class MarketController extends BaseBackendController
         $model = new MarketRules();
         $selected = [];
         $market_segment_id ='';
+       
         if(Yii::$app->request->post('MarketRules')){
             $postData=Yii::$app->request->post('MarketRules');
             $market_segment_id=$postData['market_segment_id'];
@@ -223,7 +224,7 @@ class MarketController extends BaseBackendController
         
         $dataProvider = $searchModel->search($filters);
         $dataProvider->pagination->pageSize = $filters['limit'];
-        
+       
         return $this->render('apply_rules', [
             'model' => $model,
             'searchModel' => $searchModel,
