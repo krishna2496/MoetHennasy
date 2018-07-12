@@ -62,9 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= API_KEY ?>&callback=initialize"> </script>
 <script>
-    $('document').ready(function(){
-        $('.select2').select2();
-    });
+
     
 var gmarkers1 = [];
 var markers1 = [];

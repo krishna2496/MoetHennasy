@@ -30,8 +30,8 @@ $formUrl = Url::to(['market-segments/index']);
                                 <div class="col-md-6">
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text']) ?>
                                 </div>
-                                 <div class="col-md-4">
-                                    <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
+                                 <div class="col-md-3">
+                                    <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control select2','id' => 'user-limit']) ?>
                                 </div>
                             </div>
                         </div>

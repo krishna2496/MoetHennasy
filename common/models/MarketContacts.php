@@ -13,7 +13,7 @@ class MarketContacts extends BaseModel {
     public function rules() {
         return [
                 [['market_segment_id', 'market_id', 'address', 'phone', 'email'], 'required'],
-                [['market_segment_id', 'market_id'], 'unique', 'targetAttribute' => ['market_segment_id']],
+                [['market_segment_id'], 'unique', 'targetAttribute' => ['market_id','market_segment_id']],
                 [['market_segment_id', 'market_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
                 [['address'], 'string'],
                 [['created_at', 'updated_at', 'deleted_at'], 'safe'],
