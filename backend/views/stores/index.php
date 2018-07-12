@@ -91,13 +91,13 @@ if(isset($urlData[1]) && $urlData[1]){
                            'template' => '{view} {update} {delete}{congiguration}',
                            'buttons' => [
                                'view' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['stores/view/'.$model['id']]);
+                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['stores/view/'.$model['id']],['title'=>'View']);
                                 },
                                'update' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['stores/update/'.$model['id']]);
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['stores/update/'.$model['id']],['title'=>'Update']);
                                 },                                
                                'delete' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['stores/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this store?']);
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['stores/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this store?','title'=>'Delete']);
                                 },
                                
                                 'congiguration' => function ($url, $model) {

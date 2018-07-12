@@ -67,13 +67,13 @@ $formUrl = Url::to(['market/index']);
                            'buttons' => [
     
                                'view' => function ($url, $model) use ($filters) {
-                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['market/view/'.$model['id']],['title' => 'view']);
+                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['market/view/'.$model['id']],['title' => 'View']);
                                 },
                                'update' => function ($url, $model) use ($filters) {
-                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/market/update/'.$model['id']],['title' => 'update']);
+                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/market/update/'.$model['id']],['title' => 'Update']);
                                 },                                
                                'delete' => function ($url, $model) use ($filters) {
-                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['market/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this market?','title' => 'delete']);
+                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['market/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this market?','title' => 'Delete']);
                                 },
                                 'contact' => function ($url, $model) use ($filters) {
                                    return Html::a('<span class="glyphicon glyphicon-phone"></span>', ['market-contacts/index/'.$model['id']],['title' => 'contacts']);

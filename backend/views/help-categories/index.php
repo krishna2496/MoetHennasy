@@ -53,13 +53,13 @@ $formUrl = Url::to(['help-categories/index']);
                            'template' => '{view} {update} {delete}{question}',
                            'buttons' => [
                                'view' => function ($url, $model) {
-                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['help-categories/view/'.$model['id']]);
+                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['help-categories/view/'.$model['id']],['title'=>'View']);
                                 },
                                'update' => function ($url, $model) {
-                                  return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/help-categories/update/'.$model['id']]);
+                                  return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/help-categories/update/'.$model['id']],['title'=>'Update']);
                                 },                                
                                'delete' => function ($url, $model) {
-                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['help-categories/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this category?']);
+                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['help-categories/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this category?','title'=>'View']);
                                 }, 
                                 'question' => function ($url, $model) {
                                    return Html::a('Add Questions', ['helps/index/'.$model['id']], ['class'=>'filter-search btn btn-primary']);

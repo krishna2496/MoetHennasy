@@ -41,18 +41,21 @@ class ProductTypesController extends BaseBackendController
 
     public function actionIndex()
     {
+        $searchModel = new ProductTypesSearch();
         $filters = Yii::$app->request->queryParams;
         if(!isset($filters['limit'])){
             $filters['limit'] = Yii::$app->params['pageSize'];
         }
-        $searchModel = new ProductTypesSearch();
+        
         $dataProvider = $searchModel->search($filters);
+        $dataProvider->pagination->pageSize = $filters['limit'];
+       
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'filters' => $filters,
         ]);
-        
+               
     }
 
     public function actionView($id)

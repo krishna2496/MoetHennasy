@@ -72,13 +72,13 @@ $formUrl = Url::to(['catalogues/index']);
                             'template' => '{view} {update} {delete}',
                             'buttons' => [
                                 'view' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['catalogues/view/' . $model['id']]);
+                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['catalogues/view/' . $model['id']],['title'=>'View']);
                                 },
                                 'update' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['catalogues/update/' . $model['id']]);
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['catalogues/update/' . $model['id']],['title'=>'Update']);
                                 },
                                 'delete' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['catalogues/delete/' . $model['id']], ['data-method' => 'post', 'data-confirm' => 'Are you sure want to delete this catalogues?']);
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['catalogues/delete/' . $model['id']], ['data-method' => 'post', 'data-confirm' => 'Are you sure want to delete this catalogues?','title'=>'Delete']);
                                 },
                             ],
                         ],

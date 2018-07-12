@@ -6,10 +6,10 @@ use common\helpers\CommonHelper;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-$this->title = 'Market Rules';
+$this->title = 'Market Brands';
 $this->params['breadcrumbs'][] = ['label' => 'Market', 'url' => ['/market']];
 $this->params['breadcrumbs'][] = $this->title;
-$formUrl = Url::to(['market/rules']);
+$formUrl = Url::to(['market/brands']);
 ?>
 <div class="row">
   

@@ -27,7 +27,7 @@ class ProductTypesSearch extends ProductTypes
 
     public function search($params)
     {
-        $brandRepository = new ProductTypesRepository();
+        $brandRepository = new ProductTypesRepository;
         $brandRepository = $brandRepository->listing($params); 
         $brandList = array();
         if($brandRepository['status']['success'] == 1){
@@ -46,10 +46,10 @@ class ProductTypesSearch extends ProductTypes
             'sort' => [
                 'attributes' =>
                 [
-                    'name',
+                    'title',
                 ],
                 'defaultOrder' => [
-                    'name' => SORT_ASC,
+                    'title' => SORT_ASC,
                 ]
             ]
         ]);

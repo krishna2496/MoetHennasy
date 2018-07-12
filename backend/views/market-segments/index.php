@@ -55,13 +55,13 @@ $formUrl = Url::to(['market-segments/index']);
                            'template' => '{view} {update} {delete}',
                            'buttons' => [
                                'view' => function ($url, $model) use ($filters) {
-                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['market-segments/view/'.$model['id']]);
+                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['market-segments/view/'.$model['id']],['title'=>'View']);
                                 },
                                'update' => function ($url, $model) use ($filters) {
-                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/market-segments/update/'.$model['id']]);
+                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/market-segments/update/'.$model['id']],['title'=>'Update']);
                                 },                                
                                'delete' => function ($url, $model) use ($filters) {
-                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['market-segments/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this market segment?']);
+                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['market-segments/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this market segment?','title'=>'Delete']);
                                 },                               
                                
                             ],

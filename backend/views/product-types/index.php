@@ -6,7 +6,8 @@ use common\helpers\CommonHelper;
 use yii\helpers\Url;
 
 $this->title = 'Product Types';
-$formUrl = Url::to(['product-types']);
+$this->params['breadcrumbs'][] = $this->title;
+$formUrl = Url::to(['product-types/index']);
 ?>
 <div class="row" style="margin-top:30px">
     <div class="col-xs-12">
@@ -51,16 +52,16 @@ $formUrl = Url::to(['product-types']);
                             [
                             'class' => 'yii\grid\ActionColumn',
                             'header' => 'Actions',
-                            'template' => '{view} {update} {delete}',
+                            'template' => ' {update} {delete}',
                             'buttons' => [
-                                'view' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['product-types/view/' . $model['id']]);
-                                },
+//                                'view' => function ($url, $model) {
+//                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['product-types/view/' . $model['id']]);
+//                                },
                                 'update' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['product-types/update/' . $model['id']]);
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['product-types/update/' . $model['id']],['title'=>'Update']);
                                 },
                                 'delete' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['product-types/delete/'. $model['id']], ['data-method' => 'post', 'data-confirm' => 'Are you sure want to delete this prodcuct type ?']);
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['product-types/delete/'. $model['id']], ['data-method' => 'post', 'data-confirm' => 'Are you sure want to delete this prodcuct type ?','title'=>'Delete']);
                                 },
                             ],
                         ],
@@ -73,7 +74,7 @@ $formUrl = Url::to(['product-types']);
 </div>
 
 <script type="text/javascript">
-    $("body").on("change", "#user-type,#user-text,#user-limit", function (event) {
+    $("body").on("change", "#user-text,#user-limit", function (event) {
         $('#search-users').submit();
     });
 </script>
