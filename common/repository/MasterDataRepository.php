@@ -18,7 +18,7 @@ class MasterDataRepository extends Repository
         $query = Countries::find();
 
         $data = array();
-        $data['countries'] = $query->asArray()->all();
+        $data['countries'] = $query->orderBy(['name' => yii::$app->params['defaultSorting']])->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }

@@ -14,6 +14,8 @@ $queryString = '';
 if(isset($urlData[1]) && $urlData[1]){
     $queryString = '?'.$urlData[1];
 }
+//echo '<pre>';
+//print_r($dataProvider->totalCount);exit;
 ?>
 <div class="row">
     <div class="col-xs-12">
@@ -30,9 +32,14 @@ if(isset($urlData[1]) && $urlData[1]){
                                     <?= Html::a('New Store', ['create'], ['class' => 'btn btn-primary']) ?>
                                 </div>
                             <?php } ?>
-                            <?php  if(CommonHelper::checkPermission('Stores.Export')){ ?>
+                            <?php  if(CommonHelper::checkPermission('Stores.Export')){
+                                $class = '';
+                                if($dataProvider->totalCount == 0){
+                                    $class = 'disabled';
+                                }
+                                ?>
                                 <div class="col-md-6">
-                                    <?= Html::a('Export', ['export'.$queryString], ['class' => 'btn btn-primary']) ?>
+                                    <?= Html::a('Export', ['export'.$queryString], ['class' => 'btn btn-primary'.' '.$class.'']) ?>
                                 </div>
                             <?php } ?>
                         </div>
