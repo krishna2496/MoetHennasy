@@ -3,7 +3,9 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use common\helpers\CommonHelper;
+use yii\helpers\Url;
 
+$formUrl= Url::to(['permission/index']);
 $this->title = 'Permissions';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -21,7 +23,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php } ?>
                     </div>
                     <div class="col-md-6">
-                        <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'store-limit']) ?>
+                        <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
+                        <div class="filter-search dataTables_filter clearfix">
+                        <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'permission-limit']) ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,3 +76,8 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $("body").on("change", "#permission-limit", function (event) {
+         $('#search-users').submit();
+    });
+</script>

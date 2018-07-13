@@ -9,25 +9,30 @@ use yii\widgets\ActiveForm;
 $this->title = 'Market Brands';
 $this->params['breadcrumbs'][] = ['label' => 'Market', 'url' => ['/market']];
 $this->params['breadcrumbs'][] = $this->title;
-$formUrl = Url::to(['market/brands']);
+$formUrl = Url::to(['market/brands/2']);
 ?>
 <div class="row">
-  
-<?php $form = ActiveForm::begin(['method' => 'post', 'options' => ['data-pjax' => '', 'id' => 'w1']]); ?>
     <div class="row" id="isDisplay">
         <div class="col-xs-12">
             <div class="box">
-                 <div class="box-header">
+                 
+                <div class="box-body">
+                    <div class="box-header">
                         <h2>
                         <?= $title; ?>
                         </h2>
                      <div class="row pull-right">
                         <div class="col-md-12">
+                            <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
+                        <div class="filter-search dataTables_filter clearfix">
                             <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
                         </div>
+                             <?= Html::endForm(); ?>
+                        </div>
                     </div>
-            </div>
-                <div class="box-body">
+                    </div>
+<?php $form = ActiveForm::begin(['method' => 'post', 'options' => ['data-pjax' => '', 'id' => 'w1']]); ?>
+    
 <?=
 GridView::widget([
     'dataProvider' => $dataProvider,
@@ -97,5 +102,9 @@ GridView::widget([
                 return false;
             }
         });
+        
+        $("body").on("change", "#user-limit",function(event){
+        $('#search-users').submit();
+    });
 
     </script>

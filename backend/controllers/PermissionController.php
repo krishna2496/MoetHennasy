@@ -46,6 +46,11 @@ class PermissionController extends BaseBackendController
     {
         $permissions = array();
         $data = Yii::$app->request->queryParams;
+        
+        if(!isset($data['limit'])){
+            $data['limit'] = Yii::$app->params['pageSize'];
+        }
+        
         $permissionRepository = new PermissionRepository;
         $returnData = $permissionRepository->listing($data);
         if($returnData['status']['success'] == 1){
@@ -55,7 +60,7 @@ class PermissionController extends BaseBackendController
         $dataProvider = new ArrayDataProvider([
             'allModels' => $permissions,
             'pagination' =>  [ 
-                'pageSize' => Yii::$app->params['pageSize'],
+                'pageSize' => $data['limit'],
             ],
             'sort' => [
                 'attributes' => [

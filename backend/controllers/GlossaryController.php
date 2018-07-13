@@ -43,6 +43,7 @@ class GlossaryController extends BaseBackendController
     public function actionIndex()
     {
         $filters = Yii::$app->request->queryParams;
+        
         if(!isset($filters['limit'])){
             $filters['limit'] = Yii::$app->params['pageSize'];
         }

@@ -27,10 +27,10 @@ $formUrl = Url::to(['rules/index']);
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
                                 <div class="col-md-8">
-                                <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'permission-text']) ?>
+                                <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?>
                                 </div>
                                  <div class="col-md-4">
-                                    <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '', Yii::$app->params['limit'], ['class' => 'form-control', 'id' => 'permission-limit']) ?>
+                                    <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '', Yii::$app->params['limit'], ['class' => 'form-control', 'id' => 'user-limit']) ?>
                                 </div>                             
                             </div>
                         </div>

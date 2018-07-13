@@ -130,10 +130,12 @@ class ProductCategoriesController extends BaseBackendController
 
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($id);        
+        $modelall= ProductCategories::findAll(['parent_id' => $model->id]);
         
-        if(isset($model->parent_id) && !empty($model->parent_id)){
-            Yii::$app->session->setFlash('danger',Yii::t('app', 'Can not Delete Record Parent Exists', [Yii::t('app', 'product_categories')]) );
+        
+        if(isset($modelall) && !empty($modelall)){
+            Yii::$app->session->setFlash('danger',Yii::t('app', 'Can not Delete', [Yii::t('app', 'product_categories')]) );
         }
         else{       
             if($model->delete()){
