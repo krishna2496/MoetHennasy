@@ -45,10 +45,14 @@ class BrandsSearch extends Brands
             'sort' => [
                 'attributes' =>
                 [
-                    'name',
+                    'Title'=> [
+                        'asc' => ['name' => SORT_ASC],
+                        'desc' => ['name' => SORT_DESC],
+                        'default' => SORT_ASC
+                        ],
                 ],
                 'defaultOrder' => [
-                    'name' => SORT_ASC,
+                    'Title' => SORT_ASC,
                 ]
             ]
         ]);

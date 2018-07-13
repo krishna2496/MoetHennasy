@@ -1,43 +1,34 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
-
-/* @var $this yii\web\View */
-/* @var $model common\models\Glossary */
+use common\helpers\CommonHelper;
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Glossaries', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Glossary', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$updateUrl = Url::to(['glossary/update/'.$model->id]);
 ?>
-<div class="glossary-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'title',
-            'description',
-            'created_by',
-            'updated_by',
-            'deleted_by',
-            'created_at',
-            'updated_at',
-            'deleted_at',
-        ],
-    ]) ?>
-
-</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">
+                    <?= Html::encode($this->title) ?>
+                </h3>
+                <?= Html::a('Update', $updateUrl , ['class' => 'btn btn-primary pull-right']) ?>
+            </div>
+            <div class="box-body">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'title',
+                        'description:ntext',
+                      
+                    ],
+                ]) ?>
+            </div>
+        </div>
+    </div>
+</div>    

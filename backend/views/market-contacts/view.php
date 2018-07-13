@@ -5,9 +5,9 @@ use yii\helpers\Url;
 use yii\widgets\DetailView;
 use common\helpers\CommonHelper;
 
-$this->title = $model->market_segment_id;
+$this->title = $model->getMarketSegmentName($model->market_segment_id);
 $this->params['breadcrumbs'][] = ['label' => 'Market Contacts', 'url' => ['market-contacts/index/'.$market_id]];
-$this->params['breadcrumbs'][] = $model->market_segment_id;
+$this->params['breadcrumbs'][] = $model->getMarketSegmentName($model->market_segment_id);
 $updateUrl = Url::to(['market-contacts/index/'.$market_id.'/'.$model->id]);
 ?>
 <div class="row">

@@ -1,7 +1,5 @@
 <?php
-
 namespace common\models;
-
 use Yii;
 
 class MarketContacts extends BaseModel {
@@ -47,5 +45,15 @@ class MarketContacts extends BaseModel {
     public function getMarketSegment() {
         return $this->hasOne(MarketSegments::className(), ['id' => 'market_segment_id']);
     }
-
+    
+    public function getMarketSegmentName($id)
+    {
+        return MarketSegments::findOne(['id'=>$id])->title;
+    }
+    
+     public function getMarketName($id)
+    {
+        return Markets::findOne(['id'=>$id])->title;
+    }
+    
 }

@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Update Product Types';
+$this->title = 'Update Product Type';
 $this->params['breadcrumbs'][] = ['label' => 'Product Types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title ;
 ?>

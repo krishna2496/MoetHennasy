@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Create Product Categories';
+$this->title = 'Create Product Category';
 $this->params['breadcrumbs'][] = ['label' => 'Product Categories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

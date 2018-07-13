@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-$this->title = 'Update Help Categories';
+$this->title = 'Update Help Categorie';
 $this->params['breadcrumbs'][] = ['label' => 'Update Help Categories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

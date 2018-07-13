@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 use common\helpers\CommonHelper;
-$this->title='Questions';
+$this->title='Feedback Questions';
 $updateUrl = Url::to(['questions/update/'.$model->id]);
 $this->params['breadcrumbs'][] = ['label' => 'Questions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

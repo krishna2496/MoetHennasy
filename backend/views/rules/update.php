@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Update Rules';
+$this->title = 'Update Rule';
 $this->params['breadcrumbs'][] = ['label' => 'Rules', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update Rule';
 ?>

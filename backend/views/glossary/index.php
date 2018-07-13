@@ -52,24 +52,28 @@ $formUrl = Url::to(['glossary/index']);
                             'attribute' => 'description',
                             'format' => 'html',
                                 'value' =>function($model) {
-                                    if(strlen($model['description']) > 90){
-                                       return  substr($model['description'], 0, 90);
+                                    if(strlen($model['description']) > 160){
+                                       return  substr($model['description'], 0, 160). "...";
                                     }else{
                                         return $model['description'];
                                     }
                                 },
                         ],
                             [
-                            'class' => 'yii\grid\ActionColumn',
-                            'header' => 'Actions',
-                            'template' => '{update} {delete}',
-                            'buttons' => [
-                                'update' => function ($url, $model) {
-                                  return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['glossary/update/'.$model['id']],['title'=>'Update']);
+                           'class' => 'yii\grid\ActionColumn',
+                           'header' => 'Actions',
+                           'template' => '{view} {update} {delete}',
+                           'buttons' => [
+                               'view' => function ($url, $model) use ($filters) {
+                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/glossary/view/'.$model['id']],['title'=>'View']);
+                                },
+                               'update' => function ($url, $model) use ($filters) {
+                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/glossary/update/'.$model['id']],['title'=>'Update']);
                                 },                                
-                               'delete' => function ($url, $model) {
-                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['glossary/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this glossary?','title' =>'Delete']);
-                                }, 
+                               'delete' => function ($url, $model) use ($filters) {
+                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['/glossary/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this market segment?','title'=>'Delete']);
+                                },                               
+                               
                             ],
                         ],
                     ],

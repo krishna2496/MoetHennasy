@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Update Questions';
+$this->title = 'Update Feedback Question';
 $this->params['breadcrumbs'][] = ['label' => 'Market', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title
 ?>

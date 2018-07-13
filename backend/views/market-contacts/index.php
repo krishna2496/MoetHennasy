@@ -13,7 +13,7 @@ $formUrl = Url::to(['market-contacts/index/' . $market_id]);
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">
-                    <?= Html::encode($this->title) ?>
+                    <?= Html::encode($this->title)?>
                 </h3>
                 <div class="row pull-right">
 

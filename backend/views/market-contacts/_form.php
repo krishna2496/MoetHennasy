@@ -13,7 +13,7 @@ use yii\helpers\Url;
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">
-                        <?= Html::encode($this->title) ?>
+                        <?= Html::encode($this->title."  - ". $model->getMarketName($market_id)) ?>
                     </h3>
                 </div>
                 <div class="box-body">
