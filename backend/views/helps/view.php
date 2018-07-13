@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 use common\helpers\CommonHelper;
 
 $this->title ='Helps';
-$this->params['breadcrumbs'][] = ['label' => 'Helps', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Helps', 'url' => ['helps/index/'.$model->category_id]];
 $this->params['breadcrumbs'][] = 'View Helps';
 $updateUrl = Url::to(['helps/update/'.$model->id]);
 ?>

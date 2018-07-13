@@ -28,7 +28,7 @@ if(isset($urlData[1]) && $urlData[1]){
                     <div class="col-md-2">
                         <div class="row">
                             <?php  if(CommonHelper::checkPermission('Stores.Create')){ ?>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <?= Html::a('New Store', ['create'], ['class' => 'btn btn-primary']) ?>
                                 </div>
                             <?php } ?>
