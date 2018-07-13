@@ -19,7 +19,9 @@ $formUrl = Url::to(['rules/index']);
                 <div class="row pull-right">
                     <div class="col-md-2">
                         <?php  if(CommonHelper::checkPermission('Rules.Create')){ ?>
-                        <?= Html::a('Add Rule', ['rules/create'], ['class' => 'btn btn-primary']) ?>
+                      
+                            <!--Html::a('Add Rule', ['rules/create'], ['class' => 'btn btn-primary'])-->
+                          
                         <?php } ?>
                     </div>
                     <div class="col-md-10">
@@ -51,7 +53,7 @@ $formUrl = Url::to(['rules/index']);
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
-                           'template' => '{view} {update} {delete}',
+                           'template' => '{view} {update}',
                            'buttons' => [
                                'view' => function ($url, $model){
                                   return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['rules/view/'.$model['id']],['title'=>'View']);

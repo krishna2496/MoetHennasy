@@ -102,14 +102,23 @@ use common\helpers\CommonHelper;
 </div>
 
 <script type="text/javascript">
+    $("body").on("change", "#user-market_id",function(event){
+         $('#user-role_id').val('');
+    });
 	$("body").on("change", "#user-role_id",function(event){
 		$('#parentUser').hide();
 		var role_id = parseInt($('#user-role_id').val());
+                var market_id = parseInt($('#user-market_id').val());
+                if(isNaN(market_id)){
+                    alert("Please Select Market First");
+                    $('#user-role_id').val('');
+                    return false;
+                }
 		if(role_id == '<?php echo Yii::$app->params['marketAdministratorRole']; ?>') {
 			return false;
 		}
 
-		var data = {role_id : role_id};
+		var data = {role_id : role_id,market_id:market_id};
 		<?php if(isset($model->id) && $model->id) { ?>
 			data.update_id = parseInt('<?php echo $model->id; ?>');
 		<?php } ?>

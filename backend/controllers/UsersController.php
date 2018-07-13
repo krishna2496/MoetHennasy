@@ -234,6 +234,7 @@ class UsersController extends BaseBackendController
         }
 
         $data['role_id'] = isset($parentRoles[$data['role_id']]) ? $parentRoles[$data['role_id']] : '';
+        $data['market_id'] = isset($data['market_id']) ? $data['market_id'] : '';
 
         $returnData = $userRepository->userList($data);
         if($isJson){
