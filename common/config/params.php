@@ -36,7 +36,7 @@ return [
     'star_max_size' => [0 =>'3'],
     'star_min_size' => ['min_size' =>'1'],
     'store_grading' => ['tier_1' => 'Tier 1' ,'tier_2'=> 'Tier 2' ,'tier_3' => 'Tier 3'],
-    'num_of_shelves' => ['min' => '0','max' => '50'],
+    'no_of_shelves' => ['min' => '0','max' => '50'],
     'height_of_shelves' => ['min' => '0','max' => '450'],
     'width_of_shelves' => ['min' => '0','max' => '500'],
     'depth_of_shelves' => ['min' => '0','max' => '100'],

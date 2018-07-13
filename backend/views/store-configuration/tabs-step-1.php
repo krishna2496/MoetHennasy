@@ -51,13 +51,13 @@ $session = Yii::$app->session;
 									<div class="label-text">
 										<label>Number of shelves <sup class="error-text">*</sup></label> <span class="info-icon"><i class="fa fa-info-circle"></i></span>
 										<span class="slider-input size-label">
-											<input type="text" class="form-control" id="ex6SliderVal" name="num_of_shelves" value="<?=  yii::$app->params['shelfConfig']['1']; ?>" required="" />
+											<input type="text" class="form-control" id="ex6SliderVal" name="no_of_shelves" value="<?=  yii::$app->params['shelfConfig']['1']; ?>" required="" />
 										</span>
 									</div>
 									<div class="slider-content">
-										<span class="start-val"><?= yii::$app->params['num_of_shelves']['min'] ?></span>
-										<input id="ex6" class="slider" type="text" data-slider-min="<?= yii::$app->params['num_of_shelves']['min'] ?>" data-slider-max="<?= yii::$app->params['num_of_shelves']['max'] ?>" data-slider-step="1" data-slider-value="<?= yii::$app->params['shelfConfig']['1']; ?>" data-slider-id="golden" />
-										<span class="end-val"><?= yii::$app->params['num_of_shelves']['max'] ?></span>
+										<span class="start-val"><?= yii::$app->params['no_of_shelves']['min'] ?></span>
+										<input id="ex6" class="slider" type="text" data-slider-min="<?= yii::$app->params['no_of_shelves']['min'] ?>" data-slider-max="<?= yii::$app->params['no_of_shelves']['max'] ?>" data-slider-step="1" data-slider-value="<?= yii::$app->params['shelfConfig']['1']; ?>" data-slider-id="golden" />
+										<span class="end-val"><?= yii::$app->params['no_of_shelves']['max'] ?></span>
 									</div>
 								</div>
 								<div class="form-group">																			

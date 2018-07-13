@@ -75,7 +75,7 @@ class StoreConfigurationController extends Controller {
             array(
                 'width_of_shelves' => isset($_SESSION['config']['width_of_shelves']) ? $_SESSION['config']['width_of_shelves'] : '',
                 'depth_of_shelves' => isset($_SESSION['config']['depth_of_shelves']) ? $_SESSION['config']['depth_of_shelves'] : '',
-                'no_of_shelves' => isset($_SESSION['config']['num_of_shelves']) ? $_SESSION['config']['num_of_shelves'] : '',
+                'no_of_shelves' => isset($_SESSION['config']['no_of_shelves']) ? $_SESSION['config']['no_of_shelves'] : '',
                 'shelf_config' => json_decode($_SESSION['config']['shelvesProducts'], true),
                 'brand_thumb_id' => $brandId,
                 'height_of_shelves' => isset($_SESSION['config']['height_of_shelves']) ? $_SESSION['config']['height_of_shelves'] : '',
@@ -253,7 +253,7 @@ class StoreConfigurationController extends Controller {
                     $display_name = $_SESSION['config']['display_name'] = $storeData['config_name'];
                     $brandThumbId = $storeData['shelfDisplay'][0]['brand_thumb_id'];
 
-                    $_SESSION['config']['num_of_shelves'] = $storeData['shelfDisplay'][0]['no_of_shelves'];
+                    $_SESSION['config']['no_of_shelves'] = $storeData['shelfDisplay'][0]['no_of_shelves'];
                     $_SESSION['config']['height_of_shelves'] = $storeData['shelfDisplay'][0]['height_of_shelves'];
                     $_SESSION['config']['width_of_shelves'] = $storeData['shelfDisplay'][0]['width_of_shelves'];
                     $_SESSION['config']['depth_of_shelves'] = $storeData['shelfDisplay'][0]['depth_of_shelves'];
@@ -520,7 +520,7 @@ class StoreConfigurationController extends Controller {
     public function actionSaveData() {
         $post = Yii::$app->request->post();
 
-        $_SESSION['config']['num_of_shelves'] = $post['num_of_shelves'];
+        $_SESSION['config']['no_of_shelves'] = $post['no_of_shelves'];
         $_SESSION['config']['height_of_shelves'] = $post['height_of_shelves'];
         $_SESSION['config']['width_of_shelves'] = $post['width_of_shelves'];
         $_SESSION['config']['depth_of_shelves'] = $post['depth_of_shelves'];
@@ -600,7 +600,7 @@ class StoreConfigurationController extends Controller {
         $selvesWidth = $_SESSION['config']['width_of_shelves'];
         $selvesHeight = $_SESSION['config']['height_of_shelves'];
         $selvesDepth =$_SESSION['config']['depth_of_shelves'];
-        $selevesCount = $_SESSION['config']['num_of_shelves'];
+        $selevesCount = $_SESSION['config']['no_of_shelves'];
 
         if ($this->ifRuleContain(\yii::$app->params['configArray']['top_shelf'])) {
             foreach ($dataIds as $dataKey => $dataValue) {
@@ -866,7 +866,7 @@ class StoreConfigurationController extends Controller {
             $sum = array_sum(array_column($racksProductArray, 'width'));
         }
         if ($selvesWidth >= ($sum + $dataValue['width'])) {
-            if (intval(($_SESSION['config']['height_of_shelves']) / ($_SESSION['config']['num_of_shelves'])) >= intval($dataValue['height'])) {
+            if (intval(($_SESSION['config']['height_of_shelves']) / ($_SESSION['config']['no_of_shelves'])) >= intval($dataValue['height'])) {
                 if (intval($_SESSION['config']['depth_of_shelves']) >= intval($dataValue['length'])) {
                     $racksProductArray[$dataValue['id']] = $dataValue;
                 }
