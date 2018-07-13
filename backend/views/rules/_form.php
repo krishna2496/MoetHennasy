@@ -19,12 +19,14 @@ use common\helpers\CommonHelper;
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
-                              <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
+                          <?= $form->field($model, 'type')->textInput(['maxlength' => true,'readonly' => !$model->isNewRecord]) ?>
                         </div>
+                        <?php 
+                        if($model->isNewRecord){ ?>
                         <div class="col-md-12">
                              <?= $form->field($model, 'product_fields')->textInput(['maxlength' => true]) ?>
-                          
                         </div>
+                        <?php } ?>
                          <div class="col-md-12">
                                <?= $form->field($model, 'detail')->textarea(['maxlength' => true]) ?>
                          </div>

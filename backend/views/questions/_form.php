@@ -18,7 +18,7 @@ use common\helpers\CommonHelper;
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <?= $form->field($model, 'question')->textInput(['maxlength' => true]) ?>
+                            <?= $form->field($model, 'question')->textInput() ?>
 
                         </div>
                         <div class="col-md-12">
