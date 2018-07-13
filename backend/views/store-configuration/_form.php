@@ -17,9 +17,11 @@ if (isset($_SESSION['config']['products'])) {
     $products = json_encode($_SESSION['config']['products'], true);
 }
 $session = Yii::$app->session;
+
 ?>
 <script type="text/javascript">
     var isUpdate = '<?php echo $is_update; ?>';
+   
     var brandThumbId = '<?php echo $brandThumbId ?>';
     var productArry = [];
     var productObject = {};
@@ -127,9 +129,13 @@ $session = Yii::$app->session;
     var rackProductFromURL = '<?php echo $secondFormUrl ?>';
     var numOfSelves = '<?php echo $noOfSelves ?>';
     var uploadSelves = '<?php echo $uploadShelf ?>';
-    var maxStar = '<?php echo yii::$app->params['star_max_size'][0] ;?>'
-    if (isUpdate == 1) { 
+    var maxStar = '<?php echo yii::$app->params['star_max_size'][0] ;?>';
+    if (isUpdate == '1') { 
         var reviewStoreUrl = '<?= Url::to(['store-configuration/review-store/' . $configId]); ?>';
+        $("#ex6SliderVal").val('<?= isset($_SESSION['config']['no_of_shelves']) ?  $_SESSION['config']['no_of_shelves'] :''; ?>');
+        $("#hex6SliderVal").val('<?= isset($_SESSION['config']['height_of_shelves']) ? $_SESSION['config']['height_of_shelves'] : ''; ?>');
+        $("#wex6SliderVal").val('<?= isset($_SESSION['config']['width_of_shelves']) ? $_SESSION['config']['width_of_shelves'] : ''; ?>');
+        $("#dex6SliderVal").val('<?= isset($_SESSION['config']['depth_of_shelves']) ? $_SESSION['config']['depth_of_shelves'] : ''; ?>');
     }
     var questionUrl = '<?= Url::to(['store-configuration/feedback/' . $configId]); ?>';
     $('#tab2').click(function (event) {

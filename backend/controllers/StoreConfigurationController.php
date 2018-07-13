@@ -241,9 +241,6 @@ class StoreConfigurationController extends Controller {
             if ($configData['status']['success'] == 1) {
                 if (!$request->isPjax) {
                     $storeData = $configData['data']['stores_config'][0];
-//                echo '<pre>';
-//                print_r($storeData);exit;
-
                     $userData = new User();
 
                     $userDetail = User::findOne(['id' => $storeData['created_by']]);
@@ -256,7 +253,7 @@ class StoreConfigurationController extends Controller {
                     $display_name = $_SESSION['config']['display_name'] = $storeData['config_name'];
                     $brandThumbId = $storeData['shelfDisplay'][0]['brand_thumb_id'];
 
-                    $_SESSION['config']['no_of_shelves'] = $storeData['shelfDisplay'][0]['no_of_shelves'];
+                    $_SESSION['config']['num_of_shelves'] = $storeData['shelfDisplay'][0]['no_of_shelves'];
                     $_SESSION['config']['height_of_shelves'] = $storeData['shelfDisplay'][0]['height_of_shelves'];
                     $_SESSION['config']['width_of_shelves'] = $storeData['shelfDisplay'][0]['width_of_shelves'];
                     $_SESSION['config']['depth_of_shelves'] = $storeData['shelfDisplay'][0]['depth_of_shelves'];
@@ -368,7 +365,7 @@ class StoreConfigurationController extends Controller {
 
                 $searchModel = new CataloguesSearch();
                 $dataProvider = $searchModel->search($filterProduct);
-
+               
                 return $this->render('index', [
                         'searchModel' => $searchModel,
                         'dataProvider' => $dataProvider,
@@ -543,7 +540,7 @@ class StoreConfigurationController extends Controller {
     }
 
     public function actionSaveProductData() {
-
+      
         $post = Yii::$app->request->post('productObject');
         $flag = 0;
         $productArry = array();
@@ -555,20 +552,21 @@ class StoreConfigurationController extends Controller {
                     $filters['products_id'] = $key;
                     $dataProvider = $searchModel->search($filters);
                     $data = $dataProvider->getModels();
+                  
                     $productsArray = $marketRule = $rulesArray = $rulesId = $racksProductArray = array();
-                    $market = $data[0]['market'];
-                    $marketRule['markt_title'] = $market['title'];
-                    $rules = $market['marketSegmentData'][0]['marketSegment']['marketRules'];
-                    foreach ($rules as $ruleKey => $ruleValue) {
-                        $rulesArray[$ruleKey] = $ruleValue['rules'];
-                    }
-                    foreach ($rulesArray as $rulekey => $rulevalue) {
-
-                        $rulesId[$rulekey]['id'] = $rulevalue['id'];
-                        $rulesId[$rulekey]['product_fields'] = $rulevalue['product_fields'];
-                        $rulesId[$rulekey]['detail'] = $rulevalue['detail'];
-                    }
-                    unset($data[0]['market']);
+//                    $market = $data[0]['market'];
+//                    $marketRule['markt_title'] = $market['title'];
+//                    $rules = $market['marketSegmentData'][0]['marketSegment']['marketRules'];
+//                    foreach ($rules as $ruleKey => $ruleValue) {
+//                        $rulesArray[$ruleKey] = $ruleValue['rules'];
+//                    }
+//                    foreach ($rulesArray as $rulekey => $rulevalue) {
+//
+//                        $rulesId[$rulekey]['id'] = $rulevalue['id'];
+//                        $rulesId[$rulekey]['product_fields'] = $rulevalue['product_fields'];
+//                        $rulesId[$rulekey]['detail'] = $rulevalue['detail'];
+//                    }
+//                    unset($data[0]['market']);
                     $dataIds[$key] = $data[0];
                     $dataIds[$key]['is_top_shelf'] = '';
                     $dataIds[$key]['market'] = $marketRule;
@@ -576,6 +574,7 @@ class StoreConfigurationController extends Controller {
             }
         }
         $_SESSION['config']['products'] = $dataIds;
+      
         foreach ($dataIds as $key => $value) {
             unset($dataIds[$key]['brand']);
             unset($dataIds[$key]['productType']);
@@ -606,6 +605,7 @@ class StoreConfigurationController extends Controller {
         if ($this->ifRuleContain(\yii::$app->params['configArray']['top_shelf'])) {
             foreach ($dataIds as $dataKey => $dataValue) {
                 if ($dataValue['top_shelf'] == '1') {
+                    
                     $this->ruleTopShelf($dataValue, $racksProductArray[0], $selvesWidth);
                 }
             }
@@ -861,7 +861,7 @@ class StoreConfigurationController extends Controller {
     }
 
     private function ruleTopShelf($dataValue, &$racksProductArray, $selvesWidth) {
-        $sum = 0;
+       $sum = 0;
         if (!empty($racksProductArray)) {
             $sum = array_sum(array_column($racksProductArray, 'width'));
         }
@@ -919,7 +919,7 @@ class StoreConfigurationController extends Controller {
 
     private function ifRuleContain($ruleValue) {
 
-
+       
         $rulesArray = array();
         if (isset($_SESSION['config']['rules']) && !empty($_SESSION['config']['rules'])) {
             $rules = $_SESSION['config']['rules'];
