@@ -17,20 +17,21 @@ $formUrl = Url::to(['rules/index']);
                     <?= Html::encode($this->title) ?>
                 </h3>
                 <div class="row pull-right">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <?php  if(CommonHelper::checkPermission('Rules.Create')){ ?>
                         <?= Html::a('Add Rule', ['rules/create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
-                                <div class="col-md-2"></div>
-                                <div class="col-md-6">
-            <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?>
+                                <div class="col-md-8">
+                                <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'permission-text']) ?>
                                 </div>
-                                                              
+                                 <div class="col-md-4">
+                                    <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '', Yii::$app->params['limit'], ['class' => 'form-control', 'id' => 'permission-limit']) ?>
+                                </div>                             
                             </div>
                         </div>
                         <?= Html::endForm(); ?>

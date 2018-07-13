@@ -35,6 +35,7 @@ class UserSearch extends User {
                 }
             }
         }
+        
         $dataProvider = new ArrayDataProvider([
             'allModels' => $userList,
             'pagination' => [

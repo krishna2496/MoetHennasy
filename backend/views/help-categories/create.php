@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Create Help Categorie';
+$this->title = 'Create Help Category';
 $this->params['breadcrumbs'][] = ['label' => 'Help Categories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

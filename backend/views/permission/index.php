@@ -14,9 +14,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 <h3 class="box-title">
                     <?= Html::encode($this->title) ?>
                 </h3>
-                <?php  if(CommonHelper::checkPermission('Permission.Create')){ ?>
-                <?= Html::a('Create', ['create'], ['class' => 'btn btn-success pull-right']) ?>
-                <?php } ?>
+                <div class="row  pull-right">
+                    <div class="col-md-6">
+                        <?php  if(CommonHelper::checkPermission('Permission.Create')){ ?>
+                        <?= Html::a('Create', ['create'], ['class' => 'btn btn-success']) ?>
+                        <?php } ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'store-limit']) ?>
+                    </div>
+                </div>
             </div>
             <div class="box-body">
                 <?php 

@@ -17,12 +17,12 @@ $formUrl = Url::to(['glossary/index']);
                     <?= Html::encode($this->title) ?>
                 </h3>
                 <div class="row pull-right">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <?php if (CommonHelper::checkPermission('Glossary.Create')) { ?>
                             <?= Html::a('New Glossary', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">

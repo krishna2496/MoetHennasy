@@ -17,24 +17,20 @@ $formUrl = Url::to(['market-segments/index']);
                     <?= Html::encode($this->title) ?>
                 </h3>
                 <div class="row pull-right">
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <?php  if(CommonHelper::checkPermission('MarketSegments.Create')){ ?>
                         <?= Html::a('New Market Cluster', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
-                    <div class="col-md-10">
-                        <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
+                    <div class="col-md-5">
+                    <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
-                            <div class="row">
-                                <div class="col-md-2"> </div>
-                                <div class="col-md-6">
-                                    <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text']) ?>
-                                </div>
-                                 <div class="col-md-3">
-                                    <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control select2','id' => 'user-limit']) ?>
-                                </div>
-                            </div>
+                            <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text']) ?>
                         </div>
+                    </div>
+                    <div class="col-md-3">
+                       <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control select2','id' => 'user-limit']) ?>
+                    </div>
                         <?= Html::endForm(); ?>
                     </div>
                 </div>
