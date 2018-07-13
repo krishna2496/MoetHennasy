@@ -42,7 +42,7 @@ class User extends BaseModel implements IdentityInterface
             [['phone'], 'string', 'max' => 12],
             [['first_name','last_name','email'], 'string', 'max' => 255],
             [['username','first_name','last_name','email','phone','address','company_name'], 'trim'],
-            [['username'],'string','max' => 100],
+            [['username','company_name'],'string','max' => 100],
         ];
     }
 

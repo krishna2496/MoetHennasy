@@ -51,7 +51,7 @@ class PermissionController extends BaseBackendController
         if($returnData['status']['success'] == 1){
             $permissions = $returnData['data']['permissions'];
         }
-
+        
         $dataProvider = new ArrayDataProvider([
             'allModels' => $permissions,
             'pagination' =>  [ 
@@ -66,7 +66,7 @@ class PermissionController extends BaseBackendController
         ]);
       
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider
         ]);
     }
 

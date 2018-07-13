@@ -18,9 +18,14 @@ $formUrl = Url::to(['market/brands']);
         <div class="col-xs-12">
             <div class="box">
                  <div class="box-header">
-                <h2>
-<?= $title; ?>
-                </h2>
+                        <h2>
+                        <?= $title; ?>
+                        </h2>
+                     <div class="row pull-right">
+                        <div class="col-md-12">
+                            <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
+                        </div>
+                    </div>
             </div>
                 <div class="box-body">
 <?=

@@ -26,7 +26,6 @@ class PermissionSearch extends Permission
     public function search($params)
     {
         $query = Permission::find();
-        
         $this->load($params);
 
         $query->andFilterWhere([

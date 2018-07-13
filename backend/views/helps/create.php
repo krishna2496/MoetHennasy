@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model common\models\Helps */
 
 $this->title = 'Create Helps';
-$this->params['breadcrumbs'][] = ['label' => 'Helps', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Helps', 'url' => ['helps/index/'.$id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="helps-create">

@@ -17,17 +17,16 @@ $formUrl = Url::to(['market/index']);
                     <?= Html::encode($this->title) ?>
                 </h3>
                 <div class="row pull-right">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <?php  if(CommonHelper::checkPermission('Market.Create')){ ?>
                         <?= Html::a('New Market', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
-                                <div class="col-md-1"> </div>
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text']) ?>
                                 </div>
                                  <div class="col-md-4">
