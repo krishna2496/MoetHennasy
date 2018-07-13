@@ -29,7 +29,7 @@ if ($market_segment_id != '') {
     $model->market_segment_id = $market_segment_id;
 }
 ?>
-                            <?= $form->field($model, 'market_segment_id')->dropDownList($segmentData, ['prompt' => 'Select One', 'id' => 'maketSegmentId']) ?>
+                            <?= $form->field($model, 'market_segment_id')->dropDownList($segmentData, ['prompt' => 'Select One','class'=>'form-control select2', 'id' => 'maketSegmentId']) ?>
                         </div>
                         <input type="hidden" value="<?= $market_id ?>" name="market_id"/>
                     </div>

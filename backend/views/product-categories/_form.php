@@ -21,7 +21,7 @@ use common\helpers\CommonHelper;
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <?= $form->field($model, 'parent_id')->dropDownList($categoryList, ['prompt' => 'Select Parent Category']); ?> 
+                        <?= $form->field($model, 'parent_id')->dropDownList($categoryList, ['prompt' => 'Select Parent Category','class'=>'form-control select2']); ?> 
                     </div>
                 </div>
             </div>

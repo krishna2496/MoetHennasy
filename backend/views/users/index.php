@@ -33,10 +33,10 @@ if(isset($filters['setParentID'])){
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text']) ?>
                                 </div>
                                 <div class="col-md-4">
-                                    <?= Html::dropDownList('role_id', isset($filters['role_id']) ? $filters['role_id'] : '' ,$roles,  ['class' => 'form-control', 'id' => 'user-type','prompt' => 'Select User Type']) ?>
+                                    <?= Html::dropDownList('role_id', isset($filters['role_id']) ? $filters['role_id'] : '' ,$roles,  ['class' => 'form-control select2', 'id' => 'user-type','prompt' => 'Select User Type']) ?>
                                 </div>
                                 <div class="col-md-3">
-                                    <?= Html::dropDownList('market_id', isset($filters['market_id']) ? $filters['market_id'] : '' ,$markets,  ['class' => 'form-control', 'id' => 'user-market','prompt' => 'Select Market']) ?>
+                                    <?= Html::dropDownList('market_id', isset($filters['market_id']) ? $filters['market_id'] : '' ,$markets,  ['class' => 'form-control select2', 'id' => 'user-market','prompt' => 'Select Market']) ?>
                                 </div>
                                 <div class="col-md-2">
                                     <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>

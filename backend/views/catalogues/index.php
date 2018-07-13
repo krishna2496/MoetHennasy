@@ -31,11 +31,11 @@ $formUrl = Url::to(['catalogues/index']);
 <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?>
                                 </div>
 
-                                 <div class="col-md-4">
-<?= Html::dropDownList('brand_id', isset($filters['brand_id']) ? $filters['brand_id'] : '', $brand, ['class' => 'form-control', 'id' => 'brand_market', 'prompt' => 'Select Brand']) ?>
+                                 <div class="col-md-3">
+<?= Html::dropDownList('brand_id', isset($filters['brand_id']) ? $filters['brand_id'] : '', $brand, ['class' => 'form-control select2', 'id' => 'brand_market', 'prompt' => 'Select Brand']) ?>
                                 </div>
-                                <div class="col-md-3">
-<?= Html::dropDownList('product_id', isset($filters['product_id']) ? $filters['product_id'] : '', $product, ['class' => 'form-control', 'id' => 'product_id', 'prompt' => 'Select Product Category']) ?>
+                                <div class="col-md-4">
+<?= Html::dropDownList('product_id', isset($filters['product_id']) ? $filters['product_id'] : '', $product, ['class' => 'form-control select2', 'id' => 'product_id', 'prompt' => 'Select Product Category']) ?>
                                 </div>
                                 <div class="col-md-2">
                                     <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>

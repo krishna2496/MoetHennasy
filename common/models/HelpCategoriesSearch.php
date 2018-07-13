@@ -62,7 +62,6 @@ class HelpCategoriesSearch extends HelpCategories
                 'attributes' =>
                 [
                    'title'
-                  
                 ],
                
             ]

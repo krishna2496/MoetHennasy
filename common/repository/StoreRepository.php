@@ -51,7 +51,7 @@ class StoreRepository extends Repository
             ]);
         }
         $data = array();
-        $data['stores'] = $query->asArray()->all();
+        $data['stores'] = $query->orderBy(['name' => yii::$app->params['defaultSorting']])->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }

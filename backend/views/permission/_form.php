@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
                     <?= $form->field($model, 'permission_title')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'parent_id')->dropDownList($listPermissions); ?>
+                    <?= $form->field($model, 'parent_id')->dropDownList($listPermissions,['class'=>'form-control select2']); ?>
 
                     <div class="form-group">
                    	    <?= Html::submitButton($model->isNewRecord ?  'Create' :  'Submit' , ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

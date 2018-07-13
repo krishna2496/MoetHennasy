@@ -36,7 +36,7 @@ class MarketRepository extends Repository {
        
 
         $data = array();
-        $data['markets'] = $query->asArray()->all();
+        $data['markets'] = $query->orderBy(['title' => yii::$app->params['defaultSorting']])->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }

@@ -43,10 +43,10 @@ use yii\widgets\ActiveForm;
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                     <?= $form->field($model, 'market_id')->dropDownList($markets, ['prompt' => 'Select Market']); ?> 
+                                     <?= $form->field($model, 'market_id')->dropDownList($markets, ['prompt' => 'Select Market','class'=>'form-control select2']); ?> 
                                 </div>
                                 <div class="col-md-6">
-                                     <?= $form->field($model, 'market_segment_id')->dropDownList(array(), ['prompt' => 'Select Cluster']); ?> 
+                                     <?= $form->field($model, 'market_segment_id')->dropDownList(array(), ['prompt' => 'Select Cluster','class'=>'form-control select2']); ?> 
                                 </div>
                             </div>
                             <div class="row">
@@ -59,19 +59,19 @@ use yii\widgets\ActiveForm;
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                     <?= $form->field($model, 'country_id')->dropDownList($countries, ['prompt' => 'Select Country']); ?> 
+                                     <?= $form->field($model, 'country_id')->dropDownList($countries, ['prompt' => 'Select Country','class'=>'form-control select2']); ?> 
                                 </div>
                                 <div class="col-md-6">
-                                     <?= $form->field($model, 'province_id')->dropDownList(array(), ['prompt' => 'Select Province']); ?> 
+                                     <?= $form->field($model, 'province_id')->dropDownList(array(), ['prompt' => 'Select Province','class'=>'form-control select2']); ?> 
                                    
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                     <?= $form->field($model, 'city_id')->dropDownList(array(), ['prompt' => 'Select City']); ?> 
+                                     <?= $form->field($model, 'city_id')->dropDownList(array(), ['prompt' => 'Select City','class'=>'form-control select2']); ?> 
                                 </div>
                                 <div class="col-md-6">
-                                    <?= $form->field($model, 'assign_to')->dropDownList(array(), ['prompt' => 'Select User']); ?> 
+                                    <?= $form->field($model, 'assign_to')->dropDownList(array(), ['prompt' => 'Select User','class'=>'form-control select2']); ?> 
                                 </div>
                             </div>
                             <div class="row">
@@ -79,7 +79,7 @@ use yii\widgets\ActiveForm;
                                     <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
                                 </div>
                                 <div class="col-md-6">
-                                     <?= $form->field($model, 'grading')->dropDownList(yii::$app->params['store_grading'], ['prompt' => 'Select Grading']); ?> 
+                                     <?= $form->field($model, 'grading')->dropDownList(yii::$app->params['store_grading'], ['prompt' => 'Select Grading','class'=>'form-control select2']); ?> 
                                 </div>
                             </div>
                         </div>

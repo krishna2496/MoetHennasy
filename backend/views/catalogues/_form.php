@@ -49,22 +49,22 @@ use common\helpers\CommonHelper;
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                               <?= $form->field($model, 'brand_id')->dropDownList($brand, ['prompt' => 'Select One']); ?>    
+                               <?= $form->field($model, 'brand_id')->dropDownList($brand, ['prompt' => 'Select One','class'=>'form-control select2']); ?>    
                         </div>
 
                         <div class="col-md-6">
-                             <?= $form->field($model, 'product_category_id')->dropDownList($product, ['prompt' => 'Select One','id'=>'user-role_id']); ?>    
+                             <?= $form->field($model, 'product_category_id')->dropDownList($product, ['prompt' => 'Select One','id'=>'user-role_id','class'=>'form-control select2']); ?>    
                          
 
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                             <?= $form->field($model, 'product_sub_category_id')->dropDownList($productSubCatData, ['prompt' => 'Select One','id'=>'user-parent_user_id']); ?> 
+                             <?= $form->field($model, 'product_sub_category_id')->dropDownList($productSubCatData, ['prompt' => 'Select One','id'=>'user-parent_user_id','class'=>'form-control select2']); ?> 
                                
                         </div>  
                         <div class="col-md-6">
-                             <?= $form->field($model, 'product_type_id')->dropDownList($productTypeData, ['prompt' => 'Select One','id'=>'user_user_id']); ?> 
+                             <?= $form->field($model, 'product_type_id')->dropDownList($productTypeData, ['prompt' => 'Select One','id'=>'user_user_id','class'=>'form-control select2']); ?> 
                                
                         </div>  
                     </div>
@@ -94,7 +94,7 @@ use common\helpers\CommonHelper;
                     <div class="row">
 
                         <div class="col-md-6">
-                            <?= $form->field($model, 'box_only')->dropDownList(Yii::$app->params['catalogue_status'], ['prompt' => 'Select One']); ?>              
+                            <?= $form->field($model, 'box_only')->dropDownList(Yii::$app->params['catalogue_status'], ['prompt' => 'Select One','class'=>'form-control select2']); ?>              
                         </div>
                         <div class="col-md-6">
                             <?= $form->field($model, 'market_share')->textInput(['maxlength' => true]) ?>    
@@ -106,7 +106,7 @@ use common\helpers\CommonHelper;
                             <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
                         </div>
                         <div class="col-md-6">            
-                            <?= $form->field($model, 'top_shelf')->dropDownList(Yii::$app->params['catalogue_status'], ['prompt' => 'Select One']); ?>       
+                            <?= $form->field($model, 'top_shelf')->dropDownList(Yii::$app->params['catalogue_status'], ['prompt' => 'Select One','class'=>'form-control select2']); ?>       
                         </div>
                     </div>
                 </div>
