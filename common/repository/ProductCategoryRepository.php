@@ -26,7 +26,7 @@ class ProductCategoryRepository extends Repository
         }
 
         $data = array();
-        $data['productCategories'] = $query->asArray()->all();
+        $data['productCategories'] = $query->orderBy(['name' => yii::$app->params['defaultSorting']])->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }

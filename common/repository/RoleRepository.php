@@ -10,7 +10,7 @@ class RoleRepository extends Repository
         $this->apiCode = 1;
         $data = array();
         if(!empty($filter) && isset($filter) && (isset($filter['from_dashboard'])) && ($filter['from_dashboard'] == 1)){
-        $data['roles'] = Role::find()->asArray()->all(); 
+        $data['roles'] = Role::find()->orderBy(['title' => yii::$app->params['defaultSorting']])->asArray()->all(); 
         }else{
         $data['roles'] = Role::find()->andWhere(['!=', 'id', Yii::$app->params['superAdminRole']])->asArray()->all();
         }

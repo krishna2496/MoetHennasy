@@ -21,7 +21,7 @@ class BrandRepository extends Repository
         }
 
         $data = array();
-        $data['brand'] = $query->asArray()->all();
+        $data['brand'] = $query->orderBy(['name' => yii::$app->params['defaultSorting']])->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }

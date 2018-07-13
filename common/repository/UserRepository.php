@@ -154,7 +154,7 @@ class UserRepository extends Repository
             ]);
         }
         $data = array();
-        $data['users'] = $query->asArray()->all();
+        $data['users'] = $query->orderBy(['username' => yii::$app->params['defaultSorting']])->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }

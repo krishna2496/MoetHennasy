@@ -30,7 +30,7 @@ class MasterDataRepository extends Repository
         	$query->andWhere(['province_id'=>$data['province_id']]);
         }
         $data = array();
-        $data['cities'] = $query->asArray()->all();
+        $data['cities'] = $query->orderBy(['name' => yii::$app->params['defaultSorting']])->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }
@@ -42,7 +42,7 @@ class MasterDataRepository extends Repository
         	$query->andWhere(['country_id'=>$data['country_id']]);
         }
         $data = array();
-        $data['provinces'] = $query->asArray()->all();
+        $data['provinces'] = $query->orderBy(['name' => yii::$app->params['defaultSorting']])->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }

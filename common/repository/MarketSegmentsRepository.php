@@ -23,7 +23,7 @@ class MarketSegmentsRepository extends Repository
             ]);
         }
         $data = array();
-        $data['market_segments'] = $query->asArray()->all();
+        $data['market_segments'] = $query->orderBy(['title' => yii::$app->params['defaultSorting']])->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }
