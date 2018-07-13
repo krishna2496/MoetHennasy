@@ -116,8 +116,11 @@ class StoresConfigController extends BaseApiController {
     }
 
     public function actionMarketRuleList() {
+        $user = CommonHelper::getUser();
         $question = new MarketRepository();
-        $list = $question->marketList();
+        $filter =array();
+        $filter['market_id'] = $user['market_id'];
+        $list = $question->marketList($filter);
         $dataArry = array();
         $marketSegmentData = $list['data']['markets'][0]['marketSegmentData'];
         unset($list['data']['markets']);
