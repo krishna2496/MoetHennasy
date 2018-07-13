@@ -10,7 +10,7 @@ class UploadRepository extends Repository
     {
         $uploadUrl = CommonHelper::getPath('upload_url');
         $this->apiCode = 0;
-        if($data['type'] && $data['files']){
+        if($data['files']){
 
             $this->apiCode = 1;
             $uploadedFile = [];
@@ -21,12 +21,14 @@ class UploadRepository extends Repository
                 $temp['name'] = $imageName;
                 $uploadedFile[] = $temp;
             }
+            if(isset($data['type'])){
             if($data['type'] == 'store_config'){
               if(CommonHelper::resizeImage(UPLOAD_PATH_STORE_CONFIG_IMAGES.$temp['name'],$temp['name'],64,64,UPLOAD_PATH_STORE_CONFIG_IMAGES)){
                   
               }else{
                    $this->apiMessage = Yii::t('app', 'Something went wrong.');
               }
+            }
             }
             
             $data = array();
