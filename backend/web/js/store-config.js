@@ -305,7 +305,7 @@ jQuery(document).ready(function ()
         if (reviewFlag == 1) {
 //            $('#modalReview').modal('show');
             var dataURL = reviewStoreUrl;  
-            $('#modalReview').modal({ show: true,keyboard: false,backdrop: 'static'}).load(dataURL, function () {
+            $('#modalReview').modal({ show: true,keyboard: true,backdrop: 'static'}).load(dataURL, function () {
                 $("#rating").hide();
                 $('.toggle').bootstrapToggle();
 
@@ -349,7 +349,7 @@ jQuery(document).ready(function ()
                                 $("#rating").show();
                                 $('.modal-header > .modal-title',$('#modalReview')).html("Review");
                                 $('.modal-body > p:first',$('#modalReview')).html("<strong>Your configuration have been saved.</strong> Could you please rate your configuration:");
-                                $('#submitQuestion').text('Submit Review');
+                                $('#submitQuestion').text('Save and Next');
                             } else {
                                 alert("Rating Saved Succesfully");
                                 $('#modalReview').modal('hide');

@@ -227,7 +227,7 @@ $user = CommonHelper::getUser();
                   </p>
                 </li>
                 
-                <li class="user-body">
+<!--                <li class="user-body">
                   <div class="row">
                     <div class="col-xs-4 text-center">
                       <a href="#">Followers</a>
@@ -241,7 +241,7 @@ $user = CommonHelper::getUser();
                   </div>
                   
                 </li>
-                
+                -->
                 <li class="user-footer">
                   <div class="pull-left">
                     <a href="<?php echo $adminUrl.'site/edit-profile'; ?>" class="btn btn-default btn-flat">Profile</a>

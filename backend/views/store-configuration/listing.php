@@ -9,6 +9,25 @@ $this->title = 'Store Configuration';
 $this->params['breadcrumbs'][] = $this->title;
 $formUrl = Url::to(['store-configuration/listing']);
 ?>
+<style>
+    .grid-view .table .list-image {
+    border-radius: 100%;
+    height: 70px;
+    width: 80px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 20px;
+    clear: both;
+}
+.grid-view .table .list-image img{
+    height: 81px;
+    width: 100px;
+    vertical-align: middle;
+    margin-left: 0px;
+    margin-top: -8px
+}
+    </style>
 <div class="row">
     <div class="col-xs-12">
         <div class="box">
@@ -18,9 +37,11 @@ $formUrl = Url::to(['store-configuration/listing']);
                 </h3>
                 <div class="row pull-right">
                     <div class="col-md-4">
-                      
+                      <?php 
+                      if($canCreateNewConfig == 1){
+                      ?>
                             <?= Html::a('New Store Configuration', ['store-configuration/index/'.$id], ['class' => 'btn btn-primary']) ?>
-
+                      <?php } ?>
                     </div>
                     <div class="col-md-2"></div>
                     <div class="col-md-6">
@@ -46,14 +67,31 @@ $formUrl = Url::to(['store-configuration/listing']);
                     'columns' => [
                             [
                             'class' => 'yii\grid\SerialColumn'],
-                       
                            
-                            'config_name',
-                 
+                            [
+                                'label' => 'Configuration',   
+                                'format' => 'html',
+                                'attribute' => 'config_name', 
+                                'headerOptions' => ['class' => 'column-name-image'],
+                                'value' => function($model,$index,$dataColumn) {
+                                    return '<div class="list-image"><img src="' . CommonHelper::getImage(UPLOAD_PATH_STORE_CONFIG_IMAGES.$model['shelf_thumb']) . '"></div>'.$model['config_name'].'</div>';
+                                }
+                            ],
+                           
+                            [
+                                'label' => 'Rating',
+                                'attribute' => 'star_ratings',
+                                'value' => function($model,$index,$dataColumn) {
+                                if($model['star_ratings'] == ''){
+                                    return '-';
+                                }
+                                     return $model['star_ratings'];
+                                }
+                            ],
                             [
                             'class' => 'yii\grid\ActionColumn',
                             'header' => 'Actions',
-                            'template' => '{update} {delete}',
+                            'template' => '{update}',
                             'buttons' => [
                                 
                                 'update' => function ($url, $model)use($id) {

@@ -213,7 +213,7 @@ class StoreConfigurationController extends Controller {
         $configId = $id;
         $stores = Stores::find()->where(['id' => $storeId])->asArray()->one();
         $currentUser = CommonHelper::getUser();
-
+         $reviewFlag = 0;
         if ($stores) {
             if ($currentUser->role_id != Yii::$app->params['superAdminRole']) {
                 $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
@@ -221,12 +221,14 @@ class StoreConfigurationController extends Controller {
                 $userObj = new User;
                 $childUser = $userObj->getAllChilds(array($currentUser->id));
                 $childUser[] = $currentUser->id;
-
+                if (!empty($childUser) && in_array($assign_to, $childUser)) {
+                     $reviewFlag = 1;
+                }
                 if (!empty($childUser) && !in_array($assign_to, $childUser)) {
                     throw new NotFoundHttpException('you are not allowed to access this page.');
                 }
             }
-
+       
             //CONGig Data
             $storeFilter = array();
             $storeFilter['store_id'] = $storeId;
@@ -237,7 +239,12 @@ class StoreConfigurationController extends Controller {
 
             $request = Yii::$app->request;
             $brandThumbId = $display_name = '';
-            $reviewFlag = 0;
+           
+            
+            if ($currentUser->role_id == Yii::$app->params['superAdminRole']) {
+                 $reviewFlag = 1;
+            }
+            
             if ($configData['status']['success'] == 1) {
                 if (!$request->isPjax) {
                     $storeData = $configData['data']['stores_config'][0];
@@ -248,6 +255,7 @@ class StoreConfigurationController extends Controller {
                     $configCreatedByParent = ($userDetail['parent_user_id'] == '' ) ? 0 : $userDetail['parent_user_id'];
 
                     $reviewFlag = 1;
+                    
                     $_SESSION['config']['storeId'] = $storeData['store_id'];
 
                     $display_name = $_SESSION['config']['display_name'] = $storeData['config_name'];
@@ -388,8 +396,9 @@ class StoreConfigurationController extends Controller {
     public function actionListing($id) {
         $stores = Stores::findOne($id);
         $currentUser = CommonHelper::getUser();
-
+        $canCreateNewConfig = 0;
         if ($stores) {
+          
             if ($currentUser->role_id != Yii::$app->params['superAdminRole']) {
                 $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
 
@@ -400,6 +409,13 @@ class StoreConfigurationController extends Controller {
                 if (!empty($childUser) && !in_array($assign_to, $childUser)) {
                     throw new NotFoundHttpException('you are not allowed to access this page.');
                 }
+            }
+            if ($stores['created_by'] == $currentUser->id) {
+                $canCreateNewConfig = 1;
+            }
+            
+            if ($currentUser->role_id == Yii::$app->params['superAdminRole']) {
+                $canCreateNewConfig = 1;
             }
 
             $filters = Yii::$app->request->queryParams;
@@ -415,7 +431,8 @@ class StoreConfigurationController extends Controller {
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
                     'filters' => $filters,
-                    'id' => $id
+                    'id' => $id,
+                    'canCreateNewConfig' => $canCreateNewConfig
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -827,7 +844,7 @@ class StoreConfigurationController extends Controller {
 
                     $products = (isset($racksProductArray[$i]) && (!empty($racksProductArray[$i]))) ? $racksProductArray[$i] : '';
 
-                    if ((empty($products)) && ($i > 0)) {
+                    if ((empty($products)) && ($i > 0) && (isset($racksProductArray[$i - 1]))) {
 
                         $products = $racksProductArray[$i] = $racksProductArray[$i - 1];
                     }

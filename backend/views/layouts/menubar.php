@@ -185,10 +185,10 @@ array(
         'hasChildClass' => 'treeview ',
         'submenuToggleClass' => 'treeview-menu',
         'controllerId' => array(
-            'stores','configs',
+            'stores','configs','store-configuration'
         ),
         'actionId' => array(
-           'index', 'create','update','view','review'
+           'index', 'create','update','view','review','listing'
         ),
         'childs' => array(
             array(
