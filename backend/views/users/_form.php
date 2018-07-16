@@ -43,7 +43,7 @@ use common\helpers\CommonHelper;
                 	<?php } ?>
                     <div class="row">
                         <div class="col-md-6">
-                            <?= $form->field($model, 'status')->dropDownList(Yii::$app->params['status'], ['prompt' => 'Select Status']); ?> 
+                            <?= $form->field($model, 'status')->dropDownList(Yii::$app->params['status'], ['prompt' => 'Select Status','class'=> 'form-control select2']); ?> 
                         </div>
                         <div class="col-md-6">
                             <div class="row">
@@ -68,15 +68,15 @@ use common\helpers\CommonHelper;
                 	</div>
                     <div class="row">
                         <div class="col-md-6">
-                             <?= $form->field($model, 'market_id')->dropDownList($markets, ['prompt' => 'Select Market']); ?> 
+                             <?= $form->field($model, 'market_id')->dropDownList($markets, ['prompt' => 'Select Market','class'=> 'form-control select2']); ?> 
                         </div>
                         <div class="col-md-6">
-                             <?= $form->field($model, 'role_id')->dropDownList($roles, ['prompt' => 'Select User Type']); ?> 
+                             <?= $form->field($model, 'role_id')->dropDownList($roles, ['prompt' => 'Select User Type','class'=> 'form-control select2']); ?> 
                         </div>
                     </div>
                 	<div class="row">
                 		<div class="col-md-6 <?php echo $parentUserClass; ?>" id="parentUser">
-                                        <?= $form->field($model, 'parent_user_id',['template' => '{label}*{input}{error}'])->dropDownList($userList,['prompt' => 'Select Parent User']); ?>
+                                        <?= $form->field($model, 'parent_user_id',['template' => '{label}*{input}{error}'])->dropDownList($userList,['prompt' => 'Select Parent User','class'=> 'form-control select2']); ?>
                 		</div>
                         <div class="col-md-6">
                             <?= $form->field($model, 'company_name')->textInput(); ?> 

@@ -16,21 +16,26 @@ $formUrl = Url::to(['help-categories/index']);
                 <h3 class="box-title">
                     <?= Html::encode($this->title) ?>
                 </h3>
+                
                 <div class="row pull-right">
-                    <div class="col-md-4">
-                        <?php  if(CommonHelper::checkPermission('HelpCategories.Create')){ ?>
-                        <?= Html::a('New Category', ['create'], ['class' => 'btn btn-primary']) ?>
+                    <div class="col-md-3">
+                        <?php if (CommonHelper::checkPermission('HelpCategories.Create')) { ?>
+                            <?= Html::a('New Category', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-9">
                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
-                            <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?>
+                                </div>
+                                <div class="col-md-4">
+                                    <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '', Yii::$app->params['limit'], ['class' => 'form-control', 'id' => 'user-limit']) ?>
+                                </div>
+                            </div>
                         </div>
-                    </div>
                         <?= Html::endForm(); ?>
-                    <div class="col-md-3">
-                        <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
                     </div>
                 </div>
                 </div>
@@ -57,7 +62,7 @@ $formUrl = Url::to(['help-categories/index']);
                                   return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/help-categories/update/'.$model['id']],['title'=>'Update']);
                                 },                                
                                'delete' => function ($url, $model) {
-                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['help-categories/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this category?','title'=>'View']);
+                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['help-categories/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this category?','title'=>'Delete']);
                                 }, 
                                 'question' => function ($url, $model) {
                                    return Html::a('Add Questions', ['helps/index/'.$model['id']], ['class'=>'filter-search btn btn-primary']);
