@@ -36,6 +36,11 @@ class StoresSearch extends Stores
                     $temp['assignTo'] = isset($value['user']['first_name']) ? $value['user']['first_name'].' '.$value['user']['last_name'] : '';
                     $temp['market'] = isset($value['market']['title']) ? $value['market']['title'] : '';
                     $temp['marketSegment'] = isset($value['marketSegment']['title']) ? $value['marketSegment']['title'] : '';
+                    $temp['assignTo']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['assignTo']));
+                    $temp['market']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['market']));
+                    $temp['marketSegment']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['marketSegment']));
+                    $temp['name']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['name']));
+                    $temp['address1']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['address1']));
                     $storeList[] = $temp;
                 }
             }

@@ -51,6 +51,8 @@ class MarketSegmentsSearch extends MarketSegments
                     $temp = $value;
                     $temp['title'] = $value['title'];
                     $temp['description'] = isset($value['description']) ? $value['description'] : '';
+                    $temp['title']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['title']));
+                    $temp['description']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['description']));
                     $marketSegmentsList[] = $temp;
                 }
             }
