@@ -651,8 +651,10 @@ class StoreConfigurationController extends Controller {
             if (intval($selvesWidth) >= intval(intval($sum) + intval($value['width']))) {
 
                 if ((intval(($selvesHeight) / ($selevesCount)) >= intval($value['height'])) && (intval($selvesDepth) >= intval($value['length']))) {
-                    if (empty($racksProductArray[$shelfIndex])) {
+                   
+                    if (empty($racksProductArray[$shelfIndex])) { 
                         $racksProductArray[$shelfIndex][] = $value;
+                      
                     } else {
                         array_push($racksProductArray[$shelfIndex], $value);
                     }
@@ -666,7 +668,7 @@ class StoreConfigurationController extends Controller {
 
         $this->fillUpEmptySpaceOfShelves($racksProductArray, $selvesWidth, $selevesCount);
         //all repeated products
-
+     
         $finalProducuts = $finalProducutsRack = $productsId = array();
 
         foreach ($racksProductArray as $key => $value) {
@@ -874,6 +876,7 @@ class StoreConfigurationController extends Controller {
                     }
                 }
             }
+            $this->applySortingRule($racksProductArray);
         }
     }
 
@@ -913,11 +916,13 @@ class StoreConfigurationController extends Controller {
             $giftProduct = $otherProduct = array();
 
             foreach ($racksProductArray as $key => $value) {
+                if(isset($value['box_only'])){
                 if ($value['box_only'] == 1) {
                     array_push($giftProduct, $value);
                 }
                 if ($value['box_only'] == 0) {
                     array_push($otherProduct, $value);
+                }
                 }
             }
             $mergedArray = array_merge($giftProduct, $otherProduct);
@@ -928,7 +933,7 @@ class StoreConfigurationController extends Controller {
     public function sort_array_of_array(&$array, $subfield, $sort) {
         $sortarray = array();
         foreach ($array as $key => $row) {
-            $sortarray[$key] = $row[$subfield];
+            $sortarray[$key] = isset($row[$subfield]) ? $row[$subfield] : '';
         }
 
         array_multisort($sortarray, $sort, $array);
