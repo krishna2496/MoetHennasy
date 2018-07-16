@@ -57,7 +57,7 @@ class Catalogues extends BaseModel
             'market_id' => 'Market',
             'width' => 'Size Width',
             'height' => 'Size Height',
-            'length' => 'Size Length',
+            'length' => 'Size Length (depth)',
             'scale' => 'Size Scale',
             'manufacturer' => 'Manufacturer',
             'box_only' => 'Gift Box',
