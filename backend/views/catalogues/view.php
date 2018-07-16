@@ -54,13 +54,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'scale',
             'manufacturer',
             [
-                            'label' => 'box_only',
+                            'label' => 'Box only',
                             'value' => Yii::$app->params['catalogue_status'][$model->box_only],
             ],
             'market_share',
             'price',
             [
-                            'label' => 'top_shelf',
+                            'label' => 'Top shelf',
                             'value' => Yii::$app->params['catalogue_status'][$model->top_shelf],
             ],
               ],

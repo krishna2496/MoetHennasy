@@ -113,10 +113,9 @@ GridView::widget([
         });
         
         $(".auto_fill").on('click', function () {
-alert("clicked");
             if ($('#w1 input[name="selection[]"]:checked').length > 0)
             {
-                alert("selected");
+               
                 $("#w1").submit();
                 return true;
             } else {
