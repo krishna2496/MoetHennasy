@@ -5,14 +5,20 @@ use yii\grid\GridView;
 use common\helpers\CommonHelper;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use yii\widgets\Pjax;
 
 $this->title = 'Market Brands';
 $this->params['breadcrumbs'][] = ['label' => 'Market', 'url' => ['/market']];
 $this->params['breadcrumbs'][] = $this->title;
 $formUrl = Url::to(['market/brands/'.$market_id]);
 ?>
+<script>
+   productObject = {};
+</script>
 <div class="row">
     <div class="row" id="isDisplay">
+       <?php Pjax::begin(['id' => 'brands', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'GET']]) ?>  
+       <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'w1']); ?>
         <div class="col-xs-12">
             <div class="box">
                  
@@ -23,16 +29,17 @@ $formUrl = Url::to(['market/brands/'.$market_id]);
                         </h2>
                      <div class="row pull-right">
                         <div class="col-md-12">
-                            <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
+                       
                         <div class="filter-search dataTables_filter clearfix">
                             <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
                         </div>
-                             <?= Html::endForm(); ?>
+                          
                         </div>
                     </div>
                     </div>
-<?php $form = ActiveForm::begin(['method' => 'post', 'options' => ['data-pjax' => '', 'id' => 'w1']]); ?>
-    
+
+
+ 
 <?=
 GridView::widget([
     'dataProvider' => $dataProvider,
@@ -50,6 +57,33 @@ GridView::widget([
     ],
 ]);
 ?>
+                    <script>
+                        $(document).ready(function () {
+                            brandThumbId =0;
+							$('input[name="selection[]"]').each(function (skey, sval) {
+								var sobj = {};
+								sobj["sel"] = false;
+								
+								if (typeof (productObject[$(sval).val()]) === 'undefined')
+								{
+									productObject[$(sval).val()] = sobj;
+								}
+								if (typeof (productObject[$(sval).val()]) !== 'undefined' && productObject[$(sval).val()]["sel"] === true)
+								{
+									$('input[type="checkbox"][value="' + $(sval).val() + '"]').attr('checked', true).iCheck('update');
+								}
+							});
+						});
+                    $('input[name="selection[]"]').on('ifChecked', function (event) {
+                       productObject[$(this).val()]['sel'] = true;
+                    });
+						
+                    $('input[name="selection[]"]').on('ifUnchecked', function (event) {
+                        productObject[$(this).val()]['sel'] = false;
+		    });
+                    
+                    </script>
+                   
                 </div>
                 <div class="row">
 
@@ -62,9 +96,8 @@ GridView::widget([
             </div>
         </div>
     </div>
-<?php ActiveForm::end(); ?>
-</div>
-    <script type="text/javascript">
+       <?= Html::endForm(); ?>
+      <script type="text/javascript">
         $("#maketSegmentId").on('change',function(){
             $("#w0").submit();
         });
@@ -78,23 +111,12 @@ GridView::widget([
             $('input[name="selection[]"]').iCheck('uncheck');
 
         });
-
+        
         $(".auto_fill").on('click', function () {
-
-            var favorite = [];
-            $.each($("input[name='selection[]']:checked"), function () {
-
-                favorite.push($(this).val());
-
-            });
-
-
-            var product = favorite.join(",");
-
-            $("#selection").val(product);
-            if ($("#w1 input:checkbox:checked").length > 0)
+alert("clicked");
+            if ($('#w1 input[name="selection[]"]:checked').length > 0)
             {
-
+                alert("selected");
                 $("#w1").submit();
                 return true;
             } else {
@@ -104,7 +126,10 @@ GridView::widget([
         });
         
         $("body").on("change", "#user-limit",function(event){
-        $('#search-users').submit();
+        $('#w1').submit();
     });
 
     </script>
+     <?php Pjax::end(); ?>
+</div>
+  
