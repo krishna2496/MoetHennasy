@@ -8,7 +8,7 @@ use common\helpers\CommonHelper;
 $this->title ='Helps';
 $this->params['breadcrumbs'][] = ['label' => 'Helps', 'url' => ['helps/index/'.$model->category_id]];
 $this->params['breadcrumbs'][] = 'View Helps';
-$updateUrl = Url::to(['helps/update/'.$model->id]);
+$updateUrl = Url::to(['helps/update/'.$model->id.'/'.$categoryId]);
 ?>
 <div class="row">
     <div class="col-xs-12">

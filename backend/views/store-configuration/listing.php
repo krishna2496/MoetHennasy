@@ -7,7 +7,7 @@ use yii\helpers\Url;
 
 $this->title = 'Store Configuration';
 $this->params['breadcrumbs'][] = $this->title;
-$formUrl = Url::to(['store-configuration/listing']);
+$formUrl = Url::to(['store-configuration/listing/'.$id]);
 ?>
 <style>
     .grid-view .table .list-image {

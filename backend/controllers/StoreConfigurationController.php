@@ -410,7 +410,7 @@ class StoreConfigurationController extends Controller {
                     throw new NotFoundHttpException('you are not allowed to access this page.');
                 }
             }
-            if ($stores['created_by'] == $currentUser->id) {
+            if ($stores['assign_to'] == $currentUser->id) {
                 $canCreateNewConfig = 1;
             }
             

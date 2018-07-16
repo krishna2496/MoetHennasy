@@ -349,7 +349,7 @@ jQuery(document).ready(function ()
                                 $("#rating").show();
                                 $('.modal-header > .modal-title',$('#modalReview')).html("Review");
                                 $('.modal-body > p:first',$('#modalReview')).html("<strong>Your configuration have been saved.</strong> Could you please rate your configuration:");
-                                $('#submitQuestion').text('Save and Next');
+                                $('#submitQuestion').text('Save');
                             } else {
                                 alert("Rating Saved Succesfully");
                                 $('#modalReview').modal('hide');

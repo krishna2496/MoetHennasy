@@ -98,7 +98,7 @@ GridView::widget([
                 $("#w1").submit();
                 return true;
             } else {
-                alert("Please select at least one Rule");
+                alert("Please select at least one Brand");
                 return false;
             }
         });
