@@ -32,7 +32,7 @@ class PermissionSearch extends Permission
             'id' => $this->id,
             'parent_id' => $this->parent_id,
         ]);
-
+        
         $query->andFilterWhere(['like', 'permission_label', $this->permission_label])
             ->andFilterWhere(['like', 'permission_title', $this->permission_title]);
         return $query->asArray()->all();

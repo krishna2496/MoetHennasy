@@ -57,13 +57,13 @@ $formUrl = Url::to(['market-contacts/index/' . $market_id]);
                             'template' => '{view} {update} {delete}',
                             'buttons' => [
                                 'view' => function ($url, $model) use ($market_id) {
-                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['market-contacts/view/' . $market_id . '/' . $model['id']]);
+                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['market-contacts/view/' . $market_id . '/' . $model['id']],['title'=>'View']);
                                 },
                                 'update' => function ($url, $model) use($market_id) {
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['market-contacts/index/' . $market_id . '/' . $model['id']]);
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['market-contacts/index/' . $market_id . '/' . $model['id']],['title'=>'Update']);
                                 },
                                 'delete' => function ($url, $model) use ($market_id) {
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['market-contacts/delete/' . $market_id . '/' . $model['id']], ['data-method' => 'post', 'data-confirm' => 'Are you sure want to delete this category?']);
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['market-contacts/delete/' . $market_id . '/' . $model['id']], ['data-method' => 'post', 'data-confirm' => 'Are you sure want to delete this category?','title'=>'Delete']);
                                 },
                             ],
                         ],
