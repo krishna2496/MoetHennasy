@@ -166,7 +166,7 @@ class CataloguesRepository extends Repository {
         if (isset($data['top_shelf'])) {
             $model->top_shelf = $data['top_shelf'];
         }
-        if (isset($data['image'])) {
+        if (isset($data['image']) && ($data['image'] != '')) {
             $model->image = $data['image'];
         }
         if (isset($data['long_name'])) {
