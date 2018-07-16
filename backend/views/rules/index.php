@@ -17,14 +17,8 @@ $formUrl = Url::to(['rules/index']);
                     <?= Html::encode($this->title) ?>
                 </h3>
                 <div class="row pull-right">
-                    <div class="col-md-3">
-                        <?php  if(CommonHelper::checkPermission('Rules.Create')){ ?>
-                      
-                            <!--Html::a('Add Rule', ['rules/create'], ['class' => 'btn btn-primary'])-->
-                          
-                        <?php } ?>
-                    </div>
-                    <div class="col-md-9">
+                  
+                    <div class="col-md-12">
                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">

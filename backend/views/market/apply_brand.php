@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 $this->title = 'Market Brands';
 $this->params['breadcrumbs'][] = ['label' => 'Market', 'url' => ['/market']];
 $this->params['breadcrumbs'][] = $this->title;
-$formUrl = Url::to(['market/brands/2']);
+$formUrl = Url::to(['market/brands/'.$market_id]);
 ?>
 <div class="row">
     <div class="row" id="isDisplay">

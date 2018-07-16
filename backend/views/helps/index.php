@@ -19,7 +19,7 @@ $formUrl = Url::to(['helps/index/'.$id]);
                 <div class="row pull-right">
                     <div class="col-md-4">
                         <?php  if(CommonHelper::checkPermission('Helps.Create')){ ?>
-                        <?= Html::a('New Questions', ['helps/create/'.$id], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('New Question', ['helps/create/'.$id], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-8">
@@ -52,13 +52,13 @@ $formUrl = Url::to(['helps/index/'.$id]);
                            'template' => '{view} {update} {delete}',
                            'buttons' => [
                                'view' => function ($url, $model) use ($id){
-                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['helps/view/'.$model['id'].'/'.$id]);
+                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['helps/view/'.$model['id'].'/'.$id],['title'=>'View']);
                                 },
                                'update' => function ($url, $model)use ($id) {
-                                  return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['helps/update/'.$model['id'].'/'.$id]);
+                                  return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['helps/update/'.$model['id'].'/'.$id],['title'=>'Update']);
                                 },                                
                                'delete' => function ($url, $model)use ($id) {
-                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['helps/delete/'.$model['id'].'/'.$id],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this Question and Answer?']);
+                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['helps/delete/'.$model['id'].'/'.$id],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this Question and Answer?','title'=>'Delete']);
                                 }, 
                              ],
                         ],

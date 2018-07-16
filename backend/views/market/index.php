@@ -75,7 +75,7 @@ $formUrl = Url::to(['market/index']);
                                   return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['market/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this market?','title' => 'Delete']);
                                 },
                                 'contact' => function ($url, $model) use ($filters) {
-                                   return Html::a('<span class="glyphicon glyphicon-phone"></span>', ['market-contacts/index/'.$model['id']],['title' => 'contacts']);
+                                   return Html::a('<span class="glyphicon glyphicon-phone"></span>', ['market-contacts/index/'.$model['id']],['title' => 'Contact']);
                                 },
                                 'rules' => function ($url, $model) use ($filters) {
                                      return Html::a('Apply Rules', ['market/rules/'.$model['id']], ['class'=>'btn btn-primary']);

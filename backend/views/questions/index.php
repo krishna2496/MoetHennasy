@@ -18,7 +18,7 @@ $formUrl = Url::to(['questions/index']);
                 <div class="row pull-right">
                     <div class="col-md-5">
                         <?php  if(CommonHelper::checkPermission('Questions.Create')){ ?>
-                        <?= Html::a('New Feedback Questions', ['create'], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('New Feedback Question', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-7">

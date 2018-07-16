@@ -296,7 +296,7 @@ class MarketController extends BaseBackendController
             'filters' => $filters,
             'rules' => $selected,
             'title' => $title,
-            'market_id' => $id
+            'market_id' => $id,
         ]);
         
        }else{
