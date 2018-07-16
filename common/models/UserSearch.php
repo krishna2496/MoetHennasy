@@ -30,7 +30,10 @@ class UserSearch extends User {
                 foreach ($resultUserList['data']['users'] as $key => $value) {
                     $temp = $value;
                     $temp['name'] = $value['first_name'].' '.$value['last_name'];
+                    $temp['name']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['name']));
+                    $temp['username']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['username']));
                     $temp['role'] = isset($value['role']['title']) ? $value['role']['title'] : '';
+                    $temp['role']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['role']));
                     $userList[] = $temp;
                 }
             }
