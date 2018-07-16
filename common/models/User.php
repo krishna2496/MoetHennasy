@@ -40,9 +40,9 @@ class User extends BaseModel implements IdentityInterface
             ['parent_user_id', 'required', 'when' => function ($model) { return ($model->role_id != Yii::$app->params['marketAdministratorRole'] && $model->role_id != Yii::$app->params['superAdminRole']); }, 'whenClient' => "function (attribute, value) { return $('#user-role_id').val() != '".Yii::$app->params['marketAdministratorRole']."'; }"],
             [['phone'], 'number'],
             [['phone'], 'string', 'max' => 12],
-            [['first_name','last_name','email'], 'string', 'max' => 255],
+            [['email'], 'string', 'max' => 255],
             [['username','first_name','last_name','email','phone','address','company_name'], 'trim'],
-            [['username','company_name'],'string','max' => 100],
+            [['username','company_name','first_name','last_name'],'string','max' => 100],
         ];
     }
 

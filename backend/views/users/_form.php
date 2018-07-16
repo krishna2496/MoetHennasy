@@ -17,10 +17,16 @@ use common\helpers\CommonHelper;
                 <div class="box-body">
                 	<div class="row">
                 		<div class="col-md-6">
-                			<?= $form->field($model, 'username')->textInput(['autofocus' => 'autofocus']) ?>
+                                    <?= $form->field($model, 'username')->textInput(['autofocus' => 'autofocus']); ?>
                 		</div>
                 		<div class="col-md-6">
-                			<?= $form->field($model, 'email')->textInput() ?>
+                                     <?php if($model->isNewRecord){
+                                        echo $form->field($model, 'email')->textInput();
+                                    }
+                                    else{
+                                        echo $form->field($model, 'email')->textInput(['readonly'=> true]);
+                                    }
+                                    ?>
                 		</div>
                 	</div>
                 	<div class="row">
