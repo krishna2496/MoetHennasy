@@ -111,7 +111,6 @@ class StoreConfigurationController extends Controller {
 
         $feedBackList = ConfigFeedback::find()->andWhere(['config_id' => $id])->asArray()->all();
 
-
         $rating = new Ratings();
         $ratingData = StoreConfiguration::findOne($id);
         $storeRating = $ratingData['star_ratings'];
@@ -121,7 +120,6 @@ class StoreConfigurationController extends Controller {
         }
 
         $questions = $questionsModel::find()->indexBy('id')->asArray()->all();
-
 
         return $this->renderPartial('review-content', [
                 'questions' => $questions,
@@ -141,9 +139,6 @@ class StoreConfigurationController extends Controller {
         $ansArray = array();
         $questionsModel = new Questions();
         $questions = $questionsModel::find()->indexBy('id')->asArray()->all();
-
-
-
 
         if ($post['action'] == 'feedback') {
             foreach ($questions as $key => $value) {
@@ -166,7 +161,6 @@ class StoreConfigurationController extends Controller {
                 $questionModel->reviewed_by = $user['id'];
                 $questionModel->save(false);
             }
-
 
             $flag = 1;
         }
@@ -239,8 +233,6 @@ class StoreConfigurationController extends Controller {
 
             $request = Yii::$app->request;
             $brandThumbId = $display_name = '';
-           
-            
             if ($currentUser->role_id == Yii::$app->params['superAdminRole']) {
                  $reviewFlag = 1;
             }
@@ -290,7 +282,6 @@ class StoreConfigurationController extends Controller {
                             $filterListing['marketName'] = $marketTitle;
                             $filterListing['brandName'] = $filterListing['brand']['name'];
                             $productsData[$value] = $filterListing;
-
 
                             $rackProducts[$key][$k]['id'] = $value;
                             $rackProducts[$key][$k]['image'] = CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $filterListing['image']);
@@ -482,7 +473,11 @@ class StoreConfigurationController extends Controller {
             $_SESSION['config']['storeId'] = $storeId;
             $currentUser = CommonHelper::getUser();
             $marketId = '';
-            if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
+
+            if (isset($currentUser->market_id) && ($currentUser->market_id != '') && $currentUser->role_id == '1') { // check if role is super admin
+                $marketId = $stores['market_id'];
+            }
+            else if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
                 $marketId = $currentUser->market_id;
             }
 
@@ -915,6 +910,7 @@ class StoreConfigurationController extends Controller {
         if ($this->ifRuleContain(\yii::$app->params['configArray']['gift_box'])) {
             $giftProduct = $otherProduct = array();
 
+            $skipBoxCheck = 0; //skip box check if shelf is already filled up with total market share
             foreach ($racksProductArray as $key => $value) {
                 if(isset($value['box_only'])){
                 if ($value['box_only'] == 1) {
@@ -924,9 +920,17 @@ class StoreConfigurationController extends Controller {
                     array_push($otherProduct, $value);
                 }
                 }
+                else
+                {
+                    $skipBoxCheck = 1;
+                }
             }
-            $mergedArray = array_merge($giftProduct, $otherProduct);
-            $racksProductArray = $mergedArray;
+
+            if(!$skipBoxCheck)
+            {
+                    $mergedArray = array_merge($giftProduct, $otherProduct);
+                    $racksProductArray = $mergedArray;
+            }
         }
     }
 
@@ -940,8 +944,6 @@ class StoreConfigurationController extends Controller {
     }
 
     private function ifRuleContain($ruleValue) {
-
-       
         $rulesArray = array();
         if (isset($_SESSION['config']['rules']) && !empty($_SESSION['config']['rules'])) {
             $rules = $_SESSION['config']['rules'];
