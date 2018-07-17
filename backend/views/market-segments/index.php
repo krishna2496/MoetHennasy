@@ -22,14 +22,14 @@ $formUrl = Url::to(['market-segments/index']);
                         <?= Html::a('New Market Cluster', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
+                     <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                     <div class="col-md-5">
-                    <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text']) ?>
                         </div>
                     </div>
                     <div class="col-md-3">
-                       <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control select2','id' => 'user-limit']) ?>
+                       <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
                     </div>
                         <?= Html::endForm(); ?>
                     </div>

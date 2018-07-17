@@ -22,7 +22,7 @@ use common\helpers\CommonHelper;
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <?= $form->field($model, 'title')->textInput() ?>
+                            <?= $form->field($model, 'title')->textInput(['autofocus' => 'autofocus']) ?>
                         </div>
                     </div>
                      <div class="row">
