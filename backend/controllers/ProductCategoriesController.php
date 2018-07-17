@@ -96,8 +96,9 @@ class ProductCategoriesController extends BaseBackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        
         $filters['except_id'] = $id;
+//        $filters['parent_id'] = $model->parent_id;
         $productCategoryRepository = new ProductCategoryRepository();
         $productCategoryRepository = $productCategoryRepository->listing($filters); 
 
@@ -107,12 +108,21 @@ class ProductCategoriesController extends BaseBackendController
         }
 
 
-        if(Yii::$app->request->post()) {          
+        if(Yii::$app->request->post()) {  
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('ProductCategories');
             $data['id'] = $id;
+            if(isset($data['parent_id'])){
+                $parent_model = $this->findModel($data['parent_id']);
+            }
+            if(($data['parent_id'] == $parent_model->id) && ($parent_model->parent_id == $data['id'])){
+                Yii::$app->session->setFlash('danger', 'Parent Loop Formation');
+                return $this->redirect(['index']);
+            }
+            
             $categoryRepository = new ProductCategoryRepository();
             $categoryData = $categoryRepository->upadateProductCategory($data); 
+            
             if($categoryData['status']['success'] == 1)
             {   parent::userActivity('update_product_category',$description='');
                 Yii::$app->session->setFlash('success', $categoryData['status']['message']);

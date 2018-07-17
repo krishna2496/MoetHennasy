@@ -11,12 +11,12 @@ class ProductCategoryRepository extends Repository
     public function listing($data = array()) {
         $this->apiCode = 1;
         $query = ProductCategories::find()->with(['parentCategory']);
-
+        
         if(isset($data['search']) && $data['search']){
             $data['search'] = trim($data['search']);
             $query->andWhere(['like','name',$data['search']]);
         }
-
+        
         if(isset($data['except_id']) && $data['except_id']){
         	$query->andWhere(['!=','id',$data['except_id']]);
         }
