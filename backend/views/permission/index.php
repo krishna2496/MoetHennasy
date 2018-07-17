@@ -17,12 +17,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= Html::encode($this->title) ?>
                 </h3>
                 <div class="row  pull-right">
-                    <div class="col-md-6">
-                        <?php  if(CommonHelper::checkPermission('Permission.Create')){ ?>
-                        <?= Html::a('Create', ['create'], ['class' => 'btn btn-success']) ?>
-                        <?php } ?>
+                    <div class="col-md-2">
+                        <?php //  if(CommonHelper::checkPermission('Permission.Create')){ ?>
+                        <?php // echo Html::a('Create', ['create'], ['class' => 'btn btn-success']) ?>
+                        <?php // } ?>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-10">
                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                         <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'permission-limit']) ?>
@@ -46,29 +46,29 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['class' => 'yii\grid\SerialColumn'],
                         'permission_label',
                         'permission_title',
-                        [
-                            'class' => 'yii\grid\ActionColumn',
-                            'visible' =>$isActionColoum,
-                            'header'=> 'Action',
-                            'headerOptions' => [
-                                'style' => 'color:#004FA3'
-                            ],
-                            'template' => '{update} {delete}', 
-                            'buttons'=>[
-                                'update'=>function ($url,$model) { 
-                                    if(CommonHelper::checkPermission('Permission.Update')){
-                                        
-                                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/permission/update/'.$model['id']],[ 'title' => 'Update']);
-                                    } 
-                                },
-                                'delete'=>function ($url,$model) { 
-                                    if(CommonHelper::checkPermission('Permission.Delete')){
-
-                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['/permission/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>Yii::t("app", "delete_confirm"), 'title' => 'Delete']);
-                                    } 
-                                },
-                            ],
-                        ],
+//                        [
+//                            'class' => 'yii\grid\ActionColumn',
+//                            'visible' =>$isActionColoum,
+//                            'header'=> 'Action',
+//                            'headerOptions' => [
+//                                'style' => 'color:#004FA3'
+//                            ],
+//                            'template' => '{update} {delete}', 
+//                            'buttons'=>[
+//                                'update'=>function ($url,$model) { 
+//                                    if(CommonHelper::checkPermission('Permission.Update')){
+//                                        
+//                                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/permission/update/'.$model['id']],[ 'title' => 'Update']);
+//                                    } 
+//                                },
+//                                'delete'=>function ($url,$model) { 
+//                                    if(CommonHelper::checkPermission('Permission.Delete')){
+//
+//                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['/permission/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>Yii::t("app", "delete_confirm"), 'title' => 'Delete']);
+//                                    } 
+//                                },
+//                            ],
+//                        ],
                     ],
                 ]);
                 ?>

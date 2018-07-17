@@ -18,38 +18,39 @@ if(isset($urlData[1]) && $urlData[1]){
 //print_r($dataProvider->totalCount);exit;
 ?>
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-md-12">
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">
                     <?= Html::encode($this->title) ?>
                 </h3>
-                <div class="row pull-right">
+                <div class="row">
                     <div class="col-md-2">
                         <div class="row">
-                            <?php  if(CommonHelper::checkPermission('Stores.Create')){ ?>
-                                <div class="col-md-6">
-                                    <?= Html::a('New Store', ['create'], ['class' => 'btn btn-primary']) ?>
-                                </div>
-                            <?php } ?>
-                            <?php  if(CommonHelper::checkPermission('Stores.Export')){
+                            <div class="col-md-6">
+                                <?php  if(CommonHelper::checkPermission('Stores.Create')){ ?>
+                                <?= Html::a('New Store', ['create'], ['class' => 'btn btn-primary']) ?>
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-6">
+                                 <?php  if(CommonHelper::checkPermission('Stores.Export')){
                                 $class = '';
                                 if($dataProvider->totalCount == 0){
                                     $class = 'disabled';
                                 }
                                 ?>
-                                <div class="col-md-6">
-                                    <?= Html::a('Export', ['export'.$queryString], ['class' => 'btn btn-primary'.' '.$class.'']) ?>
-                                </div>
-                            <?php } ?>
+                                <?= Html::a('Export', ['export'.$queryString], ['class' => 'btn btn-primary'.' '.$class.'']) ?>
+                                <?php } ?>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-10">
-                        <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-stores']); ?>
-                        <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
                                 <div class="col-md-2">
+                                    <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-stores']); ?>
+                                    <div class="filter-search dataTables_filter clearfix">
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'store-text']) ?>
+                                    </div>
                                 </div>
                                 <div class="col-md-2">
                                     <?= Html::dropDownList('market_id', isset($filters['market_id']) ? $filters['market_id'] : '' ,$markets,  ['class' => 'form-control select2', 'id' => 'store-markets','prompt' => 'Select Market']) ?>
@@ -67,7 +68,6 @@ if(isset($urlData[1]) && $urlData[1]){
                                     <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'store-limit']) ?>
                                 </div>
                             </div>
-                        </div>
                         <?= Html::endForm(); ?>
                     </div>
                 </div>

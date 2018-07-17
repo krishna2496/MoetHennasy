@@ -16,7 +16,7 @@ class Countries extends BaseModel
     {
         return [
             [['name'], 'required'],
-            [['name'], 'string', 'max' => 52],
+            [['name'], 'string', 'max' => 100],
         ];
     }
 

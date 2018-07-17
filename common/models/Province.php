@@ -28,7 +28,7 @@ class Province extends BaseModel
     {
         return [
             [['city_id'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 100],
         ];
     }
 

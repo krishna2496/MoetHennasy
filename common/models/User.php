@@ -27,22 +27,22 @@ class User extends BaseModel implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            [['username','company_name','first_name','last_name','email'],'string','max' => 100],
             [['username','first_name','last_name','email','role_id','status','device_type','phone','address','market_id','company_name'], 'required'],
             ['confirm_password', 'compare', 'compareAttribute' => 'new_password','skipOnEmpty' => false,'message' => "Password doesn't match"],
             [['new_password','confirm_password'], 'string', 'min' => 6],
-            [['first_name','last_name','username','password_hash','email','device_token','latitude','longitude','profile_photo'],'string','max'=>255,'on' => ['create','update']],
+            [['password_hash','device_token','latitude','longitude','profile_photo'],'string','max'=>255,'on' => ['create','update']],
             [['role_id','parent_user_id'],'integer','on' => ['create','update']],
             [['email'], 'email'],
             [['created_by', 'updated_by', 'deleted_by', 'status'], 'integer','on' => ['create','update']],
             [['username','email'], 'unique'],
-            ['username','match', 'pattern' => '/^[a-zA-Z0-9\-_]{0,255}$/', 'message' => 'Username can only contain Alphabet and Numeric'],
+            ['username','match', 'pattern' => '/^[a-zA-Z0-9\-_]{0,100}$/', 'message' => 'Username can only contain Alphabet and Numeric'],
             [['userImage'], 'file','extensions'=>'jpg,png,jpeg','on' => ['create','update']],
             ['parent_user_id', 'required', 'when' => function ($model) { return ($model->role_id != Yii::$app->params['marketAdministratorRole'] && $model->role_id != Yii::$app->params['superAdminRole']); }, 'whenClient' => "function (attribute, value) { return $('#user-role_id').val() != '".Yii::$app->params['marketAdministratorRole']."'; }"],
             [['phone'], 'number'],
             [['phone'], 'string', 'max' => 12],
-            [['email'], 'string', 'max' => 255],
             [['username','first_name','last_name','email','phone','address','company_name'], 'trim'],
-            [['username','company_name','first_name','last_name'],'string','max' => 100],
+            
         ];
     }
 

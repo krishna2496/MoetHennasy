@@ -7,7 +7,7 @@ $arrayMenu = array(
     array(
         'title' => 'Permissions',
         'permissionName' => array(
-            'Permission.Create',
+//            'Permission.Create',
             'Permission.Matrix-Listing',
             'Permission.Index',
         ),
@@ -32,16 +32,16 @@ $arrayMenu = array(
                 'controllerId' => 'permission',
                 'actionId' => array('index')
             ),
-            array(
-                'title' => 'Create',
-                'permissionName' => array(
-                    'Permission.Create'
-                ),
-                'icon' => '',
-                'link' => 'permission/create',
-                'controllerId' => 'permission',
-                'actionId' => array('create')
-            ),
+//            array(
+//                'title' => 'Create',
+//                'permissionName' => array(
+//                    'Permission.Create'
+//                ),
+//                'icon' => '',
+//                'link' => 'permission/create',
+//                'controllerId' => 'permission',
+//                'actionId' => array('create')
+//            ),
             array(
                 'title' => 'Matrix',
                 'permissionName' => array(
