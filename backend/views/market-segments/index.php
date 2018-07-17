@@ -16,25 +16,32 @@ $formUrl = Url::to(['market-segments/index']);
                 <h3 class="box-title">
                     <?= Html::encode($this->title) ?>
                 </h3>
-                <div class="row pull-right">
-                    <div class="col-md-4">
-                        <?php  if(CommonHelper::checkPermission('MarketSegments.Create')){ ?>
-                        <?= Html::a('New Market Cluster', ['create'], ['class' => 'btn btn-primary']) ?>
-                        <?php } ?>
-                    </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3"></div>
                      <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
-                    <div class="col-md-5">
-                        <div class="filter-search dataTables_filter clearfix">
-                            <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text']) ?>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <?php  if(CommonHelper::checkPermission('MarketSegments.Create')){ ?>
+                                <?= Html::a('New Market Cluster', ['create'], ['class' => 'btn btn-primary']) ?>
+                                <?php } ?>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="filter-search dataTables_filter clearfix">
+                                    <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text']) ?>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                               <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                       <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
-                    </div>
+                    
                         <?= Html::endForm(); ?>
                     </div>
                 </div>
-            </div>
+            <!--</div>-->
             <div class="box-body">
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,

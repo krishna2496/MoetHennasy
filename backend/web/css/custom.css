@@ -1,5 +1,7 @@
 /*Step wizard css*/
-
+.sticky{
+    position:fixed;
+}
 .frame-filter-section .submit-fl .btn {
     transition: all .3s linear;
     -webkit-transition: all .3s linear;

@@ -558,7 +558,7 @@ array(
 );
 ?>
 <b>
-    <aside class="main-sidebar">
+    <aside class="main-sidebar sticky">
         <section class="sidebar">
             <div class="user-panel">
                 <div class="pull-left image">
