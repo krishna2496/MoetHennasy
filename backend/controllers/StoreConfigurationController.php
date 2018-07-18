@@ -871,7 +871,10 @@ class StoreConfigurationController extends Controller {
                     }
                 }
             }
-            $this->applySortingRule($racksProductArray);
+         
+            foreach ($racksProductArray as $key =>$value){
+            $this->applySortingRule($racksProductArray[$key]);
+            }
         }
     }
 
@@ -891,7 +894,7 @@ class StoreConfigurationController extends Controller {
 
     private function applySortingRule(&$racksProductArray) {
 
-        if ($this->ifRuleContain(\yii::$app->params['configArray']['market_share'])) {
+        if ($this->ifRuleContain(\yii::$app->params['configArray']['market_share'])) {            
             $sort = SORT_DESC;
             $this->sort_array_of_array($racksProductArray, 'market_share', $sort);
         }
