@@ -131,7 +131,7 @@ use yii\widgets\ActiveForm;
                 <?php } ?>
             </div>
             <div class="col-xs-6">
-              <?= Html::submitButton('OK', ['class' => 'btn btn-primary pull-left mw-md']) ?>
+              <?= Html::submitButton('Save', ['class' => 'btn btn-primary pull-left mw-md']) ?>
             </div>
         </div>
         <?php ActiveForm::end(); ?>

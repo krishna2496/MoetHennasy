@@ -28,7 +28,7 @@ $formUrl = Url::to(['configs/index/'.$id]);
                     </div>
                     <div class="col-md-2">
                         <?php  if(CommonHelper::checkPermission('Configs.Create')){ ?>
-                            <?= Html::a('New Config', ['configs/create/'.$id], ['class' => 'btn btn-primary']) ?>
+                            <?= Html::a('Add Config', ['configs/create/'.$id], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-7">

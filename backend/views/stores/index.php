@@ -29,7 +29,7 @@ if(isset($urlData[1]) && $urlData[1]){
                         <div class="row addmargin">
                             <div class="col-md-5">
                                 <?php  if(CommonHelper::checkPermission('Stores.Create')){ ?>
-                                <?= Html::a('New Store', ['create'], ['class' => 'btn btn-primary']) ?>
+                                <?= Html::a('Add Store', ['create'], ['class' => 'btn btn-primary']) ?>
                                 <?php } ?>
                             </div>
                             <div class="col-md-4">

@@ -697,7 +697,7 @@ a:focus {
 .sidebar-mini:not(.sidebar-mini-expand-feature).sidebar-collapse .sidebar-menu>li:hover>.treeview-menu {
     display: block !important;
     position: absolute;
-    width: 200px;
+    width: 235px;
     left: 50px
 }
 
@@ -712,7 +712,7 @@ a:focus {
     position: relative !important;
     float: right;
     width: auto !important;
-    left: 200px !important;
+    left: 233px !important;
     top: -22px !important;
     z-index: 900
 }

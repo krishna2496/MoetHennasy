@@ -4,7 +4,640 @@ $adminUrl = CommonHelper::getPath('admin_url');
 $user = CommonHelper::getUser();
 $arrayMenu = array(
     
+        array(
+        'title' => 'Dashboard',
+        'permissionName' => array(
+            'Site.Index',
+        ),
+        'icon' => 'fa fa-home',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'site'
+        ),
+        'actionId' => array(
+            'index'
+        ),
+        
+        'childs' => array(
+            array(
+                'title' => 'Dashboard',
+                'permissionName' => array(
+                    'Site.Index'
+                ),
+                'icon' => '',
+                'link' => '',
+                'controllerId' => 'site',
+                'actionId' => array('index')
+            ),
+        )
+    ),
+    
     array(
+        'title' => 'Stores Management',
+        'permissionName' => array(
+            'Stores.Index',
+            'Stores.Create',
+            'Market.Index',
+            'Market.Create',
+            'MarketSegments.Index'
+        ),
+        'icon' => 'fa fa-bank',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'stores','configs','store-configuration','market-segments','market','market-contacts'
+        ),
+        'actionId' => array(
+           'index', 'create','update','view','review','listing','rules','brands'
+        ),
+        'childs' => array(
+            
+             array(
+                'title' => 'Market Clusters',
+                'permissionName' => array(
+                    'MarketSegments.Index'
+                ),
+                'icon' => '',
+                'link' => 'market-segments/index',
+                'controllerId' => 'market-segments',
+                'actionId' => array('index')
+            ),
+            
+            array(
+                'title' => 'Markets',
+                'permissionName' => array(
+                    'Market.Index'
+                ),
+                'icon' => '',
+                'link' => 'market/index',
+                'controllerId' => 'market',
+                'actionId' => array('index')
+            ),
+            
+            array(
+                'title' => 'Stores',
+                'permissionName' => array(
+                    'Stores.Index'
+                ),
+                'icon' => '',
+                'link' => 'stores/index',
+                'controllerId' => 'stores',
+                'actionId' => array('index')
+            ),
+//            array(
+//                'title' => 'Create',
+//                'permissionName' => array(
+//                    'Stores.Create'
+//                ),
+//                'icon' => '',
+//                'link' => 'stores/create',
+//                'controllerId' => 'stores',
+//                'actionId' => array('create')
+//            ),
+        )
+    ),
+    
+    array(
+        'title' => 'User Management',
+        'permissionName' => array(
+            'Users.Index',
+//            'Users.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'users'
+        ),
+        'actionId' => array(
+            'index', 'create'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Users',
+                'permissionName' => array(
+                    'Users.Index'
+                ),
+                'icon' => '',
+                'link' => 'users/index',
+                'controllerId' => 'users',
+                'actionId' => array('index')
+            ),
+//            array(
+//                'title' => 'Create',
+//                'permissionName' => array(
+//                    'Users.Create'
+//                ),
+//                'icon' => '',
+//                'link' => 'users/create',
+//                'controllerId' => 'users',
+//                'actionId' => array('create')
+//            ),
+        )
+    ),
+//array(
+//        'title' => 'Market Clusters',
+//        'permissionName' => array(
+//            'MarketSegments.Index',
+////            'MarketSegments.Create',
+//        ),
+//        'icon' => 'fa fa-user',
+//        'link' => 'javascript:void(0)',
+//        'hasChildClass' => 'treeview ',
+//        'submenuToggleClass' => 'treeview-menu',
+//        'controllerId' => array(
+//            'market-segments'
+//        ),
+//        'actionId' => array(
+//            'index', 'create','update','view'
+//        ),
+//        'childs' => array(
+//            array(
+//                'title' => 'Listing',
+//                'permissionName' => array(
+//                    'MarketSegments.Index'
+//                ),
+//                'icon' => '',
+//                'link' => 'market-segments/index',
+//                'controllerId' => 'market-segments',
+//                'actionId' => array('index')
+//            ),
+////            array(
+////                'title' => 'Create',
+////                'permissionName' => array(
+////                    'MarketSegments.Create'
+////                ),
+////                'icon' => '',
+////                'link' => 'market-segments/create',
+////                'controllerId' => 'market-segments',
+////                'actionId' => array('create')
+////            ),
+//        )
+//    ),
+    
+//    array(
+//        'title' => 'Markets',
+//        'permissionName' => array(
+//            'Market.Index',
+////            'Market.Create',
+//        ),
+//        'icon' => 'fa fa-user',
+//        'link' => 'javascript:void(0)',
+//        'hasChildClass' => 'treeview ',
+//        'submenuToggleClass' => 'treeview-menu',
+//        'controllerId' => array(
+//            'market','market-contacts'
+//        ),
+//        'actionId' => array(
+//           'index', 'create','update','view','rules'
+//        ),
+//        'childs' => array(
+//            array(
+//                'title' => 'Listing',
+//                'permissionName' => array(
+//                    'Market.Index'
+//                ),
+//                'icon' => '',
+//                'link' => 'market/index',
+//                'controllerId' => 'market',
+//                'actionId' => array('index')
+//            ),
+////            array(
+////                'title' => 'Create',
+////                'permissionName' => array(
+////                    'Market.Create'
+////                ),
+////                'icon' => '',
+////                'link' => 'market/create',
+////                'controllerId' => 'market',
+////                'actionId' => array('create')
+////            ),
+//        )
+//    ),
+    
+   
+    array(
+        'title' => 'Catalogue Management',
+        'permissionName' => array(
+            'Catalogues.Index',
+            'Catalogues.Create',
+            'ProductTypes.Index',
+            'ProductTypes.Create',
+            'Product-Categories.Index',
+            'Product-Categories.Create',
+            'Brands.Index'
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'catalogues','product-categories','product-types','brands'
+        ),
+        'actionId' => array(
+           'index', 'create','update','view'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Catalogues',
+                'permissionName' => array(
+                    'Catalogues.Index'
+                ),
+                'icon' => '',
+                'link' => 'catalogues/index',
+                'controllerId' => 'catalogues',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Brands',
+                'permissionName' => array(
+                    'Brands.Index'
+                ),
+                'icon' => '',
+                'link' => 'brands/index',
+                'controllerId' => 'brands',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Product Types',
+                'permissionName' => array(
+                    'ProductTypes.Index'
+                ),
+                'icon' => '',
+                'link' => 'product-types/index',
+                'controllerId' => 'brands',
+                'actionId' => array('index')
+            ),
+            
+            array(
+                'title' => 'Product Categories',
+                'permissionName' => array(
+                    'Product-Categories.Index'
+                ),
+                'icon' => '',
+                'link' => 'product-categories/index',
+                'controllerId' => 'product-categories',
+                'actionId' => array('index')
+            ),
+//            array(
+//                'title' => 'Create',
+//                'permissionName' => array(
+//                    'Catalogues.Create'
+//                ),
+//                'icon' => '',
+//                'link' => 'catalogues/create',
+//                'controllerId' => 'catalogues',
+//                'actionId' => array('create')
+//            ),
+        )
+    ),
+    
+//    array(
+//        'title' => 'Brands',
+//        'permissionName' => array(
+//            'Brands.Index',
+////            'Brands.Create',
+//        ),
+//        'icon' => 'fa fa-user',
+//        'link' => 'javascript:void(0)',
+//        'hasChildClass' => 'treeview ',
+//        'submenuToggleClass' => 'treeview-menu',
+//        'controllerId' => array(
+//            'brands'
+//        ),
+//        'actionId' => array(
+//           'index', 'create','update','view'
+//        ),
+//        'childs' => array(
+//            array(
+//                'title' => 'Listing',
+//                'permissionName' => array(
+//                    'Brands.Index'
+//                ),
+//                'icon' => '',
+//                'link' => 'brands/index',
+//                'controllerId' => 'brands',
+//                'actionId' => array('index')
+//            ),
+////            array(
+////                'title' => 'Create',
+////                'permissionName' => array(
+////                    'Brands.Create'
+////                ),
+////                'icon' => '',
+////                'link' => 'brands/create',
+////                'controllerId' => 'brands',
+////                'actionId' => array('create')
+////            ),
+//        )
+//    ),
+    
+    array(
+        'title' => 'Others',
+        'permissionName' => array(
+            'Helps.Index',
+            'Helps.Create',
+             'Rules.Index',
+            'Rules.Create',
+            'Questions.Index',
+            'Questions.Create',
+            'Glossary.Index',
+            'Glossary.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'helps','help-categories','rules','questions','glossary'
+        ),
+        'actionId' => array(
+           'index', 'create','update','view'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Help Categories',
+                'permissionName' => array(
+                    'HelpCategories.Index'
+                ),
+                'icon' => '',
+                'link' => 'help-categories/index',
+                'controllerId' => 'help',
+                'actionId' => array('categories')
+            ), 
+            array(
+                'title' => 'Rules',
+                'permissionName' => array(
+                    'Rules.Index'
+                ),
+                'icon' => '',
+                'link' => 'rules/index',
+                'controllerId' => 'rules',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Questions',
+                'permissionName' => array(
+                    'Questions.Index'
+                ),
+                'icon' => '',
+                'link' => 'questions/index',
+                'controllerId' => 'quetions',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Glossaries',
+                'permissionName' => array(
+                    'Glossary.Index'
+                ),
+                'icon' => '',
+                'link' => 'glossary/index',
+                'controllerId' => 'glossary',
+                'actionId' => array('index')
+            ),
+        )
+    ),
+    
+//    array(
+//        'title' => 'Product Type',
+//        'permissionName' => array(
+//            'ProductTypes.Index',
+////            'ProductTypes.Create',
+//        ),
+//        'icon' => 'fa fa-user',
+//        'link' => 'javascript:void(0)',
+//        'hasChildClass' => 'treeview ',
+//        'submenuToggleClass' => 'treeview-menu',
+//        'controllerId' => array(
+//            'product-types'
+//        ),
+//        'actionId' => array(
+//           'index', 'create','update','view'
+//        ),
+//        'childs' => array(
+//            array(
+//                'title' => 'Listing',
+//                'permissionName' => array(
+//                    'ProductTypes.Index'
+//                ),
+//                'icon' => '',
+//                'link' => 'product-types/index',
+//                'controllerId' => 'brands',
+//                'actionId' => array('index')
+//            ),
+////            array(
+////                'title' => 'Create',
+////                'permissionName' => array(
+////                    'Brands.Create'
+////                ),
+////                'icon' => '',
+////                'link' => 'product-types/create',
+////                'controllerId' => 'brands',
+////                'actionId' => array('create')
+////            ),
+//        )
+//    ),
+//    array(
+//        'title' => 'Product Categories',
+//        'permissionName' => array(
+//            'Product-Categories.Index',
+////            'Product-Categories.Create',
+//        ),
+//        'icon' => 'fa fa-user',
+//        'link' => 'javascript:void(0)',
+//        'hasChildClass' => 'treeview ',
+//        'submenuToggleClass' => 'treeview-menu',
+//        'controllerId' => array(
+//            'product-categories'
+//        ),
+//        'actionId' => array(
+//           'index', 'create','update','view'
+//        ),
+//        'childs' => array(
+//            array(
+//                'title' => 'Listing',
+//                'permissionName' => array(
+//                    'Product-Categories.Index'
+//                ),
+//                'icon' => '',
+//                'link' => 'product-categories/index',
+//                'controllerId' => 'product-categories',
+//                'actionId' => array('index')
+//            ),
+////            array(
+////                'title' => 'Create',
+////                'permissionName' => array(
+////                    'Product-Categories.Create'
+////                ),
+////                'icon' => '',
+////                'link' => 'product-categories/create',
+////                'controllerId' => 'product-categories',
+////                'actionId' => array('create')
+////            ),
+//        )
+//    ),
+//    array(
+//        'title' => 'Rules',
+//        'permissionName' => array(
+//            'Rules.Index',
+////            'Rules.Create',
+//        ),
+//        'icon' => 'fa fa-user',
+//        'link' => 'javascript:void(0)',
+//        'hasChildClass' => 'treeview ',
+//        'submenuToggleClass' => 'treeview-menu',
+//        'controllerId' => array(
+//            'rules'
+//        ),
+//        'actionId' => array(
+//           'index', 'create','update','view'
+//        ),
+//        'childs' => array(
+//            array(
+//                'title' => 'Listing',
+//                'permissionName' => array(
+//                    'Rules.Index'
+//                ),
+//                'icon' => '',
+//                'link' => 'rules/index',
+//                'controllerId' => 'rules',
+//                'actionId' => array('index')
+//            ),
+//            array(
+//                'title' => 'Create',
+//                'permissionName' => array(
+//                    'rules.Create'
+//                ),
+//                'icon' => '',
+//                'link' => 'rules/create',
+//                'controllerId' => 'rules',
+//                'actionId' => array('create')
+//            ),
+//        )
+//    ),
+      /* array(
+        'title' => 'Ratings',
+        'permissionName' => array(
+            'Ratings.Index',
+            'Ratings.Create',
+        ),
+        'icon' => 'fa fa-user',
+        'link' => 'javascript:void(0)',
+        'hasChildClass' => 'treeview ',
+        'submenuToggleClass' => 'treeview-menu',
+        'controllerId' => array(
+            'ratings'
+        ),
+        'actionId' => array(
+           'index', 'create','update','view'
+        ),
+        'childs' => array(
+            array(
+                'title' => 'Listing',
+                'permissionName' => array(
+                    'Ratings.Index'
+                ),
+                'icon' => '',
+                'link' => 'ratings/index',
+                'controllerId' => 'ratings',
+                'actionId' => array('index')
+            ),
+            array(
+                'title' => 'Create',
+                'permissionName' => array(
+                    'Ratings.Create'
+                ),
+                'icon' => '',
+                'link' => 'ratings/create',
+                'controllerId' => 'ratings',
+                'actionId' => array('create')
+            ),
+        )
+    ), 
+    */
+//    array(
+//        'title' => 'Questions',
+//        'permissionName' => array(
+//            'Questions.Index',
+////            'Questions.Create',
+//        ),
+//        'icon' => 'fa fa-user',
+//        'link' => 'javascript:void(0)',
+//        'hasChildClass' => 'treeview ',
+//        'submenuToggleClass' => 'treeview-menu',
+//        'controllerId' => array(
+//            'questions'
+//        ),
+//        'actionId' => array(
+//           'index', 'create','update','view'
+//        ),
+//        'childs' => array(
+//            array(
+//                'title' => 'Listing',
+//                'permissionName' => array(
+//                    'Questions.Index'
+//                ),
+//                'icon' => '',
+//                'link' => 'questions/index',
+//                'controllerId' => 'quetions',
+//                'actionId' => array('index')
+//            ),
+////            array(
+////                'title' => 'Create',
+////                'permissionName' => array(
+////                    'Questions.Create'
+////                ),
+////                'icon' => '',
+////                'link' => 'questions/create',
+////                'controllerId' => 'questions',
+////                'actionId' => array('create')
+////            ),
+//        )
+//    ),
+//    array(
+//        'title' => 'Glossary',
+//        'permissionName' => array(
+//            'Glossary.Index',
+////            'Glossary.Create',
+//        ),
+//        'icon' => 'fa fa-user',
+//        'link' => 'javascript:void(0)',
+//        'hasChildClass' => 'treeview ',
+//        'submenuToggleClass' => 'treeview-menu',
+//        'controllerId' => array(
+//            'glossary'
+//        ),
+//        'actionId' => array(
+//           'index', 'create','update','view'
+//        ),
+//        'childs' => array(
+//            array(
+//                'title' => 'Listing',
+//                'permissionName' => array(
+//                    'Glossary.Index'
+//                ),
+//                'icon' => '',
+//                'link' => 'glossary/index',
+//                'controllerId' => 'glossary',
+//                'actionId' => array('index')
+//            ),
+////            array(
+////                'title' => 'Create',
+////                'permissionName' => array(
+////                    'Glossary.Create'
+////                ),
+////                'icon' => '',
+////                'link' => 'glossary/create',
+////                'controllerId' => 'glossary',
+////                'actionId' => array('create')
+////            ),
+//        )
+//    ),
+     array(
         'title' => 'Permissions',
         'permissionName' => array(
 //            'Permission.Create',
@@ -51,507 +684,6 @@ $arrayMenu = array(
                 'link' => 'permission/matrix-listing',
                 'controllerId' => 'permission',
                 'actionId' => array('matrix-listing')
-            ),
-        )
-    ),
-    
-    array(
-        'title' => 'User Management',
-        'permissionName' => array(
-            'Users.Index',
-            'Users.Create',
-        ),
-        'icon' => 'fa fa-user',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'users'
-        ),
-        'actionId' => array(
-            'index', 'create'
-        ),
-        'childs' => array(
-            array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'Users.Index'
-                ),
-                'icon' => '',
-                'link' => 'users/index',
-                'controllerId' => 'users',
-                'actionId' => array('index')
-            ),
-            array(
-                'title' => 'Create',
-                'permissionName' => array(
-                    'Users.Create'
-                ),
-                'icon' => '',
-                'link' => 'users/create',
-                'controllerId' => 'users',
-                'actionId' => array('create')
-            ),
-        )
-    ),
-array(
-        'title' => 'Market Clusters',
-        'permissionName' => array(
-            'MarketSegments.Index',
-            'MarketSegments.Create',
-        ),
-        'icon' => 'fa fa-user',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'market-segments'
-        ),
-        'actionId' => array(
-            'index', 'create','update','view'
-        ),
-        'childs' => array(
-            array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'MarketSegments.Index'
-                ),
-                'icon' => '',
-                'link' => 'market-segments/index',
-                'controllerId' => 'market-segments',
-                'actionId' => array('index')
-            ),
-            array(
-                'title' => 'Create',
-                'permissionName' => array(
-                    'MarketSegments.Create'
-                ),
-                'icon' => '',
-                'link' => 'market-segments/create',
-                'controllerId' => 'market-segments',
-                'actionId' => array('create')
-            ),
-        )
-    ),
-    
-    array(
-        'title' => 'Markets',
-        'permissionName' => array(
-            'Market.Index',
-            'Market.Create',
-        ),
-        'icon' => 'fa fa-user',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'market','market-contacts'
-        ),
-        'actionId' => array(
-           'index', 'create','update','view','rules'
-        ),
-        'childs' => array(
-            array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'Market.Index'
-                ),
-                'icon' => '',
-                'link' => 'market/index',
-                'controllerId' => 'market',
-                'actionId' => array('index')
-            ),
-            array(
-                'title' => 'Create',
-                'permissionName' => array(
-                    'Market.Create'
-                ),
-                'icon' => '',
-                'link' => 'market/create',
-                'controllerId' => 'market',
-                'actionId' => array('create')
-            ),
-        )
-    ),
-    
-    array(
-        'title' => 'Stores',
-        'permissionName' => array(
-            'Stores.Index',
-            'Stores.Create',
-        ),
-        'icon' => 'fa fa-bank',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'stores','configs','store-configuration'
-        ),
-        'actionId' => array(
-           'index', 'create','update','view','review','listing'
-        ),
-        'childs' => array(
-            array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'Stores.Index'
-                ),
-                'icon' => '',
-                'link' => 'stores/index',
-                'controllerId' => 'stores',
-                'actionId' => array('index')
-            ),
-            array(
-                'title' => 'Create',
-                'permissionName' => array(
-                    'Stores.Create'
-                ),
-                'icon' => '',
-                'link' => 'stores/create',
-                'controllerId' => 'stores',
-                'actionId' => array('create')
-            ),
-        )
-    ),
-    array(
-        'title' => 'Catalogue',
-        'permissionName' => array(
-            'Catalogues.Index',
-            'Catalogues.Create',
-        ),
-        'icon' => 'fa fa-user',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'catalogues'
-        ),
-        'actionId' => array(
-           'index', 'create','update','view'
-        ),
-        'childs' => array(
-            array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'Catalogues.Index'
-                ),
-                'icon' => '',
-                'link' => 'catalogues/index',
-                'controllerId' => 'catalogues',
-                'actionId' => array('index')
-            ),
-            array(
-                'title' => 'Create',
-                'permissionName' => array(
-                    'Catalogues.Create'
-                ),
-                'icon' => '',
-                'link' => 'catalogues/create',
-                'controllerId' => 'catalogues',
-                'actionId' => array('create')
-            ),
-        )
-    ),
-    array(
-        'title' => 'Help',
-        'permissionName' => array(
-            'Helps.Index',
-            'Helps.Create',
-        ),
-        'icon' => 'fa fa-user',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'helps','help-categories'
-        ),
-        'actionId' => array(
-           'index', 'create','update','view'
-        ),
-        'childs' => array(
-            array(
-                'title' => 'Categories',
-                'permissionName' => array(
-                    'HelpCategories.Index'
-                ),
-                'icon' => '',
-                'link' => 'help-categories/index',
-                'controllerId' => 'help',
-                'actionId' => array('categories')
-            ), 
-        )
-    ),
-    array(
-        'title' => 'Brands',
-        'permissionName' => array(
-            'Brands.Index',
-            'Brands.Create',
-        ),
-        'icon' => 'fa fa-user',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'brands'
-        ),
-        'actionId' => array(
-           'index', 'create','update','view'
-        ),
-        'childs' => array(
-            array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'Brands.Index'
-                ),
-                'icon' => '',
-                'link' => 'brands/index',
-                'controllerId' => 'brands',
-                'actionId' => array('index')
-            ),
-            array(
-                'title' => 'Create',
-                'permissionName' => array(
-                    'Brands.Create'
-                ),
-                'icon' => '',
-                'link' => 'brands/create',
-                'controllerId' => 'brands',
-                'actionId' => array('create')
-            ),
-        )
-    ),
-    array(
-        'title' => 'Product Type',
-        'permissionName' => array(
-            'ProductTypes.Index',
-            'ProductTypes.Create',
-        ),
-        'icon' => 'fa fa-user',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'product-types'
-        ),
-        'actionId' => array(
-           'index', 'create','update','view'
-        ),
-        'childs' => array(
-            array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'ProductTypes.Index'
-                ),
-                'icon' => '',
-                'link' => 'product-types/index',
-                'controllerId' => 'brands',
-                'actionId' => array('index')
-            ),
-            array(
-                'title' => 'Create',
-                'permissionName' => array(
-                    'Brands.Create'
-                ),
-                'icon' => '',
-                'link' => 'product-types/create',
-                'controllerId' => 'brands',
-                'actionId' => array('create')
-            ),
-        )
-    ),
-    array(
-        'title' => 'Product Categories',
-        'permissionName' => array(
-            'Product-Categories.Index',
-            'Product-Categories.Create',
-        ),
-        'icon' => 'fa fa-user',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'product-categories'
-        ),
-        'actionId' => array(
-           'index', 'create','update','view'
-        ),
-        'childs' => array(
-            array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'Product-Categories.Index'
-                ),
-                'icon' => '',
-                'link' => 'product-categories/index',
-                'controllerId' => 'product-categories',
-                'actionId' => array('index')
-            ),
-            array(
-                'title' => 'Create',
-                'permissionName' => array(
-                    'Product-Categories.Create'
-                ),
-                'icon' => '',
-                'link' => 'product-categories/create',
-                'controllerId' => 'product-categories',
-                'actionId' => array('create')
-            ),
-        )
-    ),
-    array(
-        'title' => 'Rules',
-        'permissionName' => array(
-            'Rules.Index',
-            'Rules.Create',
-        ),
-        'icon' => 'fa fa-user',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'rules'
-        ),
-        'actionId' => array(
-           'index', 'create','update','view'
-        ),
-        'childs' => array(
-            array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'Rules.Index'
-                ),
-                'icon' => '',
-                'link' => 'rules/index',
-                'controllerId' => 'rules',
-                'actionId' => array('index')
-            ),
-            array(
-                'title' => 'Create',
-                'permissionName' => array(
-                    'rules.Create'
-                ),
-                'icon' => '',
-                'link' => 'rules/create',
-                'controllerId' => 'rules',
-                'actionId' => array('create')
-            ),
-        )
-    ),
-      /* array(
-        'title' => 'Ratings',
-        'permissionName' => array(
-            'Ratings.Index',
-            'Ratings.Create',
-        ),
-        'icon' => 'fa fa-user',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'ratings'
-        ),
-        'actionId' => array(
-           'index', 'create','update','view'
-        ),
-        'childs' => array(
-            array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'Ratings.Index'
-                ),
-                'icon' => '',
-                'link' => 'ratings/index',
-                'controllerId' => 'ratings',
-                'actionId' => array('index')
-            ),
-            array(
-                'title' => 'Create',
-                'permissionName' => array(
-                    'Ratings.Create'
-                ),
-                'icon' => '',
-                'link' => 'ratings/create',
-                'controllerId' => 'ratings',
-                'actionId' => array('create')
-            ),
-        )
-    ), 
-    */
-    array(
-        'title' => 'Questions',
-        'permissionName' => array(
-            'Questions.Index',
-            'Questions.Create',
-        ),
-        'icon' => 'fa fa-user',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'questions'
-        ),
-        'actionId' => array(
-           'index', 'create','update','view'
-        ),
-        'childs' => array(
-            array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'Questions.Index'
-                ),
-                'icon' => '',
-                'link' => 'questions/index',
-                'controllerId' => 'quetions',
-                'actionId' => array('index')
-            ),
-            array(
-                'title' => 'Create',
-                'permissionName' => array(
-                    'Questions.Create'
-                ),
-                'icon' => '',
-                'link' => 'questions/create',
-                'controllerId' => 'questions',
-                'actionId' => array('create')
-            ),
-        )
-    ),
-    array(
-        'title' => 'Glossary',
-        'permissionName' => array(
-            'Glossary.Index',
-            'Glossary.Create',
-        ),
-        'icon' => 'fa fa-user',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'glossary'
-        ),
-        'actionId' => array(
-           'index', 'create','update','view'
-        ),
-        'childs' => array(
-            array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'Glossary.Index'
-                ),
-                'icon' => '',
-                'link' => 'glossary/index',
-                'controllerId' => 'glossary',
-                'actionId' => array('index')
-            ),
-            array(
-                'title' => 'Create',
-                'permissionName' => array(
-                    'Glossary.Create'
-                ),
-                'icon' => '',
-                'link' => 'glossary/create',
-                'controllerId' => 'glossary',
-                'actionId' => array('create')
             ),
         )
     ),

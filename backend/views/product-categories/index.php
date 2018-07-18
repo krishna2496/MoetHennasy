@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row pull-right">
                     <div class="col-md-4">
                         <?php  if(CommonHelper::checkPermission('Product-Categories.Create')){ ?>
-                        <?= Html::a('New Product Category', ['create'], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('Add Product Category', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-8">

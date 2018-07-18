@@ -24,7 +24,7 @@ $formUrl = Url::to(['market-segments/index']);
                         <div class="row">
                             <div class="col-md-5">
                                 <?php  if(CommonHelper::checkPermission('MarketSegments.Create')){ ?>
-                                <?= Html::a('New Market Cluster', ['create'], ['class' => 'btn btn-primary']) ?>
+                                <?= Html::a('Add Market Cluster', ['create'], ['class' => 'btn btn-primary']) ?>
                                 <?php } ?>
                             </div>
                             <div class="col-md-5">

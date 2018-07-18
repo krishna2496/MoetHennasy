@@ -19,7 +19,7 @@ $formUrl = Url::to(['glossary/index']);
                 <div class="row pull-right">
                     <div class="col-md-3">
                         <?php if (CommonHelper::checkPermission('Glossary.Create')) { ?>
-                            <?= Html::a('New Glossary', ['create'], ['class' => 'btn btn-primary']) ?>
+                            <?= Html::a('Add Glossary', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-9">

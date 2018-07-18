@@ -18,7 +18,7 @@ $formUrl = Url::to(['ratings/index']);
                 <div class="row pull-right">
                     <div class="col-md-3">
                         <?php  if(CommonHelper::checkPermission('Brands.Create')){ ?>
-                        <?= Html::a('New Ratings', ['create'], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('Add Ratings', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-9">

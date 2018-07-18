@@ -113,13 +113,13 @@ GridView::widget([
                     <input type="hidden" value="" name="selection" id="selection"/>
                 
                     <div class="col-md-6 isDisplay">
-<?= Html::Button('Ok', ['class' => 'btn btn-primary pull-left mw-md auto_fill', 'style' => 'margin-top:25px;margin-bottom:20px;margin-left:20px']) ?>
+<?= Html::Button('Save', ['class' => 'btn btn-primary pull-left mw-md auto_fill', 'style' => 'margin-top:25px;margin-bottom:20px;margin-left:20px']) ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-       <?= Html::endForm(); ?>
+       
       <script type="text/javascript">
         $("#maketSegmentId").on('change',function(){
             $("#w0").submit();

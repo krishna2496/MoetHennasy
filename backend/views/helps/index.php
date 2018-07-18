@@ -19,7 +19,7 @@ $formUrl = Url::to(['helps/index/'.$id]);
                 <div class="row pull-right">
                     <div class="col-md-4">
                         <?php  if(CommonHelper::checkPermission('Helps.Create')){ ?>
-                        <?= Html::a('New Question', ['helps/create/'.$id], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('Add Question', ['helps/create/'.$id], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-8">

@@ -22,7 +22,7 @@ if(isset($filters['setParentID'])){
                 <div class="row pull-right">
                     <div class="col-md-2">
                         <?php  if(CommonHelper::checkPermission('Users.Create')){ ?>
-                        <?= Html::a('New User', ['create'], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('Add User', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-10">

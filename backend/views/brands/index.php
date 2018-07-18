@@ -18,7 +18,7 @@ $formUrl = Url::to(['brands/index']);
                 <div class="row pull-right">
                     <div class="col-md-3">
                         <?php  if(CommonHelper::checkPermission('Brands.Create')){ ?>
-                        <?= Html::a('New Brand', ['create'], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('Add Brand', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-9">

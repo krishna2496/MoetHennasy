@@ -19,7 +19,7 @@ $formUrl = Url::to(['catalogues/index']);
                 <div class="row pull-right">
                     <div class="col-md-2">
                         <?php if (CommonHelper::checkPermission('Catalogues.Create')) { ?>
-                            <?= Html::a('New Catalogue', ['create'], ['class' => 'btn btn-primary']) ?>
+                            <?= Html::a('Add Catalogue', ['create'], ['class' => 'btn btn-primary']) ?>
 <?php } ?>
                     </div>
                    

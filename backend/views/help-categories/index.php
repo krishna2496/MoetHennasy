@@ -20,7 +20,7 @@ $formUrl = Url::to(['help-categories/index']);
                 <div class="row pull-right">
                     <div class="col-md-3">
                         <?php if (CommonHelper::checkPermission('HelpCategories.Create')) { ?>
-                            <?= Html::a('New Category', ['create'], ['class' => 'btn btn-primary']) ?>
+                            <?= Html::a('Add Category', ['create'], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
                     <div class="col-md-9">
