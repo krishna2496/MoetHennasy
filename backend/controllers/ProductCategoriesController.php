@@ -145,7 +145,7 @@ class ProductCategoriesController extends BaseBackendController
         
         
         if(isset($modelall) && !empty($modelall)){
-            Yii::$app->session->setFlash('danger',Yii::t('app', 'Can not Delete', [Yii::t('app', 'product_categories')]) );
+            Yii::$app->session->setFlash('danger',Yii::t('app', 'Product already assigned as a reference.', [Yii::t('app', 'product_categories')]) );
         }
         else{       
             if($model->delete()){
