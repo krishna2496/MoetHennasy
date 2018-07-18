@@ -18,12 +18,12 @@ $user = CommonHelper::getUser();
 
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
-            <li class="dropdown messages-menu">
+<!--            <li class="dropdown messages-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-envelope-o"></i>
                 <span class="label label-danger">4</span>
-              </a>
-              <ul class="dropdown-menu">
+              </a>-->
+<!--              <ul class="dropdown-menu">
                 <li class="header">You have 4 messages</li>
                 <li>
                   <ul class="menu">
@@ -91,10 +91,10 @@ $user = CommonHelper::getUser();
                   </ul>
                 </li>
                 <li class="footer"><a href="#">See All Messages</a></li>
-              </ul>
-            </li>
+              </ul>-->
+            <!--</li>-->
             
-            <li class="dropdown notifications-menu">
+<!--            <li class="dropdown notifications-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-bell-o"></i>
                 <span class="label label-danger">10</span>
@@ -134,9 +134,9 @@ $user = CommonHelper::getUser();
                 </li>
                 <li class="footer"><a href="#">View all</a></li>
               </ul>
-            </li>
+            </li>-->
             
-            <li class="dropdown tasks-menu">
+<!--            <li class="dropdown tasks-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-flag-o"></i>
                 <span class="label label-danger">9</span>
@@ -208,7 +208,7 @@ $user = CommonHelper::getUser();
                   <a href="#">View all tasks</a>
                 </li>
               </ul>
-            </li>
+            </li>-->
             
             <li class="dropdown user user-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -222,8 +222,8 @@ $user = CommonHelper::getUser();
 
                   <p>
                     <?php echo $user->first_name.' '.$user->last_name; ?>
-                    <?php echo isset($user->role->title) ? ' - '.$user->role->title : ''; ?>
-                    <small>Member since Nov. 2012</small>
+                    <?php echo "<br>";?>
+                    <?php echo isset($user->role->title) ? $user->role->title : ''; ?>
                   </p>
                 </li>
                 

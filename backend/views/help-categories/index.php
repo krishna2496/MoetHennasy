@@ -39,7 +39,7 @@ $formUrl = Url::to(['help-categories/index']);
                     </div>
                 </div>
                 </div>
-            </div>
+            <!--</div>-->
             <div class="box-body">
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,

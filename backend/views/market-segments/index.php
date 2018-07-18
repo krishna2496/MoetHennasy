@@ -18,16 +18,16 @@ $formUrl = Url::to(['market-segments/index']);
                 </h3>
                 <div class="row">
                     <div class="col-md-3"></div>
-                    <div class="col-md-3"></div>
+                    <div class="col-md-2"></div>
                      <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <?php  if(CommonHelper::checkPermission('MarketSegments.Create')){ ?>
                                 <?= Html::a('New Market Cluster', ['create'], ['class' => 'btn btn-primary']) ?>
                                 <?php } ?>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <div class="filter-search dataTables_filter clearfix">
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text']) ?>
                                 </div>

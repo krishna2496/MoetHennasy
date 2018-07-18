@@ -81,7 +81,7 @@ use common\helpers\CommonHelper;
                         </div>
                     </div>
                 	<div class="row">
-                		<div class="col-md-6 <?php echo $parentUserClass; ?>" id="parentUser">
+                		<div class="col-md-6" id="parentUser">
                                         <?= $form->field($model, 'parent_user_id',['template' => '{label}*{input}{error}'])->dropDownList($userList,['prompt' => 'Select Parent User','class'=> 'form-control select2']); ?>
                 		</div>
                         <div class="col-md-6">

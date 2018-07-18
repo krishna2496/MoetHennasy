@@ -30,13 +30,18 @@ $formUrl = Url::to(['market/brands/'.$market_id]);
                         </h2>
                      <div class="row pull-right">
                         <div class="col-md-12">
-                       
-                        <div class="filter-search dataTables_filter clearfix">
-                            <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
+                            <div class="filter-search dataTables_filter clearfix">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <?php echo Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text'])?> 
+                                </div>
+                                <div class="col-md-4">
+                                    <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
+                                </div>
+                            </div>
+                            </div>
                         </div>
-                          
-                        </div>
-                    </div>
+                     </div>
                     </div>
 
 
@@ -142,7 +147,7 @@ GridView::widget([
             }
         });
         
-        $("body").on("change", "#user-limit",function(event){
+        $("body").on("change", "#user-text","#user-limit",function(event){
         $('#w1').submit();
     });
 
