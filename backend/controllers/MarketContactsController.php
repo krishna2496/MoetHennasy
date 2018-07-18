@@ -54,11 +54,15 @@ class MarketContactsController extends BaseBackendController {
             }
 
             if ($marketData['status']['success'] == 1) {
-                $segmentData = array();
+                $segmentData = array(
+                    '0' => 'All clusters',
+                );
                 foreach ($marketData['data']['markets'][0]['marketSegmentData'] as $key => $value) {
                     $segmentData[$value['marketSegment']['id']] = $value['marketSegment']['title'];
                 }
             }
+//            array_push($segmentData, 'All cluster');
+            krsort($segmentData);
 
             $searchModel = new MarketContactsSearch();
             if ($contactId) {
@@ -68,8 +72,9 @@ class MarketContactsController extends BaseBackendController {
             }
             if (Yii::$app->request->post()) {
                 $postData = Yii::$app->request->post();
-
+                
                 $data['market_segment_id'] = $postData['MarketContacts']['market_segment_id'];
+                
                 $data['market_id'] = $postData['market_id'];
                 $data['address'] = $postData['MarketContacts']['address'];
                 $data['phone'] = $postData['MarketContacts']['phone'];
@@ -78,12 +83,30 @@ class MarketContactsController extends BaseBackendController {
                 $repository = new MarketContactRepository();
                 if ($contactId) {
                     $model = $this->findModel($contactId);
+                    unset($segmentData[0]);
                     $data['id'] = $contactId;
-                    $contactData = $repository->updateContact($data);
+                    if($data['market_segment_id'] == 0){
+                        foreach ($segmentData as $skey =>$svalue){
+                        $contactID = MarketContacts::find()->where(['market_segment_id' => $skey , 'market_id' =>  $data['market_id']])->asArray()->one();
+                        $data['id'] = $contactID['id'];
+                        $data['market_segment_id'] =$skey;
+                        $contactData = $repository->updateContact($data);
+                        }
+                    }else{
+                        $contactData = $repository->updateContact($data);
+                    }
                     $activity = 'update_contact';
                 } else {
                     $model->load(Yii::$app->request->post());
-                    $contactData = $repository->createContact($data);
+                    unset($segmentData[0]);
+                    if($data['market_segment_id'] == 0){
+                        foreach ($segmentData as $skey =>$svalue){
+                        $data['market_segment_id'] =$skey;
+                        $contactData = $repository->createContact($data);
+                    }
+                    }else{
+                         $contactData = $repository->createContact($data);
+                    }
                     $activity = 'create_contact';
                 }
                 if ($contactData['status']['success'] == 1) {
