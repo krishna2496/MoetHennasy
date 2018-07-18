@@ -148,7 +148,7 @@ GridView::widget([
         });
         
         $("body").on("change", "#user-text","#user-limit",function(event){
-        $('#w1').submit();
+        $('#w1').submit(); 
     });
 
     </script>

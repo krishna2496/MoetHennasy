@@ -51,7 +51,7 @@ class MarketController extends BaseBackendController
     }
 
     public function actionIndex()
-    {
+    { 
         $searchModel = new MarketSearch();
         $filters = Yii::$app->request->queryParams;
         if(!isset($filters['limit'])){
