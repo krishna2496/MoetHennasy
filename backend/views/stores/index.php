@@ -26,7 +26,7 @@ if(isset($urlData[1]) && $urlData[1]){
                 </h3>
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="row">
+                        <div class="row addmargin">
                             <div class="col-md-5">
                                 <?php  if(CommonHelper::checkPermission('Stores.Create')){ ?>
                                 <?= Html::a('New Store', ['create'], ['class' => 'btn btn-primary']) ?>
@@ -45,10 +45,9 @@ if(isset($urlData[1]) && $urlData[1]){
                             <div class="col-md-3"></div>
                         </div>
                     </div>
-                    <div class="col-md-10"></div>
+                    <div class="col-md-9"></div>
                 </div>
                 <div class="row">
-                    <!--<div class="col-md-1"></div>-->
                     <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-2">

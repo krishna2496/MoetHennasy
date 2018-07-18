@@ -1,4 +1,8 @@
 /*Step wizard css*/
+.addmargin{
+    margin-bottom: 10px;
+}
+
 .sticky{
     position:fixed;
 }

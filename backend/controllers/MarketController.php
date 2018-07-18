@@ -244,7 +244,6 @@ class MarketController extends BaseBackendController
     
     public function actionBrands($id){
         
-        
         if (($model = Markets::findOne($id)) !== null) {
         $title=$model->title;
         
