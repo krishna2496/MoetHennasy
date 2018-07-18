@@ -248,28 +248,37 @@ class MarketController extends BaseBackendController
         $title=$model->title;
         
         $searchModel = new BrandsSearch();
-        $filters = Yii::$app->request->queryParams;
+        $filters =array();
         $model = new MarketBrands();
         $selected = [];
         $ruleModel = MarketBrands::find()->select('brand_id')->andWhere(['market_id' => $id])->asArray()->all();
+       
       
         if($ruleModel){
             foreach ($ruleModel as $key=>$value){
                   $selected[$key]  = $value['brand_id']; 
              }
         }
-    
+
         $data['market_id'] = $id;
-         if(Yii::$app->request->post()) {
-           
-            $model->load(Yii::$app->request->get());
-            $data = Yii::$app->request->get();
-//            echo '<pre>';
-//            print_r($data);exit;
+        
+        if(Yii::$app->request->post('limit')){
+            $filters['limit'] = Yii::$app->request->post('limit');
+        }
+        if(Yii::$app->request->post('search')){
+            $filters['search'] = Yii::$app->request->post('search');
+        }
+        
+     
+         if(Yii::$app->request->post('selectedBrand')) {
+      
+            $model->load(Yii::$app->request->post());
+            $data = Yii::$app->request->post('selectedBrand');
+         
             $rules = explode(',', $data);
             $ruleData['market_id'] = $id;
             $ruleData['brand_id'] = $rules;
-            
+           
             $marketRepository = new \common\repository\MarketBrandsRepository;
             $returnData = $marketRepository->createRule($ruleData);
             if($returnData['status']['success'] == 1)
@@ -285,7 +294,7 @@ class MarketController extends BaseBackendController
         if(!isset($filters['limit'])){
             $filters['limit'] = Yii::$app->params['pageSize'];
         }
-        
+       
         $dataProvider = $searchModel->search($filters);
         $dataProvider->pagination->pageSize = $filters['limit'];
         
@@ -297,6 +306,7 @@ class MarketController extends BaseBackendController
             'rules' => $selected,
             'title' => $title,
             'market_id' => $id,
+            'selected' => $selected
         ]);
         
        }else{
