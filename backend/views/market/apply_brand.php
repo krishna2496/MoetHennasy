@@ -14,11 +14,12 @@ $formUrl = Url::to(['market/brands/'.$market_id]);
 ?>
 <script>
    productObject = {};
+   productArry = [];
 </script>
 <div class="row">
     <div class="row" id="isDisplay">
-       <?php Pjax::begin(['id' => 'brands', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'GET']]) ?>  
-       <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'w1']); ?>
+       <?php Pjax::begin(['id' => 'brands', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>  
+       <?= Html::beginForm($formUrl, 'post', ['data-pjax' => '', 'id' => 'w1']); ?>
         <div class="col-xs-12">
             <div class="box">
                  
@@ -66,19 +67,36 @@ GridView::widget([
                         $(document).ready(function () {
                             brandThumbId =0;
 							$('input[name="selection[]"]').each(function (skey, sval) {
+                                                            if($(sval).attr('checked')){
+                                                                console.log("cheked");
+                                                            }else{
+                                                                console.log("uncheck");
+                                                            }
 								var sobj = {};
-								sobj["sel"] = false;
+                                                               
+								sobj["sel"] = 1;
 								
 								if (typeof (productObject[$(sval).val()]) === 'undefined')
 								{
 									productObject[$(sval).val()] = sobj;
 								}
-								if (typeof (productObject[$(sval).val()]) !== 'undefined' && productObject[$(sval).val()]["sel"] === true)
+								if (typeof (productObject[$(sval).val()]) !== 'undefined' && productObject[$(sval).val()]["sel"] === false)
+								{
+									$('input[type="checkbox"][value="' + $(sval).val() + '"]').attr('checked', false).iCheck('update');
+								}
+                                                                if (typeof (productObject[$(sval).val()]) !== 'undefined' && productObject[$(sval).val()]["sel"] === true)
 								{
 									$('input[type="checkbox"][value="' + $(sval).val() + '"]').attr('checked', true).iCheck('update');
 								}
+                                                               
 							});
+                                                        
 						});
+                                                
+                    $('input[name="selection[]"]').on('ifUnchecked', function (event) {
+                           productArry.push($(this).val());
+                    });
+                    
                     $('input[name="selection[]"]').on('ifChecked', function (event) {
                        productObject[$(this).val()]['sel'] = true;
                     });
