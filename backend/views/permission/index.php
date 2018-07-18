@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </h3>
                 <div class="row  pull-right">
                     <div class="col-md-2">
-                        <?php //  if(CommonHelper::checkPermission('Permission.Create')){ ?>
+                        <?php // if(CommonHelper::checkPermission('Permission.Create')){ ?>
                         <?php // echo Html::a('Create', ['create'], ['class' => 'btn btn-success']) ?>
                         <?php // } ?>
                     </div>

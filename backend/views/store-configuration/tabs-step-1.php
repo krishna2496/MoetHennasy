@@ -144,7 +144,7 @@ $session = Yii::$app->session;
 					</div>
 					<div class="submit-fl wizard">
 						<button class="btn reset-btn">Reset</button>
-						<button class="next btn">OK</button>
+						<button class="next btn">Save</button>
 					</div>
 				
 			</div>

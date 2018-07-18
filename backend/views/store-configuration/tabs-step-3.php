@@ -224,7 +224,7 @@ $submitUrl = "store-configuration/save-config-data";
                         </div>
                     </div>
                     <div class="submit-fl">                            
-                        <button class="btn next submitData" >OK</button>
+                        <button class="btn next submitData" >Save</button>
                     </div>
                 </div>
                 <div class="modal fade edit-modal" id="modal-defaults" style="display: none;">

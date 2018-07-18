@@ -40,7 +40,7 @@ $formUrl = Url::to(['store-configuration/listing/'.$id]);
                       <?php 
                       if($canCreateNewConfig == 1){
                       ?>
-                            <?= Html::a('New Store Configuration', ['store-configuration/index/'.$id], ['class' => 'btn btn-primary']) ?>
+                            <?= Html::a('Add Store Configuration', ['store-configuration/index/'.$id], ['class' => 'btn btn-primary']) ?>
                       <?php } ?>
                     </div>
                     <div class="col-md-2"></div>
