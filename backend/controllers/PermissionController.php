@@ -71,7 +71,8 @@ class PermissionController extends BaseBackendController
         ]);
       
         return $this->render('index', [
-            'dataProvider' => $dataProvider
+            'dataProvider' => $dataProvider,
+            'filters' =>$data
         ]);
     }
 
