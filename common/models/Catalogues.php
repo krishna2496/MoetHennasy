@@ -23,6 +23,7 @@ class Catalogues extends BaseModel
             [['short_description'], 'string'],
             [['brand_id', 'product_category_id', 'product_sub_category_id', 'product_type_id', 'market_id' , 'market_share','created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['width', 'height', 'length', 'scale'], 'number'],
+            [['width', 'height', 'length'], 'number','min' => 5],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['sku', 'ean'], 'string', 'max' => 100],
             [['short_name', 'long_name', 'manufacturer'], 'string', 'max' => 255],
@@ -34,8 +35,8 @@ class Catalogues extends BaseModel
             [['sku'], 'unique'],
             ['sku','match', 'pattern' => '/^[a-zA-Z0-9\-_]{0,50}$/', 'message' => 'Sku can only contain Alphabet and Numeric'],
             [['sku','ean','short_name','long_name','width','height','length','scale','manufacturer','market_share','price'],'trim'],
-            [['market_share'],'integer','max' => 99999999999, 'message' => 'Market Share can only contain upto 11 digits'],
-            [['price'],'number','max' => 99999999, 'message' => 'Price can only contain upto 8 digits'],
+            [['market_share'],'integer','max' => 10,'min' => 1, 'message' => 'Market Share can only contain upto 11 digits'],
+            [['price'],'number','max' => 999999, 'min' => 1,'message' => 'Price can only contain upto 6 digits'],
         ];
     }
 
