@@ -647,16 +647,16 @@ $arrayMenu = array(
             'index', 'matrix-listing', 'create'
         ),
         'childs' => array(
-            array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'Permission.Index'
-                ),
-                'icon' => '',
-                'link' => 'permission/index',
-                'controllerId' => 'permission',
-                'actionId' => array('index','create','update','view')
-            ),
+//            array(
+//                'title' => 'Listing',
+//                'permissionName' => array(
+//                    'Permission.Index'
+//                ),
+//                'icon' => '',
+//                'link' => 'permission/index',
+//                'controllerId' => 'permission',
+//                'actionId' => array('index','create','update','view')
+//            ),
 //            array(
 //                'title' => 'Create',
 //                'permissionName' => array(
