@@ -99,7 +99,7 @@ if(isset($urlData[1]) && $urlData[1]){
                             'attribute' => 'marketSegment',
                         ],
                         
-                        'address1',
+                       
                         'assignTo',
                         [
                            'class' => 'yii\grid\ActionColumn', 'contentOptions'=>[ 'style'=>'width: 20%'],     

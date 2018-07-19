@@ -41,7 +41,7 @@ return [
     'width_of_shelves' => ['min' => '0','max' => '500'],
     'depth_of_shelves' => ['min' => '0','max' => '50'],
     'shelfConfig' => ['0' => 100,'1' =>2,'3' =>30],
-    'rackWidth' => ['0' => 550],
+    'rackWidth' => ['0' => 510],
     'configArray' => ['top_shelf' => 'top_shelf','market_share' =>'market_share_left_right','size_height' => 'size_height' , 'price' => 'price' , 'gift_box' => 'gift_box','market_share_count'=>'market_shares'],
     'defaultSorting' => SORT_ASC
     ];
