@@ -899,7 +899,10 @@ class StoreConfigurationController extends Controller {
     }
 
     private function applySortingRule(&$racksProductArray) {
-
+        
+        $sort = SORT_ASC;
+        $this->sort_array_of_array($racksProductArray, 'id', $sort);
+            
         if ($this->ifRuleContain(\yii::$app->params['configArray']['market_share'])) {            
             $sort = SORT_DESC;
             $this->sort_array_of_array($racksProductArray, 'market_share', $sort);
