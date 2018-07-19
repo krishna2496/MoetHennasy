@@ -10,7 +10,7 @@ $arrayMenu = array(
             'Site.Index',
         ),
         'icon' => 'fa fa-home',
-        'link' => '',
+        'link' => $adminUrl,
         'hasChildClass' => ' ',
         'submenuToggleClass' => '',
         'controllerId' => array(
