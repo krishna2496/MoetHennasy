@@ -225,8 +225,8 @@ $arrayMenu = array(
         'permissionName' => array(
             'Catalogues.Index',
             'Catalogues.Create',
-            'ProductTypes.Index',
-            'ProductTypes.Create',
+            'Product-Types.Index',
+            'Product-Types.Create',
             'Product-Categories.Index',
             'Product-Categories.Create',
             'Brands.Index'
@@ -265,12 +265,12 @@ $arrayMenu = array(
             array(
                 'title' => 'Product Types',
                 'permissionName' => array(
-                    'ProductTypes.Index'
+                    'Product-Types.Index'
                 ),
                 'icon' => '',
                 'link' => 'product-types/index',
-                'controllerId' => 'brands',
-                'actionId' => array('index')
+                'controllerId' => 'product-types',
+                'actionId' => array('index','update')
             ),
             
             array(
@@ -341,12 +341,13 @@ $arrayMenu = array(
         'permissionName' => array(
             'Helps.Index',
             'Helps.Create',
-             'Rules.Index',
+            'Rules.Index',
             'Rules.Create',
             'Questions.Index',
             'Questions.Create',
             'Glossary.Index',
             'Glossary.Create',
+            'Help-Categories.Index'
         ),
         'icon' => 'fa fa-user',
         'link' => 'javascript:void(0)',
@@ -362,7 +363,7 @@ $arrayMenu = array(
             array(
                 'title' => 'Help Categories',
                 'permissionName' => array(
-                    'HelpCategories.Index'
+                    'Help-Categories.Index'
                 ),
                 'icon' => '',
                 'link' => 'help-categories/index',

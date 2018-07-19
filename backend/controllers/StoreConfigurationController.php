@@ -858,7 +858,7 @@ class StoreConfigurationController extends Controller {
                             $noOfPlaces = intval(($selvesWidth) / ($min));
 
                             foreach ($products as $marketShareValue) {
-                                $repeatCount = intval(($marketShareValue['market_share'] * $noOfPlaces) / ($sumOfMarketShare));
+                                $repeatCount = intval($marketShareValue['market_share'] * $noOfPlaces) / ($sumOfMarketShare);
 
                                 for ($j = 0; $j < $repeatCount; $j++) {
                                     $tempSum = array_sum(array_column($racksProductArray[$i], 'width'));

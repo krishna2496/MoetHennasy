@@ -31,7 +31,7 @@ use yii\grid\GridView;
 							<!-- /.box-header -->
 							
 							<div class="box-body">
-								<label class="barnd-select-msg">Select the products that wil be present on the display<sup class="text-red">*</sup>:</label>
+								<label class="barnd-select-msg">Select the products that will be present on the display<sup class="text-red">*</sup>:</label>
 <?php Pjax::begin(['id' => 'employee', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>
 								<?=
 								GridView::widget([
