@@ -23,7 +23,7 @@ if (isset($filters['setParentID'])) {
                     <div class="col-md-2">
 
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-10 pull-right">
                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
@@ -32,11 +32,11 @@ if (isset($filters['setParentID'])) {
                                         <?= Html::a('Add User', ['create'], ['class' => 'btn btn-primary']) ?>
                                     <?php } ?>
                                 </div>
-                                <?php if(Yii::$app->user->identity->role_id == 1){?>
                                 <div class="col-md-3">
+                                    <?php if(Yii::$app->user->identity->role_id == 1){?>
                                     <?php echo Html::dropDownList('role_id', isset($filters['role_id']) ? $filters['role_id'] : '', $roles, ['class' => 'form-control select2', 'id' => 'user-type', 'prompt' => 'Select User Type']) ?>
+                                    <?php } ?>
                                 </div>
-                                <?php } ?>
                                 <div class="col-md-2">
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?>
                                 </div>
