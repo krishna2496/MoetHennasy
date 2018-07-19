@@ -55,8 +55,12 @@ $formUrl = Url::to(['market/brands/' . $market_id]);
                                 ['class' => 'yii\grid\SerialColumn'],
                                 [
                                 'class' => 'yii\grid\CheckboxColumn',
+                                    'header' => Html::checkBox('selection_all', false, [
+                                    'class' => 'select-on-check-all',
+                                     'value' =>'00'
+                                ]),
                                 'checkboxOptions' => function($model) use ($rules) {
-                                    return ['value' => $model['id'], 'checked' => (in_array($model['id'], $rules)) ? true : ''
+                                    return ['value' => $model['id']
                                     ];
                                 },
                             ],
