@@ -5,7 +5,9 @@
 .addmargin{
     margin-bottom: 10px;
 }
-
+.addmargincol{
+    margin-right: 5px;
+}
 .sticky{
     position:fixed;
 }

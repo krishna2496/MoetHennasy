@@ -27,7 +27,7 @@ if(isset($urlData[1]) && $urlData[1]){
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row addmargin">
-                            <div class="col-md-1">
+                            <div class="col-md-1 addmargincol">
                                 <?php  if(CommonHelper::checkPermission('Stores.Create')){ ?>
                                 <?= Html::a('Add Store', ['create'], ['class' => 'btn btn-primary']) ?>
                                 <?php } ?>
@@ -42,7 +42,7 @@ if(isset($urlData[1]) && $urlData[1]){
                                 <?= Html::a('Export', ['export'.$queryString], ['class' => 'btn btn-primary'.' '.$class.'']) ?>
                                 <?php } ?>
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-md-9">
                                 <div class="row pull-right">
                                     <div class="col-md-8">
                                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-stores']); ?>
@@ -102,7 +102,7 @@ if(isset($urlData[1]) && $urlData[1]){
                         'address1',
                         'assignTo',
                         [
-                           'class' => 'yii\grid\ActionColumn', 'contentOptions'=>[ 'style'=>'width: 15%'],     
+                           'class' => 'yii\grid\ActionColumn', 'contentOptions'=>[ 'style'=>'width: 20%'],     
                            'header' => 'Actions',
                            'template' => '{view} {update} {delete}{congiguration}',
                            'buttons' => [
