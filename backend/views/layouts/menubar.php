@@ -10,9 +10,9 @@ $arrayMenu = array(
             'Site.Index',
         ),
         'icon' => 'fa fa-home',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
+        'link' => '',
+        'hasChildClass' => ' ',
+        'submenuToggleClass' => '',
         'controllerId' => array(
             'site'
         ),
@@ -21,16 +21,7 @@ $arrayMenu = array(
         ),
         
         'childs' => array(
-            array(
-                'title' => 'Dashboard',
-                'permissionName' => array(
-                    'Site.Index'
-                ),
-                'icon' => '',
-                'link' => '',
-                'controllerId' => 'site',
-                'actionId' => array('index')
-            ),
+            
         )
     ),
     
