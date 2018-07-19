@@ -32,9 +32,11 @@ if (isset($filters['setParentID'])) {
                                         <?= Html::a('Add User', ['create'], ['class' => 'btn btn-primary']) ?>
                                     <?php } ?>
                                 </div>
+                                <?php if(Yii::$app->user->identity->role_id == 1){?>
                                 <div class="col-md-2">
                                     <?php echo Html::dropDownList('role_id', isset($filters['role_id']) ? $filters['role_id'] : '', $roles, ['class' => 'form-control select2', 'id' => 'user-type', 'prompt' => 'Select User Type']) ?>
                                 </div>
+                                <?php } ?>
                                 <div class="col-md-3">
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?>
                                 </div>

@@ -33,27 +33,21 @@ $formUrl = Url::to(['store-configuration/listing/'.$id]);
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">
-<?= Html::encode($this->title) ?>
+                    <?= Html::encode($this->title) ?>
                 </h3>
-                <div class="row pull-right">
-                    <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-2">
                       <?php 
                       if($canCreateNewConfig == 1){
                       ?>
                             <?= Html::a('Add Store Configuration', ['store-configuration/index/'.$id], ['class' => 'btn btn-primary']) ?>
                       <?php } ?>
                     </div>
-                    <div class="col-md-2"></div>
-                    <div class="col-md-6">
-<?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-catalogue']); ?>
+                    <div class="col-md-2">
+                    <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-catalogue']); ?>
                         <div class="filter-search dataTables_filter clearfix">
-                            <div class="row">
-
-                                <div class="col-md-8">
-                                    <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
-                                </div>
-
-                            </div>
+                            <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
                         </div>
 <?= Html::endForm(); ?>
                     </div>

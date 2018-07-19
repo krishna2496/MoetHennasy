@@ -63,7 +63,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'market-segments/index',
                 'controllerId' => 'market-segments',
-                'actionId' => array('index')
+                'actionId' => array('index','create','update','view')
             ),
             
             array(
@@ -73,8 +73,8 @@ $arrayMenu = array(
                 ),
                 'icon' => '',
                 'link' => 'market/index',
-                'controllerId' => 'market',
-                'actionId' => array('index')
+                'controllerId' => 'market','market-contacts',
+                'actionId' => array('index','create','update','view','rules','brands')
             ),
             
             array(
@@ -85,7 +85,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'stores/index',
                 'controllerId' => 'stores',
-                'actionId' => array('index')
+                'actionId' => array('index','create','update','view')
             ),
 //            array(
 //                'title' => 'Create',
@@ -114,7 +114,7 @@ $arrayMenu = array(
             'users'
         ),
         'actionId' => array(
-            'index', 'create'
+            'index', 'create','update','view'
         ),
         'childs' => array(
             array(
@@ -125,7 +125,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'users/index',
                 'controllerId' => 'users',
-                'actionId' => array('index')
+                'actionId' => array('index','create','update','view')
             ),
 //            array(
 //                'title' => 'Create',
@@ -250,7 +250,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'catalogues/index',
                 'controllerId' => 'catalogues',
-                'actionId' => array('index')
+                'actionId' => array('index','create','update','view')
             ),
             array(
                 'title' => 'Brands',
@@ -260,7 +260,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'brands/index',
                 'controllerId' => 'brands',
-                'actionId' => array('index')
+                'actionId' => array('index','create','update','view')
             ),
             array(
                 'title' => 'Product Types',
@@ -270,7 +270,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'product-types/index',
                 'controllerId' => 'product-types',
-                'actionId' => array('index','update')
+                'actionId' => array('index','create','update','view')
             ),
             
             array(
@@ -281,7 +281,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'product-categories/index',
                 'controllerId' => 'product-categories',
-                'actionId' => array('index')
+                'actionId' => array('index','create','update','view')
             ),
 //            array(
 //                'title' => 'Create',
@@ -367,8 +367,8 @@ $arrayMenu = array(
                 ),
                 'icon' => '',
                 'link' => 'help-categories/index',
-                'controllerId' => 'help',
-                'actionId' => array('categories')
+                'controllerId' => 'help-categories',
+                'actionId' => array('index','create','update','view')
             ), 
             array(
                 'title' => 'Rules',
@@ -378,7 +378,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'rules/index',
                 'controllerId' => 'rules',
-                'actionId' => array('index')
+                'actionId' => array('index','create','update','view')
             ),
             array(
                 'title' => 'Questions',
@@ -387,8 +387,8 @@ $arrayMenu = array(
                 ),
                 'icon' => '',
                 'link' => 'questions/index',
-                'controllerId' => 'quetions',
-                'actionId' => array('index')
+                'controllerId' => 'questions',
+                'actionId' => array('index','create','update','view')
             ),
             array(
                 'title' => 'Glossaries',
@@ -398,7 +398,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'glossary/index',
                 'controllerId' => 'glossary',
-                'actionId' => array('index')
+                'actionId' => array('index','create','update','view')
             ),
         )
     ),
@@ -664,7 +664,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'permission/index',
                 'controllerId' => 'permission',
-                'actionId' => array('index')
+                'actionId' => array('index','create','update','view')
             ),
 //            array(
 //                'title' => 'Create',
