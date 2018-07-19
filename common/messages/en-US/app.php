@@ -69,7 +69,7 @@ return [
     'store_manager_email' => 'Store Manager Email',
     'store_manager_phone_code' => 'Store Manager Phone Code',
     'store_manager_phone_number' => 'Store Manager Phone Number',
-    'catalogues'=>'Catalogues',
+    'catalogues'=>'Product',
     'product_categories'=>'Product Categories',
     'product_categories'=>'Product Categories',
     'helps' =>'Questions',
