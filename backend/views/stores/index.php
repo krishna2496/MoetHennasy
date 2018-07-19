@@ -42,7 +42,7 @@ if(isset($urlData[1]) && $urlData[1]){
                                 <?= Html::a('Export', ['export'.$queryString], ['class' => 'btn btn-primary'.' '.$class.'']) ?>
                                 <?php } ?>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-9 pull-right">
                                 <div class="row pull-right">
                                     <div class="col-md-8">
                                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-stores']); ?>

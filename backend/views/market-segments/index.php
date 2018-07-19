@@ -22,7 +22,7 @@ $formUrl = Url::to(['market-segments/index']);
                      <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                     <div class="col-md-7">
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <?php  if(CommonHelper::checkPermission('MarketSegments.Create')){ ?>
                                 <?= Html::a('Add Market Cluster', ['create'], ['class' => 'btn btn-primary']) ?>
                                 <?php } ?>
@@ -32,7 +32,7 @@ $formUrl = Url::to(['market-segments/index']);
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text']) ?>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'user-limit']) ?>
                             </div>
                         </div>
