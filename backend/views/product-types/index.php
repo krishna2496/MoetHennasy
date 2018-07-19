@@ -16,20 +16,23 @@ $formUrl = Url::to(['product-types/index']);
                 <h3 class="box-title">
                     <?= Html::encode($this->title) ?>
                 </h3>
-                <div class="row pull-right">
+                <div class="row">
                <div class="col-md-4">
-                        <?php  if(CommonHelper::checkPermission('Market.Create')){ ?>
-                        <?= Html::a('Add Product Type', ['create'], ['class' => 'btn btn-primary']) ?>
-                        <?php } ?>
-                    </div>
-                    <div class="col-md-8">
+                        
+                </div>
+                    <div class="col-md-8 pull-right">
                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-3">
+                                <?php  if(CommonHelper::checkPermission('Market.Create')){ ?>
+                                <?= Html::a('Add Product Type', ['create'], ['class' => 'btn btn-primary']) ?>
+                                <?php } ?>
+                                </div>
+                                <div class="col-md-7">
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '', Yii::$app->params['limit'], ['class' => 'form-control', 'id' => 'user-limit']) ?>
                                 </div>
 
