@@ -21,7 +21,7 @@ $session = Yii::$app->session;
 		<div class="box filter-collapse-panle">
 			<!-- collapsed-box -->
 			<div class="box-header with-border">
-				<h3 class="box-title">Display <i class="fa fa-info-circle"></i></h3>
+                            <h3 class="box-title">Display <a href="#" data-toggle="tooltip" title="Display"><i class="fa fa-info-circle"></i></a></h3>
 				<div class="box-tools pull-right">
 					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-angle-up fa-3x"></i></button>
 				</div>
@@ -33,7 +33,7 @@ $session = Yii::$app->session;
 					<div class="form-group">
 						<label for="dispaly_name">Name Your Display</label>
                                                 <input type="hidden" name="ratio" value="5.5" id="ratio">
-                                                <input type="text" id="dispaly_name" name="display_name" class="form-control" placeholder="Name of the display 1" required autocomplete="off" autofocus="true"/>
+                                                <input type="text" id="dispaly_name" name="display_name" class="form-control" placeholder="Enter Display Name" required autocomplete="off" autofocus="true"/>
 					</div>
 					<div class="frame-chose-option">
 						<div class="box box-default shelfs-store">
@@ -49,10 +49,13 @@ $session = Yii::$app->session;
 							<div class="box-body">
 								<div class="form-group">
 									<div class="label-text">
-										<label>Number of shelves <sup class="error-text">*</sup></label> <span class="info-icon"><i class="fa fa-info-circle"></i></span>
+                                                                            <label>Number of shelves <sup class="error-text">*</sup></label> <span class="info-icon"><a href="#" data-toggle="tooltip" title="Number of Shelves"><i class="fa fa-info-circle"></i></a></span>
 										<span class="slider-input size-label">
-											<input type="text" class="form-control" id="ex6SliderVal" name="no_of_shelves" value="<?=  yii::$app->params['shelfConfig']['1']; ?>" required="" />
+											<input type="text" class="form-control" id="ex6SliderVal" name="no_of_shelves" value="<?=  yii::$app->params['shelfConfig']['1']; ?>" required="" max="<?= yii::$app->params['no_of_shelves']['max'] ?>" min="1"/>
 										</span>
+                                                                            <label for="ex6SliderVal" class="error" style="
+    font-size: 12px;
+"></label>
 									</div>
 									<div class="slider-content">
 										<span class="start-val"><?= yii::$app->params['no_of_shelves']['min'] ?></span>
@@ -62,9 +65,9 @@ $session = Yii::$app->session;
 								</div>
 								<div class="form-group">																			
 									<div class="label-text">
-										<label>Height of shelves<sup class="error-text">*</sup></label> <span class="info-icon"><i class="fa fa-info-circle"></i></span>
+                                                                            <label>Height of shelves<sup class="error-text">*</sup></label> <span class="info-icon"><a href="#" data-toggle="tooltip" title="Height of Shelves"><i class="fa fa-info-circle"></i></a></span>
 										<span class="slider-input size-label">																				
-											<input type="text" class="form-control" id="hex6SliderVal" name="height_of_shelves" value="<?=  yii::$app->params['shelfConfig']['0']; ?>" required="" />
+											<input type="text" class="form-control" id="hex6SliderVal" name="height_of_shelves" value="<?=  yii::$app->params['shelfConfig']['0']; ?>" required="" max="<?= yii::$app->params['height_of_shelves']['max'] ?>"/>
 											<span class="size-label">cm</span>
 										</span>
 									</div>
@@ -77,9 +80,9 @@ $session = Yii::$app->session;
 
 								<div class="form-group">
 									<div class="label-text">
-										<label>width of shelves<sup class="error-text">*</sup></label> <span class="info-icon"><i class="fa fa-info-circle"></i></span>
+                                                                            <label>width of shelves<sup class="error-text">*</sup></label> <span class="info-icon"><a href="#" data-toggle="tooltip" title="Width of Shelves"><i class="fa fa-info-circle"></i></a></span>
 										<span class="slider-input size-label">
-											<input type="text" class="form-control" id="wex6SliderVal" name="width_of_shelves" value="<?= yii::$app->params['shelfConfig']['0']; ?>" required="" />
+											<input type="text" class="form-control" id="wex6SliderVal" name="width_of_shelves" value="<?= yii::$app->params['shelfConfig']['0']; ?>" required="" max="<?= yii::$app->params['width_of_shelves']['max'] ?>"/>
 											<span class="size-label">cm</span>
 										</span>
 									</div>
@@ -91,9 +94,9 @@ $session = Yii::$app->session;
 								</div>
 								<div class="form-group">
 									<div class="label-text">
-										<label>Depth of shelves<sup class="error-text">*</sup></label> <span class="info-icon"><i class="fa fa-info-circle"></i></span>
+                                                                            <label>Depth of shelves<sup class="error-text">*</sup></label> <span class="info-icon"><a href="#" data-toggle="tooltip" title="Depth of Shelves"><i class="fa fa-info-circle"></i></a></span>
 										<span class="slider-input size-label">
-											<input type="text" class="form-control" id="dex6SliderVal" name="depth_of_shelves" value="<?= yii::$app->params['shelfConfig']['3']; ?>" required="" />
+											<input type="text" class="form-control" id="dex6SliderVal" name="depth_of_shelves" value="<?= yii::$app->params['shelfConfig']['3']; ?>" required="" max="<?= yii::$app->params['depth_of_shelves']['max'] ?>"/>
 											<span class="size-label">cm</span>
 										</span>
 									</div>
