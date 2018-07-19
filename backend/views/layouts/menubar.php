@@ -221,7 +221,7 @@ $arrayMenu = array(
     
    
     array(
-        'title' => 'Catalogue Management',
+        'title' => 'Product Management',
         'permissionName' => array(
             'Catalogues.Index',
             'Catalogues.Create',
@@ -243,7 +243,7 @@ $arrayMenu = array(
         ),
         'childs' => array(
             array(
-                'title' => 'Catalogues',
+                'title' => 'Products',
                 'permissionName' => array(
                     'Catalogues.Index'
                 ),

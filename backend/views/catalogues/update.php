@@ -2,8 +2,8 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Update Catalogue';
-$this->params['breadcrumbs'][] = ['label' => 'Catalogues', 'url' => ['index']];
+$this->title = 'Update Product';
+$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="catalogues-update">

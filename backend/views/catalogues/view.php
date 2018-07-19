@@ -7,7 +7,7 @@ use common\helpers\CommonHelper;
 
 $updateUrl = Url::to(['catalogues/update/'.$model->id]);
 $this->title = $model->sku;
-$this->params['breadcrumbs'][] = ['label' => 'Catalogues', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">

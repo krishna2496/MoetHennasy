@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use common\helpers\CommonHelper;
 use yii\helpers\Url;
 
-$this->title = 'Catalogues';
+$this->title = 'Products';
 $this->params['breadcrumbs'][] = $this->title;
 $formUrl = Url::to(['catalogues/index']);
 ?>
@@ -19,7 +19,7 @@ $formUrl = Url::to(['catalogues/index']);
                 <div class="row pull-right">
                     <div class="col-md-2">
                         <?php if (CommonHelper::checkPermission('Catalogues.Create')) { ?>
-                            <?= Html::a('Add Catalogue', ['create'], ['class' => 'btn btn-primary']) ?>
+                            <?= Html::a('Add Product', ['create'], ['class' => 'btn btn-primary']) ?>
 <?php } ?>
                     </div>
                    
