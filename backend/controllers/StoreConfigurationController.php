@@ -763,7 +763,7 @@ class StoreConfigurationController extends Controller {
 
             $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
         }
-        if ($data['edit'] == 'true') {
+        if ($data['edit'] == 'true') {           
             $height = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['height'];
             $width = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['width'];
             $id = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'];
@@ -772,11 +772,13 @@ class StoreConfigurationController extends Controller {
             $filterData['products_id'] = $replacedProductId;
 
             $returnData = $repository->listing($filterData);
-            if ($returnData['status']['success'] == 1) {
+            if ($returnData['status']['success'] == 1) { 
                 $racksWidth = array_sum(array_column($_SESSION['config']['rackProducts'][$shelvesNo], 'width'));
                 $countWidth = intval($racksWidth - $width);
 
                 if (($_SESSION['config']['width_of_shelves'] >= ($countWidth + intval($returnData['data']['catalogues'][0]['width'])))) {
+                if(($_SESSION['config']['height_of_shelves'])/($_SESSION['config']['no_of_shelves']) >= $returnData['data']['catalogues'][0]['height']){
+                     if($_SESSION['config']['depth_of_shelves'] >= $returnData['data']['catalogues'][0]['length']){
                     $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] = '';
                     $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] = array(
                         'id' => $replacedProductId,
@@ -821,6 +823,10 @@ class StoreConfigurationController extends Controller {
 
                     $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
                 }else{
+                     $response['msg'] = 'Please Try Other product';
+                }}else{
+                      $response['msg'] = 'Please Try Other product';
+                }}else{
                     $response['msg'] = 'Please Try Other product';
                 }
             }
