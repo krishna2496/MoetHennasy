@@ -33,7 +33,7 @@ $session = Yii::$app->session;
 					<div class="form-group">
 						<label for="dispaly_name">Name Your Display</label>
                                                 <input type="hidden" name="ratio" value="5.5" id="ratio">
-                                                <input type="text" id="dispaly_name" name="display_name" class="form-control" placeholder="Name of the display 1" required autocomplete="off" autofocus="true"/>
+                                                <input type="text" id="dispaly_name" name="display_name" class="form-control" placeholder="Name of the display" required autocomplete="off" autofocus="true"/>
 					</div>
 					<div class="frame-chose-option">
 						<div class="box box-default shelfs-store">

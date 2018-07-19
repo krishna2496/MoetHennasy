@@ -264,9 +264,13 @@ $submitUrl = "store-configuration/save-config-data";
                 $('#remove').on('ifChecked', function () {
 
                     $('input[name="permissionscheck"]').filter('[value="edit"]').iCheck('uncheck');
+                    $("#getProducts").attr("disabled", true);
+                    $("#products").attr("disabled", true);
                 });
                 $('#edit').on('ifChecked', function () {
                     $('input[name="permissionscheck"]').filter('[value="remove"]').iCheck('uncheck');
+                    $("#getProducts").removeAttr('disabled');
+                    $("#products").removeAttr('disabled');
                 });
 
                 $('#getProducts').on('change', function () {
@@ -294,6 +298,12 @@ $submitUrl = "store-configuration/save-config-data";
 
                     var remove = $('#remove').is(':checked');
                     var edit = $('#edit').is(':checked');
+
+                    if(remove === false && edit === false){
+                        alert("Please Select one option");
+                        return false;
+                    }
+                    
                     var product = $("#products").val();
                     var ratio = '<?php echo $ratio; ?>';
 
@@ -314,8 +324,10 @@ $submitUrl = "store-configuration/save-config-data";
                                     $("#canvas-container-" + i).empty();
                                 }
                                 $.pjax.reload({container: "#productsData", async: false});
+                             
                             }
                             $('.edit-modal').modal('hide');
+                            alert(result.msg);
                         } else {
 
                             alert(result.msg);

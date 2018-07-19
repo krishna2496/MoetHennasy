@@ -76,37 +76,37 @@ class PermissionController extends BaseBackendController
         ]);
     }
 
-//    public function actionCreate()
-//    {
-//        $model = new Permission();
-//
-//        $permissions = Permission::find()->all();
-//        $listPermissions = ArrayHelper::map($permissions,'id','permission_title');
-//        $listPermissions[0] = "-Select-";
-//
-//        //sorting array as 0 key added in bottom
-//        ksort($listPermissions);
-//        asort($listPermissions);
-//        if(Yii::$app->request->post()) {
-//            $data = Yii::$app->request->post('Permission');
-//            $userRepository = new PermissionRepository;
-//            $returnData = $userRepository->create($data);
-//            if($returnData['status']['success'] == 1)
-//            { 
-//                parent::userActivity('create_permission',$description='');
-//                Yii::$app->session->setFlash('success', $returnData['status']['message']);
-//                return $this->redirect(['index']);
-//            } else {
-//                $model->load(Yii::$app->request->post());
-//                Yii::$app->session->setFlash('danger', $returnData['status']['message']);
-//            }
-//        }
-//      
-//        return $this->render('create', [
-//            'model' => $model,
-//            'listPermissions' => $listPermissions,
-//        ]);
-//    }
+    public function actionCreate()
+    {
+        $model = new Permission();
+
+        $permissions = Permission::find()->all();
+        $listPermissions = ArrayHelper::map($permissions,'id','permission_title');
+        $listPermissions[0] = "-Select-";
+
+        //sorting array as 0 key added in bottom
+        ksort($listPermissions);
+        asort($listPermissions);
+        if(Yii::$app->request->post()) {
+            $data = Yii::$app->request->post('Permission');
+            $userRepository = new PermissionRepository;
+            $returnData = $userRepository->create($data);
+            if($returnData['status']['success'] == 1)
+            { 
+                parent::userActivity('create_permission',$description='');
+                Yii::$app->session->setFlash('success', $returnData['status']['message']);
+                return $this->redirect(['index']);
+            } else {
+                $model->load(Yii::$app->request->post());
+                Yii::$app->session->setFlash('danger', $returnData['status']['message']);
+            }
+        }
+      
+        return $this->render('create', [
+            'model' => $model,
+            'listPermissions' => $listPermissions,
+        ]);
+    }
 
     public function actionUpdate($id)
     {
