@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use common\helpers\CommonHelper;
 use yii\helpers\Url;
 
-$this->title = 'Glossary';
+$this->title = 'Glossaries';
 $this->params['breadcrumbs'][] = $this->title;
 $formUrl = Url::to(['glossary/index']);
 ?>

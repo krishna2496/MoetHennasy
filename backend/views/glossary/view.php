@@ -24,7 +24,10 @@ $updateUrl = Url::to(['glossary/update/'.$model->id]);
                     'model' => $model,
                     'attributes' => [
                         'title',
-                        'description:ntext',
+                        [              
+                        'label' => 'Description',
+                        'value' => strip_tags($model->description),
+                        ],
                       
                     ],
                 ]) ?>
