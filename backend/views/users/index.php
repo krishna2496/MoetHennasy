@@ -39,6 +39,7 @@ if (isset($filters['setParentID'])) {
                                 </div>
                                 <div class="col-md-2">
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?>
+                                    <span id="searchclear" class="glyphicon glyphicon-remove"></span>
                                 </div>
 
                                 <div class="col-md-3">

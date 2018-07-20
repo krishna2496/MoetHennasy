@@ -27,7 +27,8 @@ $formUrl = Url::to(['helps/index/'.$id]);
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
                                 <div class="col-md-12">
-            <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?>
+                                 <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?>
+                                <span id="searchclear" class="glyphicon glyphicon-remove"></span>
                                 </div>
                                                               
                             </div>

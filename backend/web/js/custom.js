@@ -1,6 +1,9 @@
 $("#searchclear").click(function(){
-    $("#user-text").val('');
+    $(this).prev().val('');
     $('#search-users').submit();
+    $('#search-stores').submit();
+    $('#search-categories').submit();
+    $('#search-catalogue').submit();
 });
 
 $(document).ajaxStart(function(){

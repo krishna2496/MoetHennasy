@@ -47,7 +47,8 @@ if(isset($urlData[1]) && $urlData[1]){
                                     <div class="col-md-8">
                                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-stores']); ?>
                                         <div class="filter-search dataTables_filter clearfix">
-                                        <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'store-text']) ?>
+                                            <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'store-text']) ?>
+                                            <span id="searchclear" class="glyphicon glyphicon-remove"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-4">

@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="col-md-5">
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'categories-text']) ?>
+                                    <span id="searchclear" class="glyphicon glyphicon-remove"></span>
                                 </div>
                                 <div class="col-md-2">
                                     <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'categories-limit']) ?>

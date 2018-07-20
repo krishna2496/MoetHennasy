@@ -17,7 +17,7 @@ class QuestionsRepository extends Repository
             $query->andWhere([
                 'or',
                 ['like', 'question', $search],
-                ['like', 'answer', $search],
+//                ['like', 'answer', $search],
             ]);
         }
        

@@ -27,6 +27,7 @@ $formUrl = Url::to(['brands/index']);
                             <div class="row">
                                 <div class="col-md-7">
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'brands-text']) ?>
+                                    <span id="searchclear" class="glyphicon glyphicon-remove"></span>
                                 </div>
                                 <div class="col-md-5">
                                     <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'brands-limit']) ?>
