@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 $this->title = 'Create Market';
-$this->params['breadcrumbs'][] = ['label' => 'Market', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Markets', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="market-segments-create">

@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
 
 $this->title = 'Market Brands';
-$this->params['breadcrumbs'][] = ['label' => 'Market', 'url' => ['/market']];
+$this->params['breadcrumbs'][] = ['label' => 'Markets', 'url' => ['/market']];
 $this->params['breadcrumbs'][] = $this->title;
 $formUrl = Url::to(['market/brands/' . $market_id]);
 ?>

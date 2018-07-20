@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 use common\helpers\CommonHelper;
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Glossaries', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Glossariess', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $updateUrl = Url::to(['glossary/update/'.$model->id]);
 ?>

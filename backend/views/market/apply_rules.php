@@ -7,7 +7,7 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Market Rules';
-$this->params['breadcrumbs'][] = ['label' => 'Market', 'url' => ['/market']];
+$this->params['breadcrumbs'][] = ['label' => 'Markets', 'url' => ['/market']];
 $this->params['breadcrumbs'][] = $this->title;
 $formUrl = Url::to(['market/rules']);
 ?>
