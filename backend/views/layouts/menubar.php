@@ -632,7 +632,7 @@ $arrayMenu = array(
      array(
         'title' => 'Permissions',
         'permissionName' => array(
-//            'Permission.Create',
+            'Permission.Create',
             'Permission.Matrix-Listing',
             'Permission.Index',
         ),
@@ -655,7 +655,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'permission/index',
                 'controllerId' => 'permission',
-                'actionId' => array('index','create','update','view')
+                'actionId' => array('index','update','view')
             ),
             array(
                 'title' => 'Create',
