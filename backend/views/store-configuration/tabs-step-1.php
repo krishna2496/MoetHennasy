@@ -53,7 +53,7 @@ $session = Yii::$app->session;
 										<span class="slider-input size-label">
 											<input type="text" class="form-control" id="ex6SliderVal" name="no_of_shelves" value="<?=  yii::$app->params['shelfConfig']['1']; ?>" required="" max="<?= yii::$app->params['no_of_shelves']['max'] ?>" min="1"/>
 										</span>
-                                                                            <label for="ex6SliderVal" class="error pull-right" style="font-size: 11px; color: red; right: 10px; margin-top: 3%;margin-right: -20%"></label>
+                                                                            <label for="ex6SliderVal" class="error pull-right" style="font-size: 11px; color: red;  margin-top: 5%;"></label>
 									</div>
 									<div class="slider-content">
 										<span class="start-val"><?= yii::$app->params['no_of_shelves']['min'] ?></span>
@@ -68,7 +68,7 @@ $session = Yii::$app->session;
 											<input type="text" class="form-control" id="hex6SliderVal" name="height_of_shelves" value="<?=  yii::$app->params['shelfConfig']['0']; ?>" required="" max="<?= yii::$app->params['height_of_shelves']['max'] ?>"/>
 											<span class="size-label">cm</span>
 										</span>
-                                                                            <label for="hex6SliderVal" class="error pull-right" style="font-size: 11px; color: red; right: 10px;  margin-top: 8%;margin-right: -20%"></label>
+                                                                            <label for="hex6SliderVal" class="error pull-right" style="font-size: 11px; color: red;   margin-top: 5%;"></label>
                                                                         </div>
 									<div class="slider-content">
 										<span class="start-val"><?= yii::$app->params['height_of_shelves']['min'] ?> cm</span>
@@ -84,7 +84,7 @@ $session = Yii::$app->session;
 											<input type="text" class="form-control" id="wex6SliderVal" name="width_of_shelves" value="<?= yii::$app->params['shelfConfig']['0']; ?>" required="" max="<?= yii::$app->params['width_of_shelves']['max'] ?>"/>
 											<span class="size-label">cm</span>
 										</span>
-                                                                            <label for="wex6SliderVal" class="error pull-right" style="font-size: 11px; color: red;  right: 12px; margin-top: 8%;margin-right: -20% "></label>
+                                                                            <label for="wex6SliderVal" class="error pull-right" style="font-size: 11px; color: red;  right: 12px; margin-top: 5%;"></label>
 									</div>
 									<div class="slider-content">
 										<span class="start-val"><?= yii::$app->params['width_of_shelves']['min'] ?> cm</span>
@@ -99,7 +99,7 @@ $session = Yii::$app->session;
 											<input type="text" class="form-control" id="dex6SliderVal" name="depth_of_shelves" value="<?= yii::$app->params['shelfConfig']['3']; ?>" required="" max="<?= yii::$app->params['depth_of_shelves']['max'] ?>"/>
 											<span class="size-label">cm</span>
 										</span>
-                                                                            <label for="dex6SliderVal" class="error pull-right" style="font-size: 11px; color: red; right: 12px;  margin-top: 8%;margin-right: -20%"></label>
+                                                                            <label for="dex6SliderVal" class="error pull-right" style="font-size: 11px; color: red; right: 12px;  margin-top: 5%;"></label>
 									</div>
 									<div class="slider-content">
 										<span class="start-val"><?= yii::$app->params['depth_of_shelves']['min'] ?> cm</span>
