@@ -900,8 +900,10 @@ class StoreConfigurationController extends Controller {
 
     private function applySortingRule(&$racksProductArray) {
         
-        $sort = SORT_ASC;
-        $this->sort_array_of_array($racksProductArray, 'id', $sort);
+//        $sort = SORT_ASC;
+//        
+//        $this->sort_array_of_array($racksProductArray, 'id', $sort);
+        
             
         if ($this->ifRuleContain(\yii::$app->params['configArray']['market_share'])) {            
             $sort = SORT_DESC;
@@ -1037,7 +1039,7 @@ class StoreConfigurationController extends Controller {
             }
         }
        
-        $userEmail = 'hardik.devariya@tatvasoft.com';
+        $userEmail = $user['email'];
         $firstName = !empty($user['first_name']) ? $user['first_name'] : '';
         $lastName = !empty($user['last_name']) ? $user['last_name'] : '';
         $userId = !empty($user['id']) ? $user['id'] : '';

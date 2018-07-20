@@ -261,6 +261,8 @@ $submitUrl = "store-configuration/save-config-data";
                     radioClass: 'iradio_square-blue',
                     increaseArea: '20%'
                 });
+                $("#getProducts").attr("disabled", true);
+                $("#products").attr("disabled", true);
                 $('#remove').on('ifChecked', function () {
 
                     $('input[name="permissionscheck"]').filter('[value="edit"]').iCheck('uncheck');
