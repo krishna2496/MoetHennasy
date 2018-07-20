@@ -1,3 +1,8 @@
+$("#searchclear").click(function(){
+    $("#user-text").val('');
+    $('#search-users').submit();
+});
+
 $(document).ajaxStart(function(){
     moet.showLoader();
 });

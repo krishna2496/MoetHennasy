@@ -29,7 +29,8 @@ $formUrl = Url::to(['market-segments/index']);
                             </div>
                             <div class="col-md-5">
                                 <div class="filter-search dataTables_filter clearfix">
-                                    <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text']) ?>
+                                    <?php echo Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'user-text']) ?>
+                                    <span id="searchclear" class="glyphicon glyphicon-remove"></span>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -37,8 +38,7 @@ $formUrl = Url::to(['market-segments/index']);
                             </div>
                         </div>
                     </div>
-                    
-                        <?= Html::endForm(); ?>
+                    <?= Html::endForm(); ?>
                     </div>
                 </div>
             <!--</div>-->
