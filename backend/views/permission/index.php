@@ -23,9 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php } ?>
                     </div>
                     <div class="col-md-10">
+                        <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                         <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'permission-limit']) ?>
                         </div>
+                        <?=  Html::endForm();?>
                     </div>
                 </div>
             </div>
