@@ -53,6 +53,10 @@ use yii\grid\GridView;
 												'value' => 'productType.title'
 											],
 											'market_share',
+                                                                                        [
+                                                                                                'label' => 'WSP',
+                                                                                                'attribute' => 'price',
+                                                                                        ],
 											[
 												'label' => 'Product Category',
 												'attribute' => 'productCategory',
