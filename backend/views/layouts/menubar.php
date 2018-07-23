@@ -340,7 +340,7 @@ $arrayMenu = array(
             'Glossary.Create',
             'Help-Categories.Index'
         ),
-        'icon' => 'fa fa-th-list',
+        'icon' => 'fa fa-server',
         'link' => 'javascript:void(0)',
         'hasChildClass' => 'treeview ',
         'submenuToggleClass' => 'treeview-menu',
