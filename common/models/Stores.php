@@ -21,7 +21,7 @@ class Stores extends BaseModel
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['name','store_manager_first_name', 'store_manager_last_name', 'store_manager_email'], 'string', 'max' => 100],
             [['photo'], 'string', 'max' => 255],
-            [['store_manager_phone_number'], 'number','min' =>6,'max' =>15],
+            [['store_manager_phone_number'], 'string','min' =>6,'max' =>15],
             [['latitude', 'longitude'], 'double'],
             [['store_manager_phone_code'], 'number','max'=>99],
             [['storeImage'], 'file','extensions'=>'jpg,png,jpeg'],
