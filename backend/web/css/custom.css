@@ -11,7 +11,14 @@
     color: #ccc;
 }
 
+.sidebar-mini:not(.sidebar-mini-expand-feature).sidebar-collapse .sidebar-menu>li:hover>.treeview-menu {
+    display: none !important;
+}
 
+.sidebar-mini:not(.sidebar-mini-expand-feature).sidebar-collapse .sidebar-menu>li.menu-open:hover>.treeview-menu {
+    display: block !important;
+ 
+}
 
 .fa-info-circle{
     color: black;
@@ -48,6 +55,7 @@
     display: table;
     width: 100%;
     position: relative;
+    z-index: 0;
 }
 
 .stepwizard-step button[disabled] {
