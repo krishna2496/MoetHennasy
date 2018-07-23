@@ -15,7 +15,7 @@ class MarketContacts extends BaseModel {
                 [['market_segment_id', 'market_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
                 [['address'], 'string'],
                 [['created_at', 'updated_at', 'deleted_at'], 'safe'],
-                [['phone'], 'string', 'max' => 20],
+                [['phone'], 'string', 'max' => 15 ,'min' =>6],
                 [['email'], 'string', 'max' => 100],
                 [['email'], 'email'],
         ];
