@@ -9,7 +9,7 @@ $arrayMenu = array(
         'permissionName' => array(
             'Site.Index',
         ),
-        'icon' => 'fa fa-home',
+        'icon' => 'fa fa-tachometer',
         'link' => $adminUrl,
         'hasChildClass' => ' ',
         'submenuToggleClass' => '',
