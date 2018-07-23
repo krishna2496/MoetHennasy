@@ -222,7 +222,7 @@ $arrayMenu = array(
             'Product-Categories.Create',
             'Brands.Index'
         ),
-        'icon' => 'fa fa-user',
+        'icon' => 'fa fa-glass',
         'link' => 'javascript:void(0)',
         'hasChildClass' => 'treeview ',
         'submenuToggleClass' => 'treeview-menu',
@@ -340,7 +340,7 @@ $arrayMenu = array(
             'Glossary.Create',
             'Help-Categories.Index'
         ),
-        'icon' => 'fa fa-user',
+        'icon' => 'fa fa-th-list',
         'link' => 'javascript:void(0)',
         'hasChildClass' => 'treeview ',
         'submenuToggleClass' => 'treeview-menu',
