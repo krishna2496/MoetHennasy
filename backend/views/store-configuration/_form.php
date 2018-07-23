@@ -21,7 +21,6 @@ $session = Yii::$app->session;
 ?>
 <script type="text/javascript">
     var isUpdate = '<?php echo $is_update; ?>';
-   
     var brandThumbId = '<?php echo $brandThumbId ?>';
     var productArry = [];
     var productObject = {};

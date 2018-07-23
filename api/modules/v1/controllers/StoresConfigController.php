@@ -134,7 +134,9 @@ class StoresConfigController extends BaseApiController {
             $rulesArrry = array();
             $rules = $value['marketSegment']['marketRules'];
             foreach ($rules as $key1 => $value1) {
-                $rulesArrry[$key1] = $value1['rules'];
+            if($value1['market_id'] == $filter['market_id']){
+                $rulesArrry[] = $value1['rules'];
+            }
             }
             $dataArry['marketSegmentData'][$key]['marketRules'] = $rulesArrry;
         }

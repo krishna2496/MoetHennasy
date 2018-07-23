@@ -22,7 +22,7 @@ class Stores extends BaseModel
             [['name','store_manager_first_name', 'store_manager_last_name', 'store_manager_email'], 'string', 'max' => 100],
             [['photo'], 'string', 'max' => 255],
             [['store_manager_phone_number'], 'number'],
-            [['store_manager_phone_number'], 'match', 'pattern' => '/^\d{10}$/'],
+//            [['store_manager_phone_number'], 'match', 'pattern' => '/^\d{10}$/'],
             [['latitude', 'longitude'], 'double'],
             [['store_manager_phone_code'], 'number','max'=>99],
             [['storeImage'], 'file','extensions'=>'jpg,png,jpeg'],

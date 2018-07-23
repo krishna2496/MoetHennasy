@@ -270,10 +270,12 @@ class MarketController extends BaseBackendController
         }
         
      
-         if(Yii::$app->request->post('selection')) {
+         if(Yii::$app->request->post('selectedBrand')) {
       
             $model->load(Yii::$app->request->post());
-            $rules = Yii::$app->request->post('selection');
+            $data = Yii::$app->request->post('selectedBrand');
+         
+            $rules = explode(',', $data);
             $ruleData['market_id'] = $id;
             $ruleData['brand_id'] = $rules;
            

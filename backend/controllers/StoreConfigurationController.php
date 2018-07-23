@@ -660,7 +660,12 @@ class StoreConfigurationController extends Controller {
                 }
             }
         }
-
+       
+        foreach ($racksProductArray as $key =>$value){
+ 
+        $this->applySortingRule($racksProductArray);
+        }
+     
         $this->fillUpEmptySpaceOfShelves($racksProductArray, $selvesWidth, $selevesCount);
         //all repeated products
      
@@ -838,6 +843,7 @@ class StoreConfigurationController extends Controller {
     private function fillUpEmptySpaceOfShelves(&$racksProductArray, $selvesWidth, $selevesCount) {
         $products = array();
         $arrayProducts = $racksProductArray;
+        $selvesWidth = doubleval($selvesWidth);
         if ($this->ifRuleContain(\yii::$app->params['configArray']['market_share_count'])) {
 
             $productCount = count($racksProductArray);
@@ -856,7 +862,7 @@ class StoreConfigurationController extends Controller {
                         $min = (min(array_column($products, 'width')) == 0) ? 1 : min(array_column($products, 'width'));
                         $sum = array_sum(array_column($products, 'width'));
                     }
-                    $diff = intval($selvesWidth) - $sum;
+                    $diff = intval($selvesWidth - $sum);
                     if (!empty($products)) {
                         if ($diff > $min) {
                             $sumOfMarketShare = array_sum(array_column($products, 'market_share'));
@@ -900,11 +906,8 @@ class StoreConfigurationController extends Controller {
 
     private function applySortingRule(&$racksProductArray) {
         
-//        $sort = SORT_ASC;
-//        
-//        $this->sort_array_of_array($racksProductArray, 'id', $sort);
-        
-            
+        $this->sort_array_of_array($racksProductArray, 'id', SORT_DESC);
+    
         if ($this->ifRuleContain(\yii::$app->params['configArray']['market_share'])) {            
             $sort = SORT_DESC;
             $this->sort_array_of_array($racksProductArray, 'market_share', $sort);

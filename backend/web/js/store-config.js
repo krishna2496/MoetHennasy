@@ -519,6 +519,7 @@ jQuery(document).ready(function ()
             {
                 if (index == 1)
                 {
+                   
                     url = rackFromURL;
                     $.ajax({
                         type: 'POST',
@@ -530,8 +531,7 @@ jQuery(document).ready(function ()
 
                             $("#tab-step-1").hide();
                             $("#tab-step-2").show();
-
-                            var productObject = {};
+                            for (var member in productObject) delete productObject[member];
                             $.pjax.reload({container: '#employee', async: false});
                             $("#tab2").removeAttr('disabled');
                         }
@@ -540,7 +540,7 @@ jQuery(document).ready(function ()
                 if (index == 2) {
 
                     url = rackProductFromURL;
-
+                   
                     $.ajax({
                         type: 'POST',
                         url: url,
