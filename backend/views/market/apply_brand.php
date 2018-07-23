@@ -20,7 +20,7 @@ $formUrl = Url::to(['market/brands/' . $market_id]);
 <div class="row">
     <div class="row" id="isDisplay">
         <?php Pjax::begin(['id' => 'brands', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'POST']]) ?>  
-        <?= Html::beginForm($formUrl, 'post', ['data-pjax' => '', 'id' => 'w1']); ?>
+       
         <div class="col-xs-12">
             <div class="box">
 
@@ -33,18 +33,21 @@ $formUrl = Url::to(['market/brands/' . $market_id]);
                             <div class="col-md-12">
                                 <div class="filter-search dataTables_filter clearfix">
                                     <div class="row">
+                                        <?= Html::beginForm($formUrl, 'post', ['data-pjax' => '', 'id' => 'search-users']); ?>
                                         <div class="col-md-8">
                                             <?php echo Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?> 
+                                            <span id="searchClear" class="glyphicon glyphicon-remove"></span>
                                         </div>
                                         <div class="col-md-4">
                                             <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '', Yii::$app->params['limit'], ['class' => 'form-control', 'id' => 'user-limit']) ?>
                                         </div>
+                                        <?= Html::endForm(); ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+ <?= Html::beginForm($formUrl, 'post', ['data-pjax' => '', 'id' => 'w1']); ?>
                     <input name="selection" value="" type="hidden" id="selection"/>
 
                     <?=
@@ -108,7 +111,10 @@ $formUrl = Url::to(['market/brands/' . $market_id]);
                             popedValue = selectedBrand.indexOf($(this).val());
                             selectedBrand.splice(popedValue, 1);
                         });
-
+                        $("#searchClear").on('click',function(){
+                            $(this).prev().val(''); 
+                            $('#search-users').submit();
+                        });
                     </script>
 
                 </div>
@@ -158,6 +164,8 @@ $formUrl = Url::to(['market/brands/' . $market_id]);
 </div>
 <script>
     $("body").on("change", "#user-text,#user-limit", function (event) {
-        $('#w1').submit();
+        $('#search-users').submit();
     });
+    
+    
 </script>

@@ -1,5 +1,5 @@
 $("#searchclear").click(function(){
-    $(this).prev().val('');
+    $(this).prev().val(''); 
     $('#search-users').submit();
     $('#search-stores').submit();
     $('#search-categories').submit();

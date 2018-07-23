@@ -1,5 +1,5 @@
 /*Step wizard css*/
-#searchclear {
+#searchclear, #searchClear {
     position: absolute;
     right: 20px;
     top: 0;
