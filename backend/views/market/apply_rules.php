@@ -40,8 +40,10 @@ if ($market_segment_id != '') {
 <?php ActiveForm::end(); ?>
         </div>
     </div>
-    <?php Pjax::begin(['id' => 'rules', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST']]); ?>
+<?php Pjax::begin(['id' => 'rules', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST']]); ?>
 <?php $form = ActiveForm::begin(['method' => 'post', 'options' => ['data-pjax' => '', 'id' => 'w1']]); ?>
+   <input type="hidden" value="" name="selection" id="selection"/>
+   <input type="hidden" name="market_segment_id" value="<?= $market_segment_id ?>" />
     <div class="row" id="isDisplay">
         <div class="col-xs-12">
             <div class="box">
@@ -84,9 +86,6 @@ GridView::widget([
              
                 </div>
                 <div class="row">
-
-                    <input type="hidden" value="" name="selection" id="selection"/>
-                    <input type="hidden" name="market_segment_id" value="<?= $market_segment_id ?>" />
                     <div class="col-md-6 isDisplay">
 <?= Html::Button('Save', ['class' => 'btn btn-primary pull-left mw-md auto_fill', 'style' => 'margin-top:25px;margin-bottom:20px;margin-left:20px']) ?>
                     </div>
@@ -95,6 +94,17 @@ GridView::widget([
         </div>
     </div>
 <?php ActiveForm::end(); ?>
+   <script>
+    $('.select-on-check-all').on('ifChecked', function (event) {
+            $('input[name="selection[]"]').iCheck('check');
+
+        });
+
+        $('.select-on-check-all').on('ifUnchecked', function (event) {
+            $('input[name="selection[]"]').iCheck('uncheck');
+
+        });
+   </script>
 <?php Pjax::end(); ?> 
     <script type="text/javascript">
         var brandThumbId =0;
@@ -115,8 +125,7 @@ GridView::widget([
 
         });
 
-        $(".auto_fill").on('click', function () {
-
+        $("body").on('click','.auto_fill', function () {
             var favorite = [];
             $.each($("input[name='selection[]']:checked"), function () {
 
@@ -130,6 +139,7 @@ GridView::widget([
             $("#selection").val(product);
             if ($("#w1 input:checkbox:checked").length > 0)
             {
+             
                 $("#w1").submit();
                 return true;
             } else {

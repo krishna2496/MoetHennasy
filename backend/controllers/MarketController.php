@@ -163,12 +163,14 @@ class MarketController extends BaseBackendController
         ]);
     }
  
-    public function actionRules($id){
+    public function actionRules($id){      
+       $filters = Yii::$app->request->queryParams;
+      
        if (($model = Markets::findOne($id)) !== null) {
         $title=$model->title;
         
         $searchModel = new RulesSearch();
-        $filters = Yii::$app->request->queryParams;
+       
         $model = new MarketRules();
         $selected = [];
         $market_segment_id ='';
@@ -176,9 +178,17 @@ class MarketController extends BaseBackendController
         if(Yii::$app->request->post('MarketRules')){
             $postData=Yii::$app->request->post('MarketRules');
             $market_segment_id=$postData['market_segment_id'];
+            $_SESSION['apply_rule_segment_id'] = $market_segment_id;
             $ruleModel = MarketRules::find()->select('rule_id')->andWhere(['market_id' => $id,'market_segment_id' => $market_segment_id ])->asArray()->all();
         }else{
-        $ruleModel = MarketRules::find()->select('rule_id')->andWhere(['market_id' => $id])->asArray()->all();
+            $request = Yii::$app->request;
+            $ruleModel = MarketRules::find()->select('rule_id')->andWhere(['market_id' => $id])->asArray()->all();
+            if ($request->isPjax) {
+                if(isset($filters['id']) && ($filters['id'] != '') && ($filters['id'] != 0)){
+                    $id = $filters['id'];
+                }
+            $ruleModel = MarketRules::find()->select('rule_id')->andWhere(['market_id' => $id,'market_segment_id' => $_SESSION['apply_rule_segment_id']])->asArray()->all();
+            }
         }
         
         if($ruleModel){
@@ -186,7 +196,6 @@ class MarketController extends BaseBackendController
                   $selected[$key]  = $value['rule_id']; 
              }
         }
-    
         $data['market_id'] = $id;
         $markets = new MarketRepository();
         $marketData = $markets->marketList($data);
@@ -201,11 +210,10 @@ class MarketController extends BaseBackendController
            
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('selection');
-            
-            $rules = explode(',', $data);
+            $rules = $data;
             $ruleData['market_id'] = $id;
             $ruleData['rule_id'] = $rules;
-            $ruleData['market_segment_id'] = Yii::$app->request->post('market_segment_id');
+            $ruleData['market_segment_id'] =  $_SESSION['apply_rule_segment_id'] ;
             $marketRepository = new MarketRulesRepository;
             $returnData = $marketRepository->createRule($ruleData);
             if($returnData['status']['success'] == 1)
