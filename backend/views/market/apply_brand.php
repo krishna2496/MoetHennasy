@@ -141,7 +141,8 @@ $formUrl = Url::to(['market/brands/' . $market_id]);
 
         });
 
-        $(".auto_fill").on('click', function () {
+        $(".auto_fill").on('click', function () {	
+        selectedBrand  = selectedBrand.filter(Boolean)
             if (selectedBrand!=undefined && selectedBrand.length > 0)
             {
                 $("#selectedBrand").val(selectedBrand);
