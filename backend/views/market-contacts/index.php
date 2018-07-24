@@ -45,17 +45,27 @@ $formUrl = Url::to(['market-contacts/index/' . $market_id]);
                     'dataProvider' => $dataProvider,
                     'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-5">{summary}</div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
                     'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
-                            [
+                        ['class' => 'yii\grid\SerialColumn'],
+                        [
                             'label' => 'Market Cluster',
                             'attribute' => 'marketSegment.title',
+                            'contentOptions' => ['style' => 'width:25%'],
                         ],
-                        'phone',
-                        'email',
+                        [
+                            'label' => 'Phone',
+                            'attribute' => 'phone',
+                            'contentOptions' => ['style' => 'width:25%'],
+                        ],
+                        [
+                            'label' => 'Email',
+                            'attribute' => 'email',
+                            'contentOptions' => ['style' => 'width:25%'],
+                        ],
                             [
                             'class' => 'yii\grid\ActionColumn',
                             'header' => 'Actions',
                             'template' => '{view} {update} {delete}',
+                            'contentOptions' => ['style' => 'width:25%'],
                             'buttons' => [
                                 'view' => function ($url, $model) use ($market_id) {
                                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['market-contacts/view/' . $market_id . '/' . $model['id']],['title'=>'View']);
