@@ -224,7 +224,6 @@ class MarketController extends BaseBackendController
         
         $dataProvider = $searchModel->search($filters);
         $dataProvider->pagination->pageSize = $filters['limit'];
-       
         return $this->render('apply_rules', [
             'model' => $model,
             'searchModel' => $searchModel,
