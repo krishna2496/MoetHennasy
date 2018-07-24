@@ -49,7 +49,7 @@ $formUrl = Url::to(['market/brands/' . $market_id]);
                     </div>
  <?= Html::beginForm($formUrl, 'post', ['data-pjax' => '', 'id' => 'w1']); ?>
                     <input name="selection" value="" type="hidden" id="selection"/>
-
+                    <input type="hidden" value="" name="selectedBrand" id="selectedBrand"/>
                     <?=
                     GridView::widget([
                         'dataProvider' => $dataProvider,
@@ -78,7 +78,6 @@ $formUrl = Url::to(['market/brands/' . $market_id]);
                             $('input[name="selection[]"]').each(function (skey, sval) {
 
                                 productObject[$(sval).val()] = false;
-                                console.log(selectedBrand);
                                 $(selectedBrand).each(function (bkey, bvalue) {
                                     if ($(sval).val() == bvalue) {
                                         productObject[$(sval).val()] = true;
@@ -119,10 +118,7 @@ $formUrl = Url::to(['market/brands/' . $market_id]);
 
                 </div>
                 <div class="row">
-
-                    <input type="hidden" value="" name="selectedBrand" id="selectedBrand"/>
-
-                    <div class="col-md-6 isDisplay">
+                <div class="col-md-6 isDisplay">
                         <?= Html::Button('Save', ['class' => 'btn btn-primary pull-left mw-md auto_fill', 'style' => 'margin-top:25px;margin-bottom:20px;margin-left:20px']) ?>
                     </div>
                 </div>
