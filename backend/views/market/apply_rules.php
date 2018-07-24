@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use common\helpers\CommonHelper;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use yii\widgets\Pjax;
 
 $this->title = 'Market Rules';
 $this->params['breadcrumbs'][] = ['label' => 'Markets', 'url' => ['/market']];
@@ -39,16 +40,16 @@ if ($market_segment_id != '') {
 <?php ActiveForm::end(); ?>
         </div>
     </div>
+    <?php Pjax::begin(['id' => 'rules', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST']]); ?>
 <?php $form = ActiveForm::begin(['method' => 'post', 'options' => ['data-pjax' => '', 'id' => 'w1']]); ?>
     <div class="row" id="isDisplay">
         <div class="col-xs-12">
             <div class="box">
-                 <div class="box-header">
-                <h2>
-Rules
-                </h2>
-            </div>
+                <div class="box-header">
+                    <h2>Rules</h2>
+                </div>
                 <div class="box-body">
+
 <?=
 GridView::widget([
     'dataProvider' => $dataProvider,
@@ -62,12 +63,25 @@ GridView::widget([
                 ];
             },
         ],
-        'type',
-        'product_fields',
-        'detail',
+        [
+            'label' => 'Type',
+            'attribute' => 'type',
+            'contentOptions' => ['style' => 'width:25%'],
+        ],
+        [
+            'label' => 'Product Fields',
+            'attribute' => 'product_fields',
+            'contentOptions' => ['style' => 'width:25%'],
+        ],
+        [
+            'label' => 'Detail',
+            'attribute' => 'detail',
+            'contentOptions' => ['style' => 'width:50%'],
+        ],
     ],
 ]);
 ?>
+             
                 </div>
                 <div class="row">
 
@@ -81,8 +95,9 @@ GridView::widget([
         </div>
     </div>
 <?php ActiveForm::end(); ?>
-
+<?php Pjax::end(); ?> 
     <script type="text/javascript">
+        var brandThumbId =0;
         $("#maketSegmentId").on('change',function(){
             $("#w0").submit();
         });
@@ -115,7 +130,6 @@ GridView::widget([
             $("#selection").val(product);
             if ($("#w1 input:checkbox:checked").length > 0)
             {
-
                 $("#w1").submit();
                 return true;
             } else {

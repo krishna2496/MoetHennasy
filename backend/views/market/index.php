@@ -47,7 +47,11 @@ $formUrl = Url::to(['market/index']);
 
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-                        'title:ntext',
+                        [
+                            'label' => 'Title',
+                            'attribute' => 'title',
+                            'contentOptions' => ['style' => 'width:20%'],
+                        ],
                           [
                             'label' => 'Market Cluster',
                             'value' => function($model, $index, $dataColumn) {
@@ -57,6 +61,7 @@ $formUrl = Url::to(['market/index']);
                             }                         
                             return implode(',',$array);
                         },
+                            'contentOptions' => ['style' => 'width:50%'],    
                          
                         ],
                           
@@ -64,6 +69,7 @@ $formUrl = Url::to(['market/index']);
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
                            'template' => '{view} {update} {delete} {contact}  {rules}  {brand}',
+                            'contentOptions' => ['style' => 'width:30%'],
                            'buttons' => [
     
                                'view' => function ($url, $model) use ($filters) {

@@ -50,11 +50,16 @@ $formUrl = Url::to(['product-types/index']);
                     'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-5">{summary}</div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
                     'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
-                        'title',
+                            [
+                                'label'=>'Title',
+                                'attribute'=>'title',
+                                'contentOptions'=>[ 'style'=>'width: 50%'],
+                            ],
                             [
                             'class' => 'yii\grid\ActionColumn',
                             'header' => 'Actions',
                             'template' => ' {update} {delete}',
+                            'contentOptions'=>[ 'style'=>'width: 50%'],
                             'buttons' => [
 //                                'view' => function ($url, $model) {
 //                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['product-types/view/' . $model['id']]);

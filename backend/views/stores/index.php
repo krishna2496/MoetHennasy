@@ -89,19 +89,28 @@ if(isset($urlData[1]) && $urlData[1]){
                     'layout'=>'<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-5">{summary}</div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
 
                     'columns' => [
-                        ['class' => 'yii\grid\SerialColumn',
-                         
-                            ],
+                        ['class' => 'yii\grid\SerialColumn',],
                         
-                        'name',
-                        'market',
+                        [
+                            'label'=>'Name',
+                            'attribute'=>'name',
+                            'contentOptions'=>[ 'style'=>'width: 20%'],
+                        ],
+                        [
+                            'label'=>'Market',
+                            'attribute'=>'market',
+                            'contentOptions'=>[ 'style'=>'width: 20%'],
+                        ],
                         [
                             'label' =>'Market Cluster',
                             'attribute' => 'marketSegment',
+                            'contentOptions'=>[ 'style'=>'width: 20%'],
                         ],
-                        
-                       
-                        'assignTo',
+                        [
+                            'label'=>'Assign To',
+                            'attribute'=>'assignTo',
+                            'contentOptions'=>[ 'style'=>'width: 20%'],
+                        ],
                         [
                            'class' => 'yii\grid\ActionColumn', 'contentOptions'=>[ 'style'=>'width: 20%'],     
                            'header' => 'Actions',

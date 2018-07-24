@@ -43,13 +43,26 @@ $formUrl = Url::to(['rules/index']);
 
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-                          'type',
-                          'product_fields',
-                          'detail',
+                        [
+                            'label'=>'Type',
+                            'attribute'=>'type',
+                            'contentOptions'=>[ 'style'=>'width: 25%'],
+                        ],
+                        [
+                            'label'=>'Product Fields',
+                            'attribute'=>'product_fields',
+                            'contentOptions'=>[ 'style'=>'width: 25%'],
+                        ],
+                          [
+                            'label'=>'Detail',
+                            'attribute'=>'detail',
+                            'contentOptions'=>[ 'style'=>'width: 25%'],
+                        ],
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
                            'template' => '{view} {update}',
+                            'contentOptions'=>[ 'style'=>'width: 25%'],
                            'buttons' => [
                                'view' => function ($url, $model){
                                   return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['rules/view/'.$model['id']],['title'=>'View']);

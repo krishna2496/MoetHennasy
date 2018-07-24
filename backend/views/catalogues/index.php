@@ -56,21 +56,33 @@ $formUrl = Url::to(['catalogues/index']);
                     'columns' => [
                             [
                             'class' => 'yii\grid\SerialColumn'],
-                       
+                       [
+                            'label'=>'SKU',
+                            'attribute'=>'sku',
+                            'contentOptions'=>[ 'style'=>'width: 20%'],
+                        ],
+                        [
+                            'label'=>'EAN',
+                            'attribute'=>'ean',
+                            'contentOptions'=>[ 'style'=>'width: 20%'],
+                        ],
                            
-                        'sku',
-                        'ean',
-                           
-                            [
+                        [
                             'label' => 'Brand',
                             'attribute' => 'brandName',
-                            'value' => 'brand.name'
+                            'value' => 'brand.name',
+                            'contentOptions'=>[ 'style'=>'width: 20%'],
                         ],
-                            'price',
+                        [
+                            'label'=>'Price',
+                            'attribute'=>'price',
+                            'contentOptions'=>[ 'style'=>'width: 20%'],
+                        ],
                             [
                             'class' => 'yii\grid\ActionColumn',
                             'header' => 'Actions',
                             'template' => '{view} {update} {delete}',
+                            'contentOptions'=>[ 'style'=>'width: 20%'],
                             'buttons' => [
                                 'view' => function ($url, $model) {
                                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['catalogues/view/' . $model['id']],['title'=>'View']);

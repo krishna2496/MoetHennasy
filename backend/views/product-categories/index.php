@@ -50,10 +50,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-                        'name',
-                        'parentCategory.name',
+                        [
+                            'label'=>'Name',
+                            'attribute'=>'name',
+                            'contentOptions'=>[ 'style'=>'width: 33.3%'],
+                        ],
+                        [
+                            'label'=>'Product Category Name',
+                            'attribute'=>'parentCategory.name',
+                            'contentOptions'=>[ 'style'=>'width: 33.3%'],
+                        ],
                         [
                            'class' => 'yii\grid\ActionColumn',
+                            'contentOptions'=>[ 'style'=>'width: 33.3%'],
                            'header' => 'Actions',
                            'template' => '{update} {delete}',
                            'buttons' => [

@@ -53,12 +53,17 @@ $formUrl = Url::to(['help-categories/index']);
 
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-                          'title',
+                        [
+                            'label'=>'Title',
+                            'attribute'=>'title',
+                            'contentOptions'=>[ 'style'=>'width: 50%'],
+                        ],
                           
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
                            'template' => '{update} {delete}{question}',
+                            'contentOptions'=>[ 'style'=>'width: 50%'],
                            'buttons' => [
 //                               'view' => function ($url, $model) {
 //                                  return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['help-categories/view/'.$model['id']],['title'=>'View']);

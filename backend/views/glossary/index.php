@@ -47,7 +47,11 @@ $formUrl = Url::to(['glossary/index']);
                     'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-5">{summary}</div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
                     'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
-                        'title',
+                            [
+                                'label'=>'Title',
+                                'attribute'=>'title',
+                                'contentOptions'=>[ 'style'=>'width: 33.5%'],
+                            ],
                             [
                             'label' => 'Description',
                             'attribute' => 'description',
@@ -59,11 +63,13 @@ $formUrl = Url::to(['glossary/index']);
                                         return $model['description'];
                                     }
                                 },
+                            'contentOptions'=>[ 'style'=>'width: 33.5%'],
                         ],
                             [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
                            'template' => '{view} {update} {delete}',
+                                'contentOptions'=>[ 'style'=>'width: 33.5%'],
                            'buttons' => [
                                'view' => function ($url, $model) use ($filters) {
                                   return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/glossary/view/'.$model['id']],['title'=>'View']);

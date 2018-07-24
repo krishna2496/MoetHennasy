@@ -45,12 +45,21 @@ $this->params['breadcrumbs'][] = $this->title;
                     'layout'=>'<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-5">{summary}</div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-                        'permission_label',
-                        'permission_title',
+                        [
+                            'label'=>'Permission Label',
+                            'attribute'=>'permission_label',
+                            'contentOptions'=>[ 'style'=>'width: 33.5%'],
+                        ],
+                        [
+                            'label'=>'Permission Title',
+                            'attribute'=>'permission_title',
+                            'contentOptions'=>[ 'style'=>'width: 33.5%'],
+                        ],
                         [
                             'class' => 'yii\grid\ActionColumn',
                             'visible' =>$isActionColoum,
                             'header'=> 'Action',
+                            'contentOptions'=>[ 'style'=>'width: 33.5%'],
                             'headerOptions' => [
                                 'style' => 'color:#004FA3'
                             ],
