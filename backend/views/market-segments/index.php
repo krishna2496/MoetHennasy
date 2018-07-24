@@ -50,7 +50,11 @@ $formUrl = Url::to(['market-segments/index']);
 
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-                        'title',
+                        [
+                            'label' => 'Title',
+                            'attribute' => 'title',
+                            'contentOptions' => ['style' => 'width:20%'],
+                        ],
                         [
                             'label' => 'Description',
                             'attribute' => 'description',
@@ -62,11 +66,13 @@ $formUrl = Url::to(['market-segments/index']);
                                         return $model['description'];
                                     }
                                 },
+                            'contentOptions' => ['style' => 'width:70%'],
                         ],
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
                            'template' => '{view} {update} {delete}',
+                            'contentOptions' => ['style' => 'width:10%'],
                            'buttons' => [
                                'view' => function ($url, $model) use ($filters) {
                                   return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['market-segments/view/'.$model['id']],['title'=>'View']);

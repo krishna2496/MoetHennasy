@@ -61,17 +61,31 @@ if (isset($filters['setParentID'])) {
                     'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-5">{summary}</div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
                     'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
-                        'name',
-                        'username',
-                        'email:email',
-                            [
+                        [
+                            'label'=>'Name',
+                            'attribute'=>'name',
+                            'contentOptions'=>[ 'style'=>'width: 20%'],
+                        ],
+                        [
+                            'label'=>'Username',
+                            'attribute'=>'username',
+                            'contentOptions'=>[ 'style'=>'width: 20%'],
+                        ],
+                        [
+                            'label'=>'Email',
+                            'attribute'=>'email',
+                            'contentOptions'=>[ 'style'=>'width: 20%'],
+                        ],
+                        [
                             'label' => 'User Type',
                             'attribute' => 'role',
+                            'contentOptions'=>[ 'style'=>'width: 20%']
                         ],
-                            [
+                        [
                             'class' => 'yii\grid\ActionColumn',
                             'header' => 'Actions',
                             'template' => '{view} {update} {delete} {manageUser}',
+                            'contentOptions'=>[ 'style'=>'width: 20%'],
                             'buttons' => [
                                 'view' => function ($url, $model) use ($filters) {
                                     $addLink = isset($filters['setParentID']) ? '/' . $model['parent_user_id'] : '';
