@@ -14,6 +14,7 @@ $formUrl = Url::to(['brands/index']);
             <div class="box-header">
                 <h3 class="box-title">
                     <?= Html::encode($this->title) ?>
+                    
                 </h3>
                 <div class="row pull-right">
                     <div class="col-md-3">

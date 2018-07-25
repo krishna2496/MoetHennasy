@@ -19,7 +19,9 @@ $formUrl = Url::to(['market/rules']);
             <div class="box-header">
                 <h2>
 <?= $title ?>
+                    <?= \yii\helpers\Html::a( 'Back', Yii::$app->request->referrer,['class' => 'btn btn-primary pull-right']);?>
                 </h2>
+                 
             </div>
             <div class="box-body">
                 <div class="row">

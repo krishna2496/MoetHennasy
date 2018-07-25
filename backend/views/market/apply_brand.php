@@ -28,6 +28,7 @@ $formUrl = Url::to(['market/brands/' . $market_id]);
                     <div class="box-header">
                         <h2>
                             <?= $title; ?>
+                            <?= \yii\helpers\Html::a( 'Back', Yii::$app->request->referrer,['class' => 'btn btn-primary pull-right']);?>
                         </h2>
                         <div class="row pull-right">
                             <div class="col-md-12">

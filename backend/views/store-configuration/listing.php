@@ -32,9 +32,14 @@ $formUrl = Url::to(['store-configuration/listing/'.$id]);
     <div class="col-xs-12">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">
-                    <?= Html::encode($this->title) ?>
-                </h3>
+               <div class="row">
+                   <div class="col-md-12">
+                        <h3 class="box-title">
+                            <?= Html::encode($this->title) ?>
+                        </h3>
+                        <?= \yii\helpers\Html::a( 'Back', Yii::$app->request->referrer,['class' => 'btn btn-primary pull-right']);?>
+                   </div>
+               </div>
                 <div class="row">
                     <div class="col-md-8"></div>
                     <div class="col-md-2">
