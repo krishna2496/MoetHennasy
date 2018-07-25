@@ -104,7 +104,7 @@ $formUrl = Url::to(['market/brands/' . $market_id]);
                         $('input[name="selection[]"]').on('ifChecked', function (event) {
 
                             selectedBrand.push($(this).val());
-                            console.log(selectedBrand);
+                            
                         });
 
                         $('input[name="selection[]"]').on('ifUnchecked', function (event) {
@@ -143,7 +143,8 @@ $formUrl = Url::to(['market/brands/' . $market_id]);
         });
 
         $(".auto_fill").on('click', function () {	
-        selectedBrand  = selectedBrand.filter(Boolean)
+        selectedBrand  = selectedBrand.filter(Boolean);
+        console.log(selectedBrand);
             if (selectedBrand!=undefined && selectedBrand.length > 0)
             {
                 $("#selectedBrand").val(selectedBrand);
