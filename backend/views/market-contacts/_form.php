@@ -15,7 +15,7 @@ use yii\helpers\Url;
                     <h3 class="box-title">
                         <?= Html::encode($this->title."  - ". $model->getMarketName($market_id)) ?>
                     </h3>    
-                    <?= \yii\helpers\Html::a( 'Back', Yii::$app->request->referrer,['class' => 'btn btn-primary pull-right']);?>
+                    <?= \yii\helpers\Html::a( 'Back', ['market/index'],['class' => 'btn btn-primary pull-right']);?>
                 </div>
                 <div class="box-body">
                     <div class="row">

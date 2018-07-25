@@ -13,16 +13,23 @@ $formUrl = Url::to(['helps/index/'.$id]);
     <div class="col-xs-12">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">
-                    <?= Html::encode($this->title) ?>
-                </h3>
+                <div class="row addmargin">
+                    <div class="col-md-12">
+                        <h3 class="box-title">
+                            <?= Html::encode($this->title) ?>
+                        </h3>
+                        <div class="pull-right">
+                            <?= \yii\helpers\Html::a( 'Back',['help-categories/index'],['class' => 'btn btn-primary pull-right']);?>
+                        </div>
+                    </div>
+                </div>
                 <div class="row pull-right">
                     <div class="col-md-4">
                         <?php  if(CommonHelper::checkPermission('Helps.Create')){ ?>
                         <?= Html::a('Add Question', ['helps/create/'.$id], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
@@ -34,9 +41,6 @@ $formUrl = Url::to(['helps/index/'.$id]);
                             </div>
                         </div>
                         <?= Html::endForm(); ?>
-                    </div>
-                    <div class="col-md-2">
-                    <?= \yii\helpers\Html::a( 'Back', Yii::$app->request->referrer,['class' => 'btn btn-primary pull-right']);?>
                     </div>
                 </div>
             </div>
