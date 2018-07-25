@@ -663,7 +663,7 @@ class StoreConfigurationController extends Controller {
        
         foreach ($racksProductArray as $key =>$value){
  
-        $this->applySortingRule($racksProductArray);
+        $this->applySortingRule($racksProductArray[$key]);
         }
      
         $this->fillUpEmptySpaceOfShelves($racksProductArray, $selvesWidth, $selevesCount);
