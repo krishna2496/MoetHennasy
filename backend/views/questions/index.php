@@ -50,20 +50,20 @@ $formUrl = Url::to(['questions/index']);
                        [
                              'attribute' => 'question',
                              'label' =>'Feedback question', 
-                             'contentOptions'=>[ 'style'=>'width: 33.5%'],
+                             'contentOptions'=>[ 'style'=>'width: 60%'],
                        ],
                         [
                             'attribute' => 'response_type',
                             'value' => function ($model) {
                                return  Yii::$app->params['response_type'][$model['response_type']];
                              },
-                            'contentOptions'=>[ 'style'=>'width: 33.5%'],
+                            'contentOptions'=>[ 'style'=>'width: 30%'],
                         ],
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
                            'template' => '{view} {update} {delete}',
-                            'contentOptions'=>[ 'style'=>'width: 33.5%'],
+                            'contentOptions'=>[ 'style'=>'width: 10%'],
                            'buttons' => [
                                'view' => function ($url, $model) {
                                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['questions/view/'.$model['id']],['title'=>'View']);

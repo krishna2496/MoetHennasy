@@ -74,7 +74,7 @@ if (isset($filters['setParentID'])) {
                         [
                             'label'=>'Email',
                             'attribute'=>'email',
-                            'contentOptions'=>[ 'style'=>'width: 20%'],
+                            'contentOptions'=>[ 'style'=>'width: 30%'],
                         ],
                         [
                             'label' => 'User Type',
@@ -85,7 +85,7 @@ if (isset($filters['setParentID'])) {
                             'class' => 'yii\grid\ActionColumn',
                             'header' => 'Actions',
                             'template' => '{view} {update} {delete} {manageUser}',
-                            'contentOptions'=>[ 'style'=>'width: 20%'],
+                            'contentOptions'=>[ 'style'=>'width: 10%'],
                             'buttons' => [
                                 'view' => function ($url, $model) use ($filters) {
                                     $addLink = isset($filters['setParentID']) ? '/' . $model['parent_user_id'] : '';

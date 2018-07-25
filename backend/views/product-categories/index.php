@@ -53,16 +53,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'label'=>'Name',
                             'attribute'=>'name',
-                            'contentOptions'=>[ 'style'=>'width: 33.3%'],
+                            'contentOptions'=>[ 'style'=>'width: 45%'],
                         ],
                         [
                             'label'=>'Product Category Name',
                             'attribute'=>'parentCategory.name',
-                            'contentOptions'=>[ 'style'=>'width: 33.3%'],
+                            'contentOptions'=>[ 'style'=>'width: 45%'],
                         ],
                         [
                            'class' => 'yii\grid\ActionColumn',
-                            'contentOptions'=>[ 'style'=>'width: 33.3%'],
+                            'contentOptions'=>[ 'style'=>'width: 10%'],
                            'header' => 'Actions',
                            'template' => '{update} {delete}',
                            'buttons' => [

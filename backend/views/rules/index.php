@@ -56,13 +56,13 @@ $formUrl = Url::to(['rules/index']);
                           [
                             'label'=>'Detail',
                             'attribute'=>'detail',
-                            'contentOptions'=>[ 'style'=>'width: 25%'],
+                            'contentOptions'=>[ 'style'=>'width: 40%'],
                         ],
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
                            'template' => '{view} {update}',
-                            'contentOptions'=>[ 'style'=>'width: 25%'],
+                            'contentOptions'=>[ 'style'=>'width: 10%'],
                            'buttons' => [
                                'view' => function ($url, $model){
                                   return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['rules/view/'.$model['id']],['title'=>'View']);

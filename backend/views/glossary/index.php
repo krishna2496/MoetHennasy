@@ -50,7 +50,7 @@ $formUrl = Url::to(['glossary/index']);
                             [
                                 'label'=>'Title',
                                 'attribute'=>'title',
-                                'contentOptions'=>[ 'style'=>'width: 33.5%'],
+                                'contentOptions'=>[ 'style'=>'width: 40%'],
                             ],
                             [
                             'label' => 'Description',
@@ -63,13 +63,13 @@ $formUrl = Url::to(['glossary/index']);
                                         return $model['description'];
                                     }
                                 },
-                            'contentOptions'=>[ 'style'=>'width: 33.5%'],
+                            'contentOptions'=>[ 'style'=>'width: 50%'],
                         ],
                             [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
                            'template' => '{view} {update} {delete}',
-                                'contentOptions'=>[ 'style'=>'width: 33.5%'],
+                                'contentOptions'=>[ 'style'=>'width: 10%'],
                            'buttons' => [
                                'view' => function ($url, $model) use ($filters) {
                                   return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/glossary/view/'.$model['id']],['title'=>'View']);
