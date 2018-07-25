@@ -22,7 +22,7 @@ $formUrl = Url::to(['helps/index/'.$id]);
                         <?= Html::a('Add Question', ['helps/create/'.$id], ['class' => 'btn btn-primary']) ?>
                         <?php } ?>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-users']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
@@ -34,6 +34,9 @@ $formUrl = Url::to(['helps/index/'.$id]);
                             </div>
                         </div>
                         <?= Html::endForm(); ?>
+                    </div>
+                    <div class="col-md-2">
+                    <?= \yii\helpers\Html::a( 'Back', Yii::$app->request->referrer,['class' => 'btn btn-primary pull-right']);?>
                     </div>
                 </div>
             </div>
