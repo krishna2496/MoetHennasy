@@ -61,7 +61,7 @@ $formUrl = Url::to(['market/index']);
                             }                         
                             return implode(',',$array);
                         },
-                            'contentOptions' => ['style' => 'width:50%'],    
+                            'contentOptions' => ['style' => 'width:45%'],    
                          
                         ],
                           
@@ -69,7 +69,7 @@ $formUrl = Url::to(['market/index']);
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
                            'template' => '{view} {update} {delete} {contact}  {rules}  {brand}',
-                            'contentOptions' => ['style' => 'width:30%'],
+                            'contentOptions' => ['style' => 'width:35%'],
                            'buttons' => [
     
                                'view' => function ($url, $model) use ($filters) {
