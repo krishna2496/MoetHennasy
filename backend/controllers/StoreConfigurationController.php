@@ -21,7 +21,7 @@ use common\repository\BrandRepository;
 use common\repository\UploadRepository;
 use common\repository\StoreConfigRepository;
 use common\repository\UserRepository;
-use Mpdf\Mpdf;
+use mPDF;
 use common\components\Email;
 use common\models\User;
 use common\models\Questions;
@@ -953,8 +953,10 @@ class StoreConfigurationController extends Controller {
 
     public function sort_array_of_array(&$array, $subfield, $sort) {
         $sortarray = array();
+        if(!empty($array) && (isset($array))){
         foreach ($array as $key => $row) {
             $sortarray[$key] = isset($row[$subfield]) ? $row[$subfield] : '';
+        }
         }
 
         array_multisort($sortarray, $sort, $array);
@@ -1022,7 +1024,7 @@ class StoreConfigurationController extends Controller {
 
     public function actionSendMail($thumb) 
     {
-        $mpdf = new Mpdf();
+        $mpdf = new mPDF();
         $thumImage = explode('/', $thumb);
         $thumb = end($thumImage);
 
