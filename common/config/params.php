@@ -13,7 +13,7 @@ define('UPLOAD_PATH_IMAGES','images/');
 define('API_KEY','AIzaSyAY16V1f859Ve4NZghFYEZ-XcAiHOIgdTw');
 return [
     'adminEmail' => 'admin@example.com',
-    'supportEmail' => 'support@example.com',
+    'supportEmail' => 'support@odity.co.za',
     'superAdminRole' => 1,
     'marketAdministratorRole' => 2,
     'salesManagerRole' => 3,
