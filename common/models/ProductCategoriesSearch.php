@@ -32,10 +32,18 @@ class ProductCategoriesSearch extends ProductCategories
         if($productCategoryRepository['status']['success'] == 1){
             if($productCategoryRepository['data']['productCategories']){
                 foreach ($productCategoryRepository['data']['productCategories'] as $key => $value) {
-                    $categoryList[] = $value;
-                }
+                    $temp = $value;
+                    $temp['name']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['name']));
+                    $temp ["parentCategory"]['name']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp["parentCategory"]['name']));
+                    
+                    $categoryList[]=$temp;
+               }
             }
         }
+//        echo "<pre>";
+//        print_r($categoryList['name']);
+//        print_r($categoryList['parentCategory']['name']);
+//        exit;
 
         $dataProvider = new ArrayDataProvider([
             'allModels' => $categoryList,

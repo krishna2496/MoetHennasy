@@ -29,16 +29,14 @@ class CataloguesSearch extends Catalogues {
         $userRepository = new CataloguesRepository;
         $userList = array();
         $resultUserList = $userRepository->listing($params);
-        
         if ($resultUserList['status']['success'] == 1) {
             if ($resultUserList['data']['catalogues']) {
                 foreach ($resultUserList['data']['catalogues'] as $key => $value) {
-                   
                     $temp = $value;
-                    $temp['marketName'] = $value['market']['title'];
-                    $temp['brandName'] = $value['brand']['name'];
-//                    $temp['productType'] = $value['productType']['title'];
-                    $temp['productCategory'] = $value['productCategory']['name'];
+                    $temp['marketName'] = \yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['market']['title']));
+                    $temp['brandName'] =\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['brand']['name']));
+                    $temp['productCategory'] = \yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['productCategory']['name']));
+                    $temp['sku']= \yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['sku']));
                     $userList[] = $temp;
                 }
             }

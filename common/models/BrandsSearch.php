@@ -32,7 +32,9 @@ class BrandsSearch extends Brands
         if($brandRepository['status']['success'] == 1){
             if($brandRepository['data']['brand']){
                 foreach ($brandRepository['data']['brand'] as $key => $value) {
-                    $brandList[] = $value;
+                $temp=$value;
+                $temp['name']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['name']));
+                $brandList[] = $temp;
                 }
             }
         }

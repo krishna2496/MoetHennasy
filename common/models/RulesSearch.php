@@ -36,12 +36,16 @@ class RulesSearch extends Rules
         if($rulesRepository['status']['success'] == 1){
             if($rulesRepository['data']['rules']){
                 foreach ($rulesRepository['data']['rules'] as $key => $value) {
-                    $rulesList[] = $value;
-                }
+                    $temp=$value;
+                    $temp['type']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['type']));
+                    $temp['product_fields']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['product_fields']));
+                    $temp['detail']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['detail']));
+                    $rulesList []=$temp;
+                    }
             }
         }
-
-        $dataProvider = new ArrayDataProvider([
+        
+       $dataProvider = new ArrayDataProvider([
             'allModels' => $rulesList,
             'pagination' => [
                 'pageSize' => $params['limit']
