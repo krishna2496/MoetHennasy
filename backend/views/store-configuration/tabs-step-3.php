@@ -121,7 +121,7 @@ $submitUrl = "store-configuration/save-config-data";
                                                         
                                                             ?>
                                                                         <li>
-                                                                            <a href="#" title="bottle-image" class="product-image" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
+                                                                            <a href="#" class="product-image" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
                                                                                 <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" alt="Selected"   class="btl-img">
                                                                                 <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $products[$value1]['image']; ?>" >
                                                                                 <div class="product-tooltip">
@@ -160,7 +160,7 @@ $submitUrl = "store-configuration/save-config-data";
 
                                                                                 <tr>
                                                                                     <td>
-                                                                                        <a href="#" title="bottle-image" class="product-image media" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
+                                                                                        <a href="#" class="product-image media" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
                                                                                             <div class="media-left">
                                                                                                 <div class="list-product">
                                                                                                     <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" class="media-object">

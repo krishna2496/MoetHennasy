@@ -21,7 +21,7 @@ use common\repository\BrandRepository;
 use common\repository\UploadRepository;
 use common\repository\StoreConfigRepository;
 use common\repository\UserRepository;
-use Mpdf\Mpdf;
+use mPDF;
 use common\components\Email;
 use common\models\User;
 use common\models\Questions;
@@ -630,6 +630,7 @@ class StoreConfigurationController extends Controller {
         }
 
         $shelfIndex = (isset($racksProductArray[0]) && count($racksProductArray[0]) > 0 ) ? 1 : 0;
+        if ($selevesCount > 1) {
         foreach ($dataIds as $value) {
 
             if ($value['top_shelf'] == '1') {
@@ -660,10 +661,10 @@ class StoreConfigurationController extends Controller {
                 }
             }
         }
-       
+        }
         foreach ($racksProductArray as $key =>$value){
  
-        $this->applySortingRule($racksProductArray);
+        $this->applySortingRule($racksProductArray[$key]);
         }
      
         $this->fillUpEmptySpaceOfShelves($racksProductArray, $selvesWidth, $selevesCount);
@@ -953,8 +954,10 @@ class StoreConfigurationController extends Controller {
 
     public function sort_array_of_array(&$array, $subfield, $sort) {
         $sortarray = array();
+        if(!empty($array) && (isset($array))){
         foreach ($array as $key => $row) {
             $sortarray[$key] = isset($row[$subfield]) ? $row[$subfield] : '';
+        }
         }
 
         array_multisort($sortarray, $sort, $array);
@@ -1022,7 +1025,7 @@ class StoreConfigurationController extends Controller {
 
     public function actionSendMail($thumb) 
     {
-        $mpdf = new Mpdf();
+        $mpdf = new mPDF();
         $thumImage = explode('/', $thumb);
         $thumb = end($thumImage);
 

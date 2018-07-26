@@ -505,7 +505,8 @@ jQuery(document).ready(function ()
                 }
             }
             if (index == 2) {
-                if (productArry == '')
+             
+                if (jQuery.isEmptyObject(productArry))
                 {
                     alert("Please Select at least one product");
                     return false;
