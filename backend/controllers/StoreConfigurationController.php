@@ -630,6 +630,7 @@ class StoreConfigurationController extends Controller {
         }
 
         $shelfIndex = (isset($racksProductArray[0]) && count($racksProductArray[0]) > 0 ) ? 1 : 0;
+        if ($selevesCount > 1) {
         foreach ($dataIds as $value) {
 
             if ($value['top_shelf'] == '1') {
@@ -660,7 +661,7 @@ class StoreConfigurationController extends Controller {
                 }
             }
         }
-       
+        }
         foreach ($racksProductArray as $key =>$value){
  
         $this->applySortingRule($racksProductArray[$key]);
