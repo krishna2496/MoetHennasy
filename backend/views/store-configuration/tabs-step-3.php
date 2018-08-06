@@ -276,7 +276,9 @@ for(i=0 ; i< removeData.length; i++){
     var baseUrl = "<?php echo Yii::$app->request->baseUrl; ?>";
     
     $(".er").on("click",function(){
+        
         $.each(removeData, function( index, value ) {
+            alert(value);
              var data = {index: index,value: value };
                 moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/delete-all", data, 'post').then(function (result) {
                    numOfSelves = $("#ex6SliderVal").val();
@@ -284,7 +286,7 @@ for(i=0 ; i< removeData.length; i++){
                         $("#canvas-container-" + i).empty();
                     }
                     $.pjax.reload({container: "#productsData", async: false});
-
+return false;
                 });
         });
 
