@@ -200,7 +200,7 @@ var removeData = new Array();
 ?>
                             <script type="text/javascript">
 $(".er").on("click",function(){
-    if(removeData != ''){
+    if(removeData.length != 0){
         var index = $(this).attr('data-key');
          var value= removeData;
          var data = {index: index,value: value};
