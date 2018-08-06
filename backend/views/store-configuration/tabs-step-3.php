@@ -10,7 +10,9 @@ use yii\widgets\Pjax;
 //use kartik\switchinput\SwitchInput;
 $submitUrl = "store-configuration/save-config-data";
 ?>
-
+<script>
+removeData = [];
+</script>
 <div class="col-sm-5 pull-right" id="tab-step-3" style="z-index:5">
     <!-- Frame Filter section -->
     <div class="frame-filter-section">
@@ -120,20 +122,21 @@ $submitUrl = "store-configuration/save-config-data";
                                                             $url = CommonHelper::getPath('admin_url') . 'store-configuration/modal-content/' . $products[$value1]['id'];
                                                         
                                                             ?>
-                                                                        <li>
-                                                                            <a href="#" class="product-image" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
-                                                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" alt="Selected"   class="btl-img">
-                                                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $products[$value1]['image']; ?>" >
-                                                                                <div class="product-tooltip">
-                                                                                    <h5><?= $products[$value1]['short_name'] ?></h5>
-                                                                                    <p>Product Type: <?= $products[$value1]['productType']['title'] ?></p>
-                                                                                    <p>Market Share: <?= $products[$value1]['market_share']; ?></p>
-                                                                                    <p>WSP: <?= $products[$value1]['price'] ?></p>
-                                                                                    <p>Category: <?= $products[$value1]['productCategory'] ?></p>
-                                                                                    <p>Top shelf: <?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></p>
-                                                                                </div>
-                                                                            </a>
-                                                                        </li>
+                                                                <li>
+                                                                    <a href="#" class="product-image" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
+                                                                        <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" alt="Selected"   class="btl-img">
+                                                                        <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $products[$value1]['image']; ?>">
+                                                                        <div class="product-tooltip">
+                                                                            <h5><?= $products[$value1]['short_name'] ?></h5>
+                                                                            <p>Product Type: <?= $products[$value1]['productType']['title'] ?></p>
+                                                                            <p>Market Share: <?= $products[$value1]['market_share']; ?></p>
+                                                                            <p>WSP: <?= $products[$value1]['price'] ?></p>
+                                                                            <p>Category: <?= $products[$value1]['productCategory'] ?></p>
+                                                                            <p>Top shelf: <?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></p>
+                                                                        </div>
+                                                                    </a>
+                                                                     <input type="checkbox" value="<?= $key+1; ?>,<?= $key1+1; ?>" name="deleteall[]" id='<?= $key+1; ?>,<?= $key1+1; ?>'>
+                                                                </li>
                 <?php }
             }
             ?>
@@ -158,25 +161,25 @@ $submitUrl = "store-configuration/save-config-data";
                     $url = CommonHelper::getPath('admin_url') . 'store-configuration/modal-content/' . $products[$value1]['id'];
                     ?>
 
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <a href="#" class="product-image media" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
-                                                                                            <div class="media-left">
-                                                                                                <div class="list-product">
-                                                                                                    <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" class="media-object">
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="media-body">
-                                                                                                <h4 class="media-heading"><?= $products[$value1]['short_name'] ?></h4>
-                                                                                            </div>
-                                                                                        </a>
-                                                                                    </td>
-                                                                                    <td><?= $products[$value1]['productType']['title'] ?></td>
-                                                                                    <td><?= $products[$value1]['market_share']; ?></td>
-                                                                                    <td><?= $products[$value1]['price'] ?></td>
-                                                                                    <td><?= $products[$value1]['productCategory'] ?></td>
-                                                                                    <td><?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></td>
-                                                                                </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="#" class="product-image media" data-toggle="modal" data-target="#modal-defaults" data-href="<?= $url; ?>" data-shelves="<?= $key; ?>" data-key="<?= $key1; ?>">
+                                                                                <div class="media-left">
+                                                                                    <div class="list-product">
+                                                                                        <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" class="media-object">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="media-body">
+                                                                                    <h4 class="media-heading"><?= $products[$value1]['short_name'] ?></h4>
+                                                                                </div>
+                                                                            </a>
+                                                                        </td>
+                                                                        <td><?= $products[$value1]['productType']['title'] ?></td>
+                                                                        <td><?= $products[$value1]['market_share']; ?></td>
+                                                                        <td><?= $products[$value1]['price'] ?></td>
+                                                                        <td><?= $products[$value1]['productCategory'] ?></td>
+                                                                        <td><?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></td>
+                                                                    </tr>
                 <?php }
             } ?>
                                                                     </tbody>
@@ -217,11 +220,17 @@ $submitUrl = "store-configuration/save-config-data";
                                     });
                                 }
 
+        $('input').on('ifChecked', function (event) {
+            alert($(this).val());
+            removeData['key'] =0;
+            console.log(removeData);return false;
+        });
                             </script>
                             <?php Pjax::end(); ?>  
                         </div>
                     </div>
                     <div class="submit-fl">                            
+                        <button class="btn next" disabled="disabled">Delete All</button>
                         <button class="btn next submitData" >Save</button>
                     </div>
                 </div>
@@ -343,5 +352,7 @@ $submitUrl = "store-configuration/save-config-data";
                 $('.modal-backdrop').css('z-index', 0);
             }, 10);
         });
+       
     });
+    
 </script>
