@@ -1396,7 +1396,7 @@
     color: #fff;
     font-size: 14px;
 }
-.icheckbox_square-blue, .iradio_square-blue{
+.product-image + .icheckbox_square-blue, .iradio_square-blue{
     margin-left: 33% !important;
 }
 .list-product + .icheckbox_square-blue{
