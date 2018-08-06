@@ -715,50 +715,61 @@ class StoreConfigurationController extends Controller {
         $data = array();
         $data = Yii::$app->request->post();
         $productsData = json_decode($_SESSION['config']['shelvesProducts'], true);
-        $shelvesNo = $data['index'];
-        $productKeyArr = $data['value'];
-      
-        $productKeyArry = array();
-        foreach($productKeyArr as $keyP=>$valueP){
-            $productKey = $valueP;
-            $id = isset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id']) ? $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'] : '';
-            unset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
-        }
-        $rackArrayProduct = array();
-        foreach ($_SESSION['config']['rackProducts'][$shelvesNo] as $key => $value) {
-            $rackArrayProduct[] = $value;
-        }
-        $_SESSION['config']['rackProducts'][$shelvesNo] = $rackArrayProduct;
+        $response=array();
+        if(isset($data['value']) && !empty($data['value'])){
+            $shelvesNo = $data['index'];
+            $productKeyArr = $data['value'];
 
-        
-
-            $replacedData = array();
-            foreach ($productsData as $key => $value) {
-                $ids = explode(',', $value['productIds']);
-                $tmpProducts = '';
-                foreach ($ids as $k => $v) {
-                    $replacedData[$key]['productIds'][$k] = $v;
-
-                    if (($shelvesNo == $key) && (in_array($k, $productKeyArr))) {
-                        unset($replacedData[$key]['productIds'][$k]);
-                    } else {
-                        $tmpProducts .= $v . ",";
-                    }
-                }
-                $replacedData[$key]['productIds'] = rtrim($tmpProducts, ",");
+            $productKeyArry = array();
+            foreach($productKeyArr as $keyP=>$valueP){
+                $productKey = $valueP;
+                $id = isset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id']) ? $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'] : '';
+                unset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
             }
+            $rackArrayProduct = array();
+            foreach ($_SESSION['config']['rackProducts'][$shelvesNo] as $key => $value) {
+                $rackArrayProduct[] = $value;
+            }
+            $_SESSION['config']['rackProducts'][$shelvesNo] = $rackArrayProduct;
 
 
-            $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
-            
-        
-     
-        $response['flag'] = 1;
-        $response['msg'] = 'Product Removed Successfully';
-        $response['action'] = 'remove';
-        $response['replacedId'] = '';
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        return $response;
+
+                $replacedData = array();
+                foreach ($productsData as $key => $value) {
+                    $ids = explode(',', $value['productIds']);
+                    $tmpProducts = '';
+                    foreach ($ids as $k => $v) {
+                        $replacedData[$key]['productIds'][$k] = $v;
+
+                        if (($shelvesNo == $key) && (in_array($k, $productKeyArr))) {
+                            unset($replacedData[$key]['productIds'][$k]);
+                        } else {
+                            $tmpProducts .= $v . ",";
+                        }
+                    }
+                    $replacedData[$key]['productIds'] = rtrim($tmpProducts, ",");
+                }
+
+
+                $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
+
+
+
+            $response['flag'] = 1;
+            $response['msg'] = 'Product Removed Successfully';
+            $response['action'] = 'remove';
+            $response['replacedId'] = '';
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return $response;
+        }
+        else {
+           $response['flag'] = 0;
+           $response['msg'] = 'You have not selected any Products';
+           $response['action'] = 'remove';
+           $response['replacedId'] = '';
+           Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+           return $response;
+        }
     }
     
     

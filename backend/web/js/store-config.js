@@ -582,6 +582,7 @@ $(document).on('ready pjax:success', function ()
         var list_id = $(this).attr("href");
         $(list_id).show();
         $(list_id).siblings(".grid-itmes").hide();
+        removeData = [];
     });
     $(".grid-btn").click(function (e) {
         e.preventDefault();
@@ -590,6 +591,7 @@ $(document).on('ready pjax:success', function ()
         var grid_id = $(this).attr("href");
         $(grid_id).show();
         $(grid_id).siblings(".list-items").hide();
+        removeData = [];
     });
     $(".grid-itmes li").click(function (e) {
         e.preventDefault();

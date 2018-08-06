@@ -9,11 +9,9 @@ use yii\widgets\Pjax;
 
 //use kartik\switchinput\SwitchInput;
 $submitUrl = "store-configuration/save-config-data";
-$shelvesCount = $_SESSION['config']['no_of_shelves'];
 ?>
 <script>
-n= <?= $shelvesCount;?>;
-var removeData = new Array(n);
+var removeData = new Array();
 
 </script>
 <div class="col-sm-5 pull-right" id="tab-step-3" style="z-index:5">
@@ -86,7 +84,6 @@ var removeData = new Array(n);
                             $rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSION['config']['rackProducts']) : '';
                             $products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] : '';
                             $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
-//                            echo "<pre>";print_r($shelvesData);exit;
                             if (!empty($shelvesData)) {
                                 foreach ($shelvesData as $key => $value) {
                                     ?>
@@ -102,11 +99,12 @@ var removeData = new Array(n);
                                         <div class="collapse" id="collapseExample<?= $key ?>">
                                             <div class="box-body" style="display: block !important;">
                                                 <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
                                                         <p class="direction-text">From left to right</p>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-8">
                                                         <div class="view-btn">
+                                                            <span class="btn er" data-key="<?= $key?>">Delete All</span>
                                                             <a href="#grid-section<?= $key ?>" title="grid-view" class="grid-btn"><img src="<?php echo Yii::$app->request->baseUrl . '/images/grid-btn.png'; ?>" alt="grid-view"></a>
                                                             <a href="#list-section<?= $key ?>" title="list-view" class="list-btn"><img src="<?php echo Yii::$app->request->baseUrl . '/images/list-gray-btn.png'; ?>" alt="list-view"></a>
                                                         </div>
@@ -138,7 +136,7 @@ var removeData = new Array(n);
                                                                             <p>Top shelf: <?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></p>
                                                                         </div>
                                                                     </a>
-                                                                     <input type="checkbox" value="0" shelves-key='<?= $key ?>' item-key='<?= $key1 ?>' name="deleteall[]" id='<?= $key+1; ?>,<?= $key1+1; ?>'>
+                                                                     <input type="checkbox" shelves-key='<?= $key ?>' item-key='<?= $key1 ?>' id='<?= $key+1; ?>,<?= $key1+1; ?>'>
                                                                 </li>
                 <?php }
             }
@@ -171,6 +169,7 @@ var removeData = new Array(n);
                                                                                     <div class="list-product">
                                                                                         <img src="<?= CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $products[$value1]['image']); ?>" class="media-object">
                                                                                     </div>
+                                                                                    <input type="checkbox" shelves-key='<?= $key ?>' item-key='<?= $key1 ?>' id='<?= $key+1; ?>,<?= $key1+1; ?>'>
                                                                                 </div>
                                                                                 <div class="media-body">
                                                                                     <h4 class="media-heading"><?= $products[$value1]['short_name'] ?></h4>
@@ -200,6 +199,24 @@ var removeData = new Array(n);
 }
 ?>
                             <script type="text/javascript">
+$(".er").on("click",function(){
+        var index = $(this).attr('data-key');
+         var value= removeData;
+         var data = {index: index,value: value};
+            moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/delete-all", data, 'post').then(function (result) {
+               numOfSelves = $("#ex6SliderVal").val();
+                for (i = 0; i < numOfSelves; i++) {
+                    $("#canvas-container-" + i).empty();
+                }
+                
+                removeData = [];
+                $.pjax.reload({container: "#productsData", async: false});
+                alert(result.msg);
+                return false;
+            });
+        
+}); 
+                             
                                 var rackProducts = '<?php echo $rackProducts; ?>';
                                 var ratio = '<?php echo $ratio; ?>';
                            
@@ -222,26 +239,15 @@ var removeData = new Array(n);
                                         });
                                     });
                                 }
-for(i=0 ; i< removeData.length; i++){
-        removeData[i]= [];        
-    }
+
         $('input').on('ifChecked', function (event) {
-        // removeData[$(this).attr("shelves-key")];
-        for(i=0 ; i< removeData.length; i++){
-            if($(this).attr("shelves-key") == i){
-                removeData[$(this).attr("shelves-key")].push($(this).attr("item-key"));
-            }
-        }
-    });
+                removeData.push($(this).attr("item-key"));
+        });
         
         $('input').on('ifUnchecked', function (event) {
-            for(i=0 ; i< removeData.length; i++){
-            if($(this).attr("shelves-key") == i){
-                popedValue = removeData[$(this).attr("shelves-key")].indexOf( $(this).attr('item-key'));
-                removeData[$(this).attr("shelves-key")].splice(popedValue, 1);
-            }
-        }
-       });
+                popedValue = removeData.indexOf( $(this).attr('item-key'));
+                removeData.splice(popedValue, 1);
+        });
        
       
        
@@ -251,7 +257,7 @@ for(i=0 ; i< removeData.length; i++){
                     </div>
                     <div class="submit-fl">                            
                        
-                        <button class="btn next submitData" >Save</button>
+                        <button class="btn btn-save next submitData" >Save</button>
                     </div>
                 </div>
                 <div class="modal fade edit-modal" id="modal-defaults" style="display: none;">
@@ -271,26 +277,9 @@ for(i=0 ; i< removeData.length; i++){
         </div> 
     </div>
 </div>
- <span class="btn next er">Delete All</span>
+ 
 <script type="text/javascript">
     var baseUrl = "<?php echo Yii::$app->request->baseUrl; ?>";
-    
-    $(".er").on("click",function(){
-        
-        $.each(removeData, function( index, value ) {
-            alert(value);
-             var data = {index: index,value: value };
-                moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/delete-all", data, 'post').then(function (result) {
-                   numOfSelves = $("#ex6SliderVal").val();
-                    for (i = 0; i < numOfSelves; i++) {
-                        $("#canvas-container-" + i).empty();
-                    }
-                    $.pjax.reload({container: "#productsData", async: false});
-return false;
-                });
-        });
-
-    }); 
     
     $(document).ready(function ()
     {
