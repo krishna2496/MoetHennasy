@@ -200,6 +200,7 @@ var removeData = new Array();
 ?>
                             <script type="text/javascript">
 $(".er").on("click",function(){
+    if(removeData != ''){
         var index = $(this).attr('data-key');
          var value= removeData;
          var data = {index: index,value: value};
@@ -214,7 +215,9 @@ $(".er").on("click",function(){
                 alert(result.msg);
                 return false;
             });
-        
+    }else{
+        alert("Please select at least one product");
+    }
 }); 
                              
                                 var rackProducts = '<?php echo $rackProducts; ?>';
