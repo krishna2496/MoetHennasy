@@ -9,9 +9,12 @@ use yii\widgets\Pjax;
 
 //use kartik\switchinput\SwitchInput;
 $submitUrl = "store-configuration/save-config-data";
+$shelvesCount = $_SESSION['config']['no_of_shelves'];
 ?>
 <script>
-removeData = [];
+n= <?= $shelvesCount;?>;
+var removeData = new Array(n);
+
 </script>
 <div class="col-sm-5 pull-right" id="tab-step-3" style="z-index:5">
     <!-- Frame Filter section -->
@@ -83,7 +86,7 @@ removeData = [];
                             $rackProducts = isset($_SESSION['config']['rackProducts']) ? json_encode($_SESSION['config']['rackProducts']) : '';
                             $products = isset($_SESSION['config']['products']) ? $_SESSION['config']['products'] : '';
                             $shelvesData = isset($_SESSION['config']['shelvesProducts']) ? json_decode($_SESSION['config']['shelvesProducts'], true) : '';
-
+//                            echo "<pre>";print_r($shelvesData);exit;
                             if (!empty($shelvesData)) {
                                 foreach ($shelvesData as $key => $value) {
                                     ?>
@@ -135,7 +138,7 @@ removeData = [];
                                                                             <p>Top shelf: <?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></p>
                                                                         </div>
                                                                     </a>
-                                                                     <input type="checkbox" value="<?= $key+1; ?>,<?= $key1+1; ?>" name="deleteall[]" id='<?= $key+1; ?>,<?= $key1+1; ?>'>
+                                                                     <input type="checkbox" value="0" shelves-key='<?= $key ?>' item-key='<?= $key1 ?>' name="deleteall[]" id='<?= $key+1; ?>,<?= $key1+1; ?>'>
                                                                 </li>
                 <?php }
             }
@@ -219,18 +222,35 @@ removeData = [];
                                         });
                                     });
                                 }
-
+for(i=0 ; i< removeData.length; i++){
+        removeData[i]= [];        
+    }
         $('input').on('ifChecked', function (event) {
-            alert($(this).val());
-            removeData['key'] =0;
-            console.log(removeData);return false;
-        });
+        // removeData[$(this).attr("shelves-key")];
+        for(i=0 ; i< removeData.length; i++){
+            if($(this).attr("shelves-key") == i){
+                removeData[$(this).attr("shelves-key")].push($(this).attr("item-key"));
+            }
+        }
+    });
+        
+        $('input').on('ifUnchecked', function (event) {
+            for(i=0 ; i< removeData.length; i++){
+            if($(this).attr("shelves-key") == i){
+                popedValue = removeData[$(this).attr("shelves-key")].indexOf( $(this).attr('item-key'));
+                removeData[$(this).attr("shelves-key")].splice(popedValue, 1);
+            }
+        }
+       });
+       
+      
+       
                             </script>
                             <?php Pjax::end(); ?>  
                         </div>
                     </div>
                     <div class="submit-fl">                            
-                        <button class="btn next" disabled="disabled">Delete All</button>
+                       
                         <button class="btn next submitData" >Save</button>
                     </div>
                 </div>
@@ -243,6 +263,7 @@ removeData = [];
                     </div>
                     <!-- /.modal-dialog -->
                 </div>
+                
                 <?php
                 ActiveForm::end();
                 ?>
@@ -250,9 +271,25 @@ removeData = [];
         </div> 
     </div>
 </div>
-
+ <span class="btn next er">Delete All</span>
 <script type="text/javascript">
     var baseUrl = "<?php echo Yii::$app->request->baseUrl; ?>";
+    
+    $(".er").on("click",function(){
+        $.each(removeData, function( index, value ) {
+             var data = {index: index,value: value };
+                moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/delete-all", data, 'post').then(function (result) {
+                   numOfSelves = $("#ex6SliderVal").val();
+                    for (i = 0; i < numOfSelves; i++) {
+                        $("#canvas-container-" + i).empty();
+                    }
+                    $.pjax.reload({container: "#productsData", async: false});
+
+                });
+        });
+
+    }); 
+    
     $(document).ready(function ()
     {
         $('.edit-modal').on('show.bs.modal', function (event)
@@ -315,7 +352,7 @@ removeData = [];
                     
                     var product = $("#products").val();
                     var ratio = '<?php echo $ratio; ?>';
-
+                    
                     var data = {remove: remove, edit: edit, product: product, dataKey: dataKey, dataShelves: dataShelves};
                     moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/edit-products", data, 'post').then(function (result) {
 
@@ -329,6 +366,7 @@ removeData = [];
                                 $.pjax.reload({container: "#productsData", async: false});
                             }
                             if (result.action == 'remove') {
+                                console.log(result);
                                 for (i = 0; i < numOfSelves; i++) {
                                     $("#canvas-container-" + i).empty();
                                 }
