@@ -41,7 +41,7 @@ class RulesSearch extends Rules
                     $temp['product_fields']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['product_fields']));
                     $temp['detail']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['detail']));
                     $rulesList []=$temp;
-                    }
+                }
             }
         }
         

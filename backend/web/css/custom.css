@@ -993,7 +993,7 @@
     list-style-type: none;
     display: block;
     width: 16.66%;
-    margin-bottom: 10px;
+    margin-bottom: 27px;
     padding: 0px 5px;
     position: relative;
     float: left;
@@ -1010,6 +1010,7 @@
     padding: 8px;
     border: 1px solid #cccccc;
     position: relative;
+    margin-bottom: 3px;
 }
 
 .grid-itmes li a:hover {

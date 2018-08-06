@@ -44,7 +44,7 @@ class StoreConfigurationController extends Controller {
                         'roles' => ['&'],
                     ],
                         [
-                        'actions' => ['send-mail', 'feedback', 'create', 'view', 'review-store', 'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data'],
+                        'actions' => ['send-mail', 'feedback', 'create', 'view', 'review-store', 'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data','delete-all'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -709,6 +709,57 @@ class StoreConfigurationController extends Controller {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $returnData;
     }
+    
+    
+    public function actionDeleteAll(){
+        $data = array();
+        $data = Yii::$app->request->post();
+        $productsData = json_decode($_SESSION['config']['shelvesProducts'], true);
+
+        $shelvesNo = $data['index'];
+        $productKeyArr = $data['value'];
+        foreach($productKeyArr as $key=>$value){
+            $productKey=$value;
+            $id = isset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id']) ? $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'] : '';
+            unset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
+           
+            $rackArrayProduct = array();
+            foreach ($_SESSION['config']['rackProducts'][$shelvesNo] as $key => $value) {
+                $rackArrayProduct[] = $value;
+            }
+//            $_SESSION['config']['rackProducts'][$shelvesNo] = $rackArrayProduct;
+
+            $response['flag'] = 1;
+            $response['msg'] = 'Product Removed Successfully';
+                       
+//            $replacedData = array();
+//            foreach ($productsData as $key => $value) {
+//                $ids = explode(',', $value['productIds']);
+//                $tmpProducts = '';
+//                foreach ($ids as $k => $v) {
+//                    $replacedData[$key]['productIds'][$k] = $v;
+//
+//                    if (($shelvesNo == $key) && ($k == $productKey)) {
+//                        unset($replacedData[$key]['productIds'][$k]);
+//                    } else {
+//                        $tmpProducts .= $v . ",";
+//                    }
+//                }
+//                $replacedData[$key]['productIds'] = rtrim($tmpProducts, ",");
+                
+//                $replacedData[$key]['productIds'] = rtrim($rackArrayProduct, ",");
+//            }
+        }
+       
+        $_SESSION['config']['shelvesProducts'] = json_encode($rackArrayProduct);
+        $response['products']=$_SESSION['config']['shelvesProducts'];
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return $response;
+    }
+    
+    
+    
+    
 //action of edit and remove products
     public function actionEditProducts() {
         $response = array();
@@ -722,9 +773,9 @@ class StoreConfigurationController extends Controller {
         $productsData = json_decode($_SESSION['config']['shelvesProducts'], true);
 
         if ($data['remove'] == 'true') {
-
+            
             $id = isset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id']) ? $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'] : '';
-            unset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
+             unset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
 
             $rackArrayProduct = array();
             foreach ($_SESSION['config']['rackProducts'][$shelvesNo] as $key => $value) {
@@ -753,22 +804,11 @@ class StoreConfigurationController extends Controller {
                 $replacedData[$key]['productIds'] = rtrim($tmpProducts, ",");
             }
 
-//                            foreach ($productsData as $key => $value){
-//                                $ids = explode(',', $value['productIds']);
-//                                $tmpProducts = '';
-//                                foreach ($ids as $k =>$v){
-//                                    $replacedData[$key]['productIds'][$k] = $v;
-//                                    if(($shelvesNo == $key) && ($k == $productKey)){
-//                                         $tmpProducts .= $id.",";
-//                                    }else{
-//                                         $tmpProducts .= $racksValue['id'].",";
-//                                    }
-//                                    $replacedData[$key]['productIds'] = rtrim($tmpProducts,",");
-//                                }
-//                            }
 
             $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
         }
+        
+        
         if ($data['edit'] == 'true') {           
             $height = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['height'];
             $width = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['width'];
