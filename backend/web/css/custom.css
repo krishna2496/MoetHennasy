@@ -1399,3 +1399,6 @@
 .icheckbox_square-blue, .iradio_square-blue{
     margin-left: 33% !important;
 }
+.list-product + .icheckbox_square-blue{
+    margin-top: 10px;
+}
