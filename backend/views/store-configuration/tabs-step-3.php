@@ -200,7 +200,9 @@ var removeData = new Array();
 ?>
                             <script type="text/javascript">
 $(".er").on("click",function(){
+  
     if(removeData.length != 0){
+    if(confirm("Are you sure you want to delete this products ? ")){
         var index = $(this).attr('data-key');
          var value= removeData;
          var data = {index: index,value: value};
@@ -214,10 +216,16 @@ $(".er").on("click",function(){
                 $.pjax.reload({container: "#productsData", async: false});
                 alert(result.msg);
                 return false;
-            });
+    });
+    }
+    else{
+        return false;
+    } 
+    
     }else{
         alert("Please select at least one product");
     }
+    
 }); 
                              
                                 var rackProducts = '<?php echo $rackProducts; ?>';
