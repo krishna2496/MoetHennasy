@@ -200,9 +200,7 @@ var removeData = new Array();
 ?>
                             <script type="text/javascript">
 $(".er").on("click",function(){
-  
     if(removeData.length != 0){
-    if(confirm("Are you sure you want to delete this products ? ")){
         var index = $(this).attr('data-key');
          var value= removeData;
          var data = {index: index,value: value};
@@ -216,16 +214,10 @@ $(".er").on("click",function(){
                 $.pjax.reload({container: "#productsData", async: false});
                 alert(result.msg);
                 return false;
-    });
-    }
-    else{
-        return false;
-    } 
-    
+            });
     }else{
         alert("Please select at least one product");
     }
-    
 }); 
                              
                                 var rackProducts = '<?php echo $rackProducts; ?>';
@@ -319,6 +311,12 @@ $(".er").on("click",function(){
                     $('input[name="permissionscheck"]').filter('[value="remove"]').iCheck('uncheck');
                     $("#getProducts").removeAttr('disabled');
                     $("#products").removeAttr('disabled');
+                });
+                
+                $('#edit').on('ifUnchecked', function () {
+                     $('input[name="permissionscheck"]').filter('[value="remove"]').iCheck('check');
+                    $("#getProducts").attr("disabled", true);
+                    $("#products").attr("disabled", true);
                 });
 
                 $('#getProducts').on('change', function () {

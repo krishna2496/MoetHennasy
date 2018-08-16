@@ -3,7 +3,7 @@ namespace common\repository;
 
 class Repository
 {
-	protected $apiData    = '';
+    protected $apiData    = '';
     protected $apiCode    = 0;
     protected $apiMessage = '';
     protected $isApi = 1;

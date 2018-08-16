@@ -59,24 +59,19 @@ $formUrl = Url::to(['catalogues/index']);
                        [
                             'label'=>'SKU',
                             'attribute'=>'sku',
-                            'contentOptions'=>[ 'style'=>'width: 22%'],
-                        ],
-                        [
-                            'label'=>'EAN',
-                            'attribute'=>'ean',
-                            'contentOptions'=>[ 'style'=>'width: 22%'],
+                            'contentOptions'=>[ 'style'=>'width: 29%'],
                         ],
                            
                         [
                             'label' => 'Brand',
                             'attribute' => 'brandName',
                             'value' => 'brand.name',
-                            'contentOptions'=>[ 'style'=>'width: 22%'],
+                            'contentOptions'=>[ 'style'=>'width: 30%'],
                         ],
                         [
                             'label'=>'Price',
                             'attribute'=>'price',
-                            'contentOptions'=>[ 'style'=>'width: 22%'],
+                            'contentOptions'=>[ 'style'=>'width: 29%'],
                         ],
                             [
                             'class' => 'yii\grid\ActionColumn',

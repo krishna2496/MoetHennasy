@@ -694,7 +694,6 @@ class StoreConfigurationController extends Controller {
 
     //edit and remove product's modal content
     public function actionModalContent($id) {
-
         return $this->renderPartial('modal-content', [
                 'id' => $id,
                 ], true);

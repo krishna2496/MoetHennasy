@@ -1,7 +1,8 @@
 <?php 
 use common\helpers\CommonHelper;
-
+$dropdown_selected_id_edit = $_SESSION['config']['products'][$id]['brand']['id'];
 ?>
+
 <div class="modal-body">
                    <div class="modal-content">
                         <form class="product-edit">
@@ -38,10 +39,13 @@ use common\helpers\CommonHelper;
                                     <option disabled="disabled" selected="selected">Select Brand</option>
                                       <?php
                                       foreach ($_SESSION['config']['brands_data'] as $key=>$value){
-                                          
+                                          if($value['id'] == $dropdown_selected_id_edit){?>
+                                             <option value="<?= $value['id'];?>" selected="selected"><?= $value['name'];?></option> 
+                                          <?php }
+                                          else{
                                       ?>
                                      <option value="<?= $value['id'];?>"><?= $value['name'];?></option>
-                                   <?php } ?>
+                                      <?php }} ?>
                                 </select>
                                 <label>Product</label>
                                 <select class="form-control" id="products">
@@ -49,7 +53,7 @@ use common\helpers\CommonHelper;
                                 </select>
                             </div>
                             <button type="button" class="btn btn-default pull-left reset-btn" data-dismiss="modal">Reset</button>
-                            <button type="button" class="btn btn-primary ok-btn" id="changeData">Ok</button>
+                            <button type="button" class="btn btn-primary ok-btn" id="changeData">Save</button>
                         </form>
                     </div>
                 </div>
