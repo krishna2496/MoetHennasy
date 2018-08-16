@@ -62,6 +62,7 @@ return [
                 'product-types/update/<id:\d+>' => 'product-types/update',
                 'product-types/delete/<id:\d+>' => 'product-types/delete',
                 'store-configuration/modal-content/<id:\d+>' => 'store-configuration/modal-content',
+                'store-configuration/delete/<id:\d+>' => 'store-configuration/delete',
                 'store-configuration/review-store/<id:\d+>' => 'store-configuration/review-store/',
                 'store-configuration/feedback/<id:\d+>' => 'store-configuration/feedback/',
                 

@@ -1068,7 +1068,12 @@ class StoreConfigurationController extends Controller {
     }
 
     public function actionDelete($id) {
-        $this->findModel($id)->delete();
+      
+        if($this->findModel($id)->delete()){
+            $model = \common\models\ShelfDisplay::findOne($id)->delete();
+            $model = \common\models\ShelfDisplayBrand::findOne($id)->delete();
+            $model = \common\models\ConfigFeedback::findOne($id)->delete();
+        }
 
         return $this->redirect(['index']);
     }
