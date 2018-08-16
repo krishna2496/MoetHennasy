@@ -1067,19 +1067,17 @@ class StoreConfigurationController extends Controller {
         ]);
     }
 
-    public function actionDelete($id) {
-      
+    public function actionDelete($id) {  
         if($this->findModel($id)->delete()){
-            $model = \common\models\ShelfDisplay::findOne($id)->delete();
-            $model = \common\models\ShelfDisplayBrand::findOne($id)->delete();
-            $model = \common\models\ConfigFeedback::findOne($id)->delete();
+           \common\models\ShelfDisplay::findOne(['config_id' => $id])->delete();
+           \common\models\ConfigFeedback::findOne(['config_id' => $id])->delete();
         }
 
         return $this->redirect(['index']);
     }
 
     protected function findModel($id) {
-        if (($model = StoreConfiguration::findOne($id)) !== null) {
+        if ($model = StoreConfiguration::findOne(['id'=>$id])) {
             return $model;
         }
 
