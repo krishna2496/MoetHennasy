@@ -62,7 +62,6 @@ return [
                 'product-types/update/<id:\d+>' => 'product-types/update',
                 'product-types/delete/<id:\d+>' => 'product-types/delete',
                 'store-configuration/modal-content/<id:\d+>' => 'store-configuration/modal-content',
-                'store-configuration/delete/<id:\d+>' => 'store-configuration/delete',
                 'store-configuration/review-store/<id:\d+>' => 'store-configuration/review-store/',
                 'store-configuration/feedback/<id:\d+>' => 'store-configuration/feedback/',
                 
@@ -82,6 +81,7 @@ return [
                 
                 
                 'helps/delete/<id:\d+>/<categoryId:\d+>' => 'helps/delete',
+                'store-configuration/delete/<id:\d+>/<storeId:\d+>' => 'store-configuration/delete',
                 'helps/view/<id:\d+>/<categoryId:\d+>' => 'helps/view',
                 'configs/update/<id:\d+>/<storeId:\d+>' => 'configs/update',
                 'configs/create/<id:\d+>' => 'configs/create',

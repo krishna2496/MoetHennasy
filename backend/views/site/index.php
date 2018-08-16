@@ -2,6 +2,7 @@
 <?php
 use yii\helpers\Html;
 use common\helpers\CommonHelper;
+use yii\helpers\Url;
 $this->title = 'Dashboard';
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -62,12 +63,11 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= API_KEY ?>&callback=initialize"> </script>
 <script>
-
-    
+var storeUrl = '<?= Url::to(['stores/view/']); ?>';
+var isUpdate= 1;
 var gmarkers1 = [];
 var markers1 = [];
 markers1 =<?php echo $store; ?>;
-
 function initialize() {
     var center = new google.maps.LatLng(25.4357808, -2.991315699999973);
     var mapOptions = {
@@ -88,13 +88,15 @@ var bounds = new google.maps.LatLngBounds();
 map.fitBounds(bounds);
    
 function addMarker(marker) {
+   
     var storeId = marker[4];
     var marketId = marker[5];
     var roleId =marker[6];
     var title = marker[1];
+    var url = storeUrl+'/'+marker[4];
     var pos = new google.maps.LatLng(marker[2], marker[3]);
     var content = '<div style="min-width:220px"><div style="float:left;clear:both;width:90px;height:90px">'+marker[10]+'</div><div>'+marker[1]+'<br><b>Address: </b>'+marker[7]+'<br><b>Phone: </b>('+marker[8]+')'+marker[9]+'</div></div>';
-var image = {
+    var image = {
     url: 'http://localhost/moet_hennessy_app/uploads/map/winebar3.png',
   
     size: new google.maps.Size(1500, 1500),
@@ -102,25 +104,36 @@ var image = {
     origin: new google.maps.Point(0, 0),
   
     anchor: new google.maps.Point(0, 32)
-  };
+    };
 
     marker1 = new google.maps.Marker({
         title: title,
         position: pos,
-
+        url:url,
         storeId: storeId,
         marketId: marketId,
         roleId: roleId,
         map: map
     });
+   
     gmarkers1.push(marker1);
-    google.maps.event.addListener(marker1, 'click', (function (marker1, content) {
+    
+//    console.log(marker1);
+    
+   google.maps.event.addListener(marker1, 'click', (function (marker1) {
+        return function () {
+             window.open(marker1.url, "_blank");
+    }
+    })(marker1));
+    
+    google.maps.event.addListener(marker1, 'mouseover', (function (marker1, content) {
         return function () {
             infowindow.setContent(content);
             infowindow.open(map, marker1);
 //            map.setCenter(marker1.getPosition());
     }
     })(marker1, content));
+    
     bounds.extend(marker1.position)
 }
 filterMarkers = function () {

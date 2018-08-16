@@ -97,7 +97,7 @@ $formUrl = Url::to(['store-configuration/listing/'.$id]);
                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['store-configuration/update-config/'.$id.'/'. $model['id']]);
                                 },
                                 'delete' => function ($url, $model)use($id) {
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['store-configuration/delete/'. $model['id']], ['data-method' => 'post', 'data-confirm' => 'Are you sure want to delete this catalogues?']);
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['store-configuration/delete/'. $model['id'].'/'.$id], ['data-method' => 'post', 'data-confirm' => 'Are you sure want to delete this configuration?']);
                                 },
                             ],
                         ],

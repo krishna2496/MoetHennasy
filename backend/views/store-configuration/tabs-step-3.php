@@ -228,6 +228,8 @@ $(".er").on("click",function(){
                                     rackProducts = JSON.parse(rackProducts);
                                     if (rackProducts == '') {
                                         $(".submitData").attr('disabled', 'true');
+                                    }else{
+                                        $(".submitData").removeAttr('disabled');
                                     }
                                     $.each(rackProducts, function (i, item)
                                     {

@@ -52,6 +52,7 @@ $('#tab1').click(function (event)
 });
 
 $('#tab3').click(function (event) {
+    
     if ($(this).attr('disabled')) {
         return false;
     } else {

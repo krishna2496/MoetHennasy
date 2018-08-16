@@ -27,6 +27,7 @@ use common\models\User;
 use common\models\Questions;
 use common\models\ConfigFeedback;
 use common\models\Ratings;
+use common\models\ShelfDisplay;
 
 class StoreConfigurationController extends Controller {
 
@@ -1067,13 +1068,33 @@ class StoreConfigurationController extends Controller {
         ]);
     }
 
-    public function actionDelete($id) {  
-        if($this->findModel($id)->delete()){
-           \common\models\ShelfDisplay::findOne(['config_id' => $id])->delete();
-           \common\models\ConfigFeedback::findOne(['config_id' => $id])->delete();
-        }
+    public function actionDelete($id ='',$storeId = '') {  
+        $currentUser  = CommonHelper::getUser();
+        if(Stores::findOne($storeId)){
+        $model = Stores::findOne($storeId);
+        
+        $assign_to = !empty($model['assign_to']) ? $model['assign_to'] : '';
+        $userObj = new User;
+        $childUser = $userObj->getAllChilds(array($currentUser->id));
+        $childUser[] = $currentUser->id;
 
-        return $this->redirect(['index']);
+        if (!empty($childUser) && !in_array($assign_to, $childUser) && $currentUser->role_id != Yii::$app->params['superAdminRole']) {
+            throw new NotFoundHttpException('you are not allowed to access this page.');
+        }
+        
+        if($this->findModel($id)->delete()){
+          
+        if(ConfigFeedback::findOne(['config_id' => $id])){
+               ConfigFeedback::findOne(['config_id' => $id])->delete();
+        }
+        
+        if(ShelfDisplay::findOne(['config_id' => $id])){
+               ShelfDisplay::findOne(['config_id' => $id])->delete();
+        }
+  
+        return $this->redirect(['store-configuration/listing/'.$storeId]);
+        }
+    }
     }
 
     protected function findModel($id) {
