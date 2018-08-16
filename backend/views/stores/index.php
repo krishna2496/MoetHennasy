@@ -42,28 +42,13 @@ if(isset($urlData[1]) && $urlData[1]){
                                 <?= Html::a('Export', ['export'.$queryString], ['class' => 'btn btn-primary'.' '.$class.'']) ?>
                                 <?php } ?>
                             </div>
-                            <div class="col-md-9 pull-right">
-                                <div class="row pull-right">
-                                    <div class="col-md-8">
-                                        <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-stores']); ?>
-                                        <div class="filter-search dataTables_filter clearfix">
-                                            <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'store-text']) ?>
-                                            <span id="searchclear" class="glyphicon glyphicon-remove"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'store-limit']) ?>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
-                    <div class="col-md-9"></div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
+                        <?php echo Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-stores']); ?>
                             <div class="row">
-                                <div class="col-md-2"></div>
                                 <div class="col-md-2">
                                     <?= Html::dropDownList('market_id', isset($filters['market_id']) ? $filters['market_id'] : '' ,$markets,  ['class' => 'form-control select2', 'id' => 'store-markets','prompt' => 'Select Market']) ?>
                                 </div>
@@ -76,7 +61,19 @@ if(isset($urlData[1]) && $urlData[1]){
                                 <div class="col-md-2">
                                     <?= Html::dropDownList('city_id', isset($filters['city_id']) ? $filters['city_id'] : '' ,$cities,  ['class' => 'form-control select2', 'id' => 'store-city','prompt' => 'Select City']) ?>
                                 </div>
-                                <div class="col-md-2"></div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="filter-search dataTables_filter clearfix">
+                                                <?php echo Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'store-text']) ?>
+                                                <span id="searchclear" class="glyphicon glyphicon-remove"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <?php echo Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'store-limit']) ?>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         <?= Html::endForm(); ?>
                     </div>
