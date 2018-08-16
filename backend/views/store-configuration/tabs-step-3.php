@@ -314,7 +314,6 @@ $(".er").on("click",function(){
                 });
                 
                 $('#edit').on('ifUnchecked', function () {
-                     $('input[name="permissionscheck"]').filter('[value="remove"]').iCheck('check');
                     $("#getProducts").attr("disabled", true);
                     $("#products").attr("disabled", true);
                 });
@@ -352,7 +351,6 @@ $(".er").on("click",function(){
                     
                     var product = $("#products").val();
                     var ratio = '<?php echo $ratio; ?>';
-                    
                     var data = {remove: remove, edit: edit, product: product, dataKey: dataKey, dataShelves: dataShelves};
                     moet.ajax("<?php echo CommonHelper::getPath('admin_url') ?>store-configuration/edit-products", data, 'post').then(function (result) {
 

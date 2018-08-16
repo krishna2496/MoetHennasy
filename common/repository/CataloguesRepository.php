@@ -56,7 +56,6 @@ class CataloguesRepository extends Repository {
         $result = $query->asArray();
         $data = array();
         $data['catalogues'] = $query->asArray()->all();
-        print_r($data['catalogues']['id']);        exit();
         $this->apiData = $data;
         return $this->response();
     }

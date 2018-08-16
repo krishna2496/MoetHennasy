@@ -829,6 +829,7 @@ class StoreConfigurationController extends Controller {
             $id = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'];
 
             $repository = new CataloguesRepository();
+            if(isset($replacedProductId) && !$replacedProductId == ""){
             $filterData['products_id'] = $replacedProductId;
 
             $returnData = $repository->listing($filterData);
@@ -890,7 +891,10 @@ class StoreConfigurationController extends Controller {
                     $response['msg'] = 'Please Try Other product';
                 }
             }
-        }
+            }else{
+                $response['msg'] = 'Please Select One product';
+            }
+            }
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $response;
     }
