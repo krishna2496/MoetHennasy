@@ -59,6 +59,8 @@ $formUrl = Url::to(['catalogues/index']);
                         [
                             'label'=>'Image',
                             'attribute'=>'image',
+                            'contentOptions' => ['style' => 'text-align: center;'],
+                            'headerOptions' => ['style' => 'text-align: center;'],
                             'value'=>  function ($model) {
                                 if($model['image']){
                                     return  CommonHelper::getPath("upload_url").'catalogues/'.$model['image'];

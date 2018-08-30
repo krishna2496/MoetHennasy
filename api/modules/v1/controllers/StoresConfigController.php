@@ -96,7 +96,7 @@ class StoresConfigController extends BaseApiController {
                             unset($value['brand']['product'][$key1]['image']);
                             unset($value['brand']['product'][$key1]['top_shelf']);
                             unset($value['brand']['product'][$key1]['box_only']);
-                            $value['brand']['product'][$key1]['image'] = isset($imageProduct) && ($imageProduct != '') ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_CATALOGUES_IMAGES . $imageProduct : '';
+                            $value['brand']['product'][$key1]['image'] = isset($imageProduct) && ($imageProduct != '') ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_CATALOGUES_IMAGES . rawurlencode($imageProduct) : '';
                             $value['brand']['product'][$key1]['top_shelf'] = \yii::$app->params['catalogue_status'][$top_shelf];
                             $value['brand']['product'][$key1]['box_only'] = \yii::$app->params['catalogue_status'][$box_only];
                         }
