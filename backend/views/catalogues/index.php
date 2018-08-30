@@ -60,9 +60,14 @@ $formUrl = Url::to(['catalogues/index']);
                             'label'=>'Image',
                             'attribute'=>'image',
                             'value'=>  function ($model) {
-                                return  CommonHelper::getPath("upload_url").'catalogues/'.$model['image'];
+                                if($model['image']){
+                                    return  CommonHelper::getPath("upload_url").'catalogues/'.$model['image'];
+                                }
+                                else{
+                                     return  CommonHelper::getPath("upload_url").'no-image.png'; 
+                                }
                             },
-                            'format' => ['image',['height'=>'32px']],
+                            'format' => ['image',['height'=>'64px']],
                         ],
                         [
                             'label' => 'Brand Name',
