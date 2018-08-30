@@ -56,28 +56,28 @@ $formUrl = Url::to(['catalogues/index']);
                     'columns' => [
                             [
                             'class' => 'yii\grid\SerialColumn'],
-                       [
-                            'label'=>'SKU',
-                            'attribute'=>'sku',
-                            'contentOptions'=>[ 'style'=>'width: 29%'],
+                        [
+                            'label'=>'Image',
+                            'attribute'=>'image',
+                            'value'=>  function ($model) {
+                                return  CommonHelper::getPath("upload_url").'catalogues/'.$model['image'];
+                            },
+                            'format' => ['image',['height'=>'32px']],
                         ],
-                           
+                        [
+                            'label' => 'Brand Name',
+                            'attribute' => 'brandName',
+                            'value' => 'long_name',
+                        ],
                         [
                             'label' => 'Brand',
                             'attribute' => 'brandName',
                             'value' => 'brand.name',
-                            'contentOptions'=>[ 'style'=>'width: 30%'],
-                        ],
-                        [
-                            'label'=>'Price',
-                            'attribute'=>'price',
-                            'contentOptions'=>[ 'style'=>'width: 29%'],
                         ],
                             [
                             'class' => 'yii\grid\ActionColumn',
                             'header' => 'Actions',
                             'template' => '{view} {update} {delete}',
-                            'contentOptions'=>[ 'style'=>'width: 12%'],
                             'buttons' => [
                                 'view' => function ($url, $model) {
                                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['catalogues/view/' . $model['id']],['title'=>'View']);
