@@ -26,6 +26,9 @@ $adminUrl = CommonHelper::getPath('admin_url');
         <title><?= Html::encode($this->title) ?></title>
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">  
         <?php $this->head() ?>
+        <script type="text/javascript">
+            var isUpdate = 0;
+        </script>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         <?php $this->beginBody() ?>
