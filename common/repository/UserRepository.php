@@ -198,7 +198,7 @@ class UserRepository extends Repository
                 $userString[] = $userModel->last_name;
                 $mail->body = Yii::$app->controller->renderPartial('mail');
                 $mail->setFrom = Yii::$app->params['supportEmail'];
-                $mail->subject = 'Create User';
+                $mail->subject = 'Welcome to Moet Hennessy';
                 $mail->set("USERNAME", $userModel->username);
                 $mail->set("NAME", implode(' ', $userString));
                 if (isset($password)) {

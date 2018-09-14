@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 $this->title = 'Market Brands';
 $this->params['breadcrumbs'][] = ['label' => 'Markets', 'url' => ['/market']];
 $this->params['breadcrumbs'][] = $this->title;
-$formUrl = Url::to(['market/brands/' . $market_id]);
+$formUrl = Url::to(['apply/brands/' . $market_id]);
 ?>
 <script>
     productObject = {};
@@ -164,7 +164,5 @@ $formUrl = Url::to(['market/brands/' . $market_id]);
 <script>
     $("body").on("change", "#user-text,#user-limit", function (event) {
         $('#search-users').submit();
-    });
-    
-    
+    });   
 </script>

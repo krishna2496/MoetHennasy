@@ -18,14 +18,10 @@ use common\models\Questions;
 use common\models\StoresResponseType;
 use common\repository\StoresResponseTypeRepository;
 use common\models\RatingsSearch;
-/**
- * ConfigsController implements the CRUD actions for Configs model.
- */
+
 class ConfigsController extends BaseBackendController
 {
-    /**
-     * @inheritdoc
-     */
+  
     public function behaviors()
     {
         return [
@@ -51,10 +47,6 @@ class ConfigsController extends BaseBackendController
         ];
     }
 
-    /**
-     * Lists all Configs models.
-     * @return mixed
-     */
     public function actionIndex($id)
     {
         $store=Stores::findOne($id);

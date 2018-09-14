@@ -50,7 +50,7 @@ $formUrl = Url::to(['catalogues/index']);
             </div>
             <div class="box-body">
                 <?=
-                GridView::widget([
+                GridView::widget([ 
                     'dataProvider' => $dataProvider,
                     'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-5">{summary}</div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
                     'columns' => [

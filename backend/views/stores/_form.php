@@ -141,7 +141,7 @@ use yii\widgets\ActiveForm;
 <script type="text/javascript">
     function getMarketSegments(data){
         var str = "<option value>Select Cluster</option>";
-        moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>stores/ajax-get-segment",data,'post').then(function(result){
+        moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>stores-ajax/ajax-get-segment",data,'post').then(function(result){
             if(result.status.success == 1) {
                 if(result.data.segments.length > 0) {
                     $.each(result.data.segments, function(key, value){
@@ -161,7 +161,7 @@ use yii\widgets\ActiveForm;
 
     function getUsers(data){
         var userStr = "<option value>Select User</option>";
-        moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>stores/ajax-get-user",data,'post').then(function(result){
+        moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>stores-ajax/ajax-get-user",data,'post').then(function(result){
             if(result.status.success == 1) {
                 if(result.data.users.length > 0) {
                     $.each(result.data.users, function(key, value){
@@ -182,7 +182,7 @@ use yii\widgets\ActiveForm;
     function getCities(data){
         var str = "<option value>Select City</option>";
         $('#stores-city_id').html(str);
-        moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>stores/ajax-get-city",data,'post').then(function(result){
+        moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>stores-ajax/ajax-get-city",data,'post').then(function(result){
             if(result.status.success == 1) {
                 if(result.data.cities.length > 0) {
                     $.each(result.data.cities, function(key, value){
@@ -202,7 +202,7 @@ use yii\widgets\ActiveForm;
 
     function getProvinces(data){
         var str = "<option value>Select Province</option>";
-        moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>stores/ajax-get-province",data,'post').then(function(result){
+        moet.ajax("<?php echo CommonHelper::getPath('admin_url')?>stores-ajax/ajax-get-province",data,'post').then(function(result){
             if(result.status.success == 1) {
                 if(result.data.provinces.length > 0) {
                     $.each(result.data.provinces, function(key, value){

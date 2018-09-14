@@ -64,11 +64,11 @@ return [
                 'store-configuration/modal-content/<id:\d+>' => 'store-configuration/modal-content',
                 'store-configuration/review-store/<id:\d+>' => 'store-configuration/review-store/',
                 'store-configuration/feedback/<id:\d+>' => 'store-configuration/feedback/',
-                
                 'market/rules/<id:\d+>' => 'market/rules',
-                
                 'rule-administration/product/<id:\d+>' => 'rule-administration/product',
-                
+                'apply/rules/<id:\d+>' => 'apply/rules',
+                'apply/brands/<id:\d+>' => 'apply/brands',
+               
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:[^/]+>/<action:[^/]+>/<slug:[^/]+>' => '<controller>/<action>',
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',

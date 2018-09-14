@@ -76,7 +76,7 @@ class ContactsController extends BaseApiController {
                         $isDisplay = 0;
                         $storeList['data']['markets'][$key]['marketSegmentData'] = array();
                         foreach ($value['marketSegmentData'] as $key1 => $value1) {
-                            if ($value1['market_segment_id'] == 6) {
+                            if ($value1['market_segment_id'] == $data['market_segment_id']) {
                                 $isDisplay = 1;
                                 $storeList['data']['markets'][$key]['marketSegmentData'][] = $value1;
                             }
