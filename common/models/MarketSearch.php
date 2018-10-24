@@ -50,7 +50,7 @@ class MarketSearch extends Markets
             if($resultMarketList['data']['markets']){
                 foreach ($resultMarketList['data']['markets'] as $key => $value) {
                     $temp = $value;
-                    $temp['title'] =\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($value['title']));;
+                    $temp['title'] = ucfirst($value['title']);
 //                    $temp['market_segment_id'] = $value['market_segment_id'];
                     $marketList[] = $temp;
                 }

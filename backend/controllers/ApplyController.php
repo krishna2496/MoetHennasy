@@ -35,7 +35,7 @@ class ApplyController extends MarketController
                 ],
                 'rules' => [
                     [
-                        'actions' => ['rules','brands'],
+                        'actions' => ['test','rules','brands','re-order'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -45,7 +45,17 @@ class ApplyController extends MarketController
           
         ];
     }
-
+   public function actionTest(){
+        $cat = MarketBrands::find()->asArray()->all();
+       
+        foreach ($cat as $key=>$value){         
+//            echo $value['id'];exit;
+          $c = MarketBrands::findOne($value['id']);
+          $c->reorder_id = $value['id'];
+          $c->save(false);
+        }
+    }
+    
     public function actionRules($id){      
        $filters = Yii::$app->request->queryParams;
       
@@ -132,7 +142,7 @@ class ApplyController extends MarketController
        }
     }
     
-  public function actionBrands($id){
+    public function actionBrands($id){
         
         if (($model = Markets::findOne($id)) !== null) {
         $title=$model->title;
@@ -141,9 +151,9 @@ class ApplyController extends MarketController
         $filters =array();
         $model = new MarketBrands();
         $selected = [];
-        $ruleModel = MarketBrands::find()->select('brand_id')->andWhere(['market_id' => $id])->asArray()->all();
-       
-      
+        $ruleModel = MarketBrands::find()->select(['brand_id','reorder_id'])->andWhere(['market_id' => $id])->orderBy(['reorder_id'=>SORT_ASC])->asArray()->all();
+//        echo '<pre>';
+//        print_r($ruleModel);exit;
         if($ruleModel){
             foreach ($ruleModel as $key=>$value){
                   $selected[$key]  = $value['brand_id']; 
@@ -170,7 +180,7 @@ class ApplyController extends MarketController
             $ruleData['brand_id'] = $rules;
            
             $marketRepository = new \common\repository\MarketBrandsRepository;
-            $returnData = $marketRepository->createRule($ruleData);
+            $returnData = $marketRepository->createBrand($ruleData);
             if($returnData['status']['success'] == 1)
             {  
                 parent::userActivity('create_markets_brands',$description='');
@@ -203,6 +213,26 @@ class ApplyController extends MarketController
             throw new NotFoundHttpException('The requested page does not exist.');
        }
     }
-
+    
+    public function actionReOrder(){
+        $data = \yii::$app->request->post();
+        $current_id = $data['current_id'];
+        $replaced_id= $data['replaced_id'];
+        $market_id = $data['market_id'];
+        
+        $currentCat = MarketBrands::findOne(['brand_id' =>$current_id,'market_id' => $market_id]);
+        $replaced = MarketBrands::findOne(['brand_id' =>$replaced_id,'market_id' =>$market_id]);       
+        
+        $current_re= $currentCat->reorder_id;
+       $replace_re =  $replaced->reorder_id;
+        
+        $currentCat->reorder_id = $replace_re;
+        $replaced->reorder_id =  $current_re;
+        
+//        echo '<pre>';
+//        print_r($currentCat);exit;
+         $currentCat->save(false);
+        $replaced->save(false);
+    }
 
 }

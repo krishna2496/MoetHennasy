@@ -6,7 +6,6 @@ use common\helpers\CommonHelper;
 use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-
 $formUrl = Url::to(['store-configuration/save-data']);
 $uploadShelf = Url::to(['store-configuration/save-image']);
 //$reviewUrl = Url::to(['store-configuration/review-store']);
@@ -21,6 +20,7 @@ $session = Yii::$app->session;
 ?>
 <script type="text/javascript">
     var isUpdate = '<?php echo $is_update; ?>';
+   
     var brandThumbId = '<?php echo $brandThumbId ?>';
     var productArry = [];
     var productObject = {};
@@ -130,6 +130,8 @@ $session = Yii::$app->session;
     var uploadSelves = '<?php echo $uploadShelf ?>';
     var maxStar = '<?php echo yii::$app->params['star_max_size'][0] ;?>';
     if (isUpdate == '1') { 
+        var back_color = '<?php echo $brandBackground ?>';
+      
         var reviewStoreUrl = '<?= Url::to(['store-configuration/review-store/' . $configId]); ?>';
         $("#ex6SliderVal").val('<?= isset($_SESSION['config']['no_of_shelves']) ?  $_SESSION['config']['no_of_shelves'] :''; ?>');
         $("#hex6SliderVal").val('<?= isset($_SESSION['config']['height_of_shelves']) ? $_SESSION['config']['height_of_shelves'] : ''; ?>');

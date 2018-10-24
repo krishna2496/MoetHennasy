@@ -5,6 +5,7 @@ use yii\helpers\Html;
 $this->title = 'Store Configuration';
 $this->params['breadcrumbs'][] = ['label' => 'Store Configuration', 'url' => ['store-configuration/listing/'.$store_id]];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="glossary-create">
 
@@ -16,7 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'is_update'=>$is_update,
                 'configId' => $configId,
                 'brandThumbId' => $brandThumbId,
-                'reviewFlag' => $reviewFlag
+                'reviewFlag' => $reviewFlag,
+                'brandBackground' => $brandBackground
                 
     ]) ?>
 

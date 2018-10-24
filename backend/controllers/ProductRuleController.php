@@ -125,9 +125,10 @@ class ProductRuleController extends Controller {
     }
 
     protected function applySortingRule(&$racksProductArray) {
+//        echo '<pre>';
+//        print_r($racksProductArray);exit;
         
-        $this->sort_array_of_array($racksProductArray, 'id', SORT_DESC);
-    
+//       $this->sort_array_of_array($racksProductArray, 'market_share', $sort);
         if ($this->ifRuleContain(\yii::$app->params['configArray']['market_share'])) {            
             $sort = SORT_DESC;
             $this->sort_array_of_array($racksProductArray, 'market_share', $sort);
@@ -157,6 +158,12 @@ class ProductRuleController extends Controller {
                     $racksProductArray = $mergedArray;
             }
         }
+        //product rule
+         if ($this->ifRuleContain(\yii::$app->params['configArray']['order_product'])) {
+          
+                $this->sort_array_of_array($racksProductArray, 'reorder_id', SORT_ASC);
+         }
+     
     }
 
     public function sort_array_of_array(&$array, $subfield, $sort) {
@@ -178,7 +185,7 @@ class ProductRuleController extends Controller {
                 $rulesArray[] = $value['product_fields'];
             }
         }
-
+    
         if (in_array($ruleValue, $rulesArray)) {
             return true;
         } else {

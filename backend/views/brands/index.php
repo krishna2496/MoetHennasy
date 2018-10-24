@@ -7,6 +7,7 @@ use yii\helpers\Url;
 $this->title = 'Brands';
 $this->params['breadcrumbs'][] = $this->title;
 $formUrl = Url::to(['brands/index']);
+$count = count($dataProvider->allModels);
 ?>
 <div class="row">
     <div class="col-xs-12">
@@ -50,8 +51,9 @@ $formUrl = Url::to(['brands/index']);
                         [
                         'attribute' => 'Title',
                         'value' => 'name',
-                        'contentOptions'=>[ 'style'=>'width: 50%'],
+                        'contentOptions'=>[ 'style'=>'width: 40%'],
                         ],
+                        
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
@@ -82,4 +84,20 @@ $formUrl = Url::to(['brands/index']);
     $("body").on("change", "#brands-text,#brands-limit",function(event){
         $('#search-users').submit();
     });
+    var baseUrl = "<?php echo Yii::$app->request->baseUrl; ?>";
+    function reorder(current_id,replaced_id){
+        url = baseUrl+"/brands/re-order";
+        $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data:{current_id:current_id,replaced_id:replaced_id},
+                        success: function (data)
+                        {
+                           location.reload();
+                        }
+        });
+    }
+    
+  
+    
 </script>

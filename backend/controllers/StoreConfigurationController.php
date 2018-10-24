@@ -100,6 +100,7 @@ class StoreConfigurationController extends ProductRuleController {
         return $this->redirect(['store-configuration/listing/' . $storeId]);
     }
     
+    
     public function actionReviewStore($id) {
         $storeConfig = new StoreConfigRepository();
         $filter = $feedBackResponse = array();
@@ -218,6 +219,7 @@ class StoreConfigurationController extends ProductRuleController {
             if ($configData['status']['success'] == 1) {
                 if (!$request->isPjax) {
                     $storeData = $configData['data']['stores_config'][0];
+                   
                     $userData = new User();
 
                     $userDetail = User::findOne(['id' => $storeData['created_by']]);
@@ -315,16 +317,23 @@ class StoreConfigurationController extends ProductRuleController {
                 if ($marketId != '') {
                     $data['market_id'] = $marketId;
                     $returnData = $repository->listing($data);
-
+                    $brandBackground = '';
                     $brandId = array();
                     if ($returnData['status']['success'] == 1) {
                         if (!empty($returnData['data']['market_brands'])) {
 
                             foreach ($returnData['data']['market_brands'] as $key => $value) {
+                              
                                 $brand[$key]['id'] = $value['brand']['id'];
                                 $brand[$key]['name'] = $value['brand']['name'];
                                 $brand[$key]['image'] = $value['brand']['image'];
                                 $brandId[] = $value['brand']['id'];
+                                if($brandThumbId != ''){
+                                if($value['brand']['id'] == $brandThumbId){
+                                    $brandBackground = $value['brand']['color_code'];
+                                }
+                                }
+                                
                             }
                         }
                     }
@@ -351,7 +360,8 @@ class StoreConfigurationController extends ProductRuleController {
                         'brandThumbId' => $brandThumbId,
                         'configId' => $configId,
                         'display_name' => $display_name,
-                        'reviewFlag' => $reviewFlag
+                        'reviewFlag' => $reviewFlag,
+                        'brandBackground' => $brandBackground
                 ]);
             } else {
                 throw new NotFoundHttpException('The requested page does not exist.');
@@ -413,7 +423,6 @@ class StoreConfigurationController extends ProductRuleController {
             if ($marketRuleData['status']['success'] == 1 && isset($marketRuleData['data']['market_rules']) && !empty($marketRuleData['data']['market_rules'])) {
                 
                 foreach ($marketRuleData['data']['market_rules'] as $key => $value) {
-
                     $rulesArray[$key]['ids'] = $value['rule_id'];
                     $rulesArray[$key]['type'] = $value['rules']['type'];
                     $rulesArray[$key]['product_fields'] = $value['rules']['product_fields'];
@@ -475,6 +484,7 @@ class StoreConfigurationController extends ProductRuleController {
                     'brandThumbId' => 0,
                     'configId' => 0,
                     'reviewFlag' => 0,
+                    'brandBackground' => '',
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -504,7 +514,7 @@ class StoreConfigurationController extends ProductRuleController {
     }
 
     public function actionSaveProductData() {
-      
+        
         $post = Yii::$app->request->post('productObject');
         $flag = 0;
         $productArry = array();
@@ -547,6 +557,7 @@ class StoreConfigurationController extends ProductRuleController {
             unset($dataIds[$key]['ean']);
             unset($dataIds[$key]['manufacturer']);
         }
+        
         $selvesWidth = $_SESSION['config']['width_of_shelves'];
         $selvesHeight = $_SESSION['config']['height_of_shelves'];
         $selvesDepth =$_SESSION['config']['depth_of_shelves'];

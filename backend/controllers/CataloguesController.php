@@ -29,7 +29,7 @@ class CataloguesController extends BaseBackendController {
                 ],
                 'rules' => [
                         [
-                        'actions' => ['index', 'create', 'update', 'view', 'delete'],
+                        'actions' => ['re-order','test','index', 'create', 'update', 'view', 'delete'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -47,7 +47,37 @@ class CataloguesController extends BaseBackendController {
             ],
         ];
     }
-
+    public function actionTest(){
+        $cat = Catalogues::find()->asArray()->all();
+//        echo '<prE>';
+//        print_r($cat);exit;
+        foreach ($cat as $key=>$value){         
+//            echo $value['id'];exit;
+          $c = Catalogues::findOne($value['id']);
+          $c->reorder_id = $value['id'];
+          $c->save(false);
+        }
+    }
+    
+    public function actionReOrder(){
+        $data = \yii::$app->request->post();
+        $current_id = $data['current_id'];
+        $replaced_id= $data['replaced_id'];
+        
+        $currentCat = Catalogues::findOne(['reorder_id' =>$current_id]);
+      
+        $currentCat->reorder_id = $replaced_id;
+       
+         
+        $replaced = Catalogues::findOne(['reorder_id' =>$replaced_id]);
+        $replaced->reorder_id = $current_id;
+        
+//        echo '<pre>';
+//        print_r($currentCat);exit;
+         $currentCat->save(false);
+        $replaced->save(false);
+    }
+    
     public function actionIndex() {
         $filters = Yii::$app->request->queryParams;
 

@@ -1,10 +1,11 @@
 <?php
+
 use common\helpers\CommonHelper;
+
 $adminUrl = CommonHelper::getPath('admin_url');
 $user = CommonHelper::getUser();
 $arrayMenu = array(
-    
-        array(
+    array(
         'title' => 'Dashboard',
         'permissionName' => array(
             'Site.Index',
@@ -19,12 +20,9 @@ $arrayMenu = array(
         'actionId' => array(
             'index'
         ),
-        
         'childs' => array(
-            
         )
     ),
-    
     array(
         'title' => 'Stores Management',
         'permissionName' => array(
@@ -39,14 +37,13 @@ $arrayMenu = array(
         'hasChildClass' => 'treeview ',
         'submenuToggleClass' => 'treeview-menu',
         'controllerId' => array(
-            'stores','configs','store-configuration','market-segments','market','market-contacts'
+            'stores', 'configs', 'store-configuration', 'market-segments', 'market', 'market-contacts'
         ),
         'actionId' => array(
-           'index', 'create','update','view','review','listing','rules','brands'
+            'index', 'create', 'update', 'view', 'review', 'listing', 'rules', 'brands'
         ),
         'childs' => array(
-            
-             array(
+            array(
                 'title' => 'Market Clusters',
                 'permissionName' => array(
                     'MarketSegments.Index'
@@ -54,9 +51,8 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'market-segments/index',
                 'controllerId' => 'market-segments',
-                'actionId' => array('index','create','update','view')
+                'actionId' => array('index', 'create', 'update', 'view')
             ),
-            
             array(
                 'title' => 'Markets',
                 'permissionName' => array(
@@ -64,10 +60,9 @@ $arrayMenu = array(
                 ),
                 'icon' => '',
                 'link' => 'market/index',
-                'controllerId' => 'market','market-contacts',
-                'actionId' => array('index','create','update','view','rules','brands')
+                'controllerId' => 'market', 'market-contacts',
+                'actionId' => array('index', 'create', 'update', 'view', 'rules', 'brands')
             ),
-            
             array(
                 'title' => 'Stores',
                 'permissionName' => array(
@@ -76,7 +71,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'stores/index',
                 'controllerId' => 'stores',
-                'actionId' => array('index','create','update','view')
+                'actionId' => array('index', 'create', 'update', 'view')
             ),
 //            array(
 //                'title' => 'Create',
@@ -90,7 +85,6 @@ $arrayMenu = array(
 //            ),
         )
     ),
-    
     array(
         'title' => 'User Management',
         'permissionName' => array(
@@ -105,7 +99,7 @@ $arrayMenu = array(
             'users'
         ),
         'actionId' => array(
-            'index', 'create','update','view'
+            'index', 'create', 'update', 'view'
         ),
         'childs' => array(
             array(
@@ -116,7 +110,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'users/index',
                 'controllerId' => 'users',
-                'actionId' => array('index','create','update','view')
+                'actionId' => array('index', 'create', 'update', 'view')
             ),
 //            array(
 //                'title' => 'Create',
@@ -169,7 +163,6 @@ $arrayMenu = array(
 ////            ),
 //        )
 //    ),
-    
 //    array(
 //        'title' => 'Markets',
 //        'permissionName' => array(
@@ -209,8 +202,6 @@ $arrayMenu = array(
 ////            ),
 //        )
 //    ),
-    
-   
     array(
         'title' => 'Product Management',
         'permissionName' => array(
@@ -227,10 +218,10 @@ $arrayMenu = array(
         'hasChildClass' => 'treeview ',
         'submenuToggleClass' => 'treeview-menu',
         'controllerId' => array(
-            'catalogues','product-categories','product-types','brands'
+            'catalogues', 'product-categories', 'product-types', 'brands'
         ),
         'actionId' => array(
-           'index', 'create','update','view'
+            'index', 'create', 'update', 'view'
         ),
         'childs' => array(
             array(
@@ -241,7 +232,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'catalogues/index',
                 'controllerId' => 'catalogues',
-                'actionId' => array('index','create','update','view')
+                'actionId' => array('index', 'create', 'update', 'view')
             ),
             array(
                 'title' => 'Brands',
@@ -251,7 +242,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'brands/index',
                 'controllerId' => 'brands',
-                'actionId' => array('index','create','update','view')
+                'actionId' => array('index', 'create', 'update', 'view')
             ),
             array(
                 'title' => 'Product Types',
@@ -261,9 +252,8 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'product-types/index',
                 'controllerId' => 'product-types',
-                'actionId' => array('index','create','update','view')
+                'actionId' => array('index', 'create', 'update', 'view')
             ),
-            
             array(
                 'title' => 'Product Categories',
                 'permissionName' => array(
@@ -272,7 +262,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'product-categories/index',
                 'controllerId' => 'product-categories',
-                'actionId' => array('index','create','update','view')
+                'actionId' => array('index', 'create', 'update', 'view')
             ),
 //            array(
 //                'title' => 'Create',
@@ -286,7 +276,6 @@ $arrayMenu = array(
 //            ),
         )
     ),
-    
 //    array(
 //        'title' => 'Brands',
 //        'permissionName' => array(
@@ -326,7 +315,6 @@ $arrayMenu = array(
 ////            ),
 //        )
 //    ),
-    
     array(
         'title' => 'Others',
         'permissionName' => array(
@@ -345,10 +333,10 @@ $arrayMenu = array(
         'hasChildClass' => 'treeview ',
         'submenuToggleClass' => 'treeview-menu',
         'controllerId' => array(
-            'helps','help-categories','rules','questions','glossary'
+            'helps', 'help-categories', 'rules', 'questions', 'glossary'
         ),
         'actionId' => array(
-           'index', 'create','update','view'
+            'index', 'create', 'update', 'view'
         ),
         'childs' => array(
             array(
@@ -359,8 +347,8 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'help-categories/index',
                 'controllerId' => 'help-categories',
-                'actionId' => array('index','create','update','view')
-            ), 
+                'actionId' => array('index', 'create', 'update', 'view')
+            ),
             array(
                 'title' => 'Rules',
                 'permissionName' => array(
@@ -369,7 +357,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'rules/index',
                 'controllerId' => 'rules',
-                'actionId' => array('index','create','update','view')
+                'actionId' => array('index', 'create', 'update', 'view')
             ),
             array(
                 'title' => 'Questions',
@@ -379,7 +367,7 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'questions/index',
                 'controllerId' => 'questions',
-                'actionId' => array('index','create','update','view')
+                'actionId' => array('index', 'create', 'update', 'view')
             ),
             array(
                 'title' => 'Glossaries',
@@ -389,11 +377,10 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'glossary/index',
                 'controllerId' => 'glossary',
-                'actionId' => array('index','create','update','view')
+                'actionId' => array('index', 'create', 'update', 'view')
             ),
         )
     ),
-    
 //    array(
 //        'title' => 'Product Type',
 //        'permissionName' => array(
@@ -511,46 +498,46 @@ $arrayMenu = array(
 //            ),
 //        )
 //    ),
-      /* array(
-        'title' => 'Ratings',
-        'permissionName' => array(
-            'Ratings.Index',
-            'Ratings.Create',
-        ),
-        'icon' => 'fa fa-user',
-        'link' => 'javascript:void(0)',
-        'hasChildClass' => 'treeview ',
-        'submenuToggleClass' => 'treeview-menu',
-        'controllerId' => array(
-            'ratings'
-        ),
-        'actionId' => array(
-           'index', 'create','update','view'
-        ),
-        'childs' => array(
-            array(
-                'title' => 'Listing',
-                'permissionName' => array(
-                    'Ratings.Index'
-                ),
-                'icon' => '',
-                'link' => 'ratings/index',
-                'controllerId' => 'ratings',
-                'actionId' => array('index')
-            ),
-            array(
-                'title' => 'Create',
-                'permissionName' => array(
-                    'Ratings.Create'
-                ),
-                'icon' => '',
-                'link' => 'ratings/create',
-                'controllerId' => 'ratings',
-                'actionId' => array('create')
-            ),
-        )
-    ), 
-    */
+    /* array(
+      'title' => 'Ratings',
+      'permissionName' => array(
+      'Ratings.Index',
+      'Ratings.Create',
+      ),
+      'icon' => 'fa fa-user',
+      'link' => 'javascript:void(0)',
+      'hasChildClass' => 'treeview ',
+      'submenuToggleClass' => 'treeview-menu',
+      'controllerId' => array(
+      'ratings'
+      ),
+      'actionId' => array(
+      'index', 'create','update','view'
+      ),
+      'childs' => array(
+      array(
+      'title' => 'Listing',
+      'permissionName' => array(
+      'Ratings.Index'
+      ),
+      'icon' => '',
+      'link' => 'ratings/index',
+      'controllerId' => 'ratings',
+      'actionId' => array('index')
+      ),
+      array(
+      'title' => 'Create',
+      'permissionName' => array(
+      'Ratings.Create'
+      ),
+      'icon' => '',
+      'link' => 'ratings/create',
+      'controllerId' => 'ratings',
+      'actionId' => array('create')
+      ),
+      )
+      ),
+     */
 //    array(
 //        'title' => 'Questions',
 //        'permissionName' => array(
@@ -629,7 +616,7 @@ $arrayMenu = array(
 ////            ),
 //        )
 //    ),
-     array(
+    array(
         'title' => 'Permissions',
         'permissionName' => array(
             'Permission.Create',
@@ -689,11 +676,11 @@ $arrayMenu = array(
                     <img src="<?php echo CommonHelper::getImage(UPLOAD_PATH_USER_IMAGES . $user->profile_photo); ?>" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p><?php echo $user->first_name.' '.$user->last_name; ?></p>
+                    <p><?php echo $user->first_name . ' ' . $user->last_name; ?></p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
-          
+
             <!-- <form action="#" method="get" class="sidebar-form">
                 <div class="input-group">
                     <input type="text" name="q" class="form-control" placeholder="Search...">
@@ -705,50 +692,51 @@ $arrayMenu = array(
             </form> -->
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">MAIN NAVIGATION</li>
-                <?php 
-                    $controllerId = Yii::$app->controller->id;
-                    $actionId = Yii::$app->controller->action->id;
+<?php
+$controllerId = Yii::$app->controller->id;
+$actionId = Yii::$app->controller->action->id;
 
-                    foreach ($arrayMenu as $key => $value) { 
-                        $parentMenuClass = '';
-                        if (in_array($controllerId, $value['controllerId']) && in_array($actionId, $value['actionId'])) {
-                            $parentMenuClass = ' active open';
-                        }
-                        ?>
-                        <?php if ((CommonHelper::checkPermission($value['permissionName']))) { ?>
-                            <li class="<?php echo $value['hasChildClass'].$parentMenuClass; ?>">
-                                <a href="<?php echo $value['link']; ?>">
-                                    <i class="<?php echo $value['icon']; ?>"></i>
-                                    <span><?php echo $value['title']; ?></span>
-                                    <?php if($value['childs']){ ?>
-                                        <span class="pull-right-container">
-                                          <i class="fa fa-angle-left pull-right"></i>
-                                        </span>
-                                    <?php } ?>
-                                </a>
-                                <?php if($value['childs']){ ?>
-                                    <ul class="treeview-menu">
-                                        <?php 
-                                            foreach ($value['childs'] as $childKey => $childValue) { 
-                                                $childMenuClass = '';
-                                                if($parentMenuClass && isset($childValue['actionId']) && isset($childValue['controllerId']) && ($childValue['controllerId'] == $controllerId) && in_array($actionId, $childValue['actionId'])){
-                                                    $childMenuClass = 'active';
-                                                }
-                                                ?>
-                                            <?php if((CommonHelper::checkPermission($childValue['permissionName']))) { ?>
-                                                <li class="<?php echo $childMenuClass;?>">
-                                                    <a href="<?php echo $adminUrl.$childValue['link']; ?>">
-                                                        <i class="fa fa-circle-o"></i> <?php echo $childValue['title']; ?>
-                                                    </a>
-                                                </li>
-                                            <?php } ?>
-                                        <?php } ?>
-                                    </ul>
-                                <?php } ?>
-                            </li>
+foreach ($arrayMenu as $key => $value) {
+    $parentMenuClass = '';
+    if (in_array($controllerId, $value['controllerId']) && in_array($actionId, $value['actionId'])) {
+        $parentMenuClass = ' active open';
+    }
+    ?>
+    <?php if ((CommonHelper::checkPermission($value['permissionName']))) { ?>
+                        <li class="<?php echo $value['hasChildClass'] . $parentMenuClass; ?>">
+                            <a href="<?php echo $value['link']; ?>">
+                                <i class="<?php echo $value['icon']; ?>"></i>
+                                <span><?php echo $value['title']; ?></span>
+                        <?php if ($value['childs']) { ?>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
                         <?php } ?>
-                <?php } ?>
+                            </a>
+                        <?php if ($value['childs']) { ?>
+                                <ul class="treeview-menu">
+                            <?php
+                            foreach ($value['childs'] as $childKey => $childValue) {
+                                $childMenuClass = '';
+                                if ($parentMenuClass && isset($childValue['actionId']) && isset($childValue['controllerId']) && ($childValue['controllerId'] == $controllerId) && in_array($actionId, $childValue['actionId'])) {
+                                    $childMenuClass = 'active';
+                                }
+                                ?>
+                <?php if ((CommonHelper::checkPermission($childValue['permissionName']))) { ?>
+                                            <li class="<?php echo $childMenuClass; ?>">
+                                                <a href="<?php echo $adminUrl . $childValue['link']; ?>">
+                                                    <i class="fa fa-circle-o"></i> <?php echo $childValue['title']; ?>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    <?php } ?>
+                                </ul>
+                                <?php } ?>
+                        </li>
+                            <?php } ?>
+                        <?php } ?>
             </ul>
+            <li style="list-style-type: none;bottom: 10px;position: absolute;left: 10px">Design & developed by<a href="http://www.oditygroup.com/"> ODITY</a> </li>
         </section>
     </aside>
 </b>

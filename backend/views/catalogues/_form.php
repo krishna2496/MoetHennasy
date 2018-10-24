@@ -31,7 +31,7 @@ use common\helpers\CommonHelper;
                                 </div>
                                 <?php if(isset($model->id) && $model->id) { ?>
                                 <div class="col-md-3">
-                                   <img class="img-responsive" style="width:100px;height: 100px" src="<?php echo CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $model->image); ?>"/>               
+                                   <img class="img-responsive" style="width:100px;" src="<?php echo CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $model->image); ?>"/>               
                                 </div>
                                 <?php } ?>
                             </div>

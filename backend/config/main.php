@@ -77,16 +77,16 @@ return [
                 
                 'helps/update/<id:\d+>/<categoryId:\d+>' => 'helps/update',
                 'helps/create/<id:\d+>' => 'helps/create',
-                
-                
+                'catalogues/re-order/<id:\d+>' => 'catalogues/re-order',
+                'brand/re-order/<id:\d+>' => 'brand/re-order',
                 
                 'helps/delete/<id:\d+>/<categoryId:\d+>' => 'helps/delete',
                 'store-configuration/delete/<id:\d+>/<storeId:\d+>' => 'store-configuration/delete',
                 'helps/view/<id:\d+>/<categoryId:\d+>' => 'helps/view',
                 'configs/update/<id:\d+>/<storeId:\d+>' => 'configs/update',
                 'configs/create/<id:\d+>' => 'configs/create',
-                
-               
+              
+              
                 
                 'configs/delete/<id:\d+>/<storeId:\d+>' => 'configs/delete',
                 'configs/review/<id:\d+>/<storeId:\d+>' => 'configs/review',

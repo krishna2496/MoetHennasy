@@ -75,6 +75,7 @@ class StoresConfigController extends BaseApiController {
                 if (!empty($returnData['data']['market_brands'])) {
 
                     foreach ($returnData['data']['market_brands'] as $key => $value) {
+                       
                         $image = $value['brand']['image'];
 
                         unset($value['brand']['created_by']);
@@ -85,7 +86,7 @@ class StoresConfigController extends BaseApiController {
                         unset($value['brand']['updated_at']);
                         unset($value['brand']['deleted_at']);
                         $value['brand']['image'] = isset($value['brand']['image']) ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_BRANDS_IMAGES . $image : '';
-
+                        $value['brand']['color_code'] = isset($value['brand']['color_code']) && ($value['brand']['color_code'] != '') ? $value['brand']['color_code'] : COLOR_CODE;
 
                         $product = $value['brand']['product'];
 

@@ -32,7 +32,8 @@ class BrandRepository extends Repository
         $model = new Brands;
         $model->name = $data['name'];
         $model->image = $data['image'];
-       
+        $model->color_code = isset($data['color_code']) ? $data['color_code'] :'';
+        
         if($model->validate()) {
             if($model->save(false)) {
                 $this->apiCode = 1;
@@ -61,6 +62,10 @@ class BrandRepository extends Repository
          if(isset($data['image'])) {
         	$model->image = $data['image'];
         }
+        if(isset($data['color_code'])) {
+        $model->color_code = $data['color_code'];
+        }
+        
         if($model->validate()) {
             if($model->save(false)) {
                 $this->apiCode = 1;

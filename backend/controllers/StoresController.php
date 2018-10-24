@@ -92,19 +92,11 @@ class StoresController extends StoresAjaxController
                 }
             }
         }
-        
-        $countries = $cities = array();
-        $masterDataRepository = new MasterDataRepository();
-        $countriesData = $masterDataRepository->countries();
-        if($countriesData['status']['success'] == 1){
-            $countries = CommonHelper::getDropdown($countriesData['data']['countries'], ['id', 'name']);
-        }
- 
-        $citiesData = $masterDataRepository->cities($filters);
-        if($citiesData['status']['success'] == 1){
-            $cities = CommonHelper::getDropdown($citiesData['data']['cities'], ['id', 'name']);
-        }
 
+        $allData = $this->allData('',$filters);
+        $cities = $allData['cities'];
+        $countries = $allData['countries'];
+        
         $searchModel = new StoresSearch();
         $dataProvider = $searchModel->search($filters);
 
@@ -184,17 +176,9 @@ class StoresController extends StoresAjaxController
             $marketFilter['user_id'] = $currentUser->id;
         }
           
-        $marketRepository = new MarketRepository();
-        $marketsData = $marketRepository->marketList($marketFilter);
-        if($marketsData['status']['success'] == 1){
-            $markets = CommonHelper::getDropdown($marketsData['data']['markets'], ['id', 'title']);
-        }
-      
-        $masterDataRepository = new MasterDataRepository();
-        $countriesData = $masterDataRepository->countries();
-        if($countriesData['status']['success'] == 1){
-            $countries = CommonHelper::getDropdown($countriesData['data']['countries'], ['id', 'name']);
-        }
+        $allData = $this->allData($marketFilter,'');
+        $markets = $allData['markets'];
+        $countries = $allData['countries'];
         
         $model = new Stores();
 
@@ -282,20 +266,10 @@ class StoresController extends StoresAjaxController
         if($currentUser->role_id != Yii::$app->params['superAdminRole']){
             $marketFilter['user_id'] = $currentUser->id;
         }
-        $marketRepository = new MarketRepository();
-        $marketsData = $marketRepository->marketList($marketFilter);
-        if($marketsData['status']['success'] == 1){
-            if ($marketsData['data']['markets']) {
-                $markets = CommonHelper::getDropdown($marketsData['data']['markets'], ['id', 'title']);
-            }
-        }
-        //countries
-        $masterDataRepository = new MasterDataRepository();
-        $countriesData = $masterDataRepository->countries();
-        if($countriesData['status']['success'] == 1){
-            $countries = CommonHelper::getDropdown($countriesData['data']['countries'], ['id', 'name']);
-        }
 
+        $allData = $this->allData($marketFilter,'');
+        $markets = $allData['markets'];
+        $countries = $allData['countries'];
         if (Yii::$app->request->post())
         {
             $model->load(Yii::$app->request->post());
@@ -415,7 +389,31 @@ class StoresController extends StoresAjaxController
         }
     }
     
-    protected function allData(){
+    protected function allData($marketFilter = '',$filters =''){
+        $countries = $cities =  $markets = $returnData = array();
         
+        $masterDataRepository = new MasterDataRepository();
+        $countriesData = $masterDataRepository->countries();
+        if($countriesData['status']['success'] == 1){
+            $countries = CommonHelper::getDropdown($countriesData['data']['countries'], ['id', 'name']);
+        }
+ 
+        $citiesData = $masterDataRepository->cities($filters);
+        if($citiesData['status']['success'] == 1){
+            $cities = CommonHelper::getDropdown($citiesData['data']['cities'], ['id', 'name']);
+        }
+        
+        $marketRepository = new MarketRepository();
+        $marketsData = $marketRepository->marketList($marketFilter);
+        if($marketsData['status']['success'] == 1){
+            $markets = CommonHelper::getDropdown($marketsData['data']['markets'], ['id', 'title']);
+        }
+        $returnData = array(
+            'countries' => $countries,
+            'cities' =>$cities,
+            'markets' => $markets,
+        );
+     
+        return $returnData;
     }
 }

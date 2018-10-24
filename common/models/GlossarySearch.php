@@ -36,7 +36,7 @@ class GlossarySearch extends Glossary
             if($brandRepository['data']['glossary']){
                 foreach ($brandRepository['data']['glossary'] as $key => $value) {
                     $temp = $value;
-                    $temp['title']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['title']));
+                    $temp['title']= ucfirst($temp['title']);
 //                    $temp['description']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['description']));
                     $brandList[]=$temp;
                 }

@@ -26,7 +26,7 @@ class BrandsController extends BaseBackendController
                 ],
                 'rules' => [
                     [
-                        'actions' => ['index','create','update','view','delete'],
+                        'actions' => ['re-order','index','create','update','view','delete','test'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],

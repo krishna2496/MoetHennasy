@@ -50,8 +50,11 @@ class CataloguesSearch extends Catalogues {
                 'pageSize' => $params['limit'],
             ],
             'sort' => [
+                 
+                'defaultOrder'=>['reorder_id'=>SORT_ASC],
                 'attributes' =>
                     [
+                    'reorder_id'  ,
                     'sku',
                     'ean',
                     'short_name',
@@ -67,6 +70,7 @@ class CataloguesSearch extends Catalogues {
         if (isset($params['selection']) && ($params['selection'] != '')) {
             $dataProvider->pagination->params = ['selection' => $params['selection']];
         }
+        
         return $dataProvider;
     }
 

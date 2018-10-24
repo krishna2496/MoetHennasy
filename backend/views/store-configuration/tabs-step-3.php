@@ -52,10 +52,13 @@ var removeData = new Array();
                                 <?php
                                 if (isset($_SESSION['config']['brands_data']) && (!empty($_SESSION['config']['brands_data']))) {
                                     foreach ($_SESSION['config']['brands_data'] as $key => $value) {
+                                       if($value['color_code'] == ''){
+                                           $value['color_code'] = COLOR_CODE;
+                                       }
                                         ?>
                                         <li>
                                             <a title="<?= $value['name'] ?>">
-                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_BRANDS_IMAGES . $value['image']); ?>" alt="brand-image" class="brand-images" id="<?= $value['id'] ?>" onclick="changeBrand(this)">
+                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_BRANDS_IMAGES . $value['image']); ?>" alt="brand-image" class="brand-images" id="<?= $value['id'] ?>" title ='<?= $value['name'] ?>' onclick="changeBrand(this)">
                                                 <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $value['id']; ?>"  style="display:none">
                                             </a>
                                         </li>

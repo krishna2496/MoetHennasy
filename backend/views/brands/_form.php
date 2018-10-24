@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\helpers\CommonHelper;
+use kartik\color\ColorInput;
 ?>
 <div class="row">
     <div class="col-xs-12">
@@ -34,6 +35,17 @@ use common\helpers\CommonHelper;
                         </div>
                         
                        
+                </div>
+                <div class="row">
+                        <div class="col-md-6">
+                            
+                        
+                   <?php
+                                    echo $form->field($model, 'color_code')->widget(ColorInput::classname(), [
+    'options' => ['placeholder' => 'Select color ...'],
+]);
+                                    ?>    
+                        </div>
                 </div>
             </div>
         </div>
