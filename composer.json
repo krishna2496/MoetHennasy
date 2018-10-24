@@ -21,8 +21,9 @@
         "2amigos/yii2-google-places-library": "*",
         "kartik-v/yii2-widget-switchinput": "*",
         "kartik-v/yii2-widget-rating": "*",
-        
-        "mpdf/mpdf":"*"
+        "kartik-v/yii2-widget-colorinput": "*",
+        "mpdf/mpdf":"*",
+        "kartik-v/yii2-export": "@dev"
 
        
     },
