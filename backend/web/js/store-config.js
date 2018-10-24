@@ -270,15 +270,19 @@ $("#dispaly_name").on('keyup', function () {
 
 function changeBrand(data) {
 
-    var id = data.id;
-    if ($(".display" + id).hasClass("displayBlock")) {
 
+    var id = data.id;
+    var color_code = data.title;
+    if ($(".display" + id).hasClass("displayBlock")) {
         $(".display" + id).css('display', 'none');
+        $(".top-bg").css('background-color','#363638');
         $(".display" + id).removeClass('displayBlock');
         $('#brandImageHolder').html('Select Brand');
         $("#brand").val('');
     } else {
         $(".display" + id).css('display', 'block');
+        $(".top-bg").css('background-color',color_code);
+        $(".top-bg").css('background-image',"url()");
         $(".display" + id).addClass('displayBlock');
         $('img.brand-selected').not(".display" + id).css('display', 'none');
         $('img.brand-selected').not(".display" + id).removeClass('displayBlock');
@@ -611,9 +615,15 @@ $(document).on('ready pjax:success', function ()
         }
     });
     if (brandThumbId != 0) {
+        var background_color = back_color;
+        if(background_color == ''){
+            background_color = '#363638';
+        }
         var id = brandThumbId;
         var imgSrc = $('.brand-images[id="' + id + '"]').attr('src');
         $(".display" + id).css('display', 'block');
+          $(".top-bg").css('background-image',"url()");
+        $(".top-bg").css('background-color',background_color);
         $(".display" + id).addClass('displayBlock');
         $('img.brand-selected').not(".display" + id).css('display', 'none');
         $('img.brand-selected').not(".display" + id).removeClass('displayBlock');

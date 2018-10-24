@@ -19,6 +19,13 @@ use common\repository\RoleRepository;
 
 class SiteController extends BaseBackendController
 {
+    var $user = '';    
+    public function __construct($id, $module, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->user = CommonHelper::getUser();
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -70,7 +77,8 @@ class SiteController extends BaseBackendController
 
     public function actionIndex()
     {
-       $user=CommonHelper::getUser();
+       //$user=CommonHelper::getUser();
+       $user=$this->user;
        $data=$filterData=array();
        if($user->role_id != yii::$app->params['superAdminRole']){
             $userData = new User();
@@ -126,7 +134,7 @@ class SiteController extends BaseBackendController
     public function actionLogin()
         {
         $this->layout = 'auth';
-        if (CommonHelper::getUser()) {
+        if ($this->user) {
             return $this->goHome();
         }
 
@@ -178,7 +186,7 @@ class SiteController extends BaseBackendController
     public function actionRequestPasswordReset()
     {
         $this->layout = 'auth';
-        if (CommonHelper::getUser()) {
+        if ($this->user) {
             return $this->goHome();
         }
 
@@ -207,7 +215,7 @@ class SiteController extends BaseBackendController
     public function actionResetPassword($token)
     {
         $this->layout = 'auth';
-        if (CommonHelper::getUser()) {
+        if ($this->user) {
             return $this->goHome();
         }
 
@@ -236,11 +244,11 @@ class SiteController extends BaseBackendController
     }
 
     public function actionEditProfile(){
-        $currentUser = CommonHelper::getUser();
+        //$currentUser = CommonHelper::getUser();
+        $currentUser = $this->user;
         $userList = array();
         $roles = array();
-        $parentUserClass = 'hideParentUser'; 
-        $userRepository = new UserRepository;
+        $parentUserClass = 'hideParentUser';
 
         $model = User::findOne($currentUser->id);
         if(!$model){

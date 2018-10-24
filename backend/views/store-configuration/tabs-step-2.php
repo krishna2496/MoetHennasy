@@ -1,6 +1,7 @@
 <?php
 use yii\widgets\Pjax;
 use yii\grid\GridView;
+
 ?>
 <div class="col-sm-5 pull-right" id="tab-step-2">
 	<!-- Frame Filter section -->

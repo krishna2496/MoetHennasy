@@ -16,7 +16,7 @@ class MarketBrandsRepository extends Repository {
             $query->andWhere(['market_brands.market_id' => $data['market_id']]);
         }
         $data = array();
-        $data['market_brands'] = $query->asArray()->all();
+        $data['market_brands'] = $query->orderBy('reorder_id')->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }
@@ -28,15 +28,101 @@ class MarketBrandsRepository extends Repository {
         $marketSegmentData = $data['brand_id'];
         $model = new MarketBrands;
         $model->deleteAll(['market_id' => $data['market_id']],true);
+        
         foreach ($marketSegmentData as $value) {
             $modelSegment = new MarketBrands();
             $modelSegment->market_id = $data['market_id'];
             $modelSegment->brand_id = $value;
             if ($modelSegment->validate(false)) {
-                $modelSegment->save(false);
+                if($modelSegment->save(false)){
+//                $model = new MarketBrands();
+                $model =  MarketBrands::findOne([$modelSegment->id]);
+                $model->reorder_id = $modelSegment->id;
+                $model->save(false);
+                }
             }else{
                 $flag = 0;
             }
+        }
+        if($flag == 1){
+              $this->apiCode = 1;
+              $this->apiMessage = Yii::t('app','apply_brand');
+        }else{
+            $this->apiCode = 0;
+            if (isset($model->errors) && $model->errors) {
+                $this->apiMessage = $model->errors;
+            } 
+        }
+  
+        return $this->response();
+    }
+    
+      public function createBrand($data = array()) {
+        
+        $this->apiCode = 0;
+        $flag=1;
+        $marketSegmentData = $data['brand_id'];
+        
+        
+        $previousData = MarketBrands::find()->select('brand_id')->andWhere(['market_id' => $data['market_id']])->asArray()->all();
+      
+        $previous_array;
+        
+        foreach ($previousData as $key=>$value){
+            $previous_array[$key] = $value['brand_id'];
+        } 
+//        echo '<pre>';
+//        print_r($previous_array);
+//        print_r($marketSegmentData);
+////        exit;
+         
+        if(!empty($previous_array)){
+            $deleted_array = array_diff($previous_array, $marketSegmentData);
+//            echo '<pre>';
+//            print_r($deleted_array);exit;
+            if(!empty($deleted_array)){
+            foreach ($deleted_array as $key=>$d_id){
+            $model = new MarketBrands;
+            $model->deleteAll(['market_id' =>  $data['market_id'],'brand_id'=>$d_id],true);
+            }
+            }
+            
+            $insert_array = array_diff($marketSegmentData,$previous_array);
+            if(!empty($insert_array)){
+            foreach ($insert_array as $key=>$i_id){
+                $model = new MarketBrands;
+                $model->brand_id = $i_id;
+                $model->market_id = $data['market_id'];
+                if($model->save(false)){
+                    $modelNew =  MarketBrands::findOne([$model->id]);
+                    $modelNew->reorder_id = $model->id;
+                    $modelNew->save(false);
+                }
+            }
+            }
+            
+//           $update = array_intersect($previous_array, $marketSegmentData);
+//           foreach ($update as $key=>$u_id){
+//                $modelUpadte =  MarketBrands::findOne(['market_id' => $data['market_id'],'brand_id'=>$u_id]);
+//                $modelUpadte->
+//           }
+           
+        }else{
+        foreach ($marketSegmentData as $value) {
+            $modelSegment = new MarketBrands();
+            $modelSegment->market_id = $data['market_id'];
+            $modelSegment->brand_id = $value;
+            if ($modelSegment->validate(false)) {
+                if($modelSegment->save(false)){
+//                $model = new MarketBrands();
+                $model =  MarketBrands::findOne([$modelSegment->id]);
+                $model->reorder_id = $modelSegment->id;
+                $model->save(false);
+                }
+            }else{
+                $flag = 0;
+            }
+        }
         }
         if($flag == 1){
               $this->apiCode = 1;

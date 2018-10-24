@@ -28,12 +28,13 @@ class BrandsSearch extends Brands
     {
         $brandRepository = new BrandRepository();
         $brandRepository = $brandRepository->listing($params); 
+       
         $brandList = array();
         if($brandRepository['status']['success'] == 1){
             if($brandRepository['data']['brand']){
                 foreach ($brandRepository['data']['brand'] as $key => $value) {
                 $temp=$value;
-                $temp['name']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['name']));
+                $temp['name']= ucfirst($temp['name']);
                 $brandList[] = $temp;
                 }
             }
@@ -45,6 +46,7 @@ class BrandsSearch extends Brands
                 'pageSize' => $params['limit']
             ],
             'sort' => [
+            
                 'attributes' =>
                 [
                     'Title'=> [
@@ -52,10 +54,9 @@ class BrandsSearch extends Brands
                         'desc' => ['name' => SORT_DESC],
                         'default' => SORT_ASC
                         ],
+                  
                 ],
-                'defaultOrder' => [
-                    'Title' => SORT_ASC,
-                ]
+               
             ]
         ]);
 

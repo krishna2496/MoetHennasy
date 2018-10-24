@@ -7,7 +7,7 @@ define('UPLOAD_PATH_RULES_IMAGES','rules/');
 define('UPLOAD_PATH_STORE_CONFIG_IMAGES','store_config/');
 define('UPLOAD_PATH_STORE_CONFIG_ORIGINAL_IMAGES','store_config/original/');
 define('UPLOAD_PATH_STORE_CONFIG_PDF','store_config/pdf/');
-
+define('COLOR_CODE','#363638');
 define('BOTTLE','map/bottle.png');
 define('UPLOAD_PATH_IMAGES','images/');
 define('API_KEY','AIzaSyAY16V1f859Ve4NZghFYEZ-XcAiHOIgdTw');
@@ -42,6 +42,6 @@ return [
     'depth_of_shelves' => ['min' => '0','max' => '50'],
     'shelfConfig' => ['0' => 100,'1' =>2,'3' =>30],
     'rackWidth' => ['0' => 500],
-    'configArray' => ['top_shelf' => 'top_shelf','market_share' =>'market_share_left_right','size_height' => 'size_height' , 'price' => 'price' , 'gift_box' => 'gift_box','market_share_count'=>'market_shares'],
+    'configArray' => ['top_shelf' => 'top_shelf','market_share' =>'market_share_left_right','size_height' => 'size_height' , 'price' => 'price' , 'gift_box' => 'gift_box','market_share_count'=>'market_shares','order_product'=>'order_product'],
     'defaultSorting' => SORT_ASC
     ];

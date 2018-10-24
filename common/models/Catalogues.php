@@ -19,7 +19,7 @@ class Catalogues extends BaseModel
     public function rules()
     {
         return [
-            [['sku','ean','brand_id','product_category_id','product_type_id','width','height','length','scale','manufacturer','box_only','market_share','price','top_shelf'],'required'],
+            [['brand_id','product_category_id','product_type_id','width','height','length','box_only','market_share','price','top_shelf'],'required'],
             [['short_description'], 'string'],
             [['brand_id', 'product_category_id', 'product_sub_category_id', 'product_type_id', 'market_id' , 'market_share','created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['width', 'height', 'length', 'scale'], 'number'],

@@ -55,7 +55,8 @@ class CataloguesRepository extends Repository {
 
         $result = $query->asArray();
         $data = array();
-        $data['catalogues'] = $query->asArray()->all();
+        $data['catalogues'] = $query->orderBy('reorder_id')->asArray()->all();
+        
         $this->apiData = $data;
         return $this->response();
     }
@@ -82,7 +83,7 @@ class CataloguesRepository extends Repository {
         $model->top_shelf = $data['top_shelf'];
         $model->image = $data['image'];
         $model->product_type_id = $data['product_type_id'];
-
+        
         if (isset($data['long_name'])) {
             $model->long_name = $data['long_name'];
         }
@@ -92,6 +93,10 @@ class CataloguesRepository extends Repository {
 
         if ($model->validate()) {
             if ($model->save(false)) {
+                $cat_reorder_id= Catalogues::findOne([$model->id]);
+                $cat_reorder_id->reorder_id = $model->id;
+                $cat_reorder_id->save(false);
+                    
                 $returnData = array();
                 $returnData['catalogue'] = $model;
 //                $returnData['catalogue']['photo'] = $model->image ? CommonHelper::getPath('upload_url').UPLOAD_PATH_CATALOGUES_IMAGES.$model->image : '';               

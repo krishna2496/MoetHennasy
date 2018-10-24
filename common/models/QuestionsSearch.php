@@ -34,7 +34,7 @@ class QuestionsSearch extends Questions
             if($questionsListRepository['data']['questions']){
                 foreach ($questionsListRepository['data']['questions'] as $key => $value) {
                     $temp = $value;
-                    $temp['question']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['question']));
+                    $temp['question']= ucfirst($temp['question']);
                     $questionsList[]=$temp;
                 }
             }

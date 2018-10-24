@@ -28,8 +28,9 @@ use common\models\Questions;
 use common\models\ConfigFeedback;
 use common\models\Ratings;
 use common\models\ShelfDisplay;
+use backend\controllers\ProductRuleController;
 
-class StoreConfigurationController extends Controller {
+class StoreConfigurationController extends ProductRuleController {
 
     public function behaviors() {
         return [
@@ -59,7 +60,7 @@ class StoreConfigurationController extends Controller {
             ],
         ];
     }
-//create and update config data
+    
     public function actionSaveConfigData() {
         $post = yii::$app->request->post();
         $shelfThumb = isset($post['thumb_image']) ? $post['thumb_image'] : '';
@@ -90,7 +91,6 @@ class StoreConfigurationController extends Controller {
             $returnData = $storeConfig->createConfig($configData);
         }
         if ($returnData['status']['success'] == 1) {
-            //send config mail
             $this->actionSendMail($returnData['data']['shelf_thumb']);
             Yii::$app->session->setFlash('success', $returnData['status']['message']);
             unset($_SESSION['config']);
@@ -100,19 +100,16 @@ class StoreConfigurationController extends Controller {
         return $this->redirect(['store-configuration/listing/' . $storeId]);
     }
     
+    
     public function actionReviewStore($id) {
         $storeConfig = new StoreConfigRepository();
-        $filter = array();
+        $filter = $feedBackResponse = array();
         $filter['config_id'] = $id;
-        $feedBackResponse = array();
-        $configData = $storeConfig->listing($filter);
-
+//        $configData = $storeConfig->listing($filter);
         $questionsModel = new Questions();
-        $feedback = new ConfigFeedback();
-
+//        $feedback = new ConfigFeedback();
         $feedBackList = ConfigFeedback::find()->andWhere(['config_id' => $id])->asArray()->all();
-
-        $rating = new Ratings();
+//        $rating = new Ratings();
         $ratingData = StoreConfiguration::findOne($id);
         $storeRating = $ratingData['star_ratings'];
 
@@ -129,7 +126,6 @@ class StoreConfigurationController extends Controller {
                 ], true);
     }
 
-//send feedback and give rating by superior  
     public function actionFeedback($id) {
         $config_id = $id;
         $flag = 0;
@@ -154,7 +150,6 @@ class StoreConfigurationController extends Controller {
             $questionModel = new ConfigFeedback();
             ConfigFeedback::deleteAll(['config_id' => $config_id]);
             foreach ($ansArray as $key => $value) {
-
                 $questionModel = new ConfigFeedback();
                 $questionModel->config_id = $config_id;
                 $questionModel->que_id = $value['question_id'];
@@ -166,15 +161,12 @@ class StoreConfigurationController extends Controller {
             $flag = 1;
         }
 
-
         if ($post['action'] == 'rating') {
-
             $raingRepository = new StoreConfigRepository();
             $data['config_id'] = $config_id;
             $data['star_ratings'] = $post['data'];
             $returnData = $raingRepository->createRating($data);
             if ($returnData['status']['success'] == 1) {
-//                  Yii::$app->session->setFlash('danger', $returnData['status']['message']);
                 $flag = 1;
             }
         }
@@ -182,7 +174,7 @@ class StoreConfigurationController extends Controller {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $flag;
     }
-//save config thumb and original image
+    
     public function actionSaveImage() {
         $returnData = array();
         $returnData['flag'] = 0;
@@ -210,21 +202,7 @@ class StoreConfigurationController extends Controller {
         $currentUser = CommonHelper::getUser();
          $reviewFlag = 0;
         if ($stores) {
-            if ($currentUser->role_id != Yii::$app->params['superAdminRole']) {
-                $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
-
-                $userObj = new User;
-                $childUser = $userObj->getAllChilds(array($currentUser->id));
-                $childUser[] = $currentUser->id;
-                if (!empty($childUser) && in_array($assign_to, $childUser)) {
-                     $reviewFlag = 1;
-                }
-                if (!empty($childUser) && !in_array($assign_to, $childUser)) {
-                    throw new NotFoundHttpException('you are not allowed to access this page.');
-                }
-            }
-       
-            //CONGig Data
+            $this->checkUserAccess($currentUser, $stores);
             $storeFilter = array();
             $storeFilter['store_id'] = $storeId;
             $storeFilter['config_id'] = $id;
@@ -241,6 +219,7 @@ class StoreConfigurationController extends Controller {
             if ($configData['status']['success'] == 1) {
                 if (!$request->isPjax) {
                     $storeData = $configData['data']['stores_config'][0];
+                   
                     $userData = new User();
 
                     $userDetail = User::findOne(['id' => $storeData['created_by']]);
@@ -322,7 +301,6 @@ class StoreConfigurationController extends Controller {
                             $rulesArray[$key]['product_fields'] = $value['rules']['product_fields'];
                             $rulesArray[$key]['detail'] = $value['rules']['detail'];
                         }
-
                         $_SESSION['config']['rules'] = $rulesArray;
                     }
                 }
@@ -339,16 +317,23 @@ class StoreConfigurationController extends Controller {
                 if ($marketId != '') {
                     $data['market_id'] = $marketId;
                     $returnData = $repository->listing($data);
-
+                    $brandBackground = '';
                     $brandId = array();
                     if ($returnData['status']['success'] == 1) {
                         if (!empty($returnData['data']['market_brands'])) {
 
                             foreach ($returnData['data']['market_brands'] as $key => $value) {
+                              
                                 $brand[$key]['id'] = $value['brand']['id'];
                                 $brand[$key]['name'] = $value['brand']['name'];
                                 $brand[$key]['image'] = $value['brand']['image'];
                                 $brandId[] = $value['brand']['id'];
+                                if($brandThumbId != ''){
+                                if($value['brand']['id'] == $brandThumbId){
+                                    $brandBackground = $value['brand']['color_code'];
+                                }
+                                }
+                                
                             }
                         }
                     }
@@ -375,7 +360,8 @@ class StoreConfigurationController extends Controller {
                         'brandThumbId' => $brandThumbId,
                         'configId' => $configId,
                         'display_name' => $display_name,
-                        'reviewFlag' => $reviewFlag
+                        'reviewFlag' => $reviewFlag,
+                        'brandBackground' => $brandBackground
                 ]);
             } else {
                 throw new NotFoundHttpException('The requested page does not exist.');
@@ -391,25 +377,11 @@ class StoreConfigurationController extends Controller {
         $canCreateNewConfig = 0;
         if ($stores) {
           
-            if ($currentUser->role_id != Yii::$app->params['superAdminRole']) {
-                $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
-
-                $userObj = new User;
-                $childUser = $userObj->getAllChilds(array($currentUser->id));
-                $childUser[] = $currentUser->id;
-
-                if (!empty($childUser) && !in_array($assign_to, $childUser)) {
-                    throw new NotFoundHttpException('you are not allowed to access this page.');
-                }
-            }
-            if ($stores['assign_to'] == $currentUser->id) {
+            $this->checkUserAccess($currentUser, $stores);
+            if ($stores['assign_to'] == $currentUser->id || $currentUser->role_id == Yii::$app->params['superAdminRole']) {
                 $canCreateNewConfig = 1;
             }
             
-            if ($currentUser->role_id == Yii::$app->params['superAdminRole']) {
-                $canCreateNewConfig = 1;
-            }
-
             $filters = Yii::$app->request->queryParams;
             if (!isset($filters['limit'])) {
                 $filters['limit'] = Yii::$app->params['pageSize'];
@@ -437,17 +409,7 @@ class StoreConfigurationController extends Controller {
         $currentUser = CommonHelper::getUser();
 
         if ($stores) {
-            if ($currentUser->role_id != Yii::$app->params['superAdminRole']) {
-                $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
-
-                $userObj = new User;
-                $childUser = $userObj->getAllChilds(array($currentUser->id));
-                $childUser[] = $currentUser->id;
-
-                if (!empty($childUser) && !in_array($assign_to, $childUser)) {
-                    throw new NotFoundHttpException('you are not allowed to access this page.');
-                }
-            }
+            $this->checkUserAccess($currentUser, $stores);
 
             $marketFilter = array();
 
@@ -458,18 +420,16 @@ class StoreConfigurationController extends Controller {
             $marketRuleData = $marketRules->listing($marketFilter);
 
             $rulesArray = array();
-            if ($marketRuleData['status']['success'] == 1) {
-                if (!empty($marketRuleData['data']['market_rules'])) {
-                    foreach ($marketRuleData['data']['market_rules'] as $key => $value) {
-
-                        $rulesArray[$key]['ids'] = $value['rule_id'];
-                        $rulesArray[$key]['type'] = $value['rules']['type'];
-                        $rulesArray[$key]['product_fields'] = $value['rules']['product_fields'];
-                        $rulesArray[$key]['detail'] = $value['rules']['detail'];
-                    }
-
-                    $_SESSION['config']['rules'] = $rulesArray;
+            if ($marketRuleData['status']['success'] == 1 && isset($marketRuleData['data']['market_rules']) && !empty($marketRuleData['data']['market_rules'])) {
+                
+                foreach ($marketRuleData['data']['market_rules'] as $key => $value) {
+                    $rulesArray[$key]['ids'] = $value['rule_id'];
+                    $rulesArray[$key]['type'] = $value['rules']['type'];
+                    $rulesArray[$key]['product_fields'] = $value['rules']['product_fields'];
+                    $rulesArray[$key]['detail'] = $value['rules']['detail'];
                 }
+
+                $_SESSION['config']['rules'] = $rulesArray;
             }
             $_SESSION['config']['storeId'] = $storeId;
             $currentUser = CommonHelper::getUser();
@@ -524,6 +484,7 @@ class StoreConfigurationController extends Controller {
                     'brandThumbId' => 0,
                     'configId' => 0,
                     'reviewFlag' => 0,
+                    'brandBackground' => '',
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -553,7 +514,7 @@ class StoreConfigurationController extends Controller {
     }
 
     public function actionSaveProductData() {
-      
+        
         $post = Yii::$app->request->post('productObject');
         $flag = 0;
         $productArry = array();
@@ -565,21 +526,7 @@ class StoreConfigurationController extends Controller {
                     $filters['products_id'] = $key;
                     $dataProvider = $searchModel->search($filters);
                     $data = $dataProvider->getModels();
-                  
                     $productsArray = $marketRule = $rulesArray = $rulesId = $racksProductArray = array();
-//                    $market = $data[0]['market'];
-//                    $marketRule['markt_title'] = $market['title'];
-//                    $rules = $market['marketSegmentData'][0]['marketSegment']['marketRules'];
-//                    foreach ($rules as $ruleKey => $ruleValue) {
-//                        $rulesArray[$ruleKey] = $ruleValue['rules'];
-//                    }
-//                    foreach ($rulesArray as $rulekey => $rulevalue) {
-//
-//                        $rulesId[$rulekey]['id'] = $rulevalue['id'];
-//                        $rulesId[$rulekey]['product_fields'] = $rulevalue['product_fields'];
-//                        $rulesId[$rulekey]['detail'] = $rulevalue['detail'];
-//                    }
-//                    unset($data[0]['market']);
                     $dataIds[$key] = $data[0];
                     $dataIds[$key]['is_top_shelf'] = '';
                     $dataIds[$key]['market'] = $marketRule;
@@ -610,6 +557,7 @@ class StoreConfigurationController extends Controller {
             unset($dataIds[$key]['ean']);
             unset($dataIds[$key]['manufacturer']);
         }
+        
         $selvesWidth = $_SESSION['config']['width_of_shelves'];
         $selvesHeight = $_SESSION['config']['height_of_shelves'];
         $selvesDepth =$_SESSION['config']['depth_of_shelves'];
@@ -669,8 +617,7 @@ class StoreConfigurationController extends Controller {
         }
      
         $this->fillUpEmptySpaceOfShelves($racksProductArray, $selvesWidth, $selevesCount);
-        //all repeated products
-     
+      
         $finalProducuts = $finalProducutsRack = $productsId = array();
 
         foreach ($racksProductArray as $key => $value) {
@@ -693,7 +640,6 @@ class StoreConfigurationController extends Controller {
         $_SESSION['config']['rackProducts'] = $finalProducutsRack;
     }
 
-    //edit and remove product's modal content
     public function actionModalContent($id) {
         return $this->renderPartial('modal-content', [
                 'id' => $id,
@@ -708,8 +654,7 @@ class StoreConfigurationController extends Controller {
         $returnData = $repository->listing($data);
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $returnData;
-    }
-    
+    }  
     
     public function actionDeleteAll(){
         $data = array();
@@ -732,8 +677,6 @@ class StoreConfigurationController extends Controller {
             }
             $_SESSION['config']['rackProducts'][$shelvesNo] = $rackArrayProduct;
 
-
-
                 $replacedData = array();
                 foreach ($productsData as $key => $value) {
                     $ids = explode(',', $value['productIds']);
@@ -749,12 +692,7 @@ class StoreConfigurationController extends Controller {
                     }
                     $replacedData[$key]['productIds'] = rtrim($tmpProducts, ",");
                 }
-
-
-                $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
-
-
-
+            $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
             $response['flag'] = 1;
             $response['msg'] = 'Product Removed Successfully';
             $response['action'] = 'remove';
@@ -770,12 +708,8 @@ class StoreConfigurationController extends Controller {
            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
            return $response;
         }
-    }
-    
-    
-    
-    
-//action of edit and remove products
+    }  
+
     public function actionEditProducts() {
         $response = array();
         $response['flag'] = 0;
@@ -788,7 +722,6 @@ class StoreConfigurationController extends Controller {
         $productsData = json_decode($_SESSION['config']['shelvesProducts'], true);
 
         if ($data['remove'] == 'true') {
-            
             $id = isset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id']) ? $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'] : '';
              unset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
 
@@ -818,8 +751,6 @@ class StoreConfigurationController extends Controller {
                 }
                 $replacedData[$key]['productIds'] = rtrim($tmpProducts, ",");
             }
-
-
             $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
         }
         
@@ -832,12 +763,10 @@ class StoreConfigurationController extends Controller {
             $repository = new CataloguesRepository();
             if(isset($replacedProductId) && !$replacedProductId == ""){
             $filterData['products_id'] = $replacedProductId;
-
             $returnData = $repository->listing($filterData);
             if ($returnData['status']['success'] == 1) { 
                 $racksWidth = array_sum(array_column($_SESSION['config']['rackProducts'][$shelvesNo], 'width'));
                 $countWidth = intval($racksWidth - $width);
-
                 if (($_SESSION['config']['width_of_shelves'] >= ($countWidth + intval($returnData['data']['catalogues'][0]['width'])))) {
                 if(($_SESSION['config']['height_of_shelves'])/($_SESSION['config']['no_of_shelves']) >= $returnData['data']['catalogues'][0]['height']){
                      if($_SESSION['config']['depth_of_shelves'] >= $returnData['data']['catalogues'][0]['length']){
@@ -848,11 +777,9 @@ class StoreConfigurationController extends Controller {
                         'height' => $returnData['data']['catalogues'][0]['height'],
                         'width' => $returnData['data']['catalogues'][0]['width'],
                     );
-
                     unset($returnData['data']['catalogues'][0]['market']['marketSegmentData']);
                     unset($returnData['data']['catalogues'][0]['market']['productCategory']);
                     unset($returnData['data']['catalogues'][0]['market']['market']);
-
                     $returnData['data']['catalogues'][0]['productCategory'] = $returnData['data']['catalogues'][0]['productCategory']['name'];
                     $returnData['data']['catalogues'][0]['marketName'] = $returnData['data']['catalogues'][0]['market']['title'];
                     $returnData['data']['catalogues'][0]['brandName'] = $returnData['data']['catalogues'][0]['brand']['name'];
@@ -863,8 +790,6 @@ class StoreConfigurationController extends Controller {
                     $response['action'] = 'edit';
                     $response['replacedId'] = $replacedProductId;
                     $response['product'] = json_encode($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
-
-
                     $replacedData = array();
 
                     foreach ($productsData as $key => $value) {
@@ -898,144 +823,6 @@ class StoreConfigurationController extends Controller {
             }
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $response;
-    }
-
-    private function fillUpEmptySpaceOfShelves(&$racksProductArray, $selvesWidth, $selevesCount) {
-        $products = array();
-        $arrayProducts = $racksProductArray;
-        $selvesWidth = doubleval($selvesWidth);
-        if ($this->ifRuleContain(\yii::$app->params['configArray']['market_share_count'])) {
-
-            $productCount = count($racksProductArray);
-
-            if ($productCount != 0) {
-                for ($i = 0; $i < $selevesCount; $i++) {
-
-                    $products = (isset($racksProductArray[$i]) && (!empty($racksProductArray[$i]))) ? $racksProductArray[$i] : '';
-
-                    if ((empty($products)) && ($i > 0) && (isset($racksProductArray[$i - 1]))) {
-
-                        $products = $racksProductArray[$i] = $racksProductArray[$i - 1];
-                    }
-                    $min = $sum = 0;
-                    if (!empty($products)) {
-                        $min = (min(array_column($products, 'width')) == 0) ? 1 : min(array_column($products, 'width'));
-                        $sum = array_sum(array_column($products, 'width'));
-                    }
-                    $diff = intval($selvesWidth - $sum);
-                    if (!empty($products)) {
-                        if ($diff > $min) {
-                            $sumOfMarketShare = array_sum(array_column($products, 'market_share'));
-                            $sumOfMarketShare = ($sumOfMarketShare == 0) ? 1 : $sumOfMarketShare;
-                            $noOfPlaces = intval(($selvesWidth) / ($min));
-
-                            foreach ($products as $marketShareValue) {
-                                $repeatCount = intval($marketShareValue['market_share'] * $noOfPlaces) / ($sumOfMarketShare);
-
-                                for ($j = 0; $j < $repeatCount; $j++) {
-                                    $tempSum = array_sum(array_column($racksProductArray[$i], 'width'));
-                                    if ($selvesWidth >= ($tempSum + $marketShareValue['width'])) {
-                                        array_push($racksProductArray[$i], $marketShareValue);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-         
-            foreach ($racksProductArray as $key =>$value){
-            $this->applySortingRule($racksProductArray[$key]);
-            }
-        }
-    }
-
-    private function ruleTopShelf($dataValue, &$racksProductArray, $selvesWidth) {
-       $sum = 0;
-        if (!empty($racksProductArray)) {
-            $sum = array_sum(array_column($racksProductArray, 'width'));
-        }
-        if ($selvesWidth >= ($sum + $dataValue['width'])) {
-            if (intval(($_SESSION['config']['height_of_shelves']) / ($_SESSION['config']['no_of_shelves'])) >= intval($dataValue['height'])) {
-                if (intval($_SESSION['config']['depth_of_shelves']) >= intval($dataValue['length'])) {
-                    $racksProductArray[$dataValue['id']] = $dataValue;
-                }
-            }
-        }
-    }
-
-    private function applySortingRule(&$racksProductArray) {
-        
-        $this->sort_array_of_array($racksProductArray, 'id', SORT_DESC);
-    
-        if ($this->ifRuleContain(\yii::$app->params['configArray']['market_share'])) {            
-            $sort = SORT_DESC;
-            $this->sort_array_of_array($racksProductArray, 'market_share', $sort);
-        }
-        //price
-        if ($this->ifRuleContain(\yii::$app->params['configArray']['price'])) {
-            $sort = SORT_ASC;
-            $this->sort_array_of_array($racksProductArray, 'price', $sort);
-        }
-
-        //height rule
-        if ($this->ifRuleContain(\yii::$app->params['configArray']['size_height'])) {
-            $sort = SORT_ASC;
-            $this->sort_array_of_array($racksProductArray, 'height', $sort);
-        }
-        //gift box 
-        if ($this->ifRuleContain(\yii::$app->params['configArray']['gift_box'])) {
-            $giftProduct = $otherProduct = array();
-
-            $skipBoxCheck = 0; //skip box check if shelf is already filled up with total market share
-            foreach ($racksProductArray as $key => $value) {
-                if(isset($value['box_only'])){
-                if ($value['box_only'] == 1) {
-                    array_push($giftProduct, $value);
-                }
-                if ($value['box_only'] == 0) {
-                    array_push($otherProduct, $value);
-                }
-                }
-                else
-                {
-                    $skipBoxCheck = 1;
-                }
-            }
-
-            if(!$skipBoxCheck)
-            {
-                    $mergedArray = array_merge($giftProduct, $otherProduct);
-                    $racksProductArray = $mergedArray;
-            }
-        }
-    }
-
-    public function sort_array_of_array(&$array, $subfield, $sort) {
-        $sortarray = array();
-        if(!empty($array) && (isset($array))){
-        foreach ($array as $key => $row) {
-            $sortarray[$key] = isset($row[$subfield]) ? $row[$subfield] : '';
-        }
-        }
-
-        array_multisort($sortarray, $sort, $array);
-    }
-
-    private function ifRuleContain($ruleValue) {
-        $rulesArray = array();
-        if (isset($_SESSION['config']['rules']) && !empty($_SESSION['config']['rules'])) {
-            $rules = $_SESSION['config']['rules'];
-            foreach ($rules as $key => $value) {
-                $rulesArray[] = $value['product_fields'];
-            }
-        }
-
-        if (in_array($ruleValue, $rulesArray)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public function actionView($id) {
@@ -1073,14 +860,7 @@ class StoreConfigurationController extends Controller {
         if(Stores::findOne($storeId)){
         $model = Stores::findOne($storeId);
         
-        $assign_to = !empty($model['assign_to']) ? $model['assign_to'] : '';
-        $userObj = new User;
-        $childUser = $userObj->getAllChilds(array($currentUser->id));
-        $childUser[] = $currentUser->id;
-
-        if (!empty($childUser) && !in_array($assign_to, $childUser) && $currentUser->role_id != Yii::$app->params['superAdminRole']) {
-            throw new NotFoundHttpException('you are not allowed to access this page.');
-        }
+        $this->checkUserAccess($currentUser, $model);
         
         if($this->findModel($id)->delete()){
           
@@ -1104,70 +884,18 @@ class StoreConfigurationController extends Controller {
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    
+    protected function checkUserAccess($currentUser,$stores){
+        if ($currentUser->role_id != Yii::$app->params['superAdminRole']) {
+                $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
 
-    public function actionSendMail($thumb) 
-    {
-        $mpdf = new mPDF();
-        $thumImage = explode('/', $thumb);
-        $thumb = end($thumImage);
+                $userObj = new User;
+                $childUser = $userObj->getAllChilds(array($currentUser->id));
+                $childUser[] = $currentUser->id;
 
-        $user = CommonHelper::getUser();
-
-        $parentEmail = '';
-        $userRepository = new UserRepository();
-        if ($user['parent_user_id'] != '') {
-            $fiterUser = array();
-            $fiterUser['id'] = $user['parent_user_id'];
-            $parentUser = $userRepository->userList();
-            if ($parentUser['status']['success'] == 1) {
-
-                $parentEmail = $parentUser['data']['users'][0]['email'];
-                $parentFirstName = $parentUser['data']['users'][0]['first_name'];
-                $parentLastName = $parentUser['data']['users'][0]['last_name'];
-            }
-        }
-       
-        $userEmail = $user['email'];
-        $firstName = !empty($user['first_name']) ? $user['first_name'] : '';
-        $lastName = !empty($user['last_name']) ? $user['last_name'] : '';
-        $userId = !empty($user['id']) ? $user['id'] : '';
-        $shelfImage = CommonHelper::getPath('upload_path') . UPLOAD_PATH_STORE_CONFIG_ORIGINAL_IMAGES . $thumb;
-
-        $pdfFileName = CommonHelper::getPath('upload_path') . UPLOAD_PATH_STORE_CONFIG_PDF . Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s')) . '' . $userId . '.pdf';
-
-        $mpdf->WriteHTML($this->renderPartial('shelfPdf', ['image' => $shelfImage], true));
-        $mpdf->Output($pdfFileName, 'F');
-        
-        $mail = new Email();
-        $mail->email = $userEmail;
-        $userString = array();
-        $userString[] = $firstName;
-        $userString[] = $lastName;
-        $mail->body = $this->renderPartial('shelfMail');
-        $mail->setFrom = Yii::$app->params['supportEmail'];
-        $mail->subject = 'Store Shelf PDF';
-        $mail->attachment = (Array($pdfFileName));
-        $mail->set("NAME", implode(' ', $userString));
-        $mail->send();
-
-        //send mail to parent user if exist
-        if ($parentEmail != '') {
-            $mail = new Email();
-            $mail->email = $parentEmail;
-            $userString = array();
-            $userString[] = $parentFirstName;
-            $userString[] = $parentLastName;
-            $mail->body = $this->renderPartial('shelfMail');
-            $mail->setFrom = Yii::$app->params['supportEmail'];
-            $mail->subject = 'Store Shelf PDF';
-            $mail->attachment = (Array($pdfFileName));
-            $mail->set("NAME", implode(' ', $userString));
-            $mail->send();
-        }
-
-        if (file_exists($pdfFileName)) 
-        {
-            @unlink($pdfFileName);
+                if (!empty($childUser) && !in_array($assign_to, $childUser)) {
+                    throw new NotFoundHttpException('you are not allowed to access this page.');
+                }
         }
     }
 

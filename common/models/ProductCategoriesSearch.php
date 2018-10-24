@@ -33,8 +33,8 @@ class ProductCategoriesSearch extends ProductCategories
             if($productCategoryRepository['data']['productCategories']){
                 foreach ($productCategoryRepository['data']['productCategories'] as $key => $value) {
                     $temp = $value;
-                    $temp['name']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['name']));
-                    $temp ["parentCategory"]['name']=\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp["parentCategory"]['name']));
+                    $temp['name']= ucfirst($temp['name']);
+                    $temp ["parentCategory"]['name']= ucfirst($temp["parentCategory"]['name']);
                     
                     $categoryList[]=$temp;
                }

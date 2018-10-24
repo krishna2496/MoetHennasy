@@ -33,10 +33,10 @@ class CataloguesSearch extends Catalogues {
             if ($resultUserList['data']['catalogues']) {
                 foreach ($resultUserList['data']['catalogues'] as $key => $value) {
                     $temp = $value;
-                    $temp['marketName'] = \yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['market']['title']));
-                    $temp['brandName'] =\yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['brand']['name']));
-                    $temp['productCategory'] = \yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['productCategory']['name']));
-                    $temp['sku']= \yii\helpers\BaseInflector::camel2words(\yii\helpers\BaseInflector::camelize($temp['sku']));
+                    $temp['marketName'] = ucfirst($temp['market']['title']);
+                    $temp['brandName'] = ucfirst($temp['brand']['name']);
+                    $temp['productCategory'] = ucfirst($temp['productCategory']['name']);
+                    $temp['sku']= ucfirst($temp['sku']);
                     $userList[] = $temp;
                 }
             }
@@ -50,8 +50,11 @@ class CataloguesSearch extends Catalogues {
                 'pageSize' => $params['limit'],
             ],
             'sort' => [
+                 
+                'defaultOrder'=>['reorder_id'=>SORT_ASC],
                 'attributes' =>
                     [
+                    'reorder_id'  ,
                     'sku',
                     'ean',
                     'short_name',
@@ -67,8 +70,7 @@ class CataloguesSearch extends Catalogues {
         if (isset($params['selection']) && ($params['selection'] != '')) {
             $dataProvider->pagination->params = ['selection' => $params['selection']];
         }
-//        echo '<pre>';
-//        print_r($dataProvider);exit;
+        
         return $dataProvider;
     }
 

@@ -12,8 +12,7 @@ class MarketRepository extends Repository {
     public function marketList($data = array()) {
       
         $this->apiCode = 1;
-        $query = Markets::find()
-            
+        $query = Markets::find()            
              ->joinWith(['marketSegmentData.marketSegment.marketSegmentContacts','user','marketSegmentData.marketSegment.marketRules.rules']);
     
         if (isset($data['search']) && $data['search']) {
@@ -31,9 +30,6 @@ class MarketRepository extends Repository {
         if (isset($data['market_id']) && $data['market_id']) {
             $query->andWhere(['markets.id' => $data['market_id']]);
         }
-        
-        
-       
 
         $data = array();
         $data['markets'] = $query->orderBy(['title' => yii::$app->params['defaultSorting']])->asArray()->all();
@@ -50,18 +46,17 @@ class MarketRepository extends Repository {
 
         if($model->validate()) 
         {
-            $model->scenario = 'create';
-            $modelSegment = new MarketSegmentData;
+            $model->scenario = 'create';            
             if ($model->save(false)) {
                 $id = $model->id;
                 $marketSegmentData = $data['market_segment_id'];
                 foreach ($marketSegmentData as $value) {
                     $modelSegment = new MarketSegmentData;
-                    if ($modelSegment->validate()) {
+                    //if ($modelSegment->validate()) {
                         $modelSegment->market_id = $id;
                         $modelSegment->market_segment_id = $value;
                         $modelSegment->save(false);
-                    }
+                    //}
                 }
                 $this->apiCode = 1;
                 $this->apiMessage = Yii::t('app', 'market_created_successfully');
@@ -81,7 +76,6 @@ class MarketRepository extends Repository {
 
     public function updateMarket($data = array()) {
         $this->apiCode = 0;
-        $model = new Markets;
         $model = Markets::findOne($data['id']);
         if (!$model) {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -89,20 +83,18 @@ class MarketRepository extends Repository {
         if (isset($data['title'])) {
             $model->title = $data['title'];
         }
-        $modelSegment = new MarketSegmentData;
         if ($model->validate()) {
             if ($model->save(false)) {
-                $modelSegment::deleteAll(['market_id'=>$data['id']]);
+                MarketSegmentData::deleteAll(['market_id'=>$data['id']]);
                 $marketSegmentData = $data['market_segment_id'];
                 foreach ($marketSegmentData as $value) {
                     $modelSegment = new MarketSegmentData;
-                    if ($modelSegment->validate()) {
+                    //if ($modelSegment->validate()) {
                         $modelSegment->market_id = $data['id'];
                         $modelSegment->market_segment_id = $value;
                         $modelSegment->save(false);
-                    }
+                    //}
                 }
-
                 $this->apiCode = 1;
                 $this->apiMessage = Yii::t('app', 'market_updated_successfully');
             } else {
