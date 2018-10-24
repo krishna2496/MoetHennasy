@@ -102,7 +102,7 @@ $count = count($dataProvider->allModels);
 //                            'format' => ['image',['height'=>'64px']],
                         ],
                         [
-                            'label' => 'Brand Name',
+                            'label' => 'Product Name',
                             'attribute' => 'brandName',
                             'value' => 'long_name',
                         ],
