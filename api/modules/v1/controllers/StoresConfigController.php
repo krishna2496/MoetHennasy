@@ -87,7 +87,7 @@ class StoresConfigController extends BaseApiController {
                         unset($value['brand']['deleted_at']);
                         $value['brand']['image'] = isset($value['brand']['image']) ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_BRANDS_IMAGES . $image : '';
                         $value['brand']['color_code'] = isset($value['brand']['color_code']) && ($value['brand']['color_code'] != '') ? $value['brand']['color_code'] : COLOR_CODE;
-
+                        $value['brand']['reorder_id']=$value['reorder_id'];
                         $product = $value['brand']['product'];
 
                         foreach ($product as $key1 => $value1) {
