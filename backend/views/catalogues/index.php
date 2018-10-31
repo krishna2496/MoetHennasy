@@ -9,12 +9,17 @@ $this->title = 'Products';
 $this->params['breadcrumbs'][] = $this->title;
 $formUrl = Url::to(['catalogues/index']);
 //echo '<pre>';
-//print_r($dataProvider);exit;
+//print_r(Yii::$app->request->queryParams);exit;
+$brand_ids = 0;
+if(isset(Yii::$app->request->queryParams['brand_id']) && Yii::$app->request->queryParams['brand_id'] != ''){
+    $brand_ids = 1;
+}
 $count = count($dataProvider->allModels);
 ?>
 
 <div class="row">
     <div class="col-xs-12">
+         <h4>[Order can be apply after selecting Brand*]</h4>
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">
@@ -58,8 +63,9 @@ $count = count($dataProvider->allModels);
                     'dataProvider' => $dataProvider,
                     'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-5">{summary}</div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
                     'columns' => [
-                            [
-                            'class' => 'yii\grid\SerialColumn'],
+                        [
+                            'class' => 'yii\grid\SerialColumn'
+                        ],
                         [
                             'label'=>'Image',
                             'attribute'=>'image',
@@ -75,14 +81,14 @@ $count = count($dataProvider->allModels);
                             },
                             'format' => ['image',['height'=>'64px']],
                         ],
-                              
                         [
                             'label'=>'sort',
                             'attribute'=>'reorder_id',
                             'format' => 'raw',
                             'label' => 'Order',
+                             'visible' => ($brand_ids == 0) ? 0 : 1,
                             'value'=>  function ($model,$key)use($count,$dataProvider) {
-                             
+                           
                             $arrow = '';
                             if($key != 0){
                                     //up
@@ -111,7 +117,7 @@ $count = count($dataProvider->allModels);
                             'attribute' => 'brandName',
                             'value' => 'brand.name',
                         ],
-                            [
+                        [
                             'class' => 'yii\grid\ActionColumn',
                             'header' => 'Actions',
                             'template' => '{view} {update} {delete}',

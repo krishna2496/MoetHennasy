@@ -48,13 +48,10 @@ class CataloguesController extends BaseBackendController {
         ];
     }
     public function actionTest(){
-        $cat = Catalogues::find()->asArray()->all();
-//        echo '<prE>';
-//        print_r($cat);exit;
+        $cat = Catalogues::find()->orderBy('brand_id')->asArray()->all();
         foreach ($cat as $key=>$value){         
-//            echo $value['id'];exit;
           $c = Catalogues::findOne($value['id']);
-          $c->reorder_id = $value['id'];
+          $c->reorder_id = $key+1;
           $c->save(false);
         }
     }

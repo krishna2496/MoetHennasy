@@ -471,9 +471,9 @@ class StoreConfigurationController extends ProductRuleController {
             if (isset($_SESSION['config']['brands']) && ($_SESSION['config']['brands'] != '')) {
                 $filterProduct['brand_id'] = $_SESSION['config']['brands'];
             }
-
+        
             $searchModel = new CataloguesSearch();
-            $dataProvider = $searchModel->search($filterProduct);
+            $dataProvider = $searchModel->searchProduct($filterProduct);
 
             return $this->render('index', [
                     'searchModel' => $searchModel,

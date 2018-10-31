@@ -74,4 +74,69 @@ class CataloguesSearch extends Catalogues {
         return $dataProvider;
     }
 
+    
+    public function searchProduct($params) {
+//        echo '<pre>';
+//        print_r($params);
+        $userRepository = new CataloguesRepository;
+        $userList = array();
+        $resultUserList = $userRepository->listing($params);
+       
+        if ($resultUserList['status']['success'] == 1) {
+            if ($resultUserList['data']['catalogues']) {
+                foreach ($resultUserList['data']['catalogues'] as $key => $value) {
+                    $temp = $value;
+                    $temp['marketName'] = ucfirst($temp['market']['title']);
+                    $temp['brandName'] = ucfirst($temp['brand']['name']);
+                    $temp['productCategory'] = ucfirst($temp['productCategory']['name']);
+                    $temp['sku']= ucfirst($temp['sku']);
+                    $userList[] = $temp;
+                }
+            }
+        }
+        if(!isset($params['limit'])){
+            $params['limit'] = count($userList);
+        }
+       $newUserList = array();
+        if(isset($params['brand_id'])){
+            foreach ($params['brand_id'] as $bkey =>$bvalue){
+                if(isset($userList) && (!empty($userList))){
+                    foreach ($userList as $pkey => $pvalue){
+                        if($pvalue['brand_id'] == $bvalue){
+                        $newUserList[$pkey] = $pvalue;
+                        }
+                    }
+                }
+            }
+        }
+
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $newUserList,
+            'pagination' => [
+                'pageSize' => $params['limit'],
+            ],
+            'sort' => [
+                 
+              
+                'attributes' =>
+                    [
+                    'reorder_id'  ,
+                    'sku',
+                    'ean',
+                    'short_name',
+                    'productCategory',
+                  
+                    'marketName',
+                    'brandName',
+                    'price'
+                ],
+            ]
+        ]);
+       
+        if (isset($params['selection']) && ($params['selection'] != '')) {
+            $dataProvider->pagination->params = ['selection' => $params['selection']];
+        }
+        
+        return $dataProvider;
+    }
 }
