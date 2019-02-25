@@ -93,4 +93,7 @@ class Catalogues extends BaseModel
     public function getProductType(){
         return $this->hasOne(ProductTypes::className(), ['id' => 'product_type_id']);
     }
+    public function getVariental(){
+        return $this->hasOne(ProductVarietal::className(), ['id' => 'product_variental']);
+    }
 }

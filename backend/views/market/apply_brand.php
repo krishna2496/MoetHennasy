@@ -47,7 +47,6 @@ $totalBranSharesCount = array_sum($selectedShares);
                         <h2>
                             <?= $title; ?>
                             <div class="pull-right">
-                            <?= \yii\helpers\Html::a( 'Add Brand', null,['class' => 'btn btn-primary', 'data-toggle'=>"modal", 'data-target'=>"#modal-default"]);?> &nbsp;
                             <?= \yii\helpers\Html::a( 'Back', ['market/index'],['class' => 'btn btn-primary']);?>
                             </div>
                         </h2>
@@ -92,7 +91,7 @@ $totalBranSharesCount = array_sum($selectedShares);
                                         $vierntal_val = isset($finalViertalArry[$dataProvider->allModels[$key]['id']]) ? json_encode($finalViertalArry[$dataProvider->allModels[$key]['id']],JSON_NUMERIC_CHECK) :'';
                                     return '<input type="text" id="shares[]" data-id="'.$dataProvider->allModels[$key]['id'].'" name="shares[]" value="'.$currentShareValue.'" pattern="[0-9]+" class="form-control numericOnly" style="text-align:center;" />'.
                                             '<input type="hidden" id="sharesId[]" data-id="'.$dataProvider->allModels[$key]['id'].'" name="sharesId[]" value="'.$dataProvider->allModels[$key]['id'].'"/>'
-                                            . '<input type="hidden" id="varietalShareObject_'.$dataProvider->allModels[$key]['id'].'" data-id="'.$dataProvider->allModels[$key]['id'].'" name="varietalShareObject[]" value="'.$vierntal_val.'">';
+                                            . '<input type="hidden" id="varietalShareObject_'.$dataProvider->allModels[$key]['id'].'" data-id="'.$dataProvider->allModels[$key]['id'].'" name="varietalShareObject[]" value='.$vierntal_val.'>';
                                 }
                             ],
                             [
@@ -154,10 +153,31 @@ $totalBranSharesCount = array_sum($selectedShares);
                     </table>
                     <script type="text/javascript">
                         function changeCurrentVariatalPoupId(elem){
+                               var getjsonvarietalData = $('#varietalShareObject_'+$(elem).attr('data-id')).attr('value');
+                               var jsonvarietalData = '';
+                               
+                                try {
+                                    jsonvarietalData = JSON.parse(getjsonvarietalData);
+                                } catch (e) {
+                                    jsonvarietalData = '';
+                                }
+                            
                             $.each( $('[name="varietalShares[]"]'), function( key, value ) {
-                                $(value).val(0);
+                                //$(value).val(0);
+                                if(jsonvarietalData){
+                                    try {
+                                         $(value).val(jsonvarietalData[key].share);  
+                                    }   catch (e) {
+                                         $(value).val(0);
+                                    }                                
+                                }
+                                else{
+                                 $(value).val(0);
+                                }
                             });
                             $('#selectedBrandsKey').val($(elem).attr('data-id'));
+                            
+                            
                         }
                         $(document).ready(function () {
                             brandThumbId = 0;
@@ -181,6 +201,9 @@ $totalBranSharesCount = array_sum($selectedShares);
                                 }
 
                             });
+                             if($('#totalShares').val() == 100){
+                                $(".auto_fill").removeAttr('disabled'); 
+                            }
                         });
 
                         $('input[name="selection[]"]').on('ifUnchecked', function (event) {
@@ -210,6 +233,45 @@ $totalBranSharesCount = array_sum($selectedShares);
                         <?= Html::Button('Save', ['class' => 'btn btn-primary pull-left mw-md auto_fill', 'style' => 'margin-top:25px;margin-bottom:20px;margin-left:20px;', 'disabled' => 'disabled']) ?>
                     </div>
                 </div>
+            </div>
+            <div class="box">
+                <?=  
+                GridView::widget([ 
+                    'dataProvider' => $catalogDataProvider,
+                    'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-5">{summary}</div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
+                    'columns' => [
+                        [
+                            'class' => 'yii\grid\SerialColumn'
+                        ],
+                        [
+                                'class' => 'yii\grid\CheckboxColumn',
+                                    'header' => Html::checkBox('selection_all', false, [
+                                    'class' => 'select-on-check-all',
+                                     'value' =>'00'
+                                ]),
+                                'checkboxOptions' => function($catalogModel) {
+                                    return ['value' => $catalogModel['id']
+                                    ];
+                                },
+                        ],
+                        [
+                            'label' => 'Product Name',
+                            'attribute' => 'brandName',
+                            'value' => 'long_name',
+                        ],
+                        [
+                            'label' => 'Brand',
+                            'attribute' => 'brandName',
+                            'value' => 'brand.name',
+                        ],
+                                    [
+                                        'label'=>'variental',
+                                        'value'=>'variental.name',
+                                    ]
+                        
+                    ],
+                ]);
+                ?>
             </div>
         </div>
     </div>
@@ -255,6 +317,9 @@ $totalBranSharesCount = array_sum($selectedShares);
                     }
                 }
                 $totalShare = $totalShare + parseInt($(value).val());
+                if($vertielShareCount != 100){
+                    $(this).parent().parent().addClass('danger');
+                }
             });
          
             if($isNotFullSetShare == 0){
@@ -286,7 +351,7 @@ $totalBranSharesCount = array_sum($selectedShares);
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span></button>
-                <h4 class="modal-title">Select Product Brand</h4>
+                <h4 class="modal-title">Select Product Varietal</h4>
             </div>
             <div class="modal-body">
                 <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,$brands,  ['class' => 'form-control','id' => 'user-limit']) ?>

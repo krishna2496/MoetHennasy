@@ -26,6 +26,8 @@ use common\models\ProductCategories;
 use common\models\ProductVarietal;
 use common\models\ProductVarietalSearch;
 use common\models\MarketBrandsVerietals;
+use common\models\CataloguesSearch;
+use common\models\Catalogues;
 
 class ApplyController extends MarketController
 {
@@ -254,6 +256,10 @@ class ApplyController extends MarketController
         foreach($productVarietal as $productVarietalKey=>$productVarietalVal){
             $productVarietals[$productVarietalVal['id']] = $productVarietalVal['name'];
         }
+        //top self product
+        $catalogModel = new CataloguesSearch();
+        $catalogFilter = array();
+        $catalogDataProvider = $catalogModel->search($catalogFilter);
         
         return $this->render('/market/apply_brand', [
             'model' => $model,
@@ -270,7 +276,9 @@ class ApplyController extends MarketController
             'brands' => $brandsArray,
             'productVarietals' => $productVarietals,
             'brandId'=>$brandId,
-            'finalViertalArry'=>$finalViertalArry
+            'finalViertalArry'=>$finalViertalArry,
+            'catalogModel'=>$catalogModel,
+            'catalogDataProvider'=>$catalogDataProvider
         ]);
         
        }else{
