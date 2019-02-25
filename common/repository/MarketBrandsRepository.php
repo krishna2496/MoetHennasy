@@ -59,12 +59,19 @@ class MarketBrandsRepository extends Repository {
     }
     
     public function createBrand($data = array()) {
+//        echo '<pre>';
+//        print_r($data);exit;
         $this->apiCode = 0;
         $flag=1;
         $marketSegmentData = $data['brand_id'];
         $marketShareSegmentData = $data['shares'];
         
         foreach ($marketSegmentData as $marketSKey=>$value) {
+            $market_brand_data = MarketBrands::findOne(['market_id'=>$data['market_id'],'brand_id'=>$value,'category_id'=>$data['category_id']]);
+            if($market_brand_data){
+                $market_brand_data->shares = $marketShareSegmentData[$marketSKey];
+                $market_brand_data->save(false);
+            }else{
             $modelSegment = new MarketBrands();
             $modelSegment->market_id = $data['market_id'];
             $modelSegment->category_id = $data['category_id'];
@@ -72,19 +79,25 @@ class MarketBrandsRepository extends Repository {
             $modelSegment->shares = $marketShareSegmentData[$marketSKey];
             $modelSegment->reorder_id = 0;
             $modelSegment->save(false);
+            }
         }
         
         foreach ($data['brand_verietal'] as $brandVerietalKey=>$brandVerietalVal){
             $brandVerietalVal = (array)$brandVerietalVal;
             foreach ($brandVerietalVal as $k => $v){
-               $modelVerietals = new MarketBrandsVerietals();
+               $market_brands_verietals = MarketBrandsVerietals::findOne(['market_id'=>$data['market_id'],'brand_id'=>$value,'category_id'=>$data['category_id'],'verietal_id'=>$v->id]);
+               if($market_brands_verietals){
+                   $market_brands_verietals->shares =  $v->share;
+                   $market_brands_verietals->save(false);
+               }else{
+                $modelVerietals = new MarketBrandsVerietals();
                 $modelVerietals->market_id = $data['market_id'];
                 $modelVerietals->brand_id = $marketSegmentData[$brandVerietalKey];
                 $modelVerietals->verietal_id = $v->id;
                 $modelVerietals->category_id = $data['category_id'];
                 $modelVerietals->shares =  $v->share;
                 $modelVerietals->save(false);
-                    
+               }
             }
         }
         

@@ -83,5 +83,6 @@ return [
     'product_type' => 'Product type',
     'glossary' => 'Glossary',
     'apply_brand' =>'Brand applied sucessfully',
+    'apply_strategy' =>'Strategy applied sucessfully',
     'store_config' => 'Configuration'
     ];
