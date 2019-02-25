@@ -24,9 +24,9 @@ use common\helpers\CommonHelper;
         <div class="row" align="center">
             <div class="col-xs-6">
                 <?php if(isset($model->id) && $model->id) { ?>
-                    <?= Html::a('Cancel',  ['product-categories/index'], ['class'=>'btn pull-right mw-md btn-inverse']) ?>
+                    <?= Html::a('Cancel',  ['product-varietal/index'], ['class'=>'btn pull-right mw-md btn-inverse']) ?>
                 <?php } else { ?>
-                    <?= Html::a('Reset',  ['product-categories/create'], ['class'=>'btn pull-right mw-md btn-inverse']) ?>
+                    <?= Html::a('Reset',  ['product-varietal/create'], ['class'=>'btn pull-right mw-md btn-inverse']) ?>
                 <?php } ?>
             </div>
             <div class="col-xs-6">

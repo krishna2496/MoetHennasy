@@ -112,13 +112,13 @@ class ProductCategoriesController extends BaseBackendController
             $model->load(Yii::$app->request->post());
             $data = Yii::$app->request->post('ProductCategories');
             $data['id'] = $id;
-            if(isset($data['parent_id'])){
+            /*if(isset($data['parent_id'])){
                 $parent_model = $this->findModel($data['parent_id']);
             }
             if(($data['parent_id'] == $parent_model->id) && ($parent_model->parent_id == $data['id'])){
                 Yii::$app->session->setFlash('danger', 'Parent Loop Formation');
                 return $this->redirect(['index']);
-            }
+            }*/
             
             $categoryRepository = new ProductCategoryRepository();
             $categoryData = $categoryRepository->upadateProductCategory($data); 
@@ -141,20 +141,20 @@ class ProductCategoriesController extends BaseBackendController
     public function actionDelete($id)
     {
         $model = $this->findModel($id);        
-        $modelall= ProductCategories::findAll(['parent_id' => $model->id]);
+        //$modelall= ProductCategories::findAll(['parent_id' => $model->id]);
         
         
-        if(isset($modelall) && !empty($modelall)){
+        /*if(isset($modelall) && !empty($modelall)){
             Yii::$app->session->setFlash('danger',Yii::t('app', 'Product already assigned as a reference.', [Yii::t('app', 'product_categories')]) );
         }
-        else{       
+        else{       */
             if($model->delete()){
                 parent::userActivity('delete_product_category',$description='');
                 Yii::$app->session->setFlash('success', Yii::t('app', 'deleted_successfully', [Yii::t('app', 'product_categories')]));
              }else{
                 Yii::$app->session->setFlash('danger', $model['errors']['title'][0]);
             }
-        }
+        //}
         return $this->redirect(['index']);
     }
 

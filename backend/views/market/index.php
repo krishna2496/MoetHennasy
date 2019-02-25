@@ -68,7 +68,7 @@ $formUrl = Url::to(['market/index']);
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
-                           'template' => '{view} {update} {delete} {contact}  {rules}  {brand}',
+                           'template' => '{view} {update} {delete} {contact} {category}',
                             'contentOptions' => ['style' => 'width:40%'],
                            'buttons' => [
     
@@ -84,12 +84,15 @@ $formUrl = Url::to(['market/index']);
                                 'contact' => function ($url, $model) use ($filters) {
                                    return Html::a('<span class="glyphicon glyphicon-phone"></span>', ['market-contacts/index/'.$model['id']],['title' => 'Contact']);
                                 },
-                                'rules' => function ($url, $model) use ($filters) {
+                                /*'rules' => function ($url, $model) use ($filters) {
                                      return Html::a('Apply Rules', ['apply/rules/'.$model['id']], ['class'=>'btn btn-primary']);
                                  
                                 },
                                 'brand' => function ($url, $model) use ($filters) {
                                      return Html::a('Apply Brand', ['apply/brands/'.$model['id']], ['class'=>'btn btn-primary']);
+                                },*/
+                                'category' => function ($url, $model) use ($filters) {
+                                     return Html::a('Manage Strategy', null, ['class'=>'btn btn-primary', 'data-id'=>$model['id'], 'data-toggle'=>"modal", 'onClick'=>('$("[name=\'selectedMarkets\']").val("'.$model['id'].'");'), 'data-target'=>"#modal-default"]);
                                 },
                                
                             ],
@@ -100,7 +103,30 @@ $formUrl = Url::to(['market/index']);
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="modal-default" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Select Product Categories</h4>
+            </div>
+            <input type="hidden" value="" id="selectedMarkets" name="selectedMarkets" />
+            <div class="modal-body" style="text-align: center;">
+                <?php 
+                    $output = '';
+                    foreach ($categories as $categoryKey=>$category){
+                        $output .= Html::a($category['name'], null, ['class'=>'btn btn-primary','data-id'=>$category['id'], 'onClick'=>'location.href="/moet_hennessy_app/admin/apply/brands/"+$("[name=\'selectedMarkets\']").val();', 'data-toggle'=>"modal", 'data-target'=>"#modal-default"]); 
+                        $output .= '&nbsp;&nbsp;&nbsp;';
+                    }
+                    echo $output;
+                ?>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     $("body").on("change", "#user-type,#user-text,#user-limit",function(event){
       

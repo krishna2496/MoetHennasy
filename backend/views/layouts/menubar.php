@@ -211,6 +211,7 @@ $arrayMenu = array(
             'Product-Types.Create',
             'Product-Categories.Index',
             'Product-Categories.Create',
+            'Product-Varietal.Index',
             'Brands.Index'
         ),
         'icon' => 'fa fa-glass',
@@ -218,7 +219,7 @@ $arrayMenu = array(
         'hasChildClass' => 'treeview ',
         'submenuToggleClass' => 'treeview-menu',
         'controllerId' => array(
-            'catalogues', 'product-categories', 'product-types', 'brands'
+            'catalogues', 'product-categories', 'product-types', 'brands', 'product-varietal'
         ),
         'actionId' => array(
             'index', 'create', 'update', 'view'
@@ -262,6 +263,16 @@ $arrayMenu = array(
                 'icon' => '',
                 'link' => 'product-categories/index',
                 'controllerId' => 'product-categories',
+                'actionId' => array('index', 'create', 'update', 'view')
+            ),
+            array(
+                'title' => 'Product Varietal',
+                'permissionName' => array(
+                    'Product-Varietal.Index'
+                ),
+                'icon' => '',
+                'link' => 'product-varietal/index',
+                'controllerId' => 'product-varietal',
                 'actionId' => array('index', 'create', 'update', 'view')
             ),
 //            array(

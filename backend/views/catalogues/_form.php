@@ -59,14 +59,18 @@ use common\helpers\CommonHelper;
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <!--<div class="col-md-6">
                              <?= $form->field($model, 'product_sub_category_id')->dropDownList($productSubCatData, ['prompt' => 'Select One','id'=>'user-parent_user_id','class'=>'form-control select2']); ?> 
                                
-                        </div>  
+                        </div>  -->
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'product_variental')->dropDownList($productVarietal, ['prompt' => 'Select One','class'=>'form-control select2']); ?>       
+                        </div>
                         <div class="col-md-6">
                              <?= $form->field($model, 'product_type_id')->dropDownList($productTypeData, ['prompt' => 'Select One','id'=>'user_user_id','class'=>'form-control select2']); ?> 
                                
-                        </div>  
+                        </div> 
+                        <div class="col-md-6"></div>
                     </div>
                     <div class="row">
 
@@ -94,19 +98,27 @@ use common\helpers\CommonHelper;
                     <div class="row">
 
                         <div class="col-md-6">
-                            <?= $form->field($model, 'box_only')->dropDownList(Yii::$app->params['catalogue_status'], ['prompt' => 'Select One','class'=>'form-control select2']); ?>              
+                            <?= $form->field($model, 'box_only')->checkbox(['class'=>'not-icheck', 'data-toggle'=>'toggle'], false); ?>
                         </div>
-                        <div class="col-md-6">
+                        <!--<div class="col-md-6">
                             <?= $form->field($model, 'market_share')->textInput(['maxlength' => true]) ?>    
-                        </div>
+                        </div>-->
                     </div>
                     <div class="row">
 
                         <div class="col-md-6">
                             <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
                         </div>
-                        <div class="col-md-6">            
-                            <?= $form->field($model, 'top_shelf')->dropDownList(Yii::$app->params['catalogue_status'], ['prompt' => 'Select One','class'=>'form-control select2']); ?>       
+                        <div class="col-md-6">  
+                            <?= $form->field($model, 'top_shelf')->checkbox(['class'=>'not-icheck', 'data-toggle'=>'toggle'], false); ?>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'special_format')->checkbox(['class'=>'not-icheck', 'data-toggle'=>'toggle'], false); ?>
+                        </div>
+                        <div class="col-md-6">
                         </div>
                     </div>
                 </div>
@@ -128,6 +140,9 @@ use common\helpers\CommonHelper;
     </div>
 </div>
 <script type="text/javascript">
+    function testfunc(elem){
+        debugger;
+    }
 	$("body").on("change", "#user-role_id",function(event){
 		
 		var product_id = parseInt($('#user-role_id').val());

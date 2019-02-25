@@ -18,7 +18,7 @@ return [
     'marketAdministratorRole' => 2,
     'salesManagerRole' => 3,
     'salesAgentsRole' => 4,
-    'pageSize' => 10,
+    'pageSize' => 50,
     'user.passwordResetTokenExpire' => 3600,
     'deviceType' => [
     	'ios' => 1,
@@ -29,7 +29,7 @@ return [
         1 => 'Active',
         0 => 'Inactive'
     ],
-    'limit' => [10 => 10, 20 => 20,50 => 50, 100 => 100 ,99999 => 'ALL'],  
+    'limit' => [50 => 50, 100 => 100 ,99999 => 'ALL'],
     'catalogue_status' => [1=>'Yes',0=>'No'], 
     'catalogue_status_inverse' => [1=>'Yes',0=>'No'], 
     'response_type' => ['drop-down' =>'Yes/No'],

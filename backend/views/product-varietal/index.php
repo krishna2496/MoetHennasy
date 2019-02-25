@@ -4,8 +4,8 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
 
-$formUrl = Url::to(['product-categories/index']);
-$this->title = 'Product Categories';
+$formUrl = Url::to(['product-varietal/index']);
+$this->title = 'Product Varietal';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
@@ -20,21 +20,21 @@ $this->params['breadcrumbs'][] = $this->title;
                         
                     </div>
                     <div class="col-md-9 pull-right">
-                        <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-categories']); ?>
+                        <?= Html::beginForm($formUrl, 'get', ['data-pjax' => '', 'id' => 'search-varietal']); ?>
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">  
                                 <div class="col-md-2"></div>
                                 <div class="col-md-3">
-                                    <?php  if(CommonHelper::checkPermission('Product-Categories.Create')){ ?>
-                                    <?= Html::a('Add Product Category', ['create'], ['class' => 'btn btn-primary']) ?>
+                                    <?php  if(CommonHelper::checkPermission('Product-Varietal.Create')){ ?>
+                                    <?= Html::a('Add Product Varietal', ['create'], ['class' => 'btn btn-primary']) ?>
                                     <?php } ?>
                                 </div>
                                 <div class="col-md-5">
-                                    <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'categories-text']) ?>
+                                    <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control','placeholder'=>'Search','id' => 'varietal-text']) ?>
                                     <span id="searchclear" class="glyphicon glyphicon-remove"></span>
                                 </div>
                                 <div class="col-md-2">
-                                    <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'categories-limit']) ?>
+                                    <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,Yii::$app->params['limit'],  ['class' => 'form-control','id' => 'varietal-limit']) ?>
                                 </div>
                             </div>
                         </div>
@@ -62,15 +62,15 @@ $this->params['breadcrumbs'][] = $this->title;
                            'template' => '{update} {delete}',
                            'buttons' => [
                                'view' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['product-categories/view/'.$model['id']],['title'=>'View']);
+                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['product-varietal/view/'.$model['id']],['title'=>'View']);
                                 },
                                'update' => function ($url, $model) {
                                     $addLink = isset($filters['setParentID']) ? '/'.$model['parent_user_id'] : '';
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['product-categories/update/'.$model['id']],['title'=>'Update']);
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['product-varietal/update/'.$model['id']],['title'=>'Update']);
                                 },                                
                                'delete' => function ($url, $model) {
                                     $addLink = isset($filters['setParentID']) ? '/'.$model['parent_user_id'] : '';
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['product-categories/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this category?','title'=>'Delete']);
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['product-varietal/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this varietal?','title'=>'Delete']);
                                 },
                             ],
                         ],

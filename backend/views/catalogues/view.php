@@ -42,12 +42,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => 'Product category',
                             'attribute' => 'productCategory.name',
             ],
-            [
-                            'label' => 'Product sub category',
-                            'attribute' => 'productSubCategory.name',
-            ],
             'product_type_id',
-            
+            [
+                            'label' => 'Product Varietal',
+                            'attribute' => 'product_variental.name',
+            ],
             'width',
             'height',
             'length',
@@ -57,11 +56,15 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => 'Box only',
                             'value' => Yii::$app->params['catalogue_status'][$model->box_only],
             ],
-            'market_share',
+            //'market_share',
             'price',
             [
                             'label' => 'Top shelf',
                             'value' => Yii::$app->params['catalogue_status'][$model->top_shelf],
+            ],
+            [
+                            'label' => 'Special Format',
+                            'value' => Yii::$app->params['catalogue_status'][$model->special_format],
             ],
               ],
                 ]) ?>

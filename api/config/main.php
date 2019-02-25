@@ -81,6 +81,7 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'POST v1/site/login' => 'v1/site/login',
+                'POST v1/varietal/listing' => 'v1/varietal/listing',
                 'POST v1/site/request-password-reset' => 'v1/site/request-password-reset',
                 'POST v1/site/reset-password' => 'v1/site/reset-password',
                 'POST v1/site/logout' => 'v1/site/logout',

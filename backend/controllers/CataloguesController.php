@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\Catalogues;
 use common\models\CataloguesSearch;
+use common\models\ProductVarietal;
 use common\repository\MarketRepository;
 use yii\web\Controller;
 use yii\web\UploadedFile;
@@ -136,14 +137,19 @@ class CataloguesController extends BaseBackendController {
             }
         }
         $returnData = $this->allData();
-
+        $productVariental = ProductVarietal::find()->andWhere(['deleted_by'=>null])->asArray()->all();
+        $productVarientalArray = array();
+        foreach ($productVariental as $productVarientalKey=>$productVarientalVal){
+            $productVarientalArray[$productVarientalVal['id']] = $productVarientalVal['name'];
+        }
         return $this->render('create', [
                 'model' => $model,
                 'market' => $returnData['marketList'],
                 'brand' => $returnData['brandList'],
                 'product' => $returnData['productCategory'],
                 'productSubCatData' => $productSubCatData,
-                'productTypeData' => $returnData['productType']
+                'productTypeData' => $returnData['productType'],
+                'productVarietal' => $productVarientalArray
         ]);
     }
 
@@ -185,6 +191,11 @@ class CataloguesController extends BaseBackendController {
                 Yii::$app->session->setFlash('danger', $returnData['status']['message']);
             }
         }
+        $productVariental = ProductVarietal::find()->andWhere(['deleted_by'=>null])->asArray()->all();
+        $productVarientalArray = array();
+        foreach ($productVariental as $productVarientalKey=>$productVarientalVal){
+            $productVarientalArray[$productVarientalVal['id']] = $productVarientalVal['name'];
+        }
         $returnData = $this->allData($product_category_id);
         return $this->render('update', [
                 'model' => $model,
@@ -192,7 +203,8 @@ class CataloguesController extends BaseBackendController {
                 'brand' => $returnData['brandList'],
                 'product' => $returnData['productCategory'],
                 'productSubCatData' => $returnData['productSubCat'],
-                'productTypeData' => $returnData['productType']
+                'productTypeData' => $returnData['productType'],
+                'productVarietal' => $productVarientalArray
         ]);
     }
 

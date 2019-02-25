@@ -5,6 +5,7 @@ namespace common\repository;
 use Yii;
 use common\helpers\CommonHelper;
 use common\models\MarketBrands;
+use common\models\MarketBrandsVerietals;
 
 class MarketBrandsRepository extends Repository {
 
@@ -62,10 +63,12 @@ class MarketBrandsRepository extends Repository {
         $this->apiCode = 0;
         $flag=1;
         $marketSegmentData = $data['brand_id'];
+        $marketShareSegmentData = $data['shares'];
         
         
         $previousData = MarketBrands::find()->select('brand_id')->andWhere(['market_id' => $data['market_id']])->asArray()->all();
-      
+        $previousDataId = MarketBrands::find()->select('id')->andWhere(['market_id' => $data['market_id']])->asArray()->all();
+        
         $previous_array;
         
         foreach ($previousData as $key=>$value){
@@ -93,12 +96,24 @@ class MarketBrandsRepository extends Repository {
                 $model = new MarketBrands;
                 $model->brand_id = $i_id;
                 $model->market_id = $data['market_id'];
+                $model->shares = $marketShareSegmentData[$key];
+                $model->reorder_id = 0;
                 if($model->save(false)){
                     $modelNew =  MarketBrands::findOne([$model->id]);
                     $modelNew->reorder_id = $model->id;
                     $modelNew->save(false);
                 }
             }
+            }
+            $update_array = array_diff($previous_array, $deleted_array);
+            if(!empty($update_array)){
+                foreach ($update_array as $key=>$i_id){
+                    $model = MarketBrands::findOne($previousDataId[$key]);
+                    $model->brand_id = $i_id;
+                    $model->market_id = $data['market_id'];
+                    $model->shares = $marketShareSegmentData[$key];
+                    $model->save(false);
+                }
             }
             
 //           $update = array_intersect($previous_array, $marketSegmentData);
@@ -108,10 +123,12 @@ class MarketBrandsRepository extends Repository {
 //           }
            
         }else{
-        foreach ($marketSegmentData as $value) {
+        foreach ($marketSegmentData as $marketSKey=>$value) {
             $modelSegment = new MarketBrands();
             $modelSegment->market_id = $data['market_id'];
             $modelSegment->brand_id = $value;
+            $modelSegment->shares = $marketShareSegmentData[$marketSKey];
+            $modelSegment->reorder_id = 0;
             if ($modelSegment->validate(false)) {
                 if($modelSegment->save(false)){
 //                $model = new MarketBrands();
@@ -121,6 +138,11 @@ class MarketBrandsRepository extends Repository {
                 }
             }else{
                 $flag = 0;
+            }
+            
+            //Manage Market Verietal
+            foreach ($data['brand_verietal'] as $brandVerietalKey=>$brandVerietalVal){
+                
             }
         }
         }

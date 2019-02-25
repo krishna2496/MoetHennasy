@@ -51,6 +51,8 @@ return [
                 'market-segments/view/<id:\d+>' => 'market-segments/view',
                 'product-categories/update/<id:\d+>' => 'product-categories/update',
                 'product-categories/delete/<id:\d+>' => 'product-categories/delete',
+                'product-varietal/update/<id:\d+>' => 'product-varietal/update',
+                'product-varietal/delete/<id:\d+>' => 'product-varietal/delete',
                 'help-categories/update/<id:\d+>' => 'help-categories/update',
                 'help-categories/delete/<id:\d+>' => 'help-categories/delete',
                 'help-categories/view/<id:\d+>' => 'help-categories/view',
@@ -68,6 +70,7 @@ return [
                 'rule-administration/product/<id:\d+>' => 'rule-administration/product',
                 'apply/rules/<id:\d+>' => 'apply/rules',
                 'apply/brands/<id:\d+>' => 'apply/brands',
+                'apply/varientals' => 'apply/varientals',
                
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:[^/]+>/<action:[^/]+>/<slug:[^/]+>' => '<controller>/<action>',

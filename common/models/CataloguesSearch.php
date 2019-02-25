@@ -13,7 +13,7 @@ class CataloguesSearch extends Catalogues {
 
     public function rules() {
         return [
-                [['id', 'brand_id', 'product_category_id', 'product_sub_category_id', 'product_type_id', 'market_id', 'market_share', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
+                [['id', 'brand_id', 'product_category_id', 'product_sub_category_id', 'product_type_id', 'market_id', 'market_share', 'created_by', 'updated_by', 'deleted_by', 'product_variental', 'special_format'], 'integer'],
                 [['sku', 'ean', 'image', 'short_name', 'long_name', 'short_description', 'manufacturer', 'box_only', 'top_shelf', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
                 [['width', 'height', 'length', 'scale', 'price'], 'number'],
         ];

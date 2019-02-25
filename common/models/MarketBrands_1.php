@@ -3,19 +3,18 @@
 namespace common\models;
 
 use Yii;
-
-class MarketBrands extends BaseModel
+class MarketBrandsVerietals extends BaseModel
 {
     public static function tableName()
     {
-        return 'market_brands';
+        return 'market_brands_verietals';
     }
 
     public function rules()
     {
         return [
-            [['market_id', 'brand_id', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at', 'shares'], 'required'],
-            [['market_id', 'brand_id', 'created_by', 'updated_by', 'deleted_by', 'shares'], 'integer'],
+            [['market_id', 'brand_id', 'verietal_id', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at', 'shares'], 'required'],
+            [['market_id', 'brand_id', 'verietal_id', 'created_by', 'updated_by', 'deleted_by', 'shares'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
         ];
     }
@@ -29,6 +28,7 @@ class MarketBrands extends BaseModel
             'id' => 'ID',
             'market_id' => 'Market ID',
             'brand_id' => 'Brand ID',
+            'verietal_id' => 'Verietal ID',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'deleted_by' => 'Deleted By',
@@ -38,7 +38,7 @@ class MarketBrands extends BaseModel
             'shares' => 'Share'
         ];
     }
-     public function getBrand(){
-        return $this->hasOne(Brands::className(), ['id' => 'brand_id']);
+     public function getVerietal(){
+        return $this->hasOne(Brands::className(), ['id' => 'verietal_id']);
     } 
 }

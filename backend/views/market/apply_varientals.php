@@ -28,7 +28,6 @@ foreach ($selected as $key=>$value){
 }
 $dataProvider->allModels = array_merge($new_array,$data);
 $count = count($dataProvider->allModels);
-$totalBranSharesCount = array_sum($selectedShares);
 ?>
 <script>
     productObject = {};
@@ -47,7 +46,7 @@ $totalBranSharesCount = array_sum($selectedShares);
                         <h2>
                             <?= $title; ?>
                             <div class="pull-right">
-                            <?= \yii\helpers\Html::a( 'Add Brand', null,['class' => 'btn btn-primary', 'data-toggle'=>"modal", 'data-target'=>"#modal-default"]);?> &nbsp;
+                            <?= \yii\helpers\Html::a( 'Add Varietal', null,['class' => 'btn btn-primary', 'data-toggle'=>"modal", 'data-target'=>"#modal-default"]);?> &nbsp;
                             <?= \yii\helpers\Html::a( 'Back', ['market/index'],['class' => 'btn btn-primary']);?>
                             </div>
                         </h2>
@@ -86,22 +85,16 @@ $totalBranSharesCount = array_sum($selectedShares);
                             [
                                 'label' => 'Share',
                                 'format' => 'raw',
-                                'contentOptions' => ['style' => 'width:10%'],
-                                'value'=>  function ($model,$key)use($count,$dataProvider,$selected,$selectedShares) {
-                                        $currentShareValue = isset($selectedShares[$dataProvider->allModels[$key]['id']]) ? $selectedShares[$dataProvider->allModels[$key]['id']] : 0;
-                                    return '<input type="text" id="shares[]" data-id="'.$dataProvider->allModels[$key]['id'].'" name="shares[]" value="'.$currentShareValue.'" pattern="[0-9]+" class="form-control numericOnly" style="text-align:center;" />'.
-                                            '<input type="hidden" id="sharesId[]" data-id="'.$dataProvider->allModels[$key]['id'].'" name="sharesId[]" value="'.$dataProvider->allModels[$key]['id'].'"/>'
-                                            . '<input type="hidden" id="varietalShareObject_'.$dataProvider->allModels[$key]['id'].'" data-id="'.$dataProvider->allModels[$key]['id'].'" name="varietalShareObject[]" value="">';
+                                'contentOptions' => ['style' => 'width:70%'],
+                                'value'=>  function ($model,$key)use($count,$dataProvider,$selected) {
+                                    $sDropdown = '<select class="form-control" style="width: 77px;">';
+                                    for($sIndex=0;$sIndex <= 100; $sIndex++ ){
+                                        $sDropdown .= '<option>'.$sIndex.'</option>';
+                                    }
+                                    $sDropdown .= '</select>';
+                                    return $sDropdown;
                                 }
                             ],
-                            [
-                                'label' => '',
-                                'format' => 'raw',
-                                'contentOptions' => ['style' => 'width:60%'],
-                                'value'=>  function ($model,$key)use($count,$dataProvider,$selected) {
-                                    return \yii\helpers\Html::a( 'Manage Varietal', null,['class' => 'btn btn-primary manage-varietal', 'onClick'=>'changeCurrentVariatalPoupId(this)','data-id'=>$dataProvider->allModels[$key]['id'], 'data-target'=>"#verietal-modal", 'style'=>'display:none;', 'data-toggle'=>"modal"]);
-                                }
-                            ], 
                                      /*[
                             'label'=>'sort',
                             'attribute'=>'reorder_id',
@@ -141,23 +134,7 @@ $totalBranSharesCount = array_sum($selectedShares);
                         ],
                     ]);
                     ?>
-                    <table class="table table-striped table-bordered">
-                        <tbody>
-                            <tr data-key="0">
-                                <td style="width:10%"></td>
-                                <td style="width:20%;text-align: right;padding-top: 15px;font-weight: bold;">Total</td>
-                                <td style="width:10%"><input type="text" id="totalShares" name="totalShares" value="<?=$totalBranSharesCount?>" readOnly disabled class="form-control numericOnly" style="text-align:center;" /></td>
-                                <td style="width:60%"></td>
-                            </tr>
-                        </tbody>
-                    </table>
                     <script type="text/javascript">
-                        function changeCurrentVariatalPoupId(elem){
-                            $.each( $('[name="varietalShares[]"]'), function( key, value ) {
-                                $(value).val(0);
-                            });
-                            $('#selectedBrandsKey').val($(elem).attr('data-id'));
-                        }
                         $(document).ready(function () {
                             brandThumbId = 0;
 
@@ -229,36 +206,9 @@ $totalBranSharesCount = array_sum($selectedShares);
             $(".auto_fill").removeAttr('disabled');
         });
 
-        $(".auto_fill").on('click', function () {
-            var $isNotFullSetShare = 1;
-            var $totalShare = 0;
-            $.each( $('[name="shares[]"]'), function( key, value ) {
-                var $jsonVal = $('#varietalShareObject_'+$(value).attr('data-id')).val();
-                try {
-                    $jsonVal = JSON.parse($jsonVal);
-                } catch (e) {
-                    $jsonVal = '';
-                }
-                var $vertielShareCount = 0;
-                if($jsonVal != ''){
-                    $.each( $jsonVal, function( vkey, vvalue ) {
-                        $vertielShareCount += (vvalue.share != '') ? vvalue.share : 0;
-                    });
-                }
-                if($(value).val() != ''){
-                    if($vertielShareCount != 100 && parseInt($(value).val()) > 0){
-                        $isNotFullSetShare = 0;
-                    }
-                }
-                $totalShare = $totalShare + parseInt($(value).val());
-            });
-            if($isNotFullSetShare == 0){
-                alert('Brand and selected brand verietal share should be equal to 100.');
-            }else{
-                 $("#w1").submit();
-            }
-            /*selectedBrand  = selectedBrand.filter(Boolean);
-            console.log(selectedBrand);
+        $(".auto_fill").on('click', function () {	
+        selectedBrand  = selectedBrand.filter(Boolean);
+        console.log(selectedBrand);
             if (selectedBrand!=undefined && selectedBrand.length > 0)
             {
                 $("#selectedBrand").val(selectedBrand);
@@ -267,7 +217,7 @@ $totalBranSharesCount = array_sum($selectedShares);
             } else {
                 alert("Please select at least one Brand");
                 return false;
-            }*/
+            }
         });
 
 
@@ -281,10 +231,11 @@ $totalBranSharesCount = array_sum($selectedShares);
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span></button>
-                <h4 class="modal-title">Select Product Brand</h4>
+                <h4 class="modal-title">Select Product Varietal</h4>
             </div>
+            <input type="hidden" value="" id="selectedMarkets" name="selectedMarkets" />
             <div class="modal-body">
-                <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,$brands,  ['class' => 'form-control','id' => 'user-limit']) ?>
+                <?= Html::dropDownList('limit', isset($filters['limit']) ? $filters['limit'] : '' ,$productVarietal,  ['class' => 'form-control','id' => 'user-limit']) ?>
             </div>
             <div class="modal-footer">
                 <?= \yii\helpers\Html::a( 'Add Brand', null,['class' => 'btn btn-primary', 'data-toggle'=>"modal", 'data-target'=>"#modal-default"]);?>
@@ -292,70 +243,7 @@ $totalBranSharesCount = array_sum($selectedShares);
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="verietal-modal" style="display: none;">
-    <div class="modal-dialog" style="overflow-y: initial !important;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span></button>
-                <h4 class="modal-title">Select Product Brand</h4>
-            </div>
-            <input type="hidden" value="" id="selectedBrandsKey" name="selectedBrandsKey" value="" />
-            <div class="modal-body" style="height: 451px;overflow-y: auto;">
-                <?=
-                    GridView::widget([
-                        'dataProvider' => $productVarietalDataProvider,
-                        'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-5">{summary}</div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
-                        'columns' => [
-                                ['class' => 'yii\grid\SerialColumn','contentOptions' => ['style' => 'width:10%'],],
-                            [
-                                'label' => 'Name',
-                                'attribute' => 'name',
-                                'contentOptions' => ['style' => 'width:20%'],
-                            ],
-                            [
-                                'label' => 'Share',
-                                'format' => 'raw',
-                                'contentOptions' => ['style' => 'width:10%'],
-                                'value'=>  function ($model,$key)use($count,$productVarietalDataProvider,$selected) {
-                                    return '<input type="text" id="varietalShares[]" data-id="'.$productVarietalDataProvider->allModels[$key]['id'].'" name="varietalShares[]" value="0" class="form-control numericOnly" style="text-align:center;" />';
-                                }
-                            ],
-                        ],
-                    ]);
-                    ?>
-                    <table class="table table-striped table-bordered">
-                        <tbody>
-                            <tr data-key="0">
-                                <td style="width:10%"></td>
-                                <td style="width:20%;text-align: right;padding-top: 15px;font-weight: bold;">Total</td>
-                                <td style="width:10%"><input type="text" id="totalVarietalShares" name="totalVarietalShares" value="0" readOnly disabled class="form-control numericOnly" style="text-align:center;" /></td>
-                            </tr>
-                        </tbody>
-                    </table>
-            </div>
-            <div class="modal-footer">
-                <?= \yii\helpers\Html::a( 'Save', null,['class' => 'btn btn-primary', 'onClick'=>'storeCurrentVarietalShares();']);?>
-            </div>
-        </div>
-    </div>
-</div>
 <script>
-    function storeCurrentVarietalShares(){
-        var $totalVarietalShare = 0;
-        var finalArray = [];
-        $.each( $('[name="varietalShares[]"]'), function( key, value ) {
-            finalArray[key] = {'id':parseInt($(value).attr('data-id')),'share':parseInt($(value).val())};
-            $totalVarietalShare = $totalVarietalShare + parseInt($(value).val());
-        });
-        if($totalVarietalShare == 100 && $('#totalVarietalShares').val() == 100 ){
-            $('#varietalShareObject_'+$('#selectedBrandsKey').val()).val(JSON.stringify(finalArray));
-            $('#verietal-modal').modal('hide');
-        }else{
-            alert('Total shares should be equal to 100.');
-        }
-    }
     $("body").on("change", "#user-text,#user-limit", function (event) {
         $('#search-users').submit();
     });   

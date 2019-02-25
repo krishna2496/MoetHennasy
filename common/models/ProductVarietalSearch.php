@@ -6,14 +6,14 @@ use Yii;
 use yii\base\Model;
 use yii\data\ArrayDataProvider;
 use common\models\ProductCategories;
-use common\repository\ProductCategoryRepository;
+use common\repository\ProductVarietalRepository;
 
-class ProductCategoriesSearch extends ProductCategories
+class ProductVarietalSearch extends ProductCategories
 {    
     public function rules()
     {
         return [
-            [['id',  'created_by', 'updated_by', 'deleted_by'], 'integer'],
+            [['id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['name', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
         ];
     }
@@ -26,27 +26,22 @@ class ProductCategoriesSearch extends ProductCategories
 
     public function search($params)
     {
-        $productCategoryRepository = new ProductCategoryRepository();
-        $productCategoryRepository = $productCategoryRepository->listing($params); 
-        $categoryList = array();
-        if($productCategoryRepository['status']['success'] == 1){
-            if($productCategoryRepository['data']['productCategories']){
-                foreach ($productCategoryRepository['data']['productCategories'] as $key => $value) {
+        $productVarietalRepository = new ProductVarietalRepository();
+        $productVarietalRepository = $productVarietalRepository->listing($params); 
+        $varietalList = array();
+        if($productVarietalRepository['status']['success'] == 1){
+            if($productVarietalRepository['data']['productVarietal']){
+                foreach ($productVarietalRepository['data']['productVarietal'] as $key => $value) {
                     $temp = $value;
                     $temp['name']= ucfirst($temp['name']);
-                    $temp ["parentCategory"]['name']= ucfirst($temp["parentCategory"]['name']);
                     
-                    $categoryList[]=$temp;
+                    $varietalList[]=$temp;
                }
             }
         }
-//        echo "<pre>";
-//        print_r($categoryList['name']);
-//        print_r($categoryList['parentCategory']['name']);
-//        exit;
 
         $dataProvider = new ArrayDataProvider([
-            'allModels' => $categoryList,
+            'allModels' => $varietalList,
             'pagination' => [
                 'pageSize' => $params['limit']
             ],
@@ -54,7 +49,6 @@ class ProductCategoriesSearch extends ProductCategories
                 'attributes' =>
                 [
                     'name',
-                    'parentCategory.name',
                 ],
                 'defaultOrder' => [
                     'name' => SORT_ASC,

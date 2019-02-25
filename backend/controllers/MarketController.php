@@ -20,6 +20,7 @@ use common\models\MarketRules;
 use common\models\BrandsSearch;
 use common\models\MarketBrands;
 use common\repository\MarketRulesRepository;
+use common\models\ProductCategories;
 
 class MarketController extends BaseBackendController
 {
@@ -52,6 +53,7 @@ class MarketController extends BaseBackendController
 
     public function actionIndex()
     {
+        $categories = ProductCategories::find()->andWhere(['deleted_by'=>null])->asArray()->all();
         $searchModel = new MarketSearch();
         $filters = Yii::$app->request->queryParams;
         if(!isset($filters['limit'])){
@@ -65,6 +67,7 @@ class MarketController extends BaseBackendController
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'filters' => $filters,
+            'categories' => $categories
         ]);
     }
 

@@ -3,14 +3,14 @@ namespace common\repository;
 
 use Yii;
 use common\helpers\CommonHelper;
-use common\models\ProductCategories;
+use common\models\ProductVarietal;
 
 
-class ProductCategoryRepository extends Repository
+class ProductVarietalRepository extends Repository
 {
     public function listing($data = array()) {
         $this->apiCode = 1;
-        $query = ProductCategories::find()->with(['parentCategory']);
+        $query = ProductVarietal::find();
         
         if(isset($data['search']) && $data['search']){
             $data['search'] = trim($data['search']);
@@ -20,26 +20,21 @@ class ProductCategoryRepository extends Repository
         if(isset($data['except_id']) && $data['except_id']){
         	$query->andWhere(['!=','id',$data['except_id']]);
         }
-        
-        /*if(isset($data['parent_id']) && $data['parent_id']){
-            	$query->andWhere(['=','parent_id',$data['parent_id']]);
-        }*/
 
         $data = array();
-        $data['productCategories'] = $query->orderBy(['name' => yii::$app->params['defaultSorting']])->asArray()->all();
+        $data['productVarietal'] = $query->orderBy(['name' => yii::$app->params['defaultSorting']])->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }
 
-    public function createProductCategory($data = array()){
+    public function createProductVarietal($data = array()){
         $this->apiCode = 0;
-        $model = new ProductCategories;
+        $model = new ProductVarietal;
         $model->name = $data['name'];
-        //$model->parent_id = $data['parent_id'];
         if($model->validate()) {
             if($model->save(false)) {
                 $this->apiCode = 1;
-                $this->apiMessage = Yii::t('app', 'created_successfully', [Yii::t('app', 'product_categories')]);
+                $this->apiMessage = Yii::t('app', 'created_successfully', [Yii::t('app', 'product_varietal')]);
             } else {
                 $this->apiCode = 0;
                 $this->apiMessage = Yii::t('app', 'Something went wrong.');
@@ -54,19 +49,16 @@ class ProductCategoryRepository extends Repository
         return $this->response();
     }
 
-    public function upadateProductCategory($data = array()){
+    public function upadateProductVarietal($data = array()){
         $this->apiCode = 0;
-        $model = ProductCategories::findOne($data['id']);
+        $model = ProductVarietal::findOne($data['id']);
         if(isset($data['name'])) {
             $model->name = $data['name'];
         }
-        /*if(isset($data['parent_id'])) {
-        	$model->parent_id = $data['parent_id'];
-        }*/
         if($model->validate()) {
             if($model->save(false)) {
                 $this->apiCode = 1;
-                $this->apiMessage = Yii::t('app', 'updated_successfully', [Yii::t('app', 'product_categories')]);
+                $this->apiMessage = Yii::t('app', 'updated_successfully', [Yii::t('app', 'product_varietal')]);
             } else {
                 $this->apiCode = 0;
                 $this->apiMessage = Yii::t('app', 'Something went wrong.');
