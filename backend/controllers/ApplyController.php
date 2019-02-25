@@ -147,7 +147,8 @@ class ApplyController extends MarketController
        }
     }
     
-    public function actionBrands($id){
+    public function actionBrands($brandId,$id){
+        $category_id = $brandId;
         $brands = Brands::find()->andWhere(['deleted_by'=>null])->asArray()->all();
         $productVarietal = ProductVarietal::find()->andWhere(['deleted_by'=>null])->asArray()->all();
         if (($model = Markets::findOne($id)) !== null) {
@@ -159,14 +160,31 @@ class ApplyController extends MarketController
         $model = new MarketBrands();
         $selected = [];
         $selectedShares = [];
-        $ruleModel = MarketBrands::find()->select(['brand_id','reorder_id', 'shares'])->andWhere(['market_id' => $id])->orderBy(['reorder_id'=>SORT_ASC])->asArray()->all();
+        $marketViertal = $finalViertalArry = [];
+        $ruleModel = MarketBrands::find()->select(['brand_id','reorder_id', 'shares'])->andWhere(['market_id' => $id,'category_id'=>$category_id])->orderBy(['reorder_id'=>SORT_ASC])->asArray()->all();
         if($ruleModel){
             foreach ($ruleModel as $key=>$value){
                   $selected[$key]  = $value['brand_id']; 
                   $selectedShares[$value['brand_id']]  = $value['shares']; 
              }
         }
-
+        $marketBrandViertal = MarketBrandsVerietals::find()->select(['brand_id', 'verietal_id','shares'])->andWhere(['market_id' => $id,'category_id'=>$category_id])->asArray()->all();
+       
+        if($marketBrandViertal){
+            foreach ($marketBrandViertal as $key=>$value){
+                $marketViertal[$key]['brand_id']  = $value['brand_id']; 
+                $marketViertal[$key]['verietal_id']  = $value['verietal_id']; 
+                $marketViertal[$key]['shares']  = $value['shares']; 
+            }
+        }
+       
+        foreach ($marketViertal as $k =>$v){
+            $finalViertalArry[$v['brand_id']][] = array(
+                'id'=>$v['verietal_id'],
+                'share'=> $v['shares'],
+            );
+        }
+       
         $data['market_id'] = $id;
         
         if(Yii::$app->request->post('limit')){
@@ -177,17 +195,20 @@ class ApplyController extends MarketController
         }
         
          if(Yii::$app->request->post('sharesId')) {
+             $post = Yii::$app->request->post();
+             
             $shares = Yii::$app->request->post('shares');
-            $brandId = Yii::$app->request->post('sharesId');
+            $brandsId = Yii::$app->request->post('sharesId');
             $varietalIds = Yii::$app->request->post('varietalShareObject');
             $ruleData = array();
             $ruleData['market_id'] = $id;
             foreach ($shares as $shareKey=>$share) {
                 if(intval($share) > 0){
                     $ruleData['shares'][] = $share;
-                    $ruleData['brand_id'][] = $brandId[$shareKey];
+                    $ruleData['brand_id'][] = $brandsId[$shareKey];
                     $ruleData['brand_verietal'][] = !empty($varietalIds[$shareKey]) ? json_decode($varietalIds[$shareKey]) : array();
                 }
+                $ruleData['category_id'] = $brandId;
             }
             $marketRepository = new \common\repository\MarketBrandsRepository;
             $returnData = $marketRepository->createBrand($ruleData);
@@ -248,6 +269,8 @@ class ApplyController extends MarketController
             'selected' => $selected,
             'brands' => $brandsArray,
             'productVarietals' => $productVarietals,
+            'brandId'=>$brandId,
+            'finalViertalArry'=>$finalViertalArry
         ]);
         
        }else{

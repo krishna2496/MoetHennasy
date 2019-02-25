@@ -69,7 +69,7 @@ return [
                 'market/rules/<id:\d+>' => 'market/rules',
                 'rule-administration/product/<id:\d+>' => 'rule-administration/product',
                 'apply/rules/<id:\d+>' => 'apply/rules',
-                'apply/brands/<id:\d+>' => 'apply/brands',
+            
                 'apply/varientals' => 'apply/varientals',
                
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
@@ -87,6 +87,7 @@ return [
                 'store-configuration/delete/<id:\d+>/<storeId:\d+>' => 'store-configuration/delete',
                 'helps/view/<id:\d+>/<categoryId:\d+>' => 'helps/view',
                 'configs/update/<id:\d+>/<storeId:\d+>' => 'configs/update',
+                'apply/brands/<brandId:\d+>/<id:\d+>' => 'apply/brands',
                 'configs/create/<id:\d+>' => 'configs/create',
               
               

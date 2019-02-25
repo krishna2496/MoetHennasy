@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 $this->title = 'Market Brands';
 $this->params['breadcrumbs'][] = ['label' => 'Markets', 'url' => ['/market']];
 $this->params['breadcrumbs'][] = $this->title;
-$formUrl = Url::to(['apply/brands/' . $market_id]);
+$formUrl = Url::to(['apply/brands/' .$brandId.'/'.$market_id]);
 //echo '<prE>';
 ////print_r($selected);
 //echo '<br>';
@@ -87,11 +87,12 @@ $totalBranSharesCount = array_sum($selectedShares);
                                 'label' => 'Share',
                                 'format' => 'raw',
                                 'contentOptions' => ['style' => 'width:10%'],
-                                'value'=>  function ($model,$key)use($count,$dataProvider,$selected,$selectedShares) {
+                                'value'=>  function ($model,$key)use($count,$dataProvider,$selected,$selectedShares,$finalViertalArry) {
                                         $currentShareValue = isset($selectedShares[$dataProvider->allModels[$key]['id']]) ? $selectedShares[$dataProvider->allModels[$key]['id']] : 0;
+                                        $vierntal_val = isset($finalViertalArry[$dataProvider->allModels[$key]['id']]) ? json_encode($finalViertalArry[$dataProvider->allModels[$key]['id']],JSON_NUMERIC_CHECK) :'';
                                     return '<input type="text" id="shares[]" data-id="'.$dataProvider->allModels[$key]['id'].'" name="shares[]" value="'.$currentShareValue.'" pattern="[0-9]+" class="form-control numericOnly" style="text-align:center;" />'.
                                             '<input type="hidden" id="sharesId[]" data-id="'.$dataProvider->allModels[$key]['id'].'" name="sharesId[]" value="'.$dataProvider->allModels[$key]['id'].'"/>'
-                                            . '<input type="hidden" id="varietalShareObject_'.$dataProvider->allModels[$key]['id'].'" data-id="'.$dataProvider->allModels[$key]['id'].'" name="varietalShareObject[]" value="">';
+                                            . '<input type="hidden" id="varietalShareObject_'.$dataProvider->allModels[$key]['id'].'" data-id="'.$dataProvider->allModels[$key]['id'].'" name="varietalShareObject[]" value="'.$vierntal_val.'">';
                                 }
                             ],
                             [
@@ -99,7 +100,7 @@ $totalBranSharesCount = array_sum($selectedShares);
                                 'format' => 'raw',
                                 'contentOptions' => ['style' => 'width:60%'],
                                 'value'=>  function ($model,$key)use($count,$dataProvider,$selected) {
-                                    return \yii\helpers\Html::a( 'Manage Varietal', null,['class' => 'btn btn-primary manage-varietal', 'onClick'=>'changeCurrentVariatalPoupId(this)','data-id'=>$dataProvider->allModels[$key]['id'], 'data-target'=>"#verietal-modal", 'style'=>'display:none;', 'data-toggle'=>"modal"]);
+                                    return \yii\helpers\Html::a( 'Manage Varietal', null,['class' => 'btn btn-primary manage-varietal', 'onClick'=>'changeCurrentVariatalPoupId(this)','data-id'=>$dataProvider->allModels[$key]['id'], 'data-target'=>"#verietal-modal", 'style'=>'display:block;width:150px', 'data-toggle'=>"modal"]);
                                 }
                             ], 
                                      /*[
@@ -232,7 +233,9 @@ $totalBranSharesCount = array_sum($selectedShares);
         $(".auto_fill").on('click', function () {
             var $isNotFullSetShare = 1;
             var $totalShare = 0;
-            $.each( $('[name="shares[]"]'), function( key, value ) {
+           
+            $.each( $('[name="shares[]"]'), function(key, value ) {
+             
                 var $jsonVal = $('#varietalShareObject_'+$(value).attr('data-id')).val();
                 try {
                     $jsonVal = JSON.parse($jsonVal);
@@ -248,10 +251,12 @@ $totalBranSharesCount = array_sum($selectedShares);
                 if($(value).val() != ''){
                     if($vertielShareCount != 100 && parseInt($(value).val()) > 0){
                         $isNotFullSetShare = 0;
+                       
                     }
                 }
                 $totalShare = $totalShare + parseInt($(value).val());
             });
+         
             if($isNotFullSetShare == 0){
                 alert('Brand and selected brand verietal share should be equal to 100.');
             }else{

@@ -116,7 +116,7 @@ $formUrl = Url::to(['market/index']);
                 <?php 
                     $output = '';
                     foreach ($categories as $categoryKey=>$category){
-                        $output .= Html::a($category['name'], null, ['class'=>'btn btn-primary','data-id'=>$category['id'], 'onClick'=>'location.href="/moet_hennessy_app/admin/apply/brands/"+$("[name=\'selectedMarkets\']").val();', 'data-toggle'=>"modal", 'data-target'=>"#modal-default"]); 
+                        $output .= Html::a($category['name'], null, ['class'=>'btn btn-primary','data-id'=>$category['id'], 'onClick'=>'location.href="/moet_hennessy_app/admin/apply/brands/'.$category['id'].'/"+$("[name=\'selectedMarkets\']").val();', 'data-toggle'=>"modal", 'data-target'=>"#modal-default"]); 
                         $output .= '&nbsp;&nbsp;&nbsp;';
                     }
                     echo $output;
