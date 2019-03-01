@@ -26,12 +26,21 @@ class ProductVarietalSearch extends ProductCategories
 
     public function search($params)
     {
+        
         $productVarietalRepository = new ProductVarietalRepository();
         $productVarietalRepository = $productVarietalRepository->listing($params); 
+       echo '<pre>';
+        print_r($productVarietalRepository);exit;
         $varietalList = array();
         if($productVarietalRepository['status']['success'] == 1){
             if($productVarietalRepository['data']['productVarietal']){
                 foreach ($productVarietalRepository['data']['productVarietal'] as $key => $value) {
+                    if(isset($value['marketBrandsVerietals'])){
+                        if($value['marketBrandsVerietals']['market_id'] != $params['market_id'] && $value['marketBrandsVerietals']['brand_id'] != $params['brand_id'] && $value['marketBrandsVerietals']['category_id'] != $params['category_id']){
+                            unset($value['marketBrandsVerietals']);
+                            $value['marketBrandsVerietals'] =[];
+                        }
+                    }
                     $temp = $value;
                     $temp['name']= ucfirst($temp['name']);
                     
@@ -39,20 +48,16 @@ class ProductVarietalSearch extends ProductCategories
                }
             }
         }
-
+ 
         $dataProvider = new ArrayDataProvider([
             'allModels' => $varietalList,
-            'pagination' => [
-                'pageSize' => $params['limit']
-            ],
+            
             'sort' => [
                 'attributes' =>
                 [
                     'name',
                 ],
-                'defaultOrder' => [
-                    'name' => SORT_ASC,
-                ]
+                
             ]
         ]);
 

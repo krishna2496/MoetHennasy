@@ -50,6 +50,7 @@ class StoresConfigController extends BaseApiController {
         unset($actions['configuration']);
         unset($actions['listing']);
         unset($actions['rating']);
+        unset($actions['brand-product-list']);
         
         return $actions;
     }
@@ -57,6 +58,7 @@ class StoresConfigController extends BaseApiController {
     public function actionBrandList() {
 
         $currentUser = CommonHelper::getUser();
+       
         $marketId = '';
         if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
             $marketId = $currentUser->market_id;
@@ -68,8 +70,6 @@ class StoresConfigController extends BaseApiController {
         if ($marketId != '') {
             $data['market_id'] = $marketId;
             $returnData = $repository->listing($data);
-
-
             $brandId = array();
             if ($returnData['status']['success'] == 1) {
                 if (!empty($returnData['data']['market_brands'])) {
@@ -326,6 +326,118 @@ class StoresConfigController extends BaseApiController {
         
         $returnData = $storeConfig->createRating($data);
         return $returnData;
+    }
+    
+    public function actionBrandProductList() {
+       
+        $currentUser = CommonHelper::getUser();
+        $marketId = '';
+        if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
+            $marketId = $currentUser->market_id;
+        }
+
+        $returnDatas = $newProductArry = array();
+        $repository = new MarketBrandsRepository();
+
+        if ($marketId != '') {
+            $data['market_id'] = $marketId;
+            $returnData = $repository->listing($data);
+            $productsData = $returnData['data']['market_product'];
+           
+            if($productsData){
+                foreach ($productsData as $key=>$value){
+//                    $category_id = $value['category_id'];
+//                    unset($value['id']);
+//                    unset($value['product_id']);
+//                    unset($value['category_id']);
+//                    unset($value['market_id']);
+//                    unset($value['created_by']);
+//                    unset($value['updated_by']);
+//                    unset($value['deleted_by']);
+//                    unset($value['created_at']);
+//                    unset($value['updated_at']);
+//                    unset($value['deleted_at']);
+                    $newProductArry[$value['category_id']] = $value['category']['marketCategoryProduct'];
+                }
+            }
+            $newProductFinalArry = array();
+            foreach ($newProductArry as $k => $v){
+                foreach ($v as $key => $value){
+                    $category_id = $value['category_id'];
+                    unset($value['id']);
+                    unset($value['product_id']);
+                    unset($value['category_id']);
+                    unset($value['market_id']);
+                    unset($value['created_by']);
+                    unset($value['updated_by']);
+                    unset($value['deleted_by']);
+                    unset($value['created_at']);
+                    unset($value['updated_at']);
+                    unset($value['deleted_at']);
+                    $newProductFinalArry[$category_id][] = $value['product'];
+                }
+                
+            }
+            
+            
+            $collectCatId = $collectMarketId = [];
+            if (!empty($returnData['data']['market_brands'])) {
+                    foreach ($returnData['data']['market_brands'] as $key => $value) {
+                        
+                            $tempValue = $value;
+                            unset($tempValue['category']);
+                            unset($tempValue['brand']);
+                            
+                            if(!in_array($value['market_id'],$collectMarketId)){
+                                $returnDatas['marketBrands'][$value['market_id']] = $tempValue;
+                                $collectMarketId[] = $value['market_id'];
+                            }
+                            
+                            if(!in_array($value['category']['id'],$collectCatId)){
+                                $returnDatas['marketBrands'][$value['market_id']]['category'][$value['category']['id']] = $value['category'];
+                                $collectCatId[] = $value['category']['id'];
+                            }
+                                    $image = $value['brand']['image'];
+                                    unset($value['brand']['created_by']);
+                                    unset($value['brand']['updated_by']);
+                                    unset($value['brand']['created_by']);
+                                    unset($value['brand']['deleted_by']);
+                                    unset($value['brand']['created_at']);
+                                    unset($value['brand']['updated_at']);
+                                    unset($value['brand']['deleted_at']);
+                                    $value['brand']['image'] = isset($value['brand']['image']) ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_BRANDS_IMAGES . $image : '';
+                                    $value['brand']['color_code'] = isset($value['brand']['color_code']) && ($value['brand']['color_code'] != '') ? $value['brand']['color_code'] : COLOR_CODE;
+                                    $value['brand']['reorder_id']=$value['reorder_id'];
+                                    $product = $value['brand']['product'];
+
+                                    foreach ($product as $key1 => $value1) {
+                                        $imageProduct = $value1['image'];
+                                        $box_only = $value1['box_only'];
+                                        $top_shelf = $value1['top_shelf'];
+                                        unset($value['brand']['product'][$key1]['image']);
+                                        unset($value['brand']['product'][$key1]['top_shelf']);
+                                        unset($value['brand']['product'][$key1]['box_only']);
+                                        $value['brand']['product'][$key1]['image'] = isset($imageProduct) && ($imageProduct != '') ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_CATALOGUES_IMAGES . rawurlencode($imageProduct) : '';
+                                        $value['brand']['product'][$key1]['top_shelf'] = \yii::$app->params['catalogue_status'][$top_shelf];
+                                        $value['brand']['product'][$key1]['box_only'] = \yii::$app->params['catalogue_status'][$box_only];
+                                    }
+                                    $product_data = '';
+                                    
+                                    
+                                $returnDatas['marketBrands'][$value['market_id']]['category'][$value['category']['id']]['top_shelf_product'] = isset($newProductFinalArry[$value['category']['id']]) ? $newProductFinalArry[$value['category']['id']] : ''; 
+                                $returnDatas['marketBrands'][$value['market_id']]['category'][$value['category']['id']]['brand'][] = $value['brand'];
+                            
+                            
+                           
+                           //$returnDatas['marketBrands'][$value['market_id']]['category']['brand'][] = $value['brand'];
+                        
+                    }
+            }
+
+        }
+//        echo '<pre>';
+//        print_r($returnDatas);exit;
+        return $returnDatas;
     }
     
 

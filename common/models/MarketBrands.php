@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\ProductCategories;
 
 class MarketBrands extends BaseModel
 {
@@ -41,4 +42,7 @@ class MarketBrands extends BaseModel
      public function getBrand(){
         return $this->hasOne(Brands::className(), ['id' => 'brand_id']);
     } 
+    public function getCategory(){
+        return $this->hasOne(ProductCategories::className(), ['id' => 'category_id']);
+    }
 }

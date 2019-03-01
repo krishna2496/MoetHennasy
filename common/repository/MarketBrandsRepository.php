@@ -3,21 +3,57 @@
 namespace common\repository;
 
 use Yii;
+
 use common\helpers\CommonHelper;
 use common\models\MarketBrands;
 use common\models\MarketBrandsVerietals;
+use common\models\MarketCategoryProduct;
+use common\models\Brands;
 
 class MarketBrandsRepository extends Repository {
 
     public function listing($data = array()) {
-
         $this->apiCode = 1;
-        $query = MarketBrands::find()->joinWith('brand.product.productCategory')->joinWith('brand.product.productType');
+        $query = MarketBrands::find()->joinWith('category','brand.product.productCategory')->joinWith('brand.marketBrandsVerietals')->joinWith('brand.product.productType')
+            ->joinWith(
+                ['brand.marketBrandsVerietals' => function (\yii\db\ActiveQuery $query) use($data) {
+        return $query
+            ->andWhere(['=', 'market_brands_verietals.market_id', $data['market_id']])->orderBy('reorder_id');
+            }]
+    );
         if (isset($data['market_id']) && ($data['market_id'] != '')) {
             $query->andWhere(['market_brands.market_id' => $data['market_id']]);
         }
+
+        $queryProduct = MarketBrands::find()->joinWith('category.marketCategoryProduct.product');
+       
         $data = array();
         $data['market_brands'] = $query->orderBy('reorder_id')->asArray()->all();
+        $data['market_product'] = $queryProduct->asArray()->all();
+       
+        $this->apiData = $data;
+        return $this->response();
+    }
+    
+    public function listingBrand($data = array()) {
+        $this->apiCode = 1;
+        $query = Brands::find()->joinWith(['marketBrands'=>function (\yii\db\ActiveQuery $query) use($data) {
+        return $query
+                ->orderBy('reorder_id');
+            }]);
+    
+        if (isset($data['market_id']) && ($data['market_id'] != '')) {
+            $query->andWhere(['market_brands.market_id' => $data['market_id']]);
+        }
+        
+        if (isset($data['category_id']) && ($data['market_id'] != '')) {
+            $query->andWhere(['market_brands.market_id' => $data['market_id']]);
+        }
+
+       
+        $data = array();
+        $data['brand_data'] = $query->asArray()->all();
+      
         $this->apiData = $data;
         return $this->response();
     }
@@ -85,7 +121,7 @@ class MarketBrandsRepository extends Repository {
         foreach ($data['brand_verietal'] as $brandVerietalKey=>$brandVerietalVal){
             $brandVerietalVal = (array)$brandVerietalVal;
             foreach ($brandVerietalVal as $k => $v){
-               $market_brands_verietals = MarketBrandsVerietals::findOne(['market_id'=>$data['market_id'],'brand_id'=>$value,'category_id'=>$data['category_id'],'verietal_id'=>$v->id]);
+               $market_brands_verietals = MarketBrandsVerietals::findOne(['market_id'=>$data['market_id'],'brand_id'=>$marketSegmentData[$brandVerietalKey],'category_id'=>$data['category_id'],'verietal_id'=>$v->id]);
                if($market_brands_verietals){
                    $market_brands_verietals->shares =  $v->share;
                    $market_brands_verietals->save(false);
@@ -96,7 +132,9 @@ class MarketBrandsRepository extends Repository {
                 $modelVerietals->verietal_id = $v->id;
                 $modelVerietals->category_id = $data['category_id'];
                 $modelVerietals->shares =  $v->share;
-                $modelVerietals->save(false);
+                if($modelVerietals->save(false)){
+                    
+                }
                }
             }
         }
@@ -223,4 +261,34 @@ class MarketBrandsRepository extends Repository {
 //  
 //        return $this->response();
 //    }
+    
+     public function createMarketProduct($data = array()) {
+       
+        $this->apiCode = 0;
+        $flag=1;
+        $selected_product = $data['selected_product'];
+        MarketCategoryProduct::deleteAll(['category_id'=>$data['category_id'],'market_id'=>$data['market_id']]);
+        if($selected_product){
+            
+            foreach ($selected_product as $key=>$value){
+                $market_brand_repository = new MarketCategoryProduct();
+                $market_brand_repository->product_id = $value;
+                $market_brand_repository->category_id = $data['category_id'];
+                $market_brand_repository->market_id = $data['market_id'];
+                $market_brand_repository->save(false);
+            }
+        }
+        
+        if($flag == 1){
+              $this->apiCode = 1;
+              $this->apiMessage = Yii::t('app','apply_strategy');
+        }else{
+            $this->apiCode = 0;
+            if (isset($model->errors) && $model->errors) {
+                $this->apiMessage = $model->errors;
+            } 
+        }
+  
+        return $this->response();
+    }
 }

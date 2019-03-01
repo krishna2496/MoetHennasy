@@ -25,10 +25,11 @@ class CataloguesSearch extends Catalogues {
     }
 
     public function search($params) {
-      
+     
         $userRepository = new CataloguesRepository;
         $userList = array();
         $resultUserList = $userRepository->listing($params);
+
         if ($resultUserList['status']['success'] == 1) {
             if ($resultUserList['data']['catalogues']) {
                 foreach ($resultUserList['data']['catalogues'] as $key => $value) {
@@ -41,9 +42,11 @@ class CataloguesSearch extends Catalogues {
                 }
             }
         }
+        
         if(!isset($params['limit'])){
             $params['limit'] = count($userList);
         }
+       
         $dataProvider = new ArrayDataProvider([
             'allModels' => $userList,
             'pagination' => [
@@ -81,14 +84,16 @@ class CataloguesSearch extends Catalogues {
         $userRepository = new CataloguesRepository;
         $userList = array();
         $resultUserList = $userRepository->listing($params);
-       
+        
         if ($resultUserList['status']['success'] == 1) {
             if ($resultUserList['data']['catalogues']) {
+              
                 foreach ($resultUserList['data']['catalogues'] as $key => $value) {
                     $temp = $value;
                     $temp['marketName'] = ucfirst($temp['market']['title']);
                     $temp['brandName'] = ucfirst($temp['brand']['name']);
                     $temp['productCategory'] = ucfirst($temp['productCategory']['name']);
+                    $temp['variental'] = ucfirst($temp['productCategory']['name']);
                     $temp['sku']= ucfirst($temp['sku']);
                     $userList[] = $temp;
                 }
@@ -116,20 +121,17 @@ class CataloguesSearch extends Catalogues {
                 'pageSize' => $params['limit'],
             ],
             'sort' => [
-                 
-              
                 'attributes' =>
                     [
-                    'reorder_id'  ,
-                    'sku',
-                    'ean',
-                    'short_name',
-                    'productCategory',
-                  
-                    'marketName',
-                    'brandName',
-                    'price'
-                ],
+                        'reorder_id'  ,
+                        'sku',
+                        'ean',
+                        'short_name',
+                        'productCategory',
+                        'marketName',
+                        'brandName',
+                        'price'
+                    ],
             ]
         ]);
        

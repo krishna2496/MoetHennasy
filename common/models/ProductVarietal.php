@@ -48,4 +48,7 @@ class ProductVarietal extends BaseModel
         }
         return true;
     }
+    public function getMarketBrandsVerietals(){
+        return $this->hasOne(MarketBrandsVerietals::className(), ['verietal_id' => 'id']);
+    }
 }

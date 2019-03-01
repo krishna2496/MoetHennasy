@@ -4,13 +4,57 @@ namespace common\repository;
 use Yii;
 use common\helpers\CommonHelper;
 use common\models\ProductVarietal;
-
+use common\models\MarketBrandsVerietals;
 
 class ProductVarietalRepository extends Repository
 {
     public function listing($data = array()) {
+       
         $this->apiCode = 1;
-        $query = ProductVarietal::find();
+        $query = ProductVarietal::find()->joinWith(['marketBrandsVerietals' => function (\yii\db\ActiveQuery $query) use($data) {
+        return $query
+//            ->andWhere(['=', 'market_brands_verietals.market_id', $data['market_id']])
+//            ->andWhere(['=', 'market_brands_verietals.category_id', $data['category_id']])
+//            ->andWhere(['=', 'market_brands_verietals.brand_id', $data['brand_id']])
+//             ->orWhere(['=', 'market_brands_verietals.brand_id', ''])
+            
+            ->andWhere(['or',
+                ['market_brands_verietals.market_id'=> $data['market_id']],
+                ['market_brands_verietals.market_id'=>NULL]
+            ])
+            
+            ->andWhere(['or',
+                ['market_brands_verietals.category_id'=> $data['category_id']],
+                ['market_brands_verietals.category_id'=>NULL]
+            ])
+            
+            ->andWhere(['or',
+                ['market_brands_verietals.brand_id'=> $data['brand_id']],
+                ['market_brands_verietals.brand_id'=>NULL]
+            ])
+            
+            ->orderBy('reorder_ids');
+            }]);
+        
+        if(isset($data['search']) && $data['search']){
+            $data['search'] = trim($data['search']);
+            $query->andWhere(['like','name',$data['search']]);
+        }
+
+        
+        if(isset($data['except_id']) && $data['except_id']){
+        	$query->andWhere(['!=','id',$data['except_id']]);
+        }
+
+        $data = array();
+        $data['productVarietal'] = $query->asArray()->all();
+        $this->apiData = $data;
+        return $this->response();
+    }
+    
+    public function listingNew($data = array()) {
+        $this->apiCode = 1;
+        $query = MarketBrandsVerietals::find()->joinWith('productVeriatal');
         
         if(isset($data['search']) && $data['search']){
             $data['search'] = trim($data['search']);
@@ -22,7 +66,7 @@ class ProductVarietalRepository extends Repository
         }
 
         $data = array();
-        $data['productVarietal'] = $query->orderBy(['name' => yii::$app->params['defaultSorting']])->asArray()->all();
+//        $data['productVarietal'] = $query->orderBy(['name' => yii::$app->params['defaultSorting']])->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }

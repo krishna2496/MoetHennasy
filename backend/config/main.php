@@ -88,6 +88,9 @@ return [
                 'helps/view/<id:\d+>/<categoryId:\d+>' => 'helps/view',
                 'configs/update/<id:\d+>/<storeId:\d+>' => 'configs/update',
                 'apply/brands/<brandId:\d+>/<id:\d+>' => 'apply/brands',
+                
+                'apply/modal-content/<marketId:\d+>/<categoryId:\d+>/<brandId:\d+>' => 'apply/modal-content',
+                
                 'configs/create/<id:\d+>' => 'configs/create',
               
               
