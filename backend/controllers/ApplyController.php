@@ -185,7 +185,7 @@ class ApplyController extends MarketController
         foreach ($marketViertal as $k =>$v){
             $finalViertalArry[$v['brand_id']][] = array(
                 'id'=>$v['verietal_id'],
-                'share'=> $v['shares'],
+                'share'=> isset($v['shares']) && $v['shares'] != NULL ? $v['shares'] : 0,
             );
         }
        
@@ -249,6 +249,8 @@ class ApplyController extends MarketController
         if(!isset($filters['limit'])){
             $filters['limit'] = Yii::$app->params['pageSize'];
         }
+         $filters['category_id'] = $category_id;
+        $filters['market_id'] = $id;
 //        $filters['category_id'] =
         $dataProvider = $searchModel->searchMarketBrand($filters);
         

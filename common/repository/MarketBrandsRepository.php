@@ -26,10 +26,13 @@ class MarketBrandsRepository extends Repository {
         }
 
         $queryProduct = MarketBrands::find()->joinWith('category.marketCategoryProduct.product');
+        
+        $queryVarietal = \common\models\Catalogues::find();
        
         $data = array();
         $data['market_brands'] = $query->orderBy('reorder_id')->asArray()->all();
         $data['market_product'] = $queryProduct->asArray()->all();
+        $data['market_varietal'] = $queryVarietal->asArray()->all();
        
         $this->apiData = $data;
         return $this->response();
@@ -37,23 +40,23 @@ class MarketBrandsRepository extends Repository {
     
     public function listingBrand($data = array()) {
         $this->apiCode = 1;
-        $query = Brands::find()->joinWith(['marketBrands'=>function (\yii\db\ActiveQuery $query) use($data) {
-        return $query
-                ->orderBy('reorder_id');
-            }]);
+        $query = Brands::find();
     
-        if (isset($data['market_id']) && ($data['market_id'] != '')) {
-            $query->andWhere(['market_brands.market_id' => $data['market_id']]);
-        }
         
-        if (isset($data['category_id']) && ($data['market_id'] != '')) {
-            $query->andWhere(['market_brands.market_id' => $data['market_id']]);
-        }
-
-       
         $data = array();
         $data['brand_data'] = $query->asArray()->all();
       
+        $this->apiData = $data;
+        return $this->response();
+    }
+    
+    public function listingMarketBrand($data = array()) {
+        $this->apiCode = 1;
+        $query = MarketBrands::find()->andWhere(['market_id' => $data['market_id'],'category_id'=> $data['category_id']]);
+        
+            
+        $data = array();
+        $data['market_brands'] = $query->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }

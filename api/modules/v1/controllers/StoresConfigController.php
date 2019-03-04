@@ -336,28 +336,18 @@ class StoresConfigController extends BaseApiController {
             $marketId = $currentUser->market_id;
         }
 
-        $returnDatas = $newProductArry = array();
+        $returnDatas = $newProductArry = $marketVarientalProduct = array();
         $repository = new MarketBrandsRepository();
 
         if ($marketId != '') {
             $data['market_id'] = $marketId;
             $returnData = $repository->listing($data);
+            
             $productsData = $returnData['data']['market_product'];
            
             if($productsData){
                 foreach ($productsData as $key=>$value){
-//                    $category_id = $value['category_id'];
-//                    unset($value['id']);
-//                    unset($value['product_id']);
-//                    unset($value['category_id']);
-//                    unset($value['market_id']);
-//                    unset($value['created_by']);
-//                    unset($value['updated_by']);
-//                    unset($value['deleted_by']);
-//                    unset($value['created_at']);
-//                    unset($value['updated_at']);
-//                    unset($value['deleted_at']);
-                    $newProductArry[$value['category_id']] = $value['category']['marketCategoryProduct'];
+                        $newProductArry[$value['category_id']] = $value['category']['marketCategoryProduct'];
                 }
             }
             $newProductFinalArry = array();
@@ -378,12 +368,19 @@ class StoresConfigController extends BaseApiController {
                 }
                 
             }
-            
+           
             
             $collectCatId = $collectMarketId = [];
             if (!empty($returnData['data']['market_brands'])) {
+//                    $marketVarientalProduct = $returnData['data']['market_varietal'];
+                    if($returnData['data']['market_varietal']){
+                        foreach ($returnData['data']['market_varietal'] as $k => $v){
+                            $marketVarientalProduct[$v['product_category_id']][$v['brand_id']][$v['product_variental']][] = $v;
+                        }
+                    }
+                  
                     foreach ($returnData['data']['market_brands'] as $key => $value) {
-                        
+                       
                             $tempValue = $value;
                             unset($tempValue['category']);
                             unset($tempValue['brand']);
@@ -408,29 +405,19 @@ class StoresConfigController extends BaseApiController {
                                     $value['brand']['image'] = isset($value['brand']['image']) ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_BRANDS_IMAGES . $image : '';
                                     $value['brand']['color_code'] = isset($value['brand']['color_code']) && ($value['brand']['color_code'] != '') ? $value['brand']['color_code'] : COLOR_CODE;
                                     $value['brand']['reorder_id']=$value['reorder_id'];
-                                    $product = $value['brand']['product'];
-
-                                    foreach ($product as $key1 => $value1) {
-                                        $imageProduct = $value1['image'];
-                                        $box_only = $value1['box_only'];
-                                        $top_shelf = $value1['top_shelf'];
-                                        unset($value['brand']['product'][$key1]['image']);
-                                        unset($value['brand']['product'][$key1]['top_shelf']);
-                                        unset($value['brand']['product'][$key1]['box_only']);
-                                        $value['brand']['product'][$key1]['image'] = isset($imageProduct) && ($imageProduct != '') ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_CATALOGUES_IMAGES . rawurlencode($imageProduct) : '';
-                                        $value['brand']['product'][$key1]['top_shelf'] = \yii::$app->params['catalogue_status'][$top_shelf];
-                                        $value['brand']['product'][$key1]['box_only'] = \yii::$app->params['catalogue_status'][$box_only];
-                                    }
+                                    $variental = $value['brand']['marketBrandsVerietals'];
+//                                    echo '<pre>';
+//                                    print_r($variental);exit;
+                                    foreach ($variental as $vKey => $vVal){
+                                        if(isset( $value['brand']['marketBrandsVerietals'][$vKey])){
+                                        $value['brand']['marketBrandsVerietals'][$vKey]['product'] = isset($marketVarientalProduct[$value['category']['id']][$value['brand']['id']][$vVal['verietal_id']]) ? $marketVarientalProduct[$value['category']['id']][$value['brand']['id']][$vVal['verietal_id']] : '';
+                                    }}
+                                    
                                     $product_data = '';
                                     
-                                    
+                                unset($value['brand']['product']); 
                                 $returnDatas['marketBrands'][$value['market_id']]['category'][$value['category']['id']]['top_shelf_product'] = isset($newProductFinalArry[$value['category']['id']]) ? $newProductFinalArry[$value['category']['id']] : ''; 
                                 $returnDatas['marketBrands'][$value['market_id']]['category'][$value['category']['id']]['brand'][] = $value['brand'];
-                            
-                            
-                           
-                           //$returnDatas['marketBrands'][$value['market_id']]['category']['brand'][] = $value['brand'];
-                        
                     }
             }
 

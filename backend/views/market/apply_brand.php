@@ -22,11 +22,19 @@ foreach ($selected as $key => $value) {
             unset($data[$k]);
         }
 }
+
 $dataProvider->allModels = array_merge($new_array, $data);
 $count = count($dataProvider->allModels);
 $totalBranSharesCount = array_sum($selectedShares);
-//echo '<pre>';
-//print_r($selectedShares);exit;
+$allData = $dataProvider->allModels;
+$sharesData= array();
+//foreach ($allData as $k => $v){
+//    foreach ($v['marketBrands'] as $key=>$val){
+//     
+//     if($val['market_id'] == $market_id && $val['category_id'] == $brandId)
+//        $sharesData[$v['id']] = $val['shares'];
+//    }
+//}
 ?>
 <script>
     productObject = {};
@@ -88,9 +96,8 @@ $totalBranSharesCount = array_sum($selectedShares);
                             'contentOptions' => ['style' => 'width:10%'],
                             
                             'value' => function ($model, $key) use ($dataProvider,$finalViertalArry) {
-//                                echo '<pre>';
-//                                print_r($model);exit;
-                                $currentShareValue = isset($model['marketBrands'][0]['shares']) ? $model['marketBrands'][0]['shares'] : 0;
+                               
+                                $currentShareValue = isset($model['shares']) ? $model['shares'] : 0;
                                 $vierntal_val = isset($finalViertalArry[$model['id']]) ? json_encode($finalViertalArry[$model['id']], JSON_NUMERIC_CHECK) : '';
                                 return '<input type="text" id="shares[]" data-id="' . $model['id'] . '" name="shares[]" value="' . $currentShareValue . '" pattern="[0-9]+" class="form-control numericOnly" style="text-align:center;" />' .
                                     '<input type="hidden" id="sharesId[]" data-id="' . $model['id'] . '" name="sharesId[]" value="' . $model['id'] . '"/>'
@@ -423,15 +430,27 @@ $totalBranSharesCount = array_sum($selectedShares);
                 }
             });
 
-            if ($isNotFullSetShare == 0) {
-                alert('Brand and selected brand verietal share should be equal to 100.');
-            } else {
-                if (selectedBrand == '') {
-                    alert("Please Select At Least One Product");
+                if ($totalShare != 100) {
+                     if ($isNotFullSetShare == 0) {
+                          alert('Brand and selected brand verietal share should be equal to 100.');
+                          return false;
+                     }
+                    alert('Brand and selected brand verietal share should be equal to 100.');
                 } else {
-                    $("#w1").submit();
+
+                        $("#w1").submit();
+
                 }
-            }
+
+//            if ($isNotFullSetShare == 0) {
+//                alert('Brand and selected brand verietal share should be equal to 100.');
+//            } else {
+//                if (selectedBrand == '') {
+//                    alert("Please Select At Least One Product");
+//                } else {
+//                    $("#w1").submit();
+//                }
+//            }
         });
     </script>
 <?php Pjax::end(); ?>
