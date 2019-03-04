@@ -26,7 +26,7 @@ $dataProvider->allModels = array_merge($new_array, $data);
 $count = count($dataProvider->allModels);
 $totalBranSharesCount = array_sum($selectedShares);
 //echo '<pre>';
-//print_r($dataProvider);exit;
+//print_r($selectedShares);exit;
 ?>
 <script>
     productObject = {};
@@ -148,12 +148,12 @@ $totalBranSharesCount = array_sum($selectedShares);
                     
                     $(document).ready(function () {
                         new_order = [];
-
+                        new_order_top_shelf = [];
                         $("#table-draggable").tableDnD({
                             onDrop: function (table, row)
                             {
                                 var i = 1;
-                                $('td:first-child').each(function () {
+                                $('#table-draggable td:first-child').each(function () {
                                     $(this).html(i++);
                                 });
                                 $('#table-draggable tr').each(function () {
@@ -166,10 +166,50 @@ $totalBranSharesCount = array_sum($selectedShares);
                             }
                         });
                         
+                        $("#table-draggable-top").tableDnD({
+                            onDrop: function (table, row)
+                            {
+                                var i = 1;
+                                $('#table-draggable-top td:first-child').each(function () {
+                                    $(this).html(i++);
+                                });
+                                $('#table-draggable-top tr').each(function () {
+                                     new_order_top_shelf.push($(this).data('num'));
+
+                                });
+                               
+                                update_order_top_shelf(new_order_top_shelf);
+                                new_order_top_shelf = [];
+                            }
+                        });
+                        
                         //
                         function update_order(data) {
                           
                             orderUrl = '<?php echo CommonHelper::getPath('admin_url'); ?>apply/order-update-brand/';
+                            market_id = '<?php echo $market_id ?>';
+                            category_id = '<?php echo $brandId; ?>';
+                            $("body").addClass('loader-enable');
+                            $.ajax({
+                                type: "POST",
+                                url: orderUrl,
+                                cache: false,
+                                data: {data: data,market_id:market_id,category_id:category_id},
+                                success: function (result)
+                                {
+                                    if(result == 1){
+                                       
+                                    }else{
+                                        
+                                        $("body").removeClass('loader-enable');
+                                    }
+                                }
+                            });
+                        }
+                        //update order top shelf
+                        function update_order_top_shelf(data) {
+                          
+                            orderUrl = '<?php echo CommonHelper::getPath('admin_url'); ?>apply/order-update-top-shelf/';
                             market_id = '<?php echo $market_id ?>';
                             category_id = '<?php echo $brandId; ?>';
                             $("body").addClass('loader-enable');
@@ -205,6 +245,10 @@ $totalBranSharesCount = array_sum($selectedShares);
                     GridView::widget([
                         'dataProvider' => $catalogDataProvider,
                         'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-5">{summary}</div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
+                        'tableOptions' => ['id' => 'table-draggable-top', 'class' => "table table-striped table-bordered"],
+                        'rowOptions'=>function($model){
+                                return ['data-num' => $model['id']];
+                         },
                         'columns' => [
                                 [
                                 'class' => 'yii\grid\SerialColumn'
@@ -220,6 +264,8 @@ $totalBranSharesCount = array_sum($selectedShares);
                                     ];
                                 },
                             ],
+                                    'id',
+                                    'top_order_id',
                                 [
                                 'label' => 'Product Name',
                                 'attribute' => 'brandName',

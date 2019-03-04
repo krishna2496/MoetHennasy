@@ -10,7 +10,7 @@ class CataloguesRepository extends Repository {
 
     public function listing($data = array()) {
         $this->apiCode = 1;
-        $query = Catalogues::find()->joinWith(['market.marketSegmentData.marketSegment.marketRules.rules', 'brand','productType','productCategory','variental']);
+        $query = Catalogues::find()->joinWith(['market.marketSegmentData.marketSegment.marketRules.rules', 'brand','productType','productCategory','variental'])->joinWith('marketCategoryProduct');
 
         if (isset($data['serachText']) && ($data['serachText'] != '')) {
             $data['search'] = $data['serachText'];
@@ -64,6 +64,34 @@ class CataloguesRepository extends Repository {
         return $this->response();
     }
    
+     public function listingTopsSelf($data = array()) {
+       
+        $this->apiCode = 1;
+        $query = Catalogues::find()->joinWith(['brand','productCategory','variental']);
+        if (isset($data['top_shelf']) && ($data['top_shelf'] == 1)) {
+             $query->andWhere(['top_shelf'=>1]);
+        }
+
+        $result = $query->asArray();
+        $data = array();
+        $data['catalogues'] = $query->asArray()->all();
+        
+        $this->apiData = $data;
+        return $this->response();
+    
+    }
+    
+    public function reorderData($data){
+        $this->apiCode = 1;
+        $query = \common\models\MarketCategoryProduct::find()->andWhere(['market_id' => $data['market_id'],'category_id'=> $data['category_id']]);
+        
+            
+        $data = array();
+        $data['product'] = $query->asArray()->all();
+        $this->apiData = $data;
+        return $this->response();
+    }
+    
     public function createCatalogue($data = array()) {
 
         $this->apiCode = 0;

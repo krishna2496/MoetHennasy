@@ -20,32 +20,39 @@ class ProductVarietalRepository extends Repository
             
             ->andWhere(['or',
                 ['market_brands_verietals.market_id'=> $data['market_id']],
-                ['market_brands_verietals.market_id'=>NULL]
+                ['market_brands_verietals.market_id'=>NULL],
+                ['market_brands_verietals.market_id'=>0],
             ])
             
             ->andWhere(['or',
                 ['market_brands_verietals.category_id'=> $data['category_id']],
-                ['market_brands_verietals.category_id'=>NULL]
+                ['market_brands_verietals.category_id'=>NULL],
+                ['market_brands_verietals.market_id'=>0],
             ])
             
             ->andWhere(['or',
                 ['market_brands_verietals.brand_id'=> $data['brand_id']],
-                ['market_brands_verietals.brand_id'=>NULL]
+                ['market_brands_verietals.brand_id'=>NULL],
+                ['market_brands_verietals.market_id'=>0],
             ])
-            
-            ->orderBy('reorder_ids');
+            ->orderBy('(CASE
+                   WHEN (reorder_id IS NOT NULL)
+                       THEN reorder_id
+                       ELSE market_brands_verietals.id
+                END) ASC');
+           
             }]);
-        
-        if(isset($data['search']) && $data['search']){
-            $data['search'] = trim($data['search']);
-            $query->andWhere(['like','name',$data['search']]);
-        }
 
-        
-        if(isset($data['except_id']) && $data['except_id']){
-        	$query->andWhere(['!=','id',$data['except_id']]);
-        }
-
+        $data = array();
+        $data['productVarietal'] = $query->asArray()->all();
+        $this->apiData = $data;
+        return $this->response();
+    }
+    
+    public function listingVariental($data = array()) {
+       
+        $this->apiCode = 1;
+        $query = ProductVarietal::find();
         $data = array();
         $data['productVarietal'] = $query->asArray()->all();
         $this->apiData = $data;
@@ -67,6 +74,17 @@ class ProductVarietalRepository extends Repository
 
         $data = array();
 //        $data['productVarietal'] = $query->orderBy(['name' => yii::$app->params['defaultSorting']])->asArray()->all();
+        $this->apiData = $data;
+        return $this->response();
+    }
+    
+    public function listingMarketBrandVriental($data = array()) {
+        $this->apiCode = 1;
+        $query = MarketBrandsVerietals::find()->andWhere(['market_id' => $data['market_id'],'category_id'=> $data['category_id'],'brand_id' =>  $data['brand_id']]);
+        
+            
+        $data = array();
+        $data['productVarietal'] = $query->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }

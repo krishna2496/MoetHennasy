@@ -43,7 +43,7 @@ class ApplyController extends MarketController
                 ],
                 'rules' => [
                     [
-                        'actions' => ['test','rules','brands','re-order', 'varientals','order-update-varietal','modal-content','order-update-brand'],
+                        'actions' => ['test','rules','brands','re-order', 'varientals','order-update-varietal','modal-content','order-update-brand','order-update-top-shelf'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -208,7 +208,6 @@ class ApplyController extends MarketController
         
          if(Yii::$app->request->post('sharesId')) {
             $post = Yii::$app->request->post();
-           
             $shares = Yii::$app->request->post('shares');
             $brandsId = Yii::$app->request->post('sharesId');
             $varietalIds = Yii::$app->request->post('varietalShareObject');
@@ -264,10 +263,12 @@ class ApplyController extends MarketController
         //top self product
         $catalogModel = new CataloguesSearch();
         $catalogFilter = array(
-            'top_shelf'=>1
+            'top_shelf'=>1,
+             'category_id' => $category_id,
+             'market_id' =>$id,
         );
         
-        $catalogDataProvider = $catalogModel->search($catalogFilter);//top shelf =1
+        $catalogDataProvider = $catalogModel->searchTopsSelf($catalogFilter);//top shelf =1
         
         return $this->render('/market/apply_brand', [
             'model' => $model,
@@ -323,14 +324,24 @@ class ApplyController extends MarketController
         $brand = $postData['brand_id'];
         $newOrdersData = array();
         if(!empty($postData['data'])){
-                $newOrder = array_flip($postData['data']);
-
+                $newOrder = array_flip($postData['data']);                
+               
                 foreach ($newOrder as $key => $value){
                     if($value != 0){
                         $applyOrder= MarketBrandsVerietals::findOne(['market_id' => $market_id,'category_id'=>$category,'brand_id'=>$brand,'verietal_id'=>$key]);
-
+                        if($applyOrder){
                         $applyOrder ->reorder_id = $value;
                         $applyOrder->save(false);
+                        }else{
+                            $marketBrandsVerietals = new MarketBrandsVerietals();
+                            $marketBrandsVerietals->market_id = $market_id;
+                            $marketBrandsVerietals->brand_id = $brand;
+                            $marketBrandsVerietals->verietal_id = $key;
+                            $marketBrandsVerietals->reorder_id = $value;
+                            $marketBrandsVerietals->category_id = $category;
+                            $marketBrandsVerietals->shares = NULL;
+                            $marketBrandsVerietals->save(false);
+                        }
                          
                     }
                 }
@@ -369,6 +380,38 @@ class ApplyController extends MarketController
                 return true;
         }
     }
+    //order-update-top-shelf
+    public function actionOrderUpdateTopShelf(){
+        $postData = \yii::$app->request->post();
+        $market_id = $postData['market_id'];
+        $category = $postData['category_id'];
+     
+        $newOrdersData = array();
+        if(!empty($postData['data'])){
+                $newOrder = array_flip($postData['data']);
+//                echo '<pre>';
+//                    print_r($newOrder);exit;
+                foreach ($newOrder as $key => $value){
+                   
+                    if($value != 0){
+                        $applyOrder= MarketCategoryProduct::findOne(['market_id' => $market_id,'category_id'=>$category,'product_id' => $key]);
+                        if($applyOrder){
+                            $applyOrder->top_reorder_id  = $value;
+                            $applyOrder->save(false);
+                        }else{
+                            $applyOrder = new MarketCategoryProduct();
+                            $applyOrder->top_reorder_id = $value;
+                            $applyOrder->category_id = $value;
+                            $applyOrder->market_id = $value;
+                            $applyOrder->top_reorder_id = $value;
+                            $applyOrder->save(false);
+                        }
+                         
+                    }
+                }
+                return true;
+        }
+    }
     
     public function actionModalContent($marketId,$categoryId,$brandId){
         
@@ -377,7 +420,7 @@ class ApplyController extends MarketController
         $filters['brand_id'] = $brandId;
         
         $productVarietalSearchModel = new ProductVarietalSearch();
-        $productVarietalDataProvider = $productVarietalSearchModel->search($filters);
+        $productVarietalDataProvider = $productVarietalSearchModel->searchVariental($filters);
         echo $this->renderPartial('/market/varietal_popup', [
             'productVarietalDataProvider'=>$productVarietalDataProvider,
             'market_id'=>$marketId,

@@ -29,7 +29,7 @@ class CataloguesSearch extends Catalogues {
         $userRepository = new CataloguesRepository;
         $userList = array();
         $resultUserList = $userRepository->listing($params);
-
+        
         if ($resultUserList['status']['success'] == 1) {
             if ($resultUserList['data']['catalogues']) {
                 foreach ($resultUserList['data']['catalogues'] as $key => $value) {
@@ -62,7 +62,6 @@ class CataloguesSearch extends Catalogues {
                     'ean',
                     'short_name',
                     'productCategory',
-                  
                     'marketName',
                     'brandName',
                     'price'
@@ -133,6 +132,61 @@ class CataloguesSearch extends Catalogues {
                         'price'
                     ],
             ]
+        ]);
+       
+        if (isset($params['selection']) && ($params['selection'] != '')) {
+            $dataProvider->pagination->params = ['selection' => $params['selection']];
+        }
+        
+        return $dataProvider;
+    }
+    
+    public function searchTopsSelf($params) {
+       
+        $userRepository = new CataloguesRepository;
+        $userList = $marketBrandVrientalProduct = array();
+        $resultUserList = $userRepository->listingTopsSelf($params);
+       
+        $max = 1;
+        if ($resultUserList['status']['success'] == 1) {
+            
+            $resultUserListNew = new CataloguesRepository();
+            $reorderData = $resultUserListNew->reorderData($params);
+            
+            if($reorderData['status']['success'] == 1){
+                if ($reorderData['data']['product']) {
+                        $max =  \common\helpers\CommonHelper::max_val($reorderData['data']['product'], 'top_reorder_id', SORT_DESC);
+                        foreach ($reorderData['data']['product'] as $key => $value) {
+                                $marketBrandVrientalProduct[$value['product_id']]['top_reorder_id'] = $value['top_reorder_id'];
+                        }
+                }
+            }
+            
+            if ($resultUserList['data']['catalogues']) {
+                foreach ($resultUserList['data']['catalogues'] as $key => $value) {
+                    $temp = $value;
+                   
+                    $temp['brandName'] = ucfirst($temp['brand']['name']);
+                    $temp['productCategory'] = ucfirst($temp['productCategory']['name']);
+                    $temp['top_order_id'] = isset($marketBrandVrientalProduct[$value['id']]) ? $marketBrandVrientalProduct[$value['id']]['top_reorder_id']!= NULL ? $marketBrandVrientalProduct[$value['id']]['top_reorder_id'] :$max++ : $max++;
+                    $temp['sku']= ucfirst($temp['sku']);
+                    $userList[] = $temp;
+                }
+            }
+        }
+        
+        if(!isset($params['limit'])){
+            $params['limit'] = count($userList);
+        }
+    
+        \common\helpers\CommonHelper::sort_array_of_array($userList, 'top_order_id', SORT_ASC);
+      
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $userList,
+            'pagination' => [
+                'pageSize' => $params['limit'],
+            ],
+           
         ]);
        
         if (isset($params['selection']) && ($params['selection'] != '')) {
