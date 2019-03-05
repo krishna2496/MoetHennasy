@@ -112,7 +112,7 @@ return [
                 'POST v1/stores-config/configuration' => 'v1/stores-config/configuration',
                 'POST v1/stores-config/listing' => 'v1/stores-config/listing',
                 'POST v1/stores-config/rating' => 'v1/stores-config/rating',
-                
+                'POST v1/stores-config/brand-product-list' => 'v1/stores-config/brand-product-list',
             ],        
         ],
         'i18n' => [
