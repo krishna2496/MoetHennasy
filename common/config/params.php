@@ -29,7 +29,8 @@ return [
         1 => 'Active',
         0 => 'Inactive'
     ],
-    'limit' => [50 => 50, 100 => 100 ,99999 => 'ALL'],
+    'limit' => [50 => 50, 100 => 100 ,150 => 150,99999 => 'ALL'],
+//    'limit' => [50 => 50, 100 => 100 ,99999 => 'ALL'],
     'catalogue_status' => [1=>'Yes',0=>'No'], 
     'catalogue_status_inverse' => [1=>'Yes',0=>'No'], 
     'response_type' => ['drop-down' =>'Yes/No'],

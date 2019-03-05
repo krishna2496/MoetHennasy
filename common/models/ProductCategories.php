@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use common\models\Catalogues;
+use common\models\MarketCategoryProduct;
 
 class ProductCategories extends BaseModel
 {
@@ -41,6 +42,11 @@ class ProductCategories extends BaseModel
     public function getParentCategory(){
         return $this->hasOne(ProductCategories::className(), ['id' => 'parent_id']);
     }
+    
+    public function getMarketCategoryProduct(){
+        return $this->hasMany(MarketCategoryProduct::className(), ['category_id' => 'id']);
+    }
+    
     
     public function canDelete()
     { 

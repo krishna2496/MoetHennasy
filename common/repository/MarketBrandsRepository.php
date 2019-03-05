@@ -3,21 +3,60 @@
 namespace common\repository;
 
 use Yii;
+
 use common\helpers\CommonHelper;
 use common\models\MarketBrands;
 use common\models\MarketBrandsVerietals;
+use common\models\MarketCategoryProduct;
+use common\models\Brands;
 
 class MarketBrandsRepository extends Repository {
 
     public function listing($data = array()) {
-
         $this->apiCode = 1;
-        $query = MarketBrands::find()->joinWith('brand.product.productCategory')->joinWith('brand.product.productType');
+        $query = MarketBrands::find()->joinWith('category','brand.product.productCategory')->joinWith('brand.marketBrandsVerietals')->joinWith('brand.product.productType')
+            ->joinWith(
+                ['brand.marketBrandsVerietals' => function (\yii\db\ActiveQuery $query) use($data) {
+        return $query
+            ->andWhere(['=', 'market_brands_verietals.market_id', $data['market_id']])->orderBy('reorder_id');
+            }]
+    );
         if (isset($data['market_id']) && ($data['market_id'] != '')) {
             $query->andWhere(['market_brands.market_id' => $data['market_id']]);
         }
+
+        $queryProduct = MarketBrands::find()->joinWith('category.marketCategoryProduct.product');
+        
+        $queryVarietal = \common\models\Catalogues::find();
+       
         $data = array();
         $data['market_brands'] = $query->orderBy('reorder_id')->asArray()->all();
+        $data['market_product'] = $queryProduct->asArray()->all();
+        $data['market_varietal'] = $queryVarietal->asArray()->all();
+       
+        $this->apiData = $data;
+        return $this->response();
+    }
+    
+    public function listingBrand($data = array()) {
+        $this->apiCode = 1;
+        $query = Brands::find();
+    
+        
+        $data = array();
+        $data['brand_data'] = $query->asArray()->all();
+      
+        $this->apiData = $data;
+        return $this->response();
+    }
+    
+    public function listingMarketBrand($data = array()) {
+        $this->apiCode = 1;
+        $query = MarketBrands::find()->andWhere(['market_id' => $data['market_id'],'category_id'=> $data['category_id']]);
+        
+            
+        $data = array();
+        $data['market_brands'] = $query->asArray()->all();
         $this->apiData = $data;
         return $this->response();
     }
@@ -85,7 +124,7 @@ class MarketBrandsRepository extends Repository {
         foreach ($data['brand_verietal'] as $brandVerietalKey=>$brandVerietalVal){
             $brandVerietalVal = (array)$brandVerietalVal;
             foreach ($brandVerietalVal as $k => $v){
-               $market_brands_verietals = MarketBrandsVerietals::findOne(['market_id'=>$data['market_id'],'brand_id'=>$value,'category_id'=>$data['category_id'],'verietal_id'=>$v->id]);
+               $market_brands_verietals = MarketBrandsVerietals::findOne(['market_id'=>$data['market_id'],'brand_id'=>$marketSegmentData[$brandVerietalKey],'category_id'=>$data['category_id'],'verietal_id'=>$v->id]);
                if($market_brands_verietals){
                    $market_brands_verietals->shares =  $v->share;
                    $market_brands_verietals->save(false);
@@ -96,7 +135,9 @@ class MarketBrandsRepository extends Repository {
                 $modelVerietals->verietal_id = $v->id;
                 $modelVerietals->category_id = $data['category_id'];
                 $modelVerietals->shares =  $v->share;
-                $modelVerietals->save(false);
+                if($modelVerietals->save(false)){
+                    
+                }
                }
             }
         }
@@ -223,4 +264,62 @@ class MarketBrandsRepository extends Repository {
 //  
 //        return $this->response();
 //    }
+    
+      public function createMarketProduct($data = array()) {
+
+        $this->apiCode = 0;
+        $flag = 1;
+        $selected_product = $data['selected_product'];
+
+        //top self product
+        $catalogModel = new CataloguesSearch();
+        $catalogFilter = array(
+            'top_shelf' => 1
+        );
+
+        $catalogDataProvider = $catalogModel->search($catalogFilter); //top shelf =1
+        //MarketCategoryProduct::deleteAll(['category_id' => $data['category_id'], 'market_id' => $data['market_id']]);
+        if ($selected_product) {
+            foreach ($catalogDataProvider->allModels As $key => $catalogDataVal) {
+                if (!empty($catalogDataVal['id'])) {
+                    $market_brand_repository = MarketCategoryProduct::findOne(['category_id' => $data['category_id'], 'market_id' => $data['market_id'], 'product_id' => $catalogDataVal['id'], 'deleted_by' => null]);
+
+                    if ($market_brand_repository == NULL) {
+                        $new_market_brand_repository = new MarketCategoryProduct();
+                        if (in_array($catalogDataVal['id'], $selected_product)) {
+                            $new_market_brand_repository->is_inserted = 1;
+                        } else {
+                            $new_market_brand_repository->is_inserted = 0;
+                        }
+                        $new_market_brand_repository->product_id = $catalogDataVal['id'];
+                        $new_market_brand_repository->category_id = $data['category_id'];
+                        $new_market_brand_repository->market_id = $data['market_id'];
+                        $new_market_brand_repository->save(false);
+                    } else {
+                        if (in_array($catalogDataVal['id'], $selected_product)) {
+                            $market_brand_repository->is_inserted = 1;
+                        } else {
+                            $market_brand_repository->is_inserted = 0;
+                        }
+                        $market_brand_repository->product_id = $catalogDataVal['id'];
+                        $market_brand_repository->category_id = $data['category_id'];
+                        $market_brand_repository->market_id = $data['market_id'];
+                        $market_brand_repository->update(false);
+                    }
+                }
+            }
+
+            if ($flag == 1) {
+                $this->apiCode = 1;
+                $this->apiMessage = Yii::t('app', 'apply_strategy');
+            } else {
+                $this->apiCode = 0;
+                if (isset($model->errors) && $model->errors) {
+                    $this->apiMessage = $model->errors;
+                }
+            }
+
+            return $this->response();
+        }
+    }
 }

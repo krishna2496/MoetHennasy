@@ -4,6 +4,8 @@ namespace common\models;
 
 use Yii;
 use common\models\Catalogues;
+use common\models\MarketBrandsVerietals;
+
 
 class Brands extends BaseModel
 {
@@ -43,6 +45,13 @@ class Brands extends BaseModel
     public function getProduct(){
         return $this->hasMany(Catalogues::className(), ['brand_id' => 'id']);
     }
+    public function getMarketBrandsVerietals(){
+        return $this->hasMany(MarketBrandsVerietals::className(), ['brand_id' => 'id']);
+    }
+      public function getMarketBrands(){
+        return $this->hasMany(MarketBrands::className(), ['brand_id' => 'id']);
+    }
+  
     public function canDelete()
     { 
         $count = Catalogues::find()->andWhere(['brand_id' => $this->id])->count();

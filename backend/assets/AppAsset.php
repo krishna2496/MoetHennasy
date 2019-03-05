@@ -47,7 +47,8 @@ class AppAsset extends AssetBundle
         'theme/bower_components/select2/dist/js/select2.min.js',
         'theme/plugins/bootstrap-toggle/bootstrap-toggle.min.js',
         'theme/dist/js/bootstrap-wizard.min.js',
-        'js/store-config.js'
+        'js/store-config.js',
+         'js/tableDnD.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
