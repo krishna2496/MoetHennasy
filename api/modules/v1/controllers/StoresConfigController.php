@@ -336,7 +336,7 @@ class StoresConfigController extends BaseApiController {
             $marketId = $currentUser->market_id;
         }
 
-        $returnDatas = $newProductArry = $marketVarientalProduct = array();
+        $returnDatas = $newProductArry = $marketVarientalProduct = $brandVariental = array();
         $repository = new MarketBrandsRepository();
 
         if ($marketId != '') {
@@ -344,7 +344,8 @@ class StoresConfigController extends BaseApiController {
             $returnData = $repository->listing($data);
             
             $productsData = $returnData['data']['market_product'];
-           
+            $brand_variental = $returnData['data']['brand_varietal'];
+           // echo '<pre>';print_r($productsData); exit;
             if($productsData){
                 foreach ($productsData as $key=>$value){
                         $newProductArry[$value['category_id']] = $value['category']['marketCategoryProduct'];
@@ -372,12 +373,20 @@ class StoresConfigController extends BaseApiController {
             
             $collectCatId = $collectMarketId = [];
             if (!empty($returnData['data']['market_brands'])) {
-//                    $marketVarientalProduct = $returnData['data']['market_varietal'];
+
                     if($returnData['data']['market_varietal']){
                         foreach ($returnData['data']['market_varietal'] as $k => $v){
                             $marketVarientalProduct[$v['product_category_id']][$v['brand_id']][$v['product_variental']][] = $v;
                         }
                     }
+//            echo '<pre>';
+//            print_r($marketVarientalProduct);
+//            print_r($brand_variental);
+//            exit;
+//                    
+//                foreach ($brand_variental as $k=>$v){
+//                    $brandVariental[]
+//                }
                   
                     foreach ($returnData['data']['market_brands'] as $key => $value) {
                        
@@ -429,14 +438,10 @@ class StoresConfigController extends BaseApiController {
                                 $key = array_search($value['category']['id'], array_column($returnDatas["market"]['category'], 'id'));
                              //   echo '>>>>>'.$key;
                                 $returnDatas["market"]['category'][$key]['brand'][] = $value['brand'];
-//                                $returnDatas['marketBrands'][$value['market_id']]['category'][$value['category']['id']]['top_shelf_product'] = isset($newProductFinalArry[$value['category']['id']]) ? $newProductFinalArry[$value['category']['id']] : ''; 
-//                                $returnDatas['marketBrands'][$value['market_id']]['category'][$value['category']['id']]['brand'][] = $value['brand'];
                     }
             }
 
-        }//exit;
-//        echo '<pre>';
-//        print_r($returnDatas);exit;
+        }
         return $returnDatas;
     }
     

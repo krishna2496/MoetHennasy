@@ -190,8 +190,7 @@ class ApplyController extends MarketController
         }
        
         $data['market_id'] = $id;
-        
-        $productArry = MarketCategoryProduct::find()->select(['product_id'])->andWhere(['market_id' => $id,'category_id'=>$category_id])->asArray()->all();
+        $productArry = MarketCategoryProduct::find()->select(['product_id'])->andWhere(['market_id' => $id, 'category_id' => $category_id, 'is_inserted' => 1])->asArray()->all();
         if($productArry){
             foreach ($productArry as $key=>$value){
                   $selected_product[$key]  = $value['product_id']; 

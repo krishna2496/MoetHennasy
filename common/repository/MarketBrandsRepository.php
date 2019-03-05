@@ -16,7 +16,7 @@ class MarketBrandsRepository extends Repository {
 
     public function listing($data = array()) {
         $this->apiCode = 1;
-        $query = MarketBrands::find()->joinWith('category','brand.product.productCategory')->joinWith('brand.marketBrandsVerietals')->joinWith('brand.product.productType')
+        $query = MarketBrands::find()->joinWith('category','brand.product.productCategory')->joinWith('brand.product.productType')
             ->joinWith(
                 ['brand.marketBrandsVerietals' => function (\yii\db\ActiveQuery $query) use($data) {
         return $query
@@ -30,11 +30,16 @@ class MarketBrandsRepository extends Repository {
         $queryProduct = MarketBrands::find()->joinWith('category.marketCategoryProduct.product');
         
         $queryVarietal = \common\models\Catalogues::find();
+        
+        $brandVariental = MarketBrandsVerietals::find()->andWhere(['=', 'market_brands_verietals.market_id', $data['market_id']]);
+            
+  
        
         $data = array();
         $data['market_brands'] = $query->orderBy('reorder_id')->asArray()->all();
         $data['market_product'] = $queryProduct->asArray()->all();
         $data['market_varietal'] = $queryVarietal->asArray()->all();
+        $data['brand_varietal'] = $brandVariental->asArray()->all();
        
         $this->apiData = $data;
         return $this->response();
