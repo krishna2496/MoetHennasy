@@ -35,3 +35,6 @@ phpunit.phar
 /.vagrant
 
 projectDetail.txt
+
+# upload folder
+/uploads
