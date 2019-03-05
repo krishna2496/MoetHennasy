@@ -25,7 +25,7 @@ class ProductVarietalSearch extends ProductCategories {
     public function search($params) {
 
         $productVarietalRepository = new ProductVarietalRepository();
-        $productVarietalRepository = $productVarietalRepository->listing($params);
+        $productVarietalRepository = $productVarietalRepository->listingVariental($params);
 
         $varietalList = array();
         if ($productVarietalRepository['status']['success'] == 1) {

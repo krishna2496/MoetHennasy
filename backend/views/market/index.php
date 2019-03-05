@@ -115,8 +115,10 @@ $formUrl = Url::to(['market/index']);
             <div class="modal-body" style="text-align: center;">
                 <?php 
                     $output = '';
+//                    admin_url
                     foreach ($categories as $categoryKey=>$category){
-                        $output .= Html::a($category['name'], null, ['class'=>'btn btn-primary','data-id'=>$category['id'], 'onClick'=>'location.href="/moet_hennessy_app/admin/apply/brands/'.$category['id'].'/"+$("[name=\'selectedMarkets\']").val();', 'data-toggle'=>"modal", 'data-target'=>"#modal-default"]); 
+                        $url = CommonHelper::getPath('admin_url');
+                        $output .= Html::a($category['name'], null, ['class'=>'btn btn-primary','data-id'=>$category['id'], 'onClick'=>'location.href="'.$url.'apply/brands/'.$category['id'].'/"+$("[name=\'selectedMarkets\']").val();', 'data-toggle'=>"modal", 'data-target'=>"#modal-default"]); 
                         $output .= '&nbsp;&nbsp;&nbsp;';
                     }
                     echo $output;

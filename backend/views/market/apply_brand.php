@@ -247,7 +247,7 @@ $sharesData= array();
                 </script>
 
                 <div class="box">
-
+                    <h3 style="margin-bottom: 15px">Top Shelf Product</h3>
                     <?=
                     GridView::widget([
                         'dataProvider' => $catalogDataProvider,
@@ -271,8 +271,8 @@ $sharesData= array();
                                     ];
                                 },
                             ],
-                                    'id',
-                                    'top_order_id',
+//                                    'id',
+//                                    'top_order_id',
                                 [
                                 'label' => 'Product Name',
                                 'attribute' => 'brandName',

@@ -65,7 +65,7 @@ class ProductVarietalController extends BaseBackendController
         $model = new ProductVarietal();
 
         $productVarietalRepository = new ProductVarietalRepository();
-        $productVarietalRepository = $productVarietalRepository->listing(); 
+        $productVarietalRepository = $productVarietalRepository->listingVariental(); 
 
         $varietalList = array();
         if($productVarietalRepository['status']['success'] == 1){
@@ -99,7 +99,7 @@ class ProductVarietalController extends BaseBackendController
         
         $filters['except_id'] = $id;
         $productVarietalRepository = new ProductVarietalRepository();
-        $productVarietalRepository = $productVarietalRepository->listing($filters); 
+        $productVarietalRepository = $productVarietalRepository->listingVariental($filters); 
 
         $varietalList = array();
         if($productVarietalRepository['status']['success'] == 1){

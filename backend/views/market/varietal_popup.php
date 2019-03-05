@@ -126,7 +126,7 @@ use yii\widgets\Pjax;
                                 $('#varietalShareObject_' + $('#selectedBrandsKey').val()).val(JSON.stringify(finalArray));
                                 $('#verietal-modal').modal('hide');
                             } else {
-                                alert('Total shares should be equal to 10000.');
+                                alert('Total shares should be equal to 100.');
                             }
                         }
             </script>
