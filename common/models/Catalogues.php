@@ -19,9 +19,9 @@ class Catalogues extends BaseModel
     public function rules()
     {
         return [
-            [['brand_id','product_category_id','product_type_id','width','height','length','box_only','market_share','price','top_shelf'],'required'],
+            [['brand_id','product_category_id','product_type_id','width','height','length','box_only', 'price','top_shelf', 'special_format', 'product_variental'],'required'],
             [['short_description'], 'string'],
-            [['brand_id', 'product_category_id', 'product_sub_category_id', 'product_type_id', 'market_id' , 'market_share','created_by', 'updated_by', 'deleted_by'], 'integer'],
+            [['brand_id', 'product_category_id', 'product_sub_category_id', 'product_type_id', 'market_id' ,  'created_by', 'updated_by', 'deleted_by', 'product_variental', 'special_format'], 'integer'],
             [['width', 'height', 'length', 'scale'], 'number'],
             [['width', 'height', 'length'], 'number','min' => 5],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
@@ -34,7 +34,7 @@ class Catalogues extends BaseModel
             ['short_name', 'required', 'when' => function ($model) { return $model->long_name == ''; }, 'whenClient' => "function (attribute, value) { return $('#catalogues-long_name').val() == ''; }",'message'=>'Select either Long Product Name or Short Product Name.'],
             [['sku'], 'unique'],
             ['sku','match', 'pattern' => '/^[a-zA-Z0-9\-_]{0,50}$/', 'message' => 'Sku can only contain Alphabet and Numeric'],
-            [['sku','ean','short_name','long_name','width','height','length','scale','manufacturer','market_share','price'],'trim'],
+            [['sku','ean','short_name','long_name','width','height','length','scale','manufacturer', 'price'],'trim'],
             [['market_share'],'integer','max' => 10,'min' => 1, 'message' => 'Market Share can only contain upto 11 digits'],
             [['price'],'number','max' => 999999, 'min' => 1,'message' => 'Price can only contain upto 6 digits'],
         ];
@@ -54,6 +54,7 @@ class Catalogues extends BaseModel
             'long_name' => 'Long Product Name',
             'short_description' => 'Short Description',
             'brand_id' => 'Brand Name',
+            'product_variental' => 'Product Varietal',
             'product_category_id' => 'Product Category',
             'product_sub_category_id' => 'Product Sub Category',
             'product_type_id' => 'Product Type',
@@ -67,6 +68,7 @@ class Catalogues extends BaseModel
             'market_share' => 'Market Share',
             'price' => 'Price',
             'top_shelf' => 'Top Shelf',
+            'special_format' => 'Special Format',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'deleted_by' => 'Deleted By',
@@ -90,5 +92,11 @@ class Catalogues extends BaseModel
     
     public function getProductType(){
         return $this->hasOne(ProductTypes::className(), ['id' => 'product_type_id']);
+    }
+    public function getVariental(){
+        return $this->hasOne(ProductVarietal::className(), ['id' => 'product_variental']);
+    }
+    public function getMarketCategoryProduct(){
+        return $this->hasOne(MarketCategoryProduct::className(), ['product_id' => 'id']);
     }
 }

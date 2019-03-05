@@ -16,11 +16,19 @@ use common\helpers\CommonHelper;
 use common\models\MarketSegments;
 use common\models\MarketSegmentData;
 use common\models\Rules;
+use common\models\Brands;
 use common\models\RulesSearch;
 use common\models\MarketRules;
 use common\models\BrandsSearch;
 use common\models\MarketBrands;
 use common\repository\MarketRulesRepository;
+use common\models\ProductCategories;
+use common\models\ProductVarietal;
+use common\models\ProductVarietalSearch;
+use common\models\MarketBrandsVerietals;
+use common\models\CataloguesSearch;
+use common\models\Catalogues;
+use common\models\MarketCategoryProduct;
 
 class ApplyController extends MarketController
 {
@@ -35,7 +43,7 @@ class ApplyController extends MarketController
                 ],
                 'rules' => [
                     [
-                        'actions' => ['test','rules','brands','re-order'],
+                        'actions' => ['test','rules','brands','re-order', 'varientals','order-update-varietal','modal-content','order-update-brand','order-update-top-shelf'],
                         'allow' => true,
                         'roles' => ['&'],
                     ],
@@ -45,7 +53,7 @@ class ApplyController extends MarketController
           
         ];
     }
-   public function actionTest(){
+    public function actionTest(){
         $cat = MarketBrands::find()->asArray()->all();
        
         foreach ($cat as $key=>$value){         
@@ -142,25 +150,53 @@ class ApplyController extends MarketController
        }
     }
     
-    public function actionBrands($id){
-        
+    public function actionBrands($brandId,$id){
+        $category_id = $brandId;
+        $brands = Brands::find()->andWhere(['deleted_by'=>null])->asArray()->all();
+        $productVarietal = ProductVarietal::find()->andWhere(['deleted_by'=>null])->asArray()->all();
         if (($model = Markets::findOne($id)) !== null) {
         $title=$model->title;
         
         $searchModel = new BrandsSearch();
+        $productVarietalSearchModel = new ProductVarietalSearch();
         $filters =array();
         $model = new MarketBrands();
+        $selected_product = [];
         $selected = [];
-        $ruleModel = MarketBrands::find()->select(['brand_id','reorder_id'])->andWhere(['market_id' => $id])->orderBy(['reorder_id'=>SORT_ASC])->asArray()->all();
-//        echo '<pre>';
-//        print_r($ruleModel);exit;
+        $selectedShares = [];
+        $marketViertal = $finalViertalArry = [];
+        $ruleModel = MarketBrands::find()->select(['brand_id','reorder_id', 'shares'])->andWhere(['market_id' => $id,'category_id'=>$category_id])->orderBy(['reorder_id'=>SORT_ASC])->asArray()->all();
         if($ruleModel){
             foreach ($ruleModel as $key=>$value){
                   $selected[$key]  = $value['brand_id']; 
+                  $selectedShares[$value['brand_id']]  = $value['shares']; 
              }
         }
-
+        $marketBrandViertal = MarketBrandsVerietals::find()->select(['brand_id', 'verietal_id','shares'])->andWhere(['market_id' => $id,'category_id'=>$category_id])->asArray()->all();
+       
+        if($marketBrandViertal){
+            foreach ($marketBrandViertal as $key=>$value){
+                $marketViertal[$key]['brand_id']  = $value['brand_id']; 
+                $marketViertal[$key]['verietal_id']  = $value['verietal_id']; 
+                $marketViertal[$key]['shares']  = $value['shares']; 
+            }
+        }
+       
+        foreach ($marketViertal as $k =>$v){
+            $finalViertalArry[$v['brand_id']][] = array(
+                'id'=>$v['verietal_id'],
+                'share'=> isset($v['shares']) && $v['shares'] != NULL ? $v['shares'] : 0,
+            );
+        }
+       
         $data['market_id'] = $id;
+        
+        $productArry = MarketCategoryProduct::find()->select(['product_id'])->andWhere(['market_id' => $id,'category_id'=>$category_id])->asArray()->all();
+        if($productArry){
+            foreach ($productArry as $key=>$value){
+                  $selected_product[$key]  = $value['product_id']; 
+            }
+        }
         
         if(Yii::$app->request->post('limit')){
             $filters['limit'] = Yii::$app->request->post('limit');
@@ -169,18 +205,36 @@ class ApplyController extends MarketController
             $filters['search'] = Yii::$app->request->post('search');
         }
         
-     
-         if(Yii::$app->request->post('selectedBrand')) {
-      
-            $model->load(Yii::$app->request->post());
-            $data = Yii::$app->request->post('selectedBrand');
-         
-            $rules = explode(',', $data);
+        
+         if(Yii::$app->request->post('sharesId')) {
+            $post = Yii::$app->request->post();
+            $shares = Yii::$app->request->post('shares');
+            $brandsId = Yii::$app->request->post('sharesId');
+            $varietalIds = Yii::$app->request->post('varietalShareObject');
+            $ruleData = array();
             $ruleData['market_id'] = $id;
-            $ruleData['brand_id'] = $rules;
-           
+            foreach ($shares as $shareKey=>$share) {
+                if(intval($share) > 0){
+                    $ruleData['shares'][] = $share;
+                    $ruleData['brand_id'][] = $brandsId[$shareKey];
+                    $ruleData['brand_verietal'][] = !empty($varietalIds[$shareKey]) ? json_decode($varietalIds[$shareKey]) : array();
+                }
+                $ruleData['category_id'] = $brandId;
+            }
             $marketRepository = new \common\repository\MarketBrandsRepository;
             $returnData = $marketRepository->createBrand($ruleData);
+            $postData = Yii::$app->request->post('selection');
+           
+            $returnDataProduct = array(
+                 'category_id' => $category_id,
+                 'market_id' =>$id,
+                 'selected_product' => $postData,
+            );
+            
+            $marketRepository = new \common\repository\MarketBrandsRepository;
+             
+            $returnDataNew = $marketRepository->createMarketProduct($returnDataProduct);
+           
             if($returnData['status']['success'] == 1)
             {  
                 parent::userActivity('create_markets_brands',$description='');
@@ -189,24 +243,54 @@ class ApplyController extends MarketController
             } else {
                  Yii::$app->session->setFlash('danger', $returnData['status']['message']);
             }
+           
         }
         
         if(!isset($filters['limit'])){
             $filters['limit'] = Yii::$app->params['pageSize'];
         }
-       
-        $dataProvider = $searchModel->search($filters);
-        $dataProvider->pagination->pageSize = $filters['limit'];
+         $filters['category_id'] = $category_id;
+        $filters['market_id'] = $id;
+//        $filters['category_id'] =
+        $dataProvider = $searchModel->searchMarketBrand($filters);
+        
+        $brandsArray = array();
+        foreach($brands as $brandKey=>$brand){
+            $brandsArray[$brand['id']] = $brand['name'];
+        }
+        $productVarietals = array();
+        foreach($productVarietal as $productVarietalKey=>$productVarietalVal){
+            $productVarietals[$productVarietalVal['id']] = $productVarietalVal['name'];
+        }
+        //top self product
+        $catalogModel = new CataloguesSearch();
+        $catalogFilter = array(
+            'top_shelf'=>1,
+             'category_id' => $category_id,
+             'market_id' =>$id,
+        );
+        
+        $catalogDataProvider = $catalogModel->searchTopsSelf($catalogFilter);//top shelf =1
         
         return $this->render('/market/apply_brand', [
             'model' => $model,
             'searchModel' => $searchModel,
+            'selectedShares' => $selectedShares,
+            'productVarietalSearchModel' => $productVarietalSearchModel,
             'dataProvider' => $dataProvider,
+//            'productVarietalDataProvider' => $productVarietalDataProvider,
             'filters' => $filters,
             'rules' => $selected,
             'title' => $title,
             'market_id' => $id,
-            'selected' => $selected
+            'selected' => $selected,
+            'brands' => $brandsArray,
+            'productVarietals' => $productVarietals,
+            'brandId'=>$brandId,
+            'finalViertalArry'=>$finalViertalArry,
+            'catalogModel'=>$catalogModel,
+            'catalogDataProvider'=>$catalogDataProvider,
+            'selected_product' => $selected_product
         ]);
         
        }else{
@@ -235,4 +319,116 @@ class ApplyController extends MarketController
         $replaced->save(false);
     }
 
+    public function actionOrderUpdateVarietal(){
+        $postData = \yii::$app->request->post();
+        $market_id = $postData['market_id'];
+        $category = $postData['category_id'];
+        $brand = $postData['brand_id'];
+        $newOrdersData = array();
+        if(!empty($postData['data'])){
+                $newOrder = array_flip($postData['data']);                
+               
+                foreach ($newOrder as $key => $value){
+                    if($value != 0){
+                        $applyOrder= MarketBrandsVerietals::findOne(['market_id' => $market_id,'category_id'=>$category,'brand_id'=>$brand,'verietal_id'=>$key]);
+                        if($applyOrder){
+                        $applyOrder ->reorder_id = $value;
+                        $applyOrder->save(false);
+                        }else{
+                            $marketBrandsVerietals = new MarketBrandsVerietals();
+                            $marketBrandsVerietals->market_id = $market_id;
+                            $marketBrandsVerietals->brand_id = $brand;
+                            $marketBrandsVerietals->verietal_id = $key;
+                            $marketBrandsVerietals->reorder_id = $value;
+                            $marketBrandsVerietals->category_id = $category;
+                            $marketBrandsVerietals->shares = NULL;
+                            $marketBrandsVerietals->save(false);
+                        }
+                         
+                    }
+                }
+                return true;
+        }
+    }
+    
+    public function actionOrderUpdateBrand(){
+        $postData = \yii::$app->request->post();
+        $market_id = $postData['market_id'];
+        $category = $postData['category_id'];
+     
+        $newOrdersData = array();
+        if(!empty($postData['data'])){
+                $newOrder = array_flip($postData['data']);
+//                echo '<pre>';
+//                print_r($newOrder);exit;
+                foreach ($newOrder as $key => $value){
+                    if($value != 0){
+                        $applyOrder= MarketBrands::findOne(['market_id' => $market_id,'category_id'=>$category,'brand_id'=>$key]);
+                        if($applyOrder){
+                        $applyOrder ->reorder_id = $value;
+                        $applyOrder->save(false);
+                        }else{
+                            $newMarketBrand = new MarketBrands();
+                            $newMarketBrand->market_id = $market_id;
+                            $newMarketBrand->brand_id = $key;
+                            $newMarketBrand->reorder_id = $value;
+                            $newMarketBrand->category_id = $category;
+                            $newMarketBrand->shares = 0;
+                            $newMarketBrand->save(false);
+                        }
+                         
+                    }
+                }
+                return true;
+        }
+    }
+    //order-update-top-shelf
+    public function actionOrderUpdateTopShelf() {
+        $postData = \yii::$app->request->post();
+        $market_id = $postData['market_id'];
+        $category = $postData['category_id'];
+
+        $newOrdersData = array();
+        if (!empty($postData['data'])) {
+            $newOrder = array_flip($postData['data']);
+//                echo '<pre>';
+//                    print_r($newOrder);exit;
+            foreach ($newOrder as $key => $value) {
+
+                if ($value != 0) {
+                    $applyOrder = MarketCategoryProduct::findOne(['market_id' => $market_id, 'category_id' => $category, 'product_id' => $key]);
+                    if ($applyOrder) {
+                        $applyOrder->top_reorder_id = $value;
+                        $applyOrder->save(false);
+                    } else {
+                        $applyOrder = new MarketCategoryProduct();
+                        $applyOrder->product_id = $key;
+                        $applyOrder->top_reorder_id = $value;
+                        $applyOrder->category_id = $category;
+                        $applyOrder->market_id = $market_id;
+                        $applyOrder->save(false);
+                    }
+                }
+            }
+            return true;
+        }
+    }
+    
+    public function actionModalContent($marketId,$categoryId,$brandId){
+        
+        $filters['market_id'] = $marketId;
+        $filters['category_id'] = $categoryId;
+        $filters['brand_id'] = $brandId;
+        
+        $productVarietalSearchModel = new ProductVarietalSearch();
+        $productVarietalDataProvider = $productVarietalSearchModel->searchVariental($filters);
+        echo $this->renderPartial('/market/varietal_popup', [
+            'productVarietalDataProvider'=>$productVarietalDataProvider,
+            'market_id'=>$marketId,
+            'brand_id'=>$brandId,
+            'categoryId' => $categoryId
+            ]);
+        exit;
+    }
+    
 }

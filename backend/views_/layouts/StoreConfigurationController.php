@@ -988,6 +988,7 @@ class StoreConfigurationController extends Controller {
             $giftProduct = $otherProduct = array();
 
             $skipBoxCheck = 0; //skip box check if shelf is already filled up with total market share
+            if(!empty($racksProductArray)){
             foreach ($racksProductArray as $key => $value) {
                 if(isset($value['box_only'])){
                 if ($value['box_only'] == 1) {
@@ -1002,7 +1003,7 @@ class StoreConfigurationController extends Controller {
                     $skipBoxCheck = 1;
                 }
             }
-
+            }
             if(!$skipBoxCheck)
             {
                     $mergedArray = array_merge($giftProduct, $otherProduct);
@@ -1017,9 +1018,10 @@ class StoreConfigurationController extends Controller {
         foreach ($array as $key => $row) {
             $sortarray[$key] = isset($row[$subfield]) ? $row[$subfield] : '';
         }
+        array_multisort($sortarray, $sort, $array);
         }
 
-        array_multisort($sortarray, $sort, $array);
+        
     }
 
     private function ifRuleContain($ruleValue) {

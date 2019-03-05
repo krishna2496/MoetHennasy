@@ -10,10 +10,13 @@ class CataloguesRepository extends Repository {
 
     public function listing($data = array()) {
         $this->apiCode = 1;
-        $query = Catalogues::find()->joinWith(['market.marketSegmentData.marketSegment.marketRules.rules', 'brand','productType','productCategory']);
+        $query = Catalogues::find()->joinWith(['market.marketSegmentData.marketSegment.marketRules.rules', 'brand','productType','productCategory','variental'])->joinWith('marketCategoryProduct');
 
         if (isset($data['serachText']) && ($data['serachText'] != '')) {
             $data['search'] = $data['serachText'];
+        }
+        if (isset($data['top_shelf']) && ($data['top_shelf'] == 1)) {
+             $query->andWhere(['top_shelf'=>1]);
         }
 
         if (isset($data['search']) && $data['search']) {
@@ -60,7 +63,35 @@ class CataloguesRepository extends Repository {
         $this->apiData = $data;
         return $this->response();
     }
+   
+     public function listingTopsSelf($data = array()) {
+       
+        $this->apiCode = 1;
+        $query = Catalogues::find()->joinWith(['brand','productCategory','variental']);
+        if (isset($data['top_shelf']) && ($data['top_shelf'] == 1)) {
+             $query->andWhere(['top_shelf'=>1]);
+        }
 
+        $result = $query->asArray();
+        $data = array();
+        $data['catalogues'] = $query->asArray()->all();
+        
+        $this->apiData = $data;
+        return $this->response();
+    
+    }
+    
+    public function reorderData($data){
+        $this->apiCode = 1;
+        $query = \common\models\MarketCategoryProduct::find()->andWhere(['market_id' => $data['market_id'],'category_id'=> $data['category_id']]);
+        
+            
+        $data = array();
+        $data['product'] = $query->asArray()->all();
+        $this->apiData = $data;
+        return $this->response();
+    }
+    
     public function createCatalogue($data = array()) {
 
         $this->apiCode = 0;
@@ -70,7 +101,7 @@ class CataloguesRepository extends Repository {
         $model->ean = $data['ean'];
         $model->brand_id = $data['brand_id'];
         $model->product_category_id = $data['product_category_id'];
-        $model->product_sub_category_id = $data['product_sub_category_id'];
+        //$model->product_sub_category_id = $data['product_sub_category_id'];
 //        $model->market_id = $data['market_id'];
         $model->width = $data['width'];
         $model->height = $data['height'];
@@ -78,11 +109,13 @@ class CataloguesRepository extends Repository {
         $model->scale = $data['scale'];
         $model->manufacturer = $data['manufacturer'];
         $model->box_only = $data['box_only'];
-        $model->market_share = $data['market_share'];
+        //$model->market_share = $data['market_share'];
         $model->price = $data['price'];
         $model->top_shelf = $data['top_shelf'];
         $model->image = $data['image'];
         $model->product_type_id = $data['product_type_id'];
+        $model->product_variental = $data['product_variental'];
+        $model->special_format = $data['special_format'];
         
         if (isset($data['long_name'])) {
             $model->long_name = $data['long_name'];
@@ -136,9 +169,9 @@ class CataloguesRepository extends Repository {
         if (isset($data['product_category_id'])) {
             $model->product_category_id = $data['product_category_id'];
         }
-        if (isset($data['product_sub_category_id'])) {
+        /*if (isset($data['product_sub_category_id'])) {
             $model->product_sub_category_id = $data['product_sub_category_id'];
-        }
+        }*/
         if (isset($data['market_id'])) {
 //            $model->market_id = $data['market_id'];
         }
@@ -160,9 +193,9 @@ class CataloguesRepository extends Repository {
         if (isset($data['box_only'])) {
             $model->box_only = $data['box_only'];
         }
-        if (isset($data['market_share'])) {
+        /*if (isset($data['market_share'])) {
             $model->market_share = $data['market_share'];
-        }
+        }*/
         if (isset($data['price'])) {
             $model->price = $data['price'];
         }
@@ -177,6 +210,12 @@ class CataloguesRepository extends Repository {
         }
         if (isset($data['short_name'])) {
             $model->short_name = $data['short_name'];
+        }
+        if (isset($data['special_format'])) {
+            $model->special_format = $data['special_format'];
+        }
+        if (isset($data['product_variental'])) {
+            $model->product_variental = $data['product_variental'];
         }
         if (isset($data['product_type_id'])) {
              $model->product_type_id = $data['product_type_id'];

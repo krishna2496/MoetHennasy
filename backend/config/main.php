@@ -51,6 +51,8 @@ return [
                 'market-segments/view/<id:\d+>' => 'market-segments/view',
                 'product-categories/update/<id:\d+>' => 'product-categories/update',
                 'product-categories/delete/<id:\d+>' => 'product-categories/delete',
+                'product-varietal/update/<id:\d+>' => 'product-varietal/update',
+                'product-varietal/delete/<id:\d+>' => 'product-varietal/delete',
                 'help-categories/update/<id:\d+>' => 'help-categories/update',
                 'help-categories/delete/<id:\d+>' => 'help-categories/delete',
                 'help-categories/view/<id:\d+>' => 'help-categories/view',
@@ -67,7 +69,8 @@ return [
                 'market/rules/<id:\d+>' => 'market/rules',
                 'rule-administration/product/<id:\d+>' => 'rule-administration/product',
                 'apply/rules/<id:\d+>' => 'apply/rules',
-                'apply/brands/<id:\d+>' => 'apply/brands',
+            
+                'apply/varientals' => 'apply/varientals',
                
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:[^/]+>/<action:[^/]+>/<slug:[^/]+>' => '<controller>/<action>',
@@ -84,6 +87,10 @@ return [
                 'store-configuration/delete/<id:\d+>/<storeId:\d+>' => 'store-configuration/delete',
                 'helps/view/<id:\d+>/<categoryId:\d+>' => 'helps/view',
                 'configs/update/<id:\d+>/<storeId:\d+>' => 'configs/update',
+                'apply/brands/<brandId:\d+>/<id:\d+>' => 'apply/brands',
+                
+                'apply/modal-content/<marketId:\d+>/<categoryId:\d+>/<brandId:\d+>' => 'apply/modal-content',
+                
                 'configs/create/<id:\d+>' => 'configs/create',
               
               

@@ -64,6 +64,34 @@ class CommonHelper
 			return false;
 		}
 	}
+        
+        public static function sort_array_of_array(&$array, $subfield, $sort) {
+            $sortarray = array();
+            if(!empty($array) && (isset($array))){
+            foreach ($array as $key => $row) {
+                $sortarray[$key] = isset($row[$subfield]) ? $row[$subfield] : '';
+            }
+            }
+//            echo '<pre>';
+//            print_r($sortarray);exit;
+            array_multisort($sortarray, $sort, $array);
+        }
+        
+        public static function max_val(&$array, $subfield, $sort) {
+            $sortarray = array();
+            if(!empty($array) && (isset($array))){
+            foreach ($array as $key => $row) {
+                $sortarray[$key] = isset($row[$subfield]) ? $row[$subfield] : '';
+            }
+            }
+        
+            $max = 0;
+            if($sortarray){
+            $max = max($sortarray);
+            $max++;
+            }
+            return $max;
+        }
 
 	public static function getPath($type = ''){
 		$return = '';
