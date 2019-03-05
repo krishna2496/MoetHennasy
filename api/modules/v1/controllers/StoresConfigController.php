@@ -384,16 +384,13 @@ class StoresConfigController extends BaseApiController {
                             $tempValue = $value;
                             unset($tempValue['category']);
                             unset($tempValue['brand']);
-                            
+                    
                             if(!in_array($value['market_id'],$collectMarketId)){
-                                $returnDatas['marketBrands'][$value['market_id']] = $tempValue;
+                                $returnDatas["market"] = $tempValue;
                                 $collectMarketId[] = $value['market_id'];
                             }
                             
-                            if(!in_array($value['category']['id'],$collectCatId)){
-                                $returnDatas['marketBrands'][$value['market_id']]['category'][$value['category']['id']] = $value['category'];
-                                $collectCatId[] = $value['category']['id'];
-                            }
+                            
                                     $image = $value['brand']['image'];
                                     unset($value['brand']['created_by']);
                                     unset($value['brand']['updated_by']);
@@ -415,13 +412,29 @@ class StoresConfigController extends BaseApiController {
                                     
                                     $product_data = '';
                                     
+                                    
+                                    
                                 unset($value['brand']['product']); 
-                                $returnDatas['marketBrands'][$value['market_id']]['category'][$value['category']['id']]['top_shelf_product'] = isset($newProductFinalArry[$value['category']['id']]) ? $newProductFinalArry[$value['category']['id']] : ''; 
-                                $returnDatas['marketBrands'][$value['market_id']]['category'][$value['category']['id']]['brand'][] = $value['brand'];
+                                
+                                if(!in_array($value['category']['id'],$collectCatId)){
+                               // $value['category']['brand'][] = $value['brand'];
+                                $value['category']['top_shelf_product'] = isset($newProductFinalArry[$value['category']['id']]) ? $newProductFinalArry[$value['category']['id']] : ''; 
+                                $returnDatas["market"]['category'][] = $value['category'];
+                                
+                                
+                                $collectCatId[] = $value['category']['id'];
+                            }
+                            
+                                
+                                $key = array_search($value['category']['id'], array_column($returnDatas["market"]['category'], 'id'));
+                             //   echo '>>>>>'.$key;
+                                $returnDatas["market"]['category'][$key]['brand'][] = $value['brand'];
+//                                $returnDatas['marketBrands'][$value['market_id']]['category'][$value['category']['id']]['top_shelf_product'] = isset($newProductFinalArry[$value['category']['id']]) ? $newProductFinalArry[$value['category']['id']] : ''; 
+//                                $returnDatas['marketBrands'][$value['market_id']]['category'][$value['category']['id']]['brand'][] = $value['brand'];
                     }
             }
 
-        }
+        }//exit;
 //        echo '<pre>';
 //        print_r($returnDatas);exit;
         return $returnDatas;

@@ -9,6 +9,8 @@ use common\models\MarketBrands;
 use common\models\MarketBrandsVerietals;
 use common\models\MarketCategoryProduct;
 use common\models\Brands;
+use common\models\CataloguesSearch;
+use common\models\Catalogues;
 
 class MarketBrandsRepository extends Repository {
 
