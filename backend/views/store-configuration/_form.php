@@ -122,6 +122,35 @@ $session = Yii::$app->session;
     </div>
 </div>
 <div class="modal fade in" id="modalReview"></div><!-- /.modal-dialog -->
+<div class="modal fade category-modal" id="category-modal" data-backdrop="static" data-keyboard="false">
+    
+     <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+      
+        <h4 class="modal-title">Please Select Category</h4>
+      </div>
+      <div class="modal-body" style="text-align:center">
+          
+
+                <?php
+                if($wholeData){
+                    foreach ($wholeData as $k=>$v){ ?>
+          <button class="btn" style="background-color:#9c8057; width: 30%;margin: 0px 15px;color: #fff;font-size: 18px;padding: 6px 0px" onclick="saveCategory(<?= $v['id'] ?>)"><?= $v['name'] ?></button>
+                  <?php }
+                }
+                
+                ?>
+     
+      </div>
+   
+    </div>
+
+  </div>
+</div>
+
 <script type="text/javascript">
 
     var rackFromURL = '<?php echo $formUrl ?>';
@@ -158,6 +187,24 @@ $session = Yii::$app->session;
             return false;
         }
     });
+    
+    $("document").ready(function(){
+        var categoryId = <?= $categoryId ?>;
+        if (isUpdate != '1' && categoryId == '0') { 
+            $("#category-modal").modal('show');
+        }
+    });
+    
+    function saveCategory(id){
+       
+        storeId = <?= $store_id ?>;
+//       +storeId+'/'+id' 
+        var url = "<?php echo CommonHelper::getPath('admin_url').'store-configuration/index/'?>";
+        url = url+storeId+'/'+id;
+//        alert(url);return false;
+//        location.reload(url);
+        window.location =url ;
+    }
 
 </script>
 

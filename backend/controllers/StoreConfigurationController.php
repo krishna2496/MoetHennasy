@@ -403,7 +403,8 @@ class StoreConfigurationController extends ProductRuleController {
         }
     }
 
-    public function actionIndex($id) {
+    public function actionIndex($id , $categoryId = 0) {
+      
         $storeId = $id;
         $stores = Stores::find()->where(['id' => $id])->asArray()->one();
         $currentUser = CommonHelper::getUser();
@@ -475,6 +476,28 @@ class StoreConfigurationController extends ProductRuleController {
             $searchModel = new CataloguesSearch();
             $dataProvider = $searchModel->searchProduct($filterProduct);
 
+            //category 
+            $marketBrandModel = new StoreConfigurationSearch();
+            $stores['market_id'] = 2;
+            $marketBrand = $marketBrandModel->brandProductList($stores['market_id']);
+            $wholeData = array();
+            if(isset($marketBrand) && (!empty($marketBrand))){
+                $wholeData = $marketBrand['market']['category'];
+
+                if($categoryId != 0){
+                    $key = array_search($categoryId, array_column($wholeData, 'id'));
+                    $newData =  $wholeData[$key];
+                    $wholeData = array();
+                    $wholeData = $newData;
+                  
+//                   $wholeData = $newwholeData;
+                    echo '<pre>';
+                   print_r($wholeData);
+                   exit;
+                }
+            }else{
+                exit("sdg");
+            }
             return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -485,6 +508,8 @@ class StoreConfigurationController extends ProductRuleController {
                     'configId' => 0,
                     'reviewFlag' => 0,
                     'brandBackground' => '',
+                    'wholeData' => $wholeData,
+                    'categoryId' => $categoryId
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

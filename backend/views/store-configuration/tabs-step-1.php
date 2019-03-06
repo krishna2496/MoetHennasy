@@ -157,3 +157,4 @@ $session = Yii::$app->session;
 	</div>
 	<!-- End Frame Filter section -->
 </div>
+<!--category select modal-->

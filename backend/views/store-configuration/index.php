@@ -18,7 +18,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'configId' => $configId,
                 'brandThumbId' => $brandThumbId,
                 'reviewFlag' => $reviewFlag,
-                'brandBackground' => $brandBackground
+                'brandBackground' => $brandBackground,
+                'wholeData' => $wholeData,
+                'categoryId' => $categoryId
                 
     ]) ?>
 

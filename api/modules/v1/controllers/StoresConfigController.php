@@ -16,6 +16,8 @@ use common\repository\MarketRepository;
 use yii\data\ArrayDataProvider;
 use common\repository\StoreConfigRepository;
 use common\models\User;
+use common\models\MarketBrands;
+use common\models\MarketBrandsVerietals;
 
 class StoresConfigController extends BaseApiController {
 
@@ -325,6 +327,125 @@ class StoresConfigController extends BaseApiController {
         return $returnData;
     }
 
+//    public function actionBrandProductList() {
+//
+//        $currentUser = CommonHelper::getUser();
+//        $marketId = '';
+//        if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
+//            $marketId = $currentUser->market_id;
+//        }
+//
+//        $returnDatas = $newProductArry = $marketVarientalProduct = $brandVariental = array();
+//        $repository = new MarketBrandsRepository();
+//
+//        if ($marketId != '') {
+//            $data['market_id'] = $marketId;
+//            $returnData = $repository->listing($data);
+//
+//            $productsData = $returnData['data']['market_product'];
+//            $brand_variental = $returnData['data']['brand_varietal'];
+//            // echo '<pre>';print_r($productsData); exit;
+//            if ($productsData) {
+//                foreach ($productsData as $key => $value) {
+//                    $newProductArry[$value['category_id']] = $value['category']['marketCategoryProduct'];
+//                }
+//            }
+//            $newProductFinalArry = array();
+//            foreach ($newProductArry as $k => $v) {
+//                foreach ($v as $key => $value) {
+//                    $category_id = $value['category_id'];
+//                    unset($value['id']);
+//                    unset($value['product_id']);
+//                    unset($value['category_id']);
+//                    unset($value['market_id']);
+//                    unset($value['created_by']);
+//                    unset($value['updated_by']);
+//                    unset($value['deleted_by']);
+//                    unset($value['created_at']);
+//                    unset($value['updated_at']);
+//                    unset($value['deleted_at']);
+//                    $newProductFinalArry[$category_id][] = $value['product'];
+//                }
+//            }
+//
+//
+//            $collectCatId = $collectMarketId = [];
+//            if (!empty($returnData['data']['market_brands'])) {
+//
+//                if ($returnData['data']['market_varietal']) {
+//                    foreach ($returnData['data']['market_varietal'] as $k => $v) {
+//                        $marketVarientalProduct[$v['product_category_id']][$v['brand_id']][$v['product_variental']][] = $v;
+//                    }
+//                }
+////            echo '<pre>';
+////            print_r($marketVarientalProduct);
+////            print_r($brand_variental);
+////            exit;
+////                    
+////                foreach ($brand_variental as $k=>$v){
+////                    $brandVariental[]
+////                }
+//
+//                foreach ($returnData['data']['market_brands'] as $key => $value) {
+//
+//                    $tempValue = $value;
+//                    unset($tempValue['category']);
+//                    unset($tempValue['brand']);
+//
+//                    if (!in_array($value['market_id'], $collectMarketId)) {
+//                        $returnDatas["market"] = $tempValue;
+//                        $collectMarketId[] = $value['market_id'];
+//                    }
+//
+//
+//                    $image = $value['brand']['image'];
+//                    unset($value['brand']['created_by']);
+//                    unset($value['brand']['updated_by']);
+//                    unset($value['brand']['created_by']);
+//                    unset($value['brand']['deleted_by']);
+//                    unset($value['brand']['created_at']);
+//                    unset($value['brand']['updated_at']);
+//                    unset($value['brand']['deleted_at']);
+//                    $value['brand']['image'] = isset($value['brand']['image']) ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_BRANDS_IMAGES . $image : '';
+//                    $value['brand']['color_code'] = isset($value['brand']['color_code']) && ($value['brand']['color_code'] != '') ? $value['brand']['color_code'] : COLOR_CODE;
+//                    $value['brand']['reorder_id'] = $value['reorder_id'];
+//                    $variental = $value['brand']['marketBrandsVerietals'];
+////                                    echo '<pre>';
+////                                    print_r($variental);exit;
+//                        foreach ($variental as $vKey => $vVal) {
+//                            if (isset($value['brand']['marketBrandsVerietals'][$vKey])) {
+//                                $value['brand']['marketBrandsVerietals'][$vKey]['product'] = isset($marketVarientalProduct[$value['category']['id']][$value['brand']['id']][$vVal['verietal_id']]) ? $marketVarientalProduct[$value['category']['id']][$value['brand']['id']][$vVal['verietal_id']] : '';
+//                            }
+//                        }
+//
+//                    $product_data = '';
+//
+//
+//
+//                    unset($value['brand']['product']);
+//
+//                    if (!in_array($value['category']['id'], $collectCatId)) {
+//                        // $value['category']['brand'][] = $value['brand'];
+//                        $value['category']['top_shelf_product'] = isset($newProductFinalArry[$value['category']['id']]) ? $newProductFinalArry[$value['category']['id']] : '';
+//                        $returnDatas["market"]['category'][] = $value['category'];
+//
+//
+//                        $collectCatId[] = $value['category']['id'];
+//                    }
+//
+//
+//                    $key = array_search($value['category']['id'], array_column($returnDatas["market"]['category'], 'id'));
+//                    //   echo '>>>>>'.$key;
+//                    $returnDatas["market"]['category'][$key]['brand'][] = $value['brand'];
+//                }
+//            }
+//        }
+//        return $returnDatas;
+//    }
+
+    /*
+     * action brand-product-list used get details of user such as different category,products,product varientals
+     */
     public function actionBrandProductList() {
 
         $currentUser = CommonHelper::getUser();
@@ -333,7 +454,7 @@ class StoresConfigController extends BaseApiController {
             $marketId = $currentUser->market_id;
         }
 
-        $returnDatas = $newProductArry = $marketVarientalProduct = $brandVariental = array();
+        $returnDatas = $newProductArry = $marketVarientalProduct = $brandVariental = $brandVarientalArr = array();
         $repository = new MarketBrandsRepository();
 
         if ($marketId != '') {
@@ -341,8 +462,7 @@ class StoresConfigController extends BaseApiController {
             $returnData = $repository->listing($data);
 
             $productsData = $returnData['data']['market_product'];
-            $brand_variental = $returnData['data']['brand_varietal'];
-            // echo '<pre>';print_r($productsData); exit;
+
             if ($productsData) {
                 foreach ($productsData as $key => $value) {
                     $newProductArry[$value['category_id']] = $value['category']['marketCategoryProduct'];
@@ -366,6 +486,15 @@ class StoresConfigController extends BaseApiController {
                 }
             }
 
+            $brandVariental = MarketBrandsVerietals::find()->andWhere(['market_id' => $marketId])->asArray()->all();
+            foreach ($brandVariental as $brandVarientalKey => $brandVarientalVal) {
+                if ($brandVarientalVal['shares'] != null) {
+                    $brandVarientalArr[$brandVarientalVal['category_id']][$brandVarientalVal['brand_id']][] = $brandVarientalVal;
+                }else{
+                    $brandVarientalVal['shares'] = 0;
+                    $brandVarientalArr[$brandVarientalVal['category_id']][$brandVarientalVal['brand_id']][] = $brandVarientalVal;
+                }
+            }
 
             $collectCatId = $collectMarketId = [];
             if (!empty($returnData['data']['market_brands'])) {
@@ -375,14 +504,6 @@ class StoresConfigController extends BaseApiController {
                         $marketVarientalProduct[$v['product_category_id']][$v['brand_id']][$v['product_variental']][] = $v;
                     }
                 }
-//            echo '<pre>';
-//            print_r($marketVarientalProduct);
-//            print_r($brand_variental);
-//            exit;
-//                    
-//                foreach ($brand_variental as $k=>$v){
-//                    $brandVariental[]
-//                }
 
                 foreach ($returnData['data']['market_brands'] as $key => $value) {
 
@@ -395,7 +516,6 @@ class StoresConfigController extends BaseApiController {
                         $collectMarketId[] = $value['market_id'];
                     }
 
-
                     $image = $value['brand']['image'];
                     unset($value['brand']['created_by']);
                     unset($value['brand']['updated_by']);
@@ -406,37 +526,64 @@ class StoresConfigController extends BaseApiController {
                     unset($value['brand']['deleted_at']);
                     $value['brand']['image'] = isset($value['brand']['image']) ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_BRANDS_IMAGES . $image : '';
                     $value['brand']['color_code'] = isset($value['brand']['color_code']) && ($value['brand']['color_code'] != '') ? $value['brand']['color_code'] : COLOR_CODE;
+
+                    $marketBrandShares = MarketBrands::find()->select(['shares'])->andWhere(['market_id' => $value['market_id'], 'brand_id' => $value['brand']['id'], 'category_id' => $value['category']['id']])->orderBy(['reorder_id' => SORT_ASC])->asArray()->all();
+                    if ($marketBrandShares) {
+                        foreach ($marketBrandShares as $k => $v) {
+                            $value['brand']['shares'] = $v['shares'];
+                        }
+                    }
                     $value['brand']['reorder_id'] = $value['reorder_id'];
+
+                    $value['brand']['marketBrandsVerietals'] = isset($brandVarientalArr[$value['category']['id']][$value['brand']['id']]) ? $brandVarientalArr[$value['category']['id']][$value['brand']['id']] : '';
+
                     $variental = $value['brand']['marketBrandsVerietals'];
-//                                    echo '<pre>';
-//                                    print_r($variental);exit;
-                    foreach ($variental as $vKey => $vVal) {
-                        if (isset($value['brand']['marketBrandsVerietals'][$vKey])) {
-                            $value['brand']['marketBrandsVerietals'][$vKey]['product'] = isset($marketVarientalProduct[$value['category']['id']][$value['brand']['id']][$vVal['verietal_id']]) ? $marketVarientalProduct[$value['category']['id']][$value['brand']['id']][$vVal['verietal_id']] : '';
+
+                    if (!empty($variental)) {
+                        foreach ($variental as $vKey => $vVal) {
+                            if (isset($value['brand']['marketBrandsVerietals'][$vKey])) {
+                                $value['brand']['marketBrandsVerietals'][$vKey]['product'] = isset($marketVarientalProduct[$value['category']['id']][$value['brand']['id']][$vVal['verietal_id']]) ? $marketVarientalProduct[$value['category']['id']][$value['brand']['id']][$vVal['verietal_id']] : '';
+                            }
                         }
                     }
 
-                    $product_data = '';
-
-
-
+                    //$product_data = '';
                     unset($value['brand']['product']);
 
                     if (!in_array($value['category']['id'], $collectCatId)) {
                         // $value['category']['brand'][] = $value['brand'];
                         $value['category']['top_shelf_product'] = isset($newProductFinalArry[$value['category']['id']]) ? $newProductFinalArry[$value['category']['id']] : '';
                         $returnDatas["market"]['category'][] = $value['category'];
-
-
                         $collectCatId[] = $value['category']['id'];
                     }
-
-
                     $key = array_search($value['category']['id'], array_column($returnDatas["market"]['category'], 'id'));
-                    //   echo '>>>>>'.$key;
                     $returnDatas["market"]['category'][$key]['brand'][] = $value['brand'];
                 }
             }
+        }
+        //if (!empty($returnDatas)) {
+        unset($returnDatas['market']['brand_id']);
+        unset($returnDatas['market']['reorder_id']);
+        unset($returnDatas['market']['category_id']);
+        unset($returnDatas['market']['reorder_id']);
+        unset($returnDatas['market']['created_by']);
+        unset($returnDatas['market']['updated_by']);
+        unset($returnDatas['market']['deleted_by']);
+        unset($returnDatas['market']['created_at']);
+        unset($returnDatas['market']['updated_at']);
+        unset($returnDatas['market']['deleted_at']);
+        unset($returnDatas['market']['shares']);
+        //  print_r($returnDatas); exit;
+
+        foreach ($returnDatas['market']['category'] as $marketCatKey => $marketCatVal) {
+
+            unset($returnDatas['market']['category'][$marketCatKey]['parent_id']);
+            unset($returnDatas['market']['category'][$marketCatKey]['created_by']);
+            unset($returnDatas['market']['category'][$marketCatKey]['updated_by']);
+            unset($returnDatas['market']['category'][$marketCatKey]['deleted_by']);
+            unset($returnDatas['market']['category'][$marketCatKey]['created_at']);
+            unset($returnDatas['market']['category'][$marketCatKey]['updated_at']);
+            unset($returnDatas['market']['category'][$marketCatKey]['deleted_at']);
         }
         return $returnDatas;
     }

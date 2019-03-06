@@ -58,7 +58,7 @@ return [
                 'help-categories/view/<id:\d+>' => 'help-categories/view',
                 'market-contacts/index/<id:\d+>' => 'market-contacts/index',
                 'store-configuration/listing/<id:\d+>' => 'store-configuration/listing',
-                'store-configuration/index/<id:\d+>' => 'store-configuration/index',
+                
                 'product-types/index/<id:\d+>' => 'product-types/index',
                 'product-types/view/<id:\d+>' => 'product-types/view',
                 'product-types/update/<id:\d+>' => 'product-types/update',
@@ -84,6 +84,7 @@ return [
                 'brand/re-order/<id:\d+>' => 'brand/re-order',
                 
                 'helps/delete/<id:\d+>/<categoryId:\d+>' => 'helps/delete',
+                'store-configuration/index/<id:\d+>/<categoryId:\d+>' => 'store-configuration/index',
                 'store-configuration/delete/<id:\d+>/<storeId:\d+>' => 'store-configuration/delete',
                 'helps/view/<id:\d+>/<categoryId:\d+>' => 'helps/view',
                 'configs/update/<id:\d+>/<storeId:\d+>' => 'configs/update',
