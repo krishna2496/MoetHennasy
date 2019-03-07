@@ -69,11 +69,20 @@ class BrandsSearch extends Brands
      
         $brandRepository = new MarketBrandsRepository();
         $brandRepository = $brandRepository->listingBrand($params); 
-       
+        
+        $brand = new MarketBrandsRepository();
+        $brandData =  $brand->productVariental($params);
+        $removeDataId = array();
         $brandList = $brandVarientalData = array();
         if($brandRepository['status']['success'] == 1){
             if($brandRepository['data']['brand_data']){
                 
+                if($brandData['data']['catalogue']){
+                    foreach ($brandData['data']['catalogue'] as $k => $v){
+                        $removeDataId[$v['brand_id']] =  $v['brand_id'];
+                    }
+                }
+              
                 $brandRepositoryNew = new MarketBrandsRepository();
                 $brandRepositoryNewData = $brandRepositoryNew->listingMarketBrand($params); 
                
@@ -92,11 +101,13 @@ class BrandsSearch extends Brands
                 }
                 
                 foreach ($brandRepository['data']['brand_data'] as $key => $value) {
-                    $temp=$value;
-                    $temp['name']= ucfirst($temp['name']);
-                    $temp['reorder_id'] = isset($brandVarientalData[$value['id']]) ? $brandVarientalData[$value['id']]['reorder_id']!= NULL ? $brandVarientalData[$value['id']]['reorder_id'] :$max++ : $max++;
-                    $temp['shares'] = isset($brandVarientalData[$value['id']]['shares']) ? $brandVarientalData[$value['id']]['shares'] : 0;
-                    $brandList[] = $temp;
+                    if(in_array($value['id'], $removeDataId)){
+                        $temp=$value;
+                        $temp['name']= ucfirst($temp['name']);
+                        $temp['reorder_id'] = isset($brandVarientalData[$value['id']]) ? $brandVarientalData[$value['id']]['reorder_id']!= NULL ? $brandVarientalData[$value['id']]['reorder_id'] :$max++ : $max++;
+                        $temp['shares'] = isset($brandVarientalData[$value['id']]['shares']) ? $brandVarientalData[$value['id']]['shares'] : 0;
+                        $brandList[] = $temp;
+                    }
                 }
                 
                 

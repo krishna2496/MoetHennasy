@@ -14,6 +14,7 @@ if(isset($_SESSION['config']['products'])){
     $products = json_encode($_SESSION['config']['products'],true);
 }
 $session = Yii::$app->session;
+
 ?>
 <div class="col-sm-5 pull-right" id="tab-step-1">
 	<!-- Frame Filter section -->
@@ -33,6 +34,8 @@ $session = Yii::$app->session;
 					<div class="form-group">
 						<label for="dispaly_name">Name Your Display</label>
                                                 <input type="hidden" name="ratio" value="5.5" id="ratio">
+                                                <input type="hidden" name="market_id_hidden" value="<?= $categoryId ?>" id="market_id_hidden">
+                                                <input type="hidden" name="category_id_hidden" value="<?= $market_id ?>" id="category_id_hidden">
                                                 <input type="text" id="dispaly_name" name="display_name" class="form-control" placeholder="Please Enter Display Name" required autocomplete="off" autofocus="true"/><label for="dispaly_name" class="error" style="color:red"></label>
                                         </div>
 					<div class="frame-chose-option">
@@ -125,9 +128,10 @@ $session = Yii::$app->session;
 								<label class="barnd-select-msg">Select the brands present on the shelf <sup class="text-red">*</sup> </label>
 								<ul class="brand-list list-unstyled">
 									<?php
-									if (!empty($brand))
+									if (!empty($wholeData[0]['brand']))
 									{
-										foreach ($brand as $key => $value) {
+										foreach ($wholeData[0]['brand'] as $key => $value) {
+                                                                                   if($value['shares'] != 0) { 
 											?>
 											<li>
 												<div class="checkbox"> 
@@ -138,7 +142,7 @@ $session = Yii::$app->session;
 												</div>
 											</li>
 											<?php
-										}
+                                                                                }}
 									}
 									?>
 								</ul>

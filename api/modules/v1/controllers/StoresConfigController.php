@@ -625,15 +625,13 @@ class StoresConfigController extends BaseApiController {
             //Master brands
             $searchModel = new BrandsSearch();
 
-            //$brandList = Brands::find()->asArray()->all();
-            //print_r($brandVariental); exit;
             if (!empty($categoryList)) {
                 foreach ($categoryList as $catKey => $catVal) {
                     $returnDatas['market']['category'][$catKey]['id'] = $catVal['id'];
                     $returnDatas['market']['category'][$catKey]['name'] = $catVal['name'];
-                    //Master catalogues
+            
+                    //Catalogues list
                     $catalogueList = Catalogues::find()->andWhere(['top_shelf' => 1, 'product_category_id' => $catVal['id']])->asArray()->all();
-
                     foreach ($catalogueList as $cataKey => $cataVal) {
                         $market_brand_repository = MarketCategoryProduct::find()->andWhere(['category_id' => $catVal['id'], 'market_id' => $marketId, 'product_id' => $cataVal['id'], 'is_inserted' => 1])->asArray()->all();
                         if (!empty($market_brand_repository[0])) {
@@ -644,38 +642,39 @@ class StoresConfigController extends BaseApiController {
                             $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey]['is_inserted'] = 0;
                         }
                     }
+
                     $filters['category_id'] = $catVal['id'];
                     $filters['market_id'] = $marketId;
-                    $filters['limit'] = Yii::$app->params['pageSize'];
+                    $filters['limit'] = '';
+
+                    //Brand list
                     $brandList = $searchModel->searchMarketBrand($filters);
-                    //print_r($brandList->allModels);
                     foreach ($brandList->allModels as $brandKey => $brandVal) {
-                        //$market_brand_repository = MarketCategoryProduct::findOne(['category_id' => $catVal['id'], 'market_id' => $marketId, 'product_id' => $cataVal['id'],'is_inserted' => 1]);
-                        //print_r($market_brand_repository);exit;
+                        
                         $returnDatas['market']['category'][$catKey]['brand'][$brandKey] = $brandVal;
                         $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['image'] = isset($brandVal['image']) ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_BRANDS_IMAGES . $brandVal['image'] : '';
                         $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['color_code'] = isset($brandVal['color_code']) && ($brandVal['color_code'] != '') ? $brandVal['color_code'] : COLOR_CODE;
-
+                        
+                        //Set brand shares value
                         $marketBrandShares = MarketBrands::find()->select(['shares'])->andWhere(['market_id' => $marketId, 'brand_id' => $brandVal['id'], 'category_id' => $catVal['id']])->orderBy(['reorder_id' => SORT_ASC])->asArray()->all();
                         if ($marketBrandShares) {
                             foreach ($marketBrandShares as $marketBrandSharesKey => $marketBrandSharesVal) {
                                 $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['shares'] = $marketBrandSharesVal['shares'];
                             }
                         }
+                        
                         $filters['market_id'] = $marketId;
                         $filters['category_id'] = $catVal['id'];
                         $filters['brand_id'] = $brandVal['id'];
                         $productVarietalSearchModel = new ProductVarietalSearch();
                         $productVarietalDataProvider = $productVarietalSearchModel->searchVariental($filters);
-                        
+                        foreach ($productVarietalDataProvider->allModels as $productVarietalKey => $productVarietalVal) {
+                               $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey] = $productVarietalVal;
+                        }
                     }
                 }
             }
         }
-     //   exit;
-//        print_r($returnDatas);
-//        exit;
-
         return $returnDatas;
     }
 

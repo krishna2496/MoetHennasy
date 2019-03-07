@@ -95,11 +95,12 @@ class StoreConfigurationSearch extends StoreConfiguration
     }
     
     public function brandProductList($marketId) {
-       
-         $marketId = '';
-        if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
-            $marketId = $currentUser->market_id;
-        }
+
+//        $marketId = '';
+//        if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
+//            $marketId = $currentUser->market_id;
+//        }
+
 
         $returnDatas = $newProductArry = $marketVarientalProduct = $brandVariental = $brandVarientalArr = array();
         $repository = new MarketBrandsRepository();
@@ -240,5 +241,6 @@ class StoreConfigurationSearch extends StoreConfiguration
         }
         }
         return $returnDatas;
+        
     }
 }

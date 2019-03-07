@@ -57,6 +57,18 @@ class ProductVarietalSearch extends ProductCategories {
         $brandVarientalData = array();
         $productVarietalRepository = new ProductVarietalRepository();
         $productVarietalRepository = $productVarietalRepository->listingVariental($params);
+        $removeDataId = array();
+        $product = new ProductVarietalRepository();
+        $productData =  $product->productVariental($params);
+        if($productData['status']['success'] == 1){
+            if($productData['data']['catalogue']){
+                foreach ($productData['data']['catalogue'] as $k => $v){
+
+                    $removeDataId[$v['product_variental']] =  $v['product_variental'];
+                }
+            }
+        }
+        
         $max = 1;
         if ($productVarietalRepository) {
             $productVarietalRepositoryNew = new ProductVarietalRepository();
@@ -66,7 +78,7 @@ class ProductVarietalSearch extends ProductCategories {
             if ($marketBrandVriental['status']['success'] == 1) {
                 if ($marketBrandVriental['data']['productVarietal']) {
                     foreach ($marketBrandVriental['data']['productVarietal'] as $key => $value) {
-
+                      
                         $brandVarientalData[$value['verietal_id']]['reorder_id'] = $value['reorder_id'];
                        
                     }
@@ -78,11 +90,15 @@ class ProductVarietalSearch extends ProductCategories {
         if ($productVarietalRepository['status']['success'] == 1) {
             if ($productVarietalRepository['data']['productVarietal']) {
                 foreach ($productVarietalRepository['data']['productVarietal'] as $key => $value) {
-                    $temp = $value;
-                    $temp['name'] = ucfirst($temp['name']);
-                    $temp['reorder_id'] = isset($brandVarientalData[$value['id']]) ? $brandVarientalData[$value['id']]['reorder_id']!= NULL ? $brandVarientalData[$value['id']]['reorder_id'] :$max++ : $max++;
-                    $temp['shares'] = isset($brandVarientalData[$value['id']]['shares']) ? $brandVarientalData[$value['id']]['shares'] : 0;
-                    $varietalList[] = $temp;
+                    if(in_array($value['id'], $removeDataId)){
+                        $temp = $value;
+                        $temp['name'] = ucfirst($temp['name']);
+                        $temp['reorder_id'] = isset($brandVarientalData[$value['id']]) ? $brandVarientalData[$value['id']]['reorder_id']!= NULL ? $brandVarientalData[$value['id']]['reorder_id'] :$max++ : $max++;
+                        $temp['shares'] = isset($brandVarientalData[$value['id']]['shares']) ? $brandVarientalData[$value['id']]['shares'] : 0;
+                        $varietalList[] = $temp;
+                    }else{
+                        unset($productVarietalRepository['data']['productVarietal'][$key]);
+                    }
                 }
             }
         }

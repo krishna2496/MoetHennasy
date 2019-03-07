@@ -65,7 +65,7 @@ class MarketBrandsRepository extends Repository {
         $flag=1;
         $marketSegmentData = $data['brand_id'];
         $marketShareSegmentData = $data['shares'];
-        
+        MarketBrands::deleteAll(['market_id'=>$data['market_id'],'category_id'=>$data['category_id']]);
         foreach ($marketSegmentData as $marketSKey=>$value) {
             $market_brand_data = MarketBrands::findOne(['market_id'=>$data['market_id'],'brand_id'=>$value,'category_id'=>$data['category_id']]);
             if($market_brand_data){
@@ -84,6 +84,7 @@ class MarketBrandsRepository extends Repository {
         
         foreach ($data['brand_verietal'] as $brandVerietalKey=>$brandVerietalVal){
             $brandVerietalVal = (array)$brandVerietalVal;
+            
             foreach ($brandVerietalVal as $k => $v){
                $market_brands_verietals = MarketBrandsVerietals::findOne(['market_id'=>$data['market_id'],'brand_id'=>$value,'category_id'=>$data['category_id'],'verietal_id'=>$v->id]);
                if($market_brands_verietals){

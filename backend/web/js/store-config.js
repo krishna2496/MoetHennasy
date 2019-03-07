@@ -525,7 +525,6 @@ jQuery(document).ready(function ()
             {
                 if (index == 1)
                 {
-                   
                     url = rackFromURL;
                     $.ajax({
                         type: 'POST',
