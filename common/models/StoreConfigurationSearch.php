@@ -96,16 +96,20 @@ class StoreConfigurationSearch extends StoreConfiguration
     
     public function brandProductList($marketId) {
        
-        $returnDatas = $newProductArry = $marketVarientalProduct = $brandVariental = array();
+         $marketId = '';
+        if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
+            $marketId = $currentUser->market_id;
+        }
+
+        $returnDatas = $newProductArry = $marketVarientalProduct = $brandVariental = $brandVarientalArr = array();
         $repository = new MarketBrandsRepository();
 
         if ($marketId != '') {
-            $data['market_id'] = $marketId;
+            $data['market_id'] =$marketId;
             $returnData = $repository->listing($data);
 
             $productsData = $returnData['data']['market_product'];
-            $brand_variental = $returnData['data']['brand_varietal'];
-             
+
             if ($productsData) {
                 foreach ($productsData as $key => $value) {
                     $newProductArry[$value['category_id']] = $value['category']['marketCategoryProduct'];
@@ -129,9 +133,19 @@ class StoreConfigurationSearch extends StoreConfiguration
                 }
             }
 
+            $brandVariental = MarketBrandsVerietals::find()->andWhere(['market_id' => $marketId])->asArray()->all();
+            foreach ($brandVariental as $brandVarientalKey => $brandVarientalVal) {
+                if ($brandVarientalVal['shares'] != null) {
+                    $brandVarientalArr[$brandVarientalVal['category_id']][$brandVarientalVal['brand_id']][] = $brandVarientalVal;
+                }else{
+                    $brandVarientalVal['shares'] = 0;
+                    $brandVarientalArr[$brandVarientalVal['category_id']][$brandVarientalVal['brand_id']][] = $brandVarientalVal;
+                }
+            }
+
             $collectCatId = $collectMarketId = [];
             if (!empty($returnData['data']['market_brands'])) {
-                
+
                 if ($returnData['data']['market_varietal']) {
                     foreach ($returnData['data']['market_varietal'] as $k => $v) {
                         $marketVarientalProduct[$v['product_category_id']][$v['brand_id']][$v['product_variental']][] = $v;
@@ -139,7 +153,7 @@ class StoreConfigurationSearch extends StoreConfiguration
                 }
 
                 foreach ($returnData['data']['market_brands'] as $key => $value) {
-                   
+
                     $tempValue = $value;
                     unset($tempValue['category']);
                     unset($tempValue['brand']);
@@ -148,7 +162,6 @@ class StoreConfigurationSearch extends StoreConfiguration
                         $returnDatas["market"] = $tempValue;
                         $collectMarketId[] = $value['market_id'];
                     }
-
 
                     $image = $value['brand']['image'];
                     unset($value['brand']['created_by']);
@@ -167,49 +180,65 @@ class StoreConfigurationSearch extends StoreConfiguration
                             $value['brand']['shares'] = $v['shares'];
                         }
                     }
-                    //print_r($marketBrandShares); exit;
                     $value['brand']['reorder_id'] = $value['reorder_id'];
+
+                    $value['brand']['marketBrandsVerietals'] = isset($brandVarientalArr[$value['category']['id']][$value['brand']['id']]) ? $brandVarientalArr[$value['category']['id']][$value['brand']['id']] : '';
+
                     $variental = $value['brand']['marketBrandsVerietals'];
-//                                    echo '<pre>';
-//                                    print_r($value['category']['id']);exit;
-                     $brandVariental = MarketBrandsVerietals::find()->andWhere(['market_id' => $value['market_id'], 'brand_id' => $value['brand']['id'], 'category_id' => $value['category']['id']])->asArray()->all();
 
-                    //$brandVariental = MarketBrandsVerietals::find()->select(['verietal_id'])->andWhere(['market_id' => $value['market_id'], 'brand_id' => $value['brand']['id'], 'category_id' => $value['category']['id']]);
-                    //print_r($variental);exit;
-                    if ($brandVariental) {
-                        foreach ($brandVariental as $k => $v) {
-                            $value['brand']['marketBrandsVerietals'][$value['brand']['id']][$k] = $v;
+                    if (!empty($variental)) {
+                        foreach ($variental as $vKey => $vVal) {
+                            if (isset($value['brand']['marketBrandsVerietals'][$vKey])) {
+                                $value['brand']['marketBrandsVerietals'][$vKey]['product'] = isset($marketVarientalProduct[$value['category']['id']][$value['brand']['id']][$vVal['verietal_id']]) ? $marketVarientalProduct[$value['category']['id']][$value['brand']['id']][$vVal['verietal_id']] : '';
+                            }
                         }
                     }
-                   // print_r($value); exit;
-                    foreach ($variental as $vKey => $vVal) {
-                        if (isset($value['brand']['marketBrandsVerietals'][$vKey])) {
-                            $value['brand']['marketBrandsVerietals'][$value['brand']['id']][$vKey]['product'] = isset($marketVarientalProduct[$value['category']['id']][$value['brand']['id']][$vVal['verietal_id']]) ? $marketVarientalProduct[$value['category']['id']][$value['brand']['id']][$vVal['verietal_id']] : '';
-                        }
-                    }
-  
-                    $product_data = '';
 
-
-
+                    //$product_data = '';
                     unset($value['brand']['product']);
 
                     if (!in_array($value['category']['id'], $collectCatId)) {
                         // $value['category']['brand'][] = $value['brand'];
                         $value['category']['top_shelf_product'] = isset($newProductFinalArry[$value['category']['id']]) ? $newProductFinalArry[$value['category']['id']] : '';
+                       
                         $returnDatas["market"]['category'][] = $value['category'];
-
-
+                        if(isset($value['category']['id'])){
                         $collectCatId[] = $value['category']['id'];
+                        }
                     }
-
-
+                    if(isset($value['category']['id'])){
                     $key = array_search($value['category']['id'], array_column($returnDatas["market"]['category'], 'id'));
+                    
                     $returnDatas["market"]['category'][$key]['brand'][] = $value['brand'];
+                    }
                 }
             }
         }
-        
+        //if (!empty($returnDatas)) {
+        unset($returnDatas['market']['brand_id']);
+        unset($returnDatas['market']['reorder_id']);
+        unset($returnDatas['market']['category_id']);
+        unset($returnDatas['market']['reorder_id']);
+        unset($returnDatas['market']['created_by']);
+        unset($returnDatas['market']['updated_by']);
+        unset($returnDatas['market']['deleted_by']);
+        unset($returnDatas['market']['created_at']);
+        unset($returnDatas['market']['updated_at']);
+        unset($returnDatas['market']['deleted_at']);
+        unset($returnDatas['market']['shares']);
+          
+        if($returnDatas){
+        foreach ($returnDatas['market']['category'] as $marketCatKey => $marketCatVal) {
+
+            unset($returnDatas['market']['category'][$marketCatKey]['parent_id']);
+            unset($returnDatas['market']['category'][$marketCatKey]['created_by']);
+            unset($returnDatas['market']['category'][$marketCatKey]['updated_by']);
+            unset($returnDatas['market']['category'][$marketCatKey]['deleted_by']);
+            unset($returnDatas['market']['category'][$marketCatKey]['created_at']);
+            unset($returnDatas['market']['category'][$marketCatKey]['updated_at']);
+            unset($returnDatas['market']['category'][$marketCatKey]['deleted_at']);
+        }
+        }
         return $returnDatas;
     }
 }
