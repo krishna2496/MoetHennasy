@@ -472,8 +472,7 @@ class StoreConfigurationController extends ProductRuleController {
                 $filterProduct['brand_id'] = $_SESSION['config']['brands'];
             }
         
-            $searchModel = new CataloguesSearch();
-            $dataProvider = $searchModel->searchProduct($filterProduct);
+            
 
             //category 
             $marketBrandModel = new StoreConfigurationSearch();
@@ -482,7 +481,7 @@ class StoreConfigurationController extends ProductRuleController {
             
             $wholeData = array();
             if(isset($marketBrand) && (!empty($marketBrand))){
-                $wholeData = $marketBrand['market']['category'];
+                $wholeData =  $marketBrand['market']['category'];
 
                 if($categoryId != 0){
                     $key = array_search($categoryId, array_column($wholeData, 'id'));
@@ -492,8 +491,12 @@ class StoreConfigurationController extends ProductRuleController {
                 }
                 
             }else{
-                exit("sdg");
+                exit();
             }
+            //variental product
+            $searchModel = new CataloguesSearch();
+            $dataProvider = $searchModel->searchProductData($wholeData);
+            
             return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -505,7 +508,8 @@ class StoreConfigurationController extends ProductRuleController {
                     'reviewFlag' => 0,
                     'brandBackground' => '',
                     'wholeData' => $wholeData,
-                    'categoryId' => $categoryId
+                    'categoryId' => $categoryId,
+                    'market_id' => $stores['market_id']
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -520,26 +524,27 @@ class StoreConfigurationController extends ProductRuleController {
         $_SESSION['config']['width_of_shelves'] = $post['width_of_shelves'];
         $_SESSION['config']['depth_of_shelves'] = $post['depth_of_shelves'];
         $_SESSION['config']['brands'] = $post['brands'];
-
+        $_SESSION['config']['market_id'] = $post['market_id_hidden'];
+        $_SESSION['config']['category_id'] = $post['category_id_hidden'];
         $_SESSION['config']['ratio'] = $post['ratio'];
         $_SESSION['config']['display_name'] = $post['display_name'];
-
-        $searchModel = new BrandRepository();
+     
         $filters['brand_id'] = $_SESSION['config']['brands'];
-        $dataProvider = $searchModel->listing($filters);
-       
+      
         $marketBrandModel = new StoreConfigurationSearch();
-        $stores = Stores::find()->where(['id' => $id])->asArray()->one();
-        $stores['market_id'] = 2;
-        $marketBrand = $marketBrandModel->brandProductList($stores['market_id']);
-            
-        $brandsData = array();
-        if ($dataProvider['status']['success'] == 1 && (!empty($dataProvider['data']['brand']))) {
-            $brandsData = $dataProvider['data']['brand'];
+        $market_id = 2;
+        $marketBrand = $marketBrandModel->brandProductList($market_id);
+        $brand = $marketBrand['market']['category'][0]['brand'];
+        
+        $newBrandData = array();
+        foreach ($brand as $k => $v){
+            if(in_array($v['id'], $filters['brand_id'])){
+                $newBrandData[$v['id']] = $v;
+            }
         }
-        $_SESSION['config']['brands_data'] = $brandsData;
-        echo '<pre>';
-        print_r($_SESSION['config']);exit;
+        $_SESSION['config']['top_shelf'] = $marketBrand['market']['category'][0]['top_shelf_product'];
+        $_SESSION['config']['brands_data'] = $newBrandData;
+        
     }
 
     public function actionSaveProductData() {

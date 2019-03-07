@@ -1,15 +1,12 @@
 <?php
 
 $params = array_merge(
-    require(__DIR__ . '/../../common/config/params.php'),
-    require(__DIR__ . '/../../common/config/params-local.php'),
-    require(__DIR__ . '/params.php'),
-    require(__DIR__ . '/params-local.php')
+        require(__DIR__ . '/../../common/config/params.php'), require(__DIR__ . '/../../common/config/params-local.php'), require(__DIR__ . '/params.php'), require(__DIR__ . '/params-local.php')
 );
 
 return [
     'id' => 'app-api',
-    'basePath' => dirname(__DIR__),    
+    'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'modules' => [
         'v1' => [
@@ -17,29 +14,29 @@ return [
             'class' => 'api\modules\v1\Module'
         ]
     ],
-    'components' => [  
-        'request'=>[
+    'components' => [
+        'request' => [
             'csrfParam' => '_csrf-api',
             'class' => 'common\components\Request',
-            'web'=> '/api/web',
+            'web' => '/api/web',
             'adminUrl' => '/api',
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
             ]
-        ], 
+        ],
         'response' => [
             'class' => 'yii\web\Response',
             'on beforeSend' => function ($event) {
                 $response = $event->sender;
                 if (!isset($response->data['isApi'])) {
                     $response->data = [
-                        'status'=> [
+                        'status' => [
                             'success' => $response->isSuccessful ? 1 : 0,
                             'message' => isset($response->data['message']) ? $response->data['message'] : '',
                         ],
                         'data' => $response->data,
                     ];
-                    if($response->statusCode == 401){
+                    if ($response->statusCode == 401) {
                         $response->data['status']['success'] = -1;
                     }
                     $response->statusCode = 200;
@@ -47,8 +44,8 @@ return [
                     unset($response->data['isApi']);
                 }
             },
-            'format' =>  \yii\web\Response::FORMAT_JSON
-        ],  
+            'format' => \yii\web\Response::FORMAT_JSON
+        ],
         'user' => [
             'identityClass' => 'common\models\User',
             'enableSession' => false,
@@ -57,7 +54,7 @@ return [
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
-                [
+                    [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
@@ -71,7 +68,7 @@ return [
                 'host' => 'smtp.gmail.com',
                 'username' => 'mytest225@gmail.com',
                 'password' => 'tatva123',
-                'port' => '587',//587,465,
+                'port' => '587', //587,465,
                 'encryption' => 'tls',
             ],
         ],
@@ -113,7 +110,8 @@ return [
                 'POST v1/stores-config/listing' => 'v1/stores-config/listing',
                 'POST v1/stores-config/rating' => 'v1/stores-config/rating',
                 'POST v1/stores-config/brand-product-list' => 'v1/stores-config/brand-product-list',
-            ],        
+                'POST v1/stores-config/new-brand-product-list' => 'v1/stores-config/new-brand-product-list',
+            ],
         ],
         'i18n' => [
             'translations' => [

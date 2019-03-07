@@ -88,11 +88,12 @@ class CataloguesSearch extends Catalogues {
             if ($resultUserList['data']['catalogues']) {
               
                 foreach ($resultUserList['data']['catalogues'] as $key => $value) {
+
                     $temp = $value;
                     $temp['marketName'] = ucfirst($temp['market']['title']);
                     $temp['brandName'] = ucfirst($temp['brand']['name']);
                     $temp['productCategory'] = ucfirst($temp['productCategory']['name']);
-                    $temp['variental'] = ucfirst($temp['productCategory']['name']);
+                    $temp['variental'] = isset($temp['productCategory']['name']) ? ucfirst($temp['productCategory']['name']) : '';
                     $temp['sku']= ucfirst($temp['sku']);
                     $userList[] = $temp;
                 }
@@ -139,6 +140,87 @@ class CataloguesSearch extends Catalogues {
         }
         
         return $dataProvider;
+    }
+    public function searchProductData($data) {
+        
+        $topShelfProduct = $otherProduct = $productCategory = $productType = array();
+        
+        $productCategory = ProductCategories::find()->asArray()->all();
+        $productType = ProductTypes::find()->asArray()->all();
+        echo '<pre>';
+        print_r($productCategory);
+        print_r($productType);
+        if(isset($data['0']['top_shelf_product'])){
+            $topShelfProduct = $data['0']['top_shelf_product'];
+        }
+        
+        if(isset($data['0']['brand'])){
+            $brandData = $data['0']['brand'];
+            foreach ($brandData as $brandK => $brandV){
+                $varientalData = $brandV['marketBrandsVerietals'];
+                if(isset($varientalData) && (!empty($varientalData))){
+                    foreach ($varientalData as $varientalK => $varientalV){
+                        $product = $varientalV["product"];
+                        if(isset($product) && (!empty($product))){
+                            foreach ($product as $pK => $pV){
+                                
+                                print_r($pV);
+                                exit;
+                                $otherProduct[] = $pV;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        echo '<pre>';
+        print_r($otherProduct);exit;
+
+        $otherProductData = new ArrayDataProvider([
+            'allModels' => $otherProduct,
+            'pagination' => [
+                'pageSize' => $params['limit'],
+            ],
+            'sort' => [
+                'attributes' =>
+                    [
+                        'reorder_id'  ,
+                        'sku',
+                        'ean',
+                        'short_name',
+                        'productCategory',
+                        'marketName',
+                        'brandName',
+                        'price'
+                    ],
+            ]
+        ]);
+        
+//        $otherProductData = new ArrayDataProvider([
+//            'allModels' => $otherProduct,
+//            'pagination' => [
+//                'pageSize' => $params['limit'],
+//            ],
+//            'sort' => [
+//                'attributes' =>
+//                    [
+//                        'reorder_id'  ,
+//                        'sku',
+//                        'ean',
+//                        'short_name',
+//                        'productCategory',
+//                        'marketName',
+//                        'brandName',
+//                        'price'
+//                    ],
+//            ]
+//        ]);
+       
+//        if (isset($params['selection']) && ($params['selection'] != '')) {
+//            $dataProvider->pagination->params = ['selection' => $params['selection']];
+//        }
+        
+        return $otherProductData;
     }
     
     public function searchTopsSelf($params) {

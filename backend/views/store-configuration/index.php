@@ -20,7 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'reviewFlag' => $reviewFlag,
                 'brandBackground' => $brandBackground,
                 'wholeData' => $wholeData,
-                'categoryId' => $categoryId
+                'categoryId' => $categoryId,
+                'market_id' => $market_id
                 
     ]) ?>
 
