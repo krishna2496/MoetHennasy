@@ -71,7 +71,9 @@ class CataloguesRepository extends Repository {
         if (isset($data['top_shelf']) && ($data['top_shelf'] == 1)) {
              $query->andWhere(['top_shelf'=>1]);
         }
-
+        if (isset($data['category_id']) && ($data['category_id'] != '')) {
+             $query->andWhere(['product_category_id'=>$data['category_id']]);
+        }
         $result = $query->asArray();
         $data = array();
         $data['catalogues'] = $query->asArray()->all();

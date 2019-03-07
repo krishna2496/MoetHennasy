@@ -147,9 +147,7 @@ class CataloguesSearch extends Catalogues {
         
         $productCategory = ProductCategories::find()->asArray()->all();
         $productType = ProductTypes::find()->asArray()->all();
-        echo '<pre>';
-        print_r($productCategory);
-        print_r($productType);
+        
         if(isset($data['0']['top_shelf_product'])){
             $topShelfProduct = $data['0']['top_shelf_product'];
         }
@@ -163,9 +161,14 @@ class CataloguesSearch extends Catalogues {
                         $product = $varientalV["product"];
                         if(isset($product) && (!empty($product))){
                             foreach ($product as $pK => $pV){
-                                
-                                print_r($pV);
-                                exit;
+//                                echo '<pre>';
+//                                print_r($pV);exit;
+                                $category_id = $pV['product_category_id'];
+                                $product_type = $pV['product_type_id'];
+                                $ckey = array_search($pV['product_category_id'], array_column($productCategory, 'id'));
+                                $pKey = array_search($pV['product_type_id'], array_column($productType, 'id'));
+                                $pV['product_category_name'] = isset($productCategory[$ckey]['name']) ? $productCategory[$ckey]['name'] : '';
+                                $pV['product_type_name'] = isset($productType[$pKey]['title']) ? $productType[$pKey]['title'] : '';
                                 $otherProduct[] = $pV;
                             }
                         }
@@ -173,13 +176,11 @@ class CataloguesSearch extends Catalogues {
                 }
             }
         }
-        echo '<pre>';
-        print_r($otherProduct);exit;
-
+       
         $otherProductData = new ArrayDataProvider([
             'allModels' => $otherProduct,
             'pagination' => [
-                'pageSize' => $params['limit'],
+                'pageSize' =>10,
             ],
             'sort' => [
                 'attributes' =>
@@ -220,6 +221,35 @@ class CataloguesSearch extends Catalogues {
 //            $dataProvider->pagination->params = ['selection' => $params['selection']];
 //        }
         
+        return $otherProductData;
+    }
+    
+     public function searchTopShelfProduct($data) {
+        
+        $topShelfProduct =  array();
+        
+        $productCategory = Catalogues::find(['top_shelf' => 1,'product_category_id'=>$data['category_id']])->joinWith(['productCategory','productType'])->orderBy('reorder_id')->asArray()->all();
+       
+        $otherProductData = new ArrayDataProvider([
+            'allModels' => $productCategory,
+            'pagination' => [
+                'pageSize' =>10,
+            ],
+            'sort' => [
+                'attributes' =>
+                    [
+                        'reorder_id'  ,
+                        'sku',
+                        'ean',
+                        'short_name',
+                        'productCategory',
+                        'marketName',
+                        'brandName',
+                        'price'
+                    ],
+            ]
+        ]);
+
         return $otherProductData;
     }
     

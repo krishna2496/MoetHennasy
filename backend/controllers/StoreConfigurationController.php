@@ -496,6 +496,10 @@ class StoreConfigurationController extends ProductRuleController {
             //variental product
             $searchModel = new CataloguesSearch();
             $dataProvider = $searchModel->searchProductData($wholeData);
+            //top shelf product
+            $searchModel = new CataloguesSearch();
+            $filterTopShelf['category_id'] = $categoryId;
+            $topDataProvider = $searchModel->searchTopShelfProduct($filterTopShelf);
             
             return $this->render('index', [
                     'searchModel' => $searchModel,
@@ -509,7 +513,8 @@ class StoreConfigurationController extends ProductRuleController {
                     'brandBackground' => '',
                     'wholeData' => $wholeData,
                     'categoryId' => $categoryId,
-                    'market_id' => $stores['market_id']
+                    'market_id' => $stores['market_id'],
+                    'topDataProvider' => $topDataProvider
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

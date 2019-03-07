@@ -21,7 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'brandBackground' => $brandBackground,
                 'wholeData' => $wholeData,
                 'categoryId' => $categoryId,
-                'market_id' => $market_id
+                'market_id' => $market_id,
+                'topDataProvider' => $topDataProvider
                 
     ]) ?>
 
