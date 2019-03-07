@@ -28,6 +28,8 @@ $count = count($dataProvider->allModels);
 $totalBranSharesCount = array_sum($selectedShares);
 $allData = $dataProvider->allModels;
 $sharesData= array();
+//echo '<pre>';
+//print_r($finalViertalArry);exit;
 //foreach ($allData as $k => $v){
 //    foreach ($v['marketBrands'] as $key=>$val){
 //     
@@ -61,8 +63,8 @@ $sharesData= array();
                                 <div class="row">
                                     <?= Html::beginForm($formUrl, 'post', ['data-pjax' => '', 'id' => 'search-users']); ?>
                                     <div class="col-md-12">
-                                        <?php echo Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?> 
-                                        <span id="searchClear" class="glyphicon glyphicon-remove"></span>
+                                        <?php // echo Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?> 
+                                        <!--<span id="searchClear" class="glyphicon glyphicon-remove"></span>-->
                                     </div>
 
                                     <?= Html::endForm(); ?>

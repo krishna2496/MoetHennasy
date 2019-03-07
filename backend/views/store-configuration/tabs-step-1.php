@@ -125,9 +125,10 @@ $session = Yii::$app->session;
 								<label class="barnd-select-msg">Select the brands present on the shelf <sup class="text-red">*</sup> </label>
 								<ul class="brand-list list-unstyled">
 									<?php
-									if (!empty($brand))
+									if (!empty($wholeData[0]['brand']))
 									{
-										foreach ($brand as $key => $value) {
+										foreach ($wholeData[0]['brand'] as $key => $value) {
+                                                                                   if($value['shares'] != 0) { 
 											?>
 											<li>
 												<div class="checkbox"> 
@@ -138,7 +139,7 @@ $session = Yii::$app->session;
 												</div>
 											</li>
 											<?php
-										}
+                                                                                }}
 									}
 									?>
 								</ul>

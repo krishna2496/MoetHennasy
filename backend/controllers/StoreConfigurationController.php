@@ -99,8 +99,7 @@ class StoreConfigurationController extends ProductRuleController {
         }
         return $this->redirect(['store-configuration/listing/' . $storeId]);
     }
-    
-    
+
     public function actionReviewStore($id) {
         $storeConfig = new StoreConfigRepository();
         $filter = $feedBackResponse = array();
@@ -480,6 +479,7 @@ class StoreConfigurationController extends ProductRuleController {
             $marketBrandModel = new StoreConfigurationSearch();
             $stores['market_id'] = 2;
             $marketBrand = $marketBrandModel->brandProductList($stores['market_id']);
+            
             $wholeData = array();
             if(isset($marketBrand) && (!empty($marketBrand))){
                 $wholeData = $marketBrand['market']['category'];
@@ -488,13 +488,9 @@ class StoreConfigurationController extends ProductRuleController {
                     $key = array_search($categoryId, array_column($wholeData, 'id'));
                     $newData =  $wholeData[$key];
                     $wholeData = array();
-                    $wholeData = $newData;
-                  
-//                   $wholeData = $newwholeData;
-                    echo '<pre>';
-                   print_r($wholeData);
-                   exit;
+                    $wholeData[$key] = $newData;
                 }
+                
             }else{
                 exit("sdg");
             }
@@ -518,7 +514,7 @@ class StoreConfigurationController extends ProductRuleController {
 
     public function actionSaveData() {
         $post = Yii::$app->request->post();
-
+        
         $_SESSION['config']['no_of_shelves'] = $post['no_of_shelves'];
         $_SESSION['config']['height_of_shelves'] = $post['height_of_shelves'];
         $_SESSION['config']['width_of_shelves'] = $post['width_of_shelves'];
@@ -531,11 +527,19 @@ class StoreConfigurationController extends ProductRuleController {
         $searchModel = new BrandRepository();
         $filters['brand_id'] = $_SESSION['config']['brands'];
         $dataProvider = $searchModel->listing($filters);
+       
+        $marketBrandModel = new StoreConfigurationSearch();
+        $stores = Stores::find()->where(['id' => $id])->asArray()->one();
+        $stores['market_id'] = 2;
+        $marketBrand = $marketBrandModel->brandProductList($stores['market_id']);
+            
         $brandsData = array();
         if ($dataProvider['status']['success'] == 1 && (!empty($dataProvider['data']['brand']))) {
             $brandsData = $dataProvider['data']['brand'];
         }
         $_SESSION['config']['brands_data'] = $brandsData;
+        echo '<pre>';
+        print_r($_SESSION['config']);exit;
     }
 
     public function actionSaveProductData() {

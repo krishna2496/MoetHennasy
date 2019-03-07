@@ -447,9 +447,7 @@ class StoresConfigController extends BaseApiController {
      * action brand-product-list used get details of user such as different category,products,product varientals
      */
     public function actionBrandProductList() {
-
-        $currentUser = CommonHelper::getUser();
-        $marketId = '';
+             $marketId = '';
         if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
             $marketId = $currentUser->market_id;
         }
@@ -458,7 +456,7 @@ class StoresConfigController extends BaseApiController {
         $repository = new MarketBrandsRepository();
 
         if ($marketId != '') {
-            $data['market_id'] = $marketId;
+            $data['market_id'] =$marketId;
             $returnData = $repository->listing($data);
 
             $productsData = $returnData['data']['market_product'];
@@ -554,10 +552,15 @@ class StoresConfigController extends BaseApiController {
                         // $value['category']['brand'][] = $value['brand'];
                         $value['category']['top_shelf_product'] = isset($newProductFinalArry[$value['category']['id']]) ? $newProductFinalArry[$value['category']['id']] : '';
                         $returnDatas["market"]['category'][] = $value['category'];
+                        if(isset($value['category']['id'])){
                         $collectCatId[] = $value['category']['id'];
+                        }
                     }
+                    if(isset($value['category']['id'])){
                     $key = array_search($value['category']['id'], array_column($returnDatas["market"]['category'], 'id'));
+                    
                     $returnDatas["market"]['category'][$key]['brand'][] = $value['brand'];
+                    }
                 }
             }
         }
@@ -573,8 +576,8 @@ class StoresConfigController extends BaseApiController {
         unset($returnDatas['market']['updated_at']);
         unset($returnDatas['market']['deleted_at']);
         unset($returnDatas['market']['shares']);
-        //  print_r($returnDatas); exit;
-
+          
+        if($returnDatas){
         foreach ($returnDatas['market']['category'] as $marketCatKey => $marketCatVal) {
 
             unset($returnDatas['market']['category'][$marketCatKey]['parent_id']);
@@ -585,7 +588,9 @@ class StoresConfigController extends BaseApiController {
             unset($returnDatas['market']['category'][$marketCatKey]['updated_at']);
             unset($returnDatas['market']['category'][$marketCatKey]['deleted_at']);
         }
+        }
         return $returnDatas;
+        
     }
 
 }

@@ -166,14 +166,16 @@ class ApplyController extends MarketController
         $selectedShares = [];
         $marketViertal = $finalViertalArry = [];
         $ruleModel = MarketBrands::find()->select(['brand_id','reorder_id', 'shares'])->andWhere(['market_id' => $id,'category_id'=>$category_id])->orderBy(['reorder_id'=>SORT_ASC])->asArray()->all();
+        
         if($ruleModel){
             foreach ($ruleModel as $key=>$value){
                   $selected[$key]  = $value['brand_id']; 
                   $selectedShares[$value['brand_id']]  = $value['shares']; 
              }
         }
+        
         $marketBrandViertal = MarketBrandsVerietals::find()->select(['brand_id', 'verietal_id','shares'])->andWhere(['market_id' => $id,'category_id'=>$category_id])->asArray()->all();
-       
+
         if($marketBrandViertal){
             foreach ($marketBrandViertal as $key=>$value){
                 $marketViertal[$key]['brand_id']  = $value['brand_id']; 
@@ -201,6 +203,7 @@ class ApplyController extends MarketController
         if(Yii::$app->request->post('limit')){
             $filters['limit'] = Yii::$app->request->post('limit');
         }
+        
         if(Yii::$app->request->post('search')){
             $filters['search'] = Yii::$app->request->post('search');
         }
@@ -221,6 +224,7 @@ class ApplyController extends MarketController
                 }
                 $ruleData['category_id'] = $brandId;
             }
+          
             $marketRepository = new \common\repository\MarketBrandsRepository;
             $returnData = $marketRepository->createBrand($ruleData);
             $postData = Yii::$app->request->post('selection');
