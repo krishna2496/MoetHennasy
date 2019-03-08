@@ -26,6 +26,7 @@ class AppAsset extends AssetBundle
         'theme/bower_components/bootstrap-daterangepicker/daterangepicker.css',        
         'theme/plugins/bootstrap-toggle/bootstrap-toggle.min.css',
         'css/custom.css',
+        'css/tablednd.css'
       
     ];
     public $js = [

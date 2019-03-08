@@ -141,7 +141,7 @@ class CataloguesSearch extends Catalogues {
         
         return $dataProvider;
     }
-    public function searchProductData($data) {
+    public function searchProductData($data,$filtetOtherProductData = array()) {
         
         $topShelfProduct = $otherProduct = $productCategory = $productType = array();
         
@@ -151,10 +151,20 @@ class CataloguesSearch extends Catalogues {
         if(isset($data['0']['top_shelf_product'])){
             $topShelfProduct = $data['0']['top_shelf_product'];
         }
-        
+//        echo '<pre>';
+//        print_r($filtetOtherProductData);
+//        print_r($data['0']['brand']);exit;
         if(isset($data['0']['brand'])){
             $brandData = $data['0']['brand'];
             foreach ($brandData as $brandK => $brandV){
+                if(isset($filtetOtherProductData) && (!empty($filtetOtherProductData))){
+                    if(in_array($brandV['id'], $filtetOtherProductData['brands'])){
+//                        echo 'in'.$brandV['id'];
+                    }else{
+//                        echo 'else'.$brandV['id'];exit;
+                        continue;
+                    }
+                }
                 $varientalData = $brandV['marketBrandsVerietals'];
                 if(isset($varientalData) && (!empty($varientalData))){
                     foreach ($varientalData as $varientalK => $varientalV){
@@ -228,8 +238,8 @@ class CataloguesSearch extends Catalogues {
         
         $topShelfProduct =  array();
         
-        $productCategory = Catalogues::find(['top_shelf' => 1,'product_category_id'=>$data['category_id']])->joinWith(['productCategory','productType'])->orderBy('reorder_id')->asArray()->all();
-       
+        $productCategory = Catalogues::find()->andWhere(['top_shelf' => 1,'product_category_id'=>$data['category_id']])->joinWith(['productCategory','productType'])->orderBy('reorder_id')->asArray()->all();
+        
         $otherProductData = new ArrayDataProvider([
             'allModels' => $productCategory,
             'pagination' => [

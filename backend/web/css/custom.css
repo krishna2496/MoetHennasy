@@ -1382,6 +1382,8 @@
 
 #employee table th a{ color: #fff !important; }
 #employee table th a.asc::after, a.desc::after { color: #D9CAAF !important; }
+#topShelf table th a{ color: #fff !important; }
+#topShelf table th a.asc::after, a.desc::after { color: #D9CAAF !important; }
 #tab-step-2 .dataTables_paginate .pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover { background-color: #9c8057; border-color: #9c8057;}
 #tab-step-2 .pagination > li > a, .pagination > li > span {padding: 6px 10px;}
 #tab-step-2 .dataTables_paginate .pagination {margin-top: 10px !important;}

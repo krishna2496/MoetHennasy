@@ -49,10 +49,21 @@ $('document').ready(function(){
                 $totalShare = $totalShare + parseInt($(value).val());
         });
         if($totalShare > 100) {
-            alert('Share should be less or equal to 100');
-            $(this).val(0);
+			$(this).parent().parent().css("background-color", "#d24737");
+			$(this).parent().parent().css("color", "white");
+			
+			$('#messageBox').html("<div class='alert alert-danger'><button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>Total share should be less or equal to 100</div>");
+		    //alert('Share should be less or equal to 100');
+            //$(this).val(0);
             return false;
-        }
+        }else{
+			$.each( $('[name="shares[]"]'), function( key, value ) {
+				
+				$(this).parent().parent().css("background-color", "white");
+				$(this).parent().parent().css("color", "black");
+			});
+			$('#messageBox').html("");
+		}
         if($totalShare == 100) {
             $(".auto_fill").removeAttr('disabled');
         }else{
@@ -73,7 +84,7 @@ $('document').ready(function(){
         });
         if($totalShare > 100) {
             alert('Share should be less or equal to 100');
-            $(this).val(0);
+            //$(this).val(0);
             return false;
         }
         $('#totalVarietalShares').val($totalShare);

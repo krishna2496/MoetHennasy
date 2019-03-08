@@ -494,8 +494,16 @@ class StoreConfigurationController extends ProductRuleController {
                 exit();
             }
             //variental product
+            $brandFilter = [];
+            if(isset($_SESSION['config']['brands'])){
+                $brandFilter = $_SESSION['config']['brands'];
+            }
+            $filtetOtherProductData = array(
+              'brands' => $brandFilter,
+                
+            );
             $searchModel = new CataloguesSearch();
-            $dataProvider = $searchModel->searchProductData($wholeData);
+            $dataProvider = $searchModel->searchProductData($wholeData,$filtetOtherProductData);
             //top shelf product
             $searchModel = new CataloguesSearch();
             $filterTopShelf['category_id'] = $categoryId;

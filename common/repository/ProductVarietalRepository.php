@@ -62,7 +62,7 @@ class ProductVarietalRepository extends Repository
     public function productVariental($data = array()) {
        
         $this->apiCode = 1;
-        $query = \common\models\Catalogues::find()->andWhere(['product_category_id'=> $data['category_id'],'brand_id' =>  $data['brand_id']]);
+        $query = \common\models\Catalogues::find()->andWhere(['product_category_id'=> $data['category_id'],'brand_id' =>  $data['brand_id'],'top_shelf' => 0]);
         $data = array();
         $data['catalogue'] = $query->asArray()->all();
         $this->apiData = $data;

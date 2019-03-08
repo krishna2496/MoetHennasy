@@ -92,7 +92,7 @@ $formUrl = Url::to(['market/index']);
                                      return Html::a('Apply Brand', ['apply/brands/'.$model['id']], ['class'=>'btn btn-primary']);
                                 },*/
                                 'category' => function ($url, $model) use ($filters) {
-                                     return Html::a('Manage Strategy', null, ['class'=>'btn btn-primary', 'data-id'=>$model['id'], 'data-toggle'=>"modal", 'onClick'=>('$("[name=\'selectedMarkets\']").val("'.$model['id'].'");'), 'data-target'=>"#modal-default"]);
+                                     return Html::a('Manage Strategy', null, ['class'=>'btn btn-primary', 'data-id'=>$model['id'], 'data-toggle'=>"modal", 'onClick'=>('$("[name=\'selectedMarkets\']").val("'.$model['id'].'");$("[id=\'marketName\']").text("'.$model['title'].'");'), 'data-target'=>"#modal-default"]);
                                 },
                                
                             ],
@@ -109,7 +109,7 @@ $formUrl = Url::to(['market/index']);
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span></button>
-                <h4 class="modal-title">Select Product Categories</h4>
+                <h4 class="modal-title">Select Product Categories (<span id="marketName"></span>)</h4>
             </div>
             <input type="hidden" value="" id="selectedMarkets" name="selectedMarkets" />
             <div class="modal-body" style="text-align: center;">

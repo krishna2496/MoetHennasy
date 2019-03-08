@@ -451,6 +451,7 @@ jQuery(document).ready(function ()
     $("#tab-step-2 .reset-btn").click(function (e)
     {
         $('#employee').iCheck('uncheck');
+        $('#topShelf').iCheck('uncheck');
         return false;
     });
 
@@ -537,7 +538,9 @@ jQuery(document).ready(function ()
                             $("#tab-step-1").hide();
                             $("#tab-step-2").show();
                             for (var member in productObject) delete productObject[member];
+                            
                             $.pjax.reload({container: '#employee', async: false});
+                            $.pjax.reload({container: '#topShelf', async: false});
                             $("#tab2").removeAttr('disabled');
                         }
                     });
