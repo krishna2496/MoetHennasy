@@ -592,7 +592,6 @@ if(isset($_SESSION['config']['products'])){
                             url: url,
                             data: {productObject: productObject},
                             success: function (data) {
-
                                 if (data == '1') {
                                     alert(data);
                                     $('#tab3').removeClass('disabled');

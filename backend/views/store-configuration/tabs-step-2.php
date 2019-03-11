@@ -43,7 +43,7 @@ use yii\grid\GridView;
                                     'columns' => [
                                             [
                                             'class' => 'yii\grid\CheckboxColumn', 'headerOptions' => ['class' => 'top_shelf_all'], 'contentOptions' => ['class' => 'top_shelf'], 'checkboxOptions' => function($model) {
-                                                return ['value' => $model['id'], 'selection' => true, 'class' => 'checked'];
+                                                return ['value' => $model['id'], 'selection' => true, 'class' => 'checked','productWidth'=>$model['width']];
                                             },
                                         ],
                                             [
@@ -51,12 +51,11 @@ use yii\grid\GridView;
                                             'attribute' => 'short_name',
                                             'value' => 'short_name'
                                         ],
-                                            [
+                                         [
                                             'label' => 'Product type',
-                                            'attribute' => 'productType',
-                                            'value' => 'productType.title'
+                                            'attribute' => 'product_type_name',
+                                            'value' => 'product_type_name'
                                         ],
-                                        'brand_id',
 //											'market_share',
                                         [
                                             'label' => 'WSP',
@@ -64,8 +63,8 @@ use yii\grid\GridView;
                                         ],
                                             [
                                             'label' => 'Product Category',
-                                            'attribute' => 'productCategory',
-                                            'value' => 'productCategory.name'
+                                            'attribute' => 'product_category_name',
+                                            'value' => 'product_category_name'
                                         ],
                                             [
                                             'attribute' => 'top_shelf',
@@ -106,7 +105,8 @@ use yii\grid\GridView;
                                         $('.top_shelf input[name="selection[]"]').on('ifChecked', function (event) {
 
                                             if (typeof (productObject[$(this).val()]) !== 'undefined')
-                                            {
+                                            {    
+                                                topProductWidthArry.push($(this).attr('productWidth'));
                                                 productArry.push($(this).val());
                                                 var id = $(this).val();
 //								var switchValue = $("div#" + id).attr("dvalue");
@@ -121,11 +121,13 @@ use yii\grid\GridView;
                                             productArry.splice(popedValue, 1);
                                             if (typeof (productObject[$(this).val()]) !== 'undefined')
                                             {
+                                                popedWidthValue =  topProductWidthArry.indexOf($(this).attr('productWidth'));
+                                                topProductWidthArry.splice(popedWidthValue, 1);
+                                                
+                                             
+                                                
                                                 var id = $(this).val();
-//								var switchValue = $("div#" + id).attr("dvalue");
-//								var switchFlag = (switchValue == "1") ? true : false;
                                                 productObject[$(this).val()]['sel'] = false;
-//								productObject[$(this).val()]['shelf'] = switchFlag;
                                             }
                                             console.log(productObject);
                                         });
@@ -167,7 +169,7 @@ use yii\grid\GridView;
                                     'columns' => [
                                             [
                                             'class' => 'yii\grid\CheckboxColumn', 'headerOptions' => ['class' => 'other_all'], 'contentOptions' => ['class' => 'other'], 'checkboxOptions' => function($model) {
-                                                return ['value' => $model['id'], 'selection' => true, 'class' => 'checked'];
+                                                return ['value' => $model['id'], 'selection' => true, 'class' => 'checked','productWidth'=>$model['width']];
                                             },
                                         ],
                                             [
@@ -229,18 +231,25 @@ use yii\grid\GridView;
 
                                             if (typeof (productObject[$(this).val()]) !== 'undefined')
                                             {
+                                                bottomProductWidthArry.push($(this).attr('productWidth'));
                                                 productArry.push($(this).val());
+                                                
+                                              
+                                                
                                                 var id = $(this).val();
-//								var switchValue = $("div#" + id).attr("dvalue");
-//								var switchFlag = (switchValue == "1") ? true : false;
                                                 productObject[$(this).val()]['sel'] = true;
-//								productObject[$(this).val()]['shelf'] = false;
                                             }
                                             console.log(productObject);
                                         });
                                         $('.other input[name="selection[]"]').on('ifUnchecked', function (event) {
                                             popedValue = productArry.indexOf($(this).val());
+                                            popedWidthValue =  bottomProductWidthArry.indexOf($(this).attr('productWidth'));
+                                            bottomProductWidthArry.splice(popedWidthValue, 1);
                                             productArry.splice(popedValue, 1);
+                                            
+                                            
+                                          
+                                              
                                             if (typeof (productObject[$(this).val()]) !== 'undefined')
                                             {
                                                 var id = $(this).val();

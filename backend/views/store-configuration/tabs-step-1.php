@@ -128,6 +128,8 @@ $session = Yii::$app->session;
 								<label class="barnd-select-msg">Select the brands present on the shelf <sup class="text-red">*</sup> </label>
 								<ul class="brand-list list-unstyled">
 									<?php
+//                                                                        echo '<pre>';
+//                                                                        print_r($wholeData[0]['brand']);exit;
 									if (!empty($wholeData[0]['brand']))
 									{
 										foreach ($wholeData[0]['brand'] as $key => $value) {

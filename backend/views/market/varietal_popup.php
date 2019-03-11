@@ -13,10 +13,11 @@ use yii\widgets\Pjax;
         <span aria-hidden="true">×</span></button>
     <h4 class="modal-title">Varietals Strategy (<?= $brand_name ?>)</h4>
 </div>
-<div id="varietalMessageBox"></div>
 <input type="hidden" value="" id="selectedBrandsKey" name="selectedBrandsKey" value="" />
 <input type="hidden" value="" id="selectedVal" name="selectedBrandsKey" value="" />
 <div class="modal-body" style="height: 300px;overflow-y: auto;">
+    <div id="varietalMessageBox"></div>
+
     <?=
     GridView::widget([
         'dataProvider' => $productVarietalDataProvider,
@@ -61,6 +62,7 @@ use yii\widgets\Pjax;
         $("#selectedBrandsKey").val(brand_id);
         new_order_product = [];
         $("#table-draggable_popup").tableDnD({
+            onDragClass: "myDragClass",
             onDrop: function (table, row)
             {
                 var i = 1;
@@ -73,7 +75,8 @@ use yii\widgets\Pjax;
                 console.log(new_order_product);
                 update_order_popup(new_order_product);
                 new_order_product = [];
-            }
+            },
+            dragHandle: ".dragHandle"
         });
         function update_order_popup(data) {
             orderUrl = '<?php echo CommonHelper::getPath('admin_url'); ?>apply/order-update-varietal/';
@@ -123,7 +126,11 @@ use yii\widgets\Pjax;
             $('#verietal-modal').modal('hide');
             $('#varietalMessageBox').html("");
         } else {
-            $('#varietalMessageBox').html("<div class='alert alert-danger'><button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>Total share should be less or equal to 100</div>");
+            $.each($('[name="varietalShares[]"]'), function (key, value) {
+                $(this).parent().parent().css("background-color", "#d24737");
+                $(this).parent().parent().css("color", "white");
+            });
+            $('#varietalMessageBox').html("<div class='alert alert-danger'><button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>Total share should be equals to 100.</div>");
         }
     }
 </script>

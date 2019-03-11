@@ -25,6 +25,9 @@ use common\models\MarketCategoryProduct;
 use common\models\ProductVarietal;
 use common\models\ProductVarietalSearch;
 use common\models\BrandsSearch;
+use common\repository\BrandRepository;
+use common\repository\ProductCategoryRepository;
+use common\repository\ProductTypesRepository;
 
 class StoresConfigController extends BaseApiController {
 
@@ -612,18 +615,46 @@ class StoresConfigController extends BaseApiController {
     public function actionNewBrandProductList() {
 
         $currentUser = CommonHelper::getUser();
-        $filters = $filterForVarietal = $marketVarientalProduct = $variental = array();
+        $filters = $filterForVarietal = $marketVarientalProduct = $variental = $params = $brands = $productCategories = $productTypes = array();
         $marketId = '';
         if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
             $marketId = $currentUser->market_id;
         }
-        $queryVarietal = \common\models\Catalogues::find()->asArray()->all();
+
+        $queryVarietal = \common\models\Catalogues::find()->andWhere(['top_shelf' => 0])->asArray()->all();
         if ($queryVarietal) {
             foreach ($queryVarietal as $k => $v) {
                 $marketVarientalProduct[$v['product_category_id']][$v['brand_id']][$v['product_variental']][] = $v;
             }
         }
-        //print_r($marketVarientalProduct); exit;
+        //Fetch brand list
+        $brandRepository = new BrandRepository();
+        $brandRepository = $brandRepository->listing();
+        if (!empty($brandRepository['data']['brand'])) {
+            foreach ($brandRepository['data']['brand'] as $bk => $bv) {
+                $brands[$bv['id']] = $bv;
+                $brands[$bv['id']]['image'] = isset($bv['image']) ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_BRANDS_IMAGES . $bv['image'] : '';
+                $brands[$bv['id']]['color_code'] = isset($bv['color_code']) && ($bv['color_code'] != '') ? $bv['color_code'] : COLOR_CODE;
+            }
+        }
+
+        //Fetch product category list
+        $productCategoryRepository = new ProductCategoryRepository();
+        $productCategoryRepository = $productCategoryRepository->listing();
+        if (!empty($productCategoryRepository['data']['productCategories'])) {
+            foreach ($productCategoryRepository['data']['productCategories'] as $pck => $pcv) {
+                $productCategories[$pcv['id']] = $pcv;
+            }
+        }
+
+        //Fetch product type list
+        $productTypesRepository = new ProductTypesRepository();
+        $productTypesRepository = $productTypesRepository->listing();
+        if (!empty($productTypesRepository['data']['productTypes'])) {
+            foreach ($productTypesRepository['data']['productTypes'] as $ptk => $ptv) {
+                $productTypes[$ptv['id']] = $ptv;
+            }
+        }
         $returnDatas = array();
         $returnDatas['market']['id'] = $marketId;
         if ($marketId != '') {
@@ -641,29 +672,47 @@ class StoresConfigController extends BaseApiController {
                     $catalogueList = Catalogues::find()->andWhere(['top_shelf' => 1, 'product_category_id' => $catVal['id']])->asArray()->all();
                     if (!empty($catalogueList)) {
                         foreach ($catalogueList as $cataKey => $cataVal) {
+                            unset($catalogueList[$cataKey]['created_by']);
+                            unset($catalogueList[$cataKey]['updated_by']);
+                            unset($catalogueList[$cataKey]['deleted_by']);
+                            unset($catalogueList[$cataKey]['created_at']);
+                            unset($catalogueList[$cataKey]['updated_at']);
+                            unset($catalogueList[$cataKey]['deleted_at']);
+                        }
+                    }
+                    if (!empty($catalogueList)) {
+                        foreach ($catalogueList as $cataKey => $cataVal) {
                             $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey] = $cataVal;
-//                            $market_brand_repository = MarketCategoryProduct::find()->andWhere(['category_id' => $catVal['id'], 'market_id' => $marketId, 'product_id' => $cataVal['id'], 'is_inserted' => 1])->asArray()->all();
-//                            if (!empty($market_brand_repository[0])) {
-//                                $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey] = $cataVal;
-//                                $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey]['is_inserted'] = $market_brand_repository[0]['is_inserted'];
-//                            } else {
-//                                $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey] = $cataVal;
-//                                $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey]['is_inserted'] = 0;
-//                            }
+                            $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey]['image'] = isset($cataVal['image']) && ($cataVal['image'] != '') ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_CATALOGUES_IMAGES . rawurlencode($cataVal['image']) : '';
+                            $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey]['box_only'] = \yii::$app->params['catalogue_status'][$cataVal['box_only']];
+                            $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey]['top_shelf'] = \yii::$app->params['catalogue_status'][$cataVal['top_shelf']];
+
+                            $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey]['brand'] = isset($brands[$cataVal['brand_id']]) && !empty($brands[$cataVal['brand_id']]) ? $brands[$cataVal['brand_id']] : array();
+                            $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey]['product_catgeory'] = isset($productCategories[$cataVal['product_category_id']]) && !empty($productCategories[$cataVal['product_category_id']]) ? $productCategories[$cataVal['product_category_id']] : array();
+                            $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey]['product_type'] = isset($productTypes[$cataVal['product_type_id']]) && !empty($productTypes[$cataVal['product_type_id']]) ? $productTypes[$cataVal['product_type_id']] : array();
                         }
                     } else {
-                        $returnDatas['market']['category'] = '';
+                        $returnDatas['market']['category'][$catKey]['top_shelf_product'] = array();
                     }
 
                     $filters['category_id'] = $catVal['id'];
                     $filters['market_id'] = $marketId;
                     $filters['limit'] = '';
 
-                    //Brand list
+                    //Brand list By category and market
                     $brandList = $searchModel->searchMarketBrand($filters);
                     if (!empty($brandList->allModels)) {
                         foreach ($brandList->allModels as $brandKey => $brandVal) {
-
+                            unset($brandList->allModels[$brandKey]['created_by']);
+                            unset($brandList->allModels[$brandKey]['updated_by']);
+                            unset($brandList->allModels[$brandKey]['deleted_by']);
+                            unset($brandList->allModels[$brandKey]['created_at']);
+                            unset($brandList->allModels[$brandKey]['updated_at']);
+                            unset($brandList->allModels[$brandKey]['deleted_at']);
+                        }
+                    }
+                    if (!empty($brandList->allModels)) {
+                        foreach ($brandList->allModels as $brandKey => $brandVal) {
                             $returnDatas['market']['category'][$catKey]['brand'][$brandKey] = $brandVal;
                             $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['image'] = isset($brandVal['image']) ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_BRANDS_IMAGES . $brandVal['image'] : '';
                             $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['color_code'] = isset($brandVal['color_code']) && ($brandVal['color_code'] != '') ? $brandVal['color_code'] : COLOR_CODE;
@@ -676,12 +725,23 @@ class StoresConfigController extends BaseApiController {
                                 }
                             }
 
-                            //Product Varietal Data By market and brand filter
+                            //Product varietal vata By market and brand filter
                             $filterForVarietal['market_id'] = $marketId;
                             $filterForVarietal['category_id'] = $catVal['id'];
                             $filterForVarietal['brand_id'] = $brandVal['id'];
                             $productVarietalSearchModel = new ProductVarietalSearch();
                             $productVarietalDataProvider = $productVarietalSearchModel->searchVariental($filterForVarietal);
+
+                            if (!empty($productVarietalDataProvider->allModels)) {
+                                foreach ($productVarietalDataProvider->allModels as $productVarietalKey => $productVarietalVal) {
+                                    unset($productVarietalDataProvider->allModels[$productVarietalKey]['created_by']);
+                                    unset($productVarietalDataProvider->allModels[$productVarietalKey]['updated_by']);
+                                    unset($productVarietalDataProvider->allModels[$productVarietalKey]['deleted_by']);
+                                    unset($productVarietalDataProvider->allModels[$productVarietalKey]['created_at']);
+                                    unset($productVarietalDataProvider->allModels[$productVarietalKey]['updated_at']);
+                                    unset($productVarietalDataProvider->allModels[$productVarietalKey]['deleted_at']);
+                                }
+                            }
                             if (!empty($productVarietalDataProvider->allModels)) {
                                 foreach ($productVarietalDataProvider->allModels as $productVarietalKey => $productVarietalVal) {
                                     $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey] = $productVarietalVal;
@@ -694,23 +754,33 @@ class StoresConfigController extends BaseApiController {
                                     }
                                     if (isset($returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals']) && !empty($returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals']))
                                         $variental = $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'];
-                                        foreach ($variental as $vKey => $vVal) {
-                                            if (isset($returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey])) {
-                                                $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey]['product'] = isset($marketVarientalProduct[$catVal['id']][$brandVal['id']][$productVarietalVal['id']]) ? $marketVarientalProduct[$catVal['id']][$brandVal['id']][$productVarietalVal['id']] : '';
+                                    foreach ($variental as $vKey => $vVal) {
+                                        if (isset($returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey])) {
+                                            $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey]['product'] = isset($marketVarientalProduct[$catVal['id']][$brandVal['id']][$productVarietalVal['id']]) ? $marketVarientalProduct[$catVal['id']][$brandVal['id']][$productVarietalVal['id']] : array();
+                                            if (!empty($marketVarientalProduct[$catVal['id']][$brandVal['id']][$productVarietalVal['id']])) {
+                                                foreach ($marketVarientalProduct[$catVal['id']][$brandVal['id']][$productVarietalVal['id']] as $marketVarientalProdDetailKey => $marketVarientalProdDetail) {
+                                                    $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey]['product'][$marketVarientalProdDetailKey]['image'] = isset($marketVarientalProdDetail['image']) && ($marketVarientalProdDetail['image'] != '') ? CommonHelper::getPath('upload_url') . UPLOAD_PATH_CATALOGUES_IMAGES . rawurlencode($marketVarientalProdDetail['image']) : '';
+                                                    $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey]['product'][$marketVarientalProdDetailKey]['box_only'] = \yii::$app->params['catalogue_status'][$marketVarientalProdDetail['box_only']];
+                                                    $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey]['product'][$marketVarientalProdDetailKey]['top_shelf'] = \yii::$app->params['catalogue_status'][$marketVarientalProdDetail['top_shelf']];
+                                                    $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey]['product'][$marketVarientalProdDetailKey]['brand'] = isset($brands[$marketVarientalProdDetail['brand_id']]) && !empty($brands[$marketVarientalProdDetail['brand_id']]) ? $brands[$marketVarientalProdDetail['brand_id']] : array();
+                                                    $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey]['product'][$marketVarientalProdDetailKey]['product_catgeory'] = isset($productCategories[$marketVarientalProdDetail['product_category_id']]) && !empty($productCategories[$marketVarientalProdDetail['product_category_id']]) ? $productCategories[$marketVarientalProdDetail['product_category_id']] : array();
+                                                    $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey]['product'][$marketVarientalProdDetailKey]['product_type'] = isset($productTypes[$marketVarientalProdDetail['product_type_id']]) && !empty($productTypes[$marketVarientalProdDetail['product_type_id']]) ? $productTypes[$marketVarientalProdDetail['product_type_id']] : array();
+                                                }
                                             }
                                         }
                                     }
+                                }
                             } else {
-                                $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'] = '';
+                                $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'] = array();
                             }
-                        }   
-                } else {
-                    $returnDatas['market']['category'][$catKey]['brand'] = '';
+                        }
+                    } else {
+                        $returnDatas['market']['category'][$catKey]['brand'] = array();
+                    }
                 }
+            } else {
+                $returnDatas['market']['category'] = array();
             }
-        } else {
-            $returnDatas['market']['category'] = '';
-        }
         }
         return $returnDatas;
     }

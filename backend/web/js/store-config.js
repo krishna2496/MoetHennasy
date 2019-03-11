@@ -501,7 +501,6 @@ jQuery(document).ready(function ()
         },
         onNext: function (tab, navigation, index) {
 
-
             if (index == 1) {
 
                 if ($("#firstForm input[name='brands[]']:checkbox:checked").length <= 0)
@@ -511,7 +510,18 @@ jQuery(document).ready(function ()
                 }
             }
             if (index == 2) {
+               
+                topsum = bottomsum = 0;
+                topProductWidthArry.forEach(function(num){topsum+=parseFloat(num) || 0;});
+                bottomProductWidthArry.forEach(function(num){bottomsum+=parseFloat(num) || 0;});
              
+                if(topsum > widthOfRack){
+                    alert("Please adjust width of shelves");
+                    return false;
+                }
+                if(bottomsum > widthOfRack){
+                    alert("Please adjust width of shelves");return false;
+                }
                 if (jQuery.isEmptyObject(productArry))
                 {
                     alert("Please Select at least one product");

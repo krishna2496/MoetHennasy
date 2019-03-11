@@ -235,13 +235,28 @@ class CataloguesSearch extends Catalogues {
     }
     
      public function searchTopShelfProduct($data) {
-        
-        $topShelfProduct =  array();
-        
-        $productCategory = Catalogues::find()->andWhere(['top_shelf' => 1,'product_category_id'=>$data['category_id']])->joinWith(['productCategory','productType'])->orderBy('reorder_id')->asArray()->all();
+//         echo '<pre>';
+//         print_R($data);exit;
+        $otherProduct = array();
+        $topShelfProduct = $data[0]['top_shelf_product'];
+        $productCategory = ProductCategories::find()->asArray()->all();
+        $productType = ProductTypes::find()->asArray()->all();
+        if($topShelfProduct){
+         foreach ($topShelfProduct as $pK => $pV){
+//                                echo '<pre>';
+//                                print_r($pV);exit;
+                                $category_id = $pV['product_category_id'];
+                                $product_type = $pV['product_type_id'];
+                                $ckey = array_search($pV['product_category_id'], array_column($productCategory, 'id'));
+                                $pKey = array_search($pV['product_type_id'], array_column($productType, 'id'));
+                                $pV['product_category_name'] = isset($productCategory[$ckey]['name']) ? $productCategory[$ckey]['name'] : '';
+                                $pV['product_type_name'] = isset($productType[$pKey]['title']) ? $productType[$pKey]['title'] : '';
+                                $otherProduct[] = $pV;
+        }
+        }
         
         $otherProductData = new ArrayDataProvider([
-            'allModels' => $productCategory,
+            'allModels' => $otherProduct,
             'pagination' => [
                 'pageSize' =>10,
             ],

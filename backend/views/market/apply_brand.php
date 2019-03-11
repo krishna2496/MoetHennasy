@@ -422,11 +422,11 @@ $sharesData = array();
             if ($isNotFullSetShare == 0) {
                 $('#messageBox').html("<div class='alert alert-danger'><button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>Brand and brand verietal share should be equal to 100.</div>");
             } else {
-                if (selectedBrand == '') {
-                    alert("Please Select At Least One Product");
-                } else {
+//                if (selectedBrand == '') {
+//                  //  alert("Please Select At Least One Product");
+//                } else {
                     $("#w1").submit();
-                }
+                //}
                 $('#messageBox').html("");
             }
         });

@@ -82,7 +82,7 @@ $('document').ready(function(){
             if($(value).val() != '')
                 $totalShare = $totalShare + parseInt($(value).val());
         });
-        if($totalShare > 100) {
+		if($totalShare > 100) {
             alert('Share should be less or equal to 100');
             //$(this).val(0);
             return false;

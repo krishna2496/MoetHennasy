@@ -478,7 +478,7 @@ class StoreConfigurationController extends ProductRuleController {
             $marketBrandModel = new StoreConfigurationSearch();
             $stores['market_id'] = 2;
             $marketBrand = $marketBrandModel->brandProductList($stores['market_id']);
-            
+          
             $wholeData = array();
             if(isset($marketBrand) && (!empty($marketBrand))){
                 $wholeData =  $marketBrand['market']['category'];
@@ -487,7 +487,7 @@ class StoreConfigurationController extends ProductRuleController {
                     $key = array_search($categoryId, array_column($wholeData, 'id'));
                     $newData =  $wholeData[$key];
                     $wholeData = array();
-                    $wholeData[$key] = $newData;
+                    $wholeData[0] = $newData;
                 }
                 
             }else{
@@ -507,8 +507,9 @@ class StoreConfigurationController extends ProductRuleController {
             //top shelf product
             $searchModel = new CataloguesSearch();
             $filterTopShelf['category_id'] = $categoryId;
-            $topDataProvider = $searchModel->searchTopShelfProduct($filterTopShelf);
-            
+            $topDataProvider = $searchModel->searchTopShelfProduct($wholeData,$filterTopShelf);
+//            echo '<pre>';
+//            print_r($wholeData);exit;
             return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -604,7 +605,10 @@ class StoreConfigurationController extends ProductRuleController {
             unset($dataIds[$key]['ean']);
             unset($dataIds[$key]['manufacturer']);
         }
-        
+       echo '<pre>';
+                    print_r($post);
+                    print_r($dataIds);
+                    exit; 
         $selvesWidth = $_SESSION['config']['width_of_shelves'];
         $selvesHeight = $_SESSION['config']['height_of_shelves'];
         $selvesDepth =$_SESSION['config']['depth_of_shelves'];

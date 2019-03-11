@@ -11,18 +11,20 @@ $uploadShelf = Url::to(['store-configuration/save-image']);
 //$reviewUrl = Url::to(['store-configuration/review-store']);
 $secondFormUrl = Url::to(['store-configuration/save-product-data']);
 $noOfSelves = isset($_SESSION['config']['products']) ? isset($_SESSION['config']['products']) : '1';
+
 $ratio = isset($_SESSION['config']['ratio']) ? $_SESSION['config']['ratio'] : 5.5;
+$widthOfRack = isset($_SESSION['config']['width_of_shelves']) ? $_SESSION['config']['width_of_shelves'] : 0;
 if (isset($_SESSION['config']['products'])) {
     $products = json_encode($_SESSION['config']['products'], true);
 }
 $session = Yii::$app->session;
-
 ?>
 <script type="text/javascript">
     var isUpdate = '<?php echo $is_update; ?>';
-   
     var brandThumbId = '<?php echo $brandThumbId ?>';
     var productArry = [];
+    var bottomProductWidthArry = [];
+    var topProductWidthArry = [];
     var productObject = {};
     var reviewFlag = '<?php echo $reviewFlag; ?>';
 </script>
@@ -158,6 +160,7 @@ $session = Yii::$app->session;
     var numOfSelves = '<?php echo $noOfSelves ?>';
     var uploadSelves = '<?php echo $uploadShelf ?>';
     var maxStar = '<?php echo yii::$app->params['star_max_size'][0] ;?>';
+    var widthOfRack = '<?= $widthOfRack; ?>';
     if (isUpdate == '1') { 
         var back_color = '<?php echo $brandBackground ?>';
       
