@@ -478,7 +478,7 @@ class StoreConfigurationController extends ProductRuleController {
             $marketBrandModel = new StoreConfigurationSearch();
             $stores['market_id'] = 7;
             $marketBrand = $marketBrandModel->brandProductList($stores['market_id']);
-          
+            
             $wholeData = array();
             if(isset($marketBrand) && (!empty($marketBrand))){
                 $wholeData =  $marketBrand['market']['category'];
@@ -488,6 +488,7 @@ class StoreConfigurationController extends ProductRuleController {
                     $newData =  $wholeData[$key];
                     $wholeData = array();
                     $wholeData[0] = $newData;
+                  
                 }
                 
             }else{
@@ -545,7 +546,7 @@ class StoreConfigurationController extends ProductRuleController {
         $filters['brand_id'] = $_SESSION['config']['brands'];
       
         $marketBrandModel = new StoreConfigurationSearch();
-        $market_id = 2;
+        $market_id = $post['market_id_hidden'];
         $marketBrand = $marketBrandModel->brandProductList($market_id);
         $brand = $marketBrand['market']['category'][0]['brand'];
         
@@ -564,7 +565,7 @@ class StoreConfigurationController extends ProductRuleController {
         
         $post = Yii::$app->request->post('productObject');
         $flag = $marketId = $categoryId = 0;
-        $productArry = $bottomProduct =  $uniqueBrandVarientalArry = array();
+        $productArry = $bottomProduct =  $uniqueBrandVarientalArry = $sumOfBrandProduct = $sharesArry =array();
         $marketId = $_SESSION['config']['market_id'];
         $categoryId = $_SESSION['config']['category_id'];
         $orderArry = \common\models\MarketCategoryProduct::find()->andWhere(['category_id' =>$categoryId,'market_id'=>$marketId])->asArray()->all();
@@ -588,8 +589,6 @@ class StoreConfigurationController extends ProductRuleController {
                     $dataIds[$key]['market'] = $marketRule;
                     if($value['shelf'] != 'true'){
                         $bottomProduct[]=$key;
-                    }else{
-//                        $dataIds[$dataKey]['order_id'] = isset($reOrderArry['id']) ? $reOrderArry['id'] : 0;
                     }
                 }
             }
@@ -644,21 +643,65 @@ class StoreConfigurationController extends ProductRuleController {
                 $this->applySortingRule($racksProductArray[0]);
             }
         }
-       
-        foreach ($dataIds as $value) {
 
+        foreach ($dataIds as $value) {
+            echo '<pre>';
+            print_r($value);exit;
             if ($value['top_shelf'] == '1') {
                 continue;
             }
            
-            $uniqueBrandVarientalArry[$value['brand_id']]=array();
+            //$uniqueBrandVarientalArry[$value['brand_id']] = array();
             if(isset($value['variental']['id'])){
-                $uniqueBrandVarientalArry[$value['brand_id']][$value['variental']['id']] = $value['variental']['id'];
+                
+                $uniqueBrandVarientalArry[$value['brand_id']][$value['variental']['id']] = $value['id'];
+                
+//                $sumOfBrandProduct = 
             }
         }
+        
+        $sharesArry =array();
+        $brandSum = 0;
+        $productBrandData = $_SESSION['config']['brands_data'];
+        foreach ($productBrandData as $bK=>$bV){
+           $brandVarientalSum = 0;
+            if(isset($uniqueBrandVarientalArry[$bK])){
+                //brand share
+                $sharesArry[$bK]['brand_shares'] = $bV['shares'];
+                $brandSum = $brandSum + $bV['shares'];
+                if(isset($bV['marketBrandsVerietals'])){
+                    $brandVarietal = $bV['marketBrandsVerietals'];
+                    foreach ($brandVarietal as $k=>$v){
+                            $sharesArry[$bK]['varietal'][$v['id']]= $v['shares'];
+                            
+                            $brandVarientalSum = $brandVarientalSum + $v['shares'];
+                    }
+                    $sharesArry[$bK]['varietal_sum'] = $brandVarientalSum; 
+                }
+            }
+        }
+     
+        $this->reIntializeBrandShareArry($sharesArry,$brandSum);
+  
+         
+        if($sharesArry){
+          if($brandSum == 100){
+            foreach ($sharesArry as $k => $v){
+                $brandWidth = ($selvesWidth * $v['brand_shares'])/(100);
+                $sharesArry[$k]['brand_shares'] = $brandWidth;
+                if($v['varietal']){
+                    foreach ($v['varietal'] as $vK => $vV){
+                         $newWidth = ($vV * $brandWidth)/(100);
+                         $sharesArry[$k]['varietal'][$vK] = $newWidth;
+                    }
+                }
+            }
+          }
+        }
         echo '<pre>';
+        print_r($sharesArry);
         print_r($uniqueBrandVarientalArry);
-        print_r($_SESSION['config']);
+        print_r($sumOfBrandProduct);
         exit;
         $shelfIndex = (isset($racksProductArray[0]) && count($racksProductArray[0]) > 0 ) ? 1 : 0;
         if ($selevesCount > 1) {

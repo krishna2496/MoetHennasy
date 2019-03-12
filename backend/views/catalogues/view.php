@@ -42,10 +42,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => 'Product category',
                             'attribute' => 'productCategory.name',
             ],
-            'product_type_id',
+            [
+                            'label' => 'Product Type',
+                            'attribute' => 'productType.title',
+            ],
             [
                             'label' => 'Product Varietal',
-                            'attribute' => 'product_variental.name',
+                            'attribute' => 'variental.name',
             ],
             'width',
             'height',

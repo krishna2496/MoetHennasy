@@ -45,7 +45,7 @@ class ProductRuleController extends Controller {
                         'roles' => ['&'],
                     ],
                         [
-                        'actions' => ['send-mail', 'feedback', 'create', 'view', 'review-store', 'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data','delete-all'],
+                        'actions' => ['send-mail', 'feedback', 'create', 'view', 'review-store', 'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data','delete-all','re-intialize-brand-share-arry'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -59,7 +59,23 @@ class ProductRuleController extends Controller {
             ],
         ];
     }
-
+    
+    protected function reIntializeBrandShareArry(&$sharesArry,$brandSum) {
+        foreach ($sharesArry as $k => $v){
+            $newShare = ($v['brand_shares'] * 100)/($brandSum);
+            $sharesArry[$k]['brand_shares'] = $newShare;
+            if($v['varietal_sum'] != 100){
+                if($v['varietal']){
+                    foreach ($v['varietal'] as $kM => $vM){
+                        $vShare = ($vM * 100)/($v['varietal_sum']);
+                        $sharesArry[$k]['varietal'][$kM] = $vShare;
+                    }
+                }
+            }
+        }  
+        
+    }
+    
     protected function fillUpEmptySpaceOfShelves(&$racksProductArray, $selvesWidth, $selevesCount) {
         $products = array();
         $arrayProducts = $racksProductArray;

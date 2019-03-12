@@ -71,8 +71,10 @@ $('document').ready(function(){
         }
         if(parseInt($(this).val()) > 0){
             $(this).parent().parent().find('.manage-varietal').removeAttr('disabled');
+			$(this).parent().parent().find('.manage-varietal').unbind('click', false);
         }else{
             $(this).parent().parent().find('.manage-varietal').attr('disabled','disabled');
+			$(this).parent().parent().find('.manage-varietal').bind('click', false);
         }
         $('#totalShares').val($totalShare);
     });
