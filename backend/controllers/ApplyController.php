@@ -149,12 +149,18 @@ class ApplyController extends MarketController {
         $category_id = $brandId;
         $brands = Brands::find()->andWhere(['deleted_by' => null])->asArray()->all();
         $productVarietal = ProductVarietal::find()->andWhere(['deleted_by' => null])->asArray()->all();
+        $filters = $productCategory = array();
 
-        $filters['except_id'] = $category_id;
+        //Product category name
         $productCategoryRepository = new ProductCategoryRepository();
         $productCategoryRepository = $productCategoryRepository->listing($filters);
 
-        $category_name = $productCategoryRepository['data']['productCategories'][0]['name'];
+        if (!empty($productCategoryRepository['data']['productCategories'])) {
+            foreach ($productCategoryRepository['data']['productCategories'] as $catKey => $catVal) {
+                $productCategory[$catVal['id']] = $catVal['name'];
+            }
+        }
+        $category_name = $productCategory[$category_id];
 
         if (($model = Markets::findOne($id)) !== null) {
             $title = $model->title . ' (' . $category_name . ')';
@@ -237,8 +243,7 @@ class ApplyController extends MarketController {
                     'selected_product' => $postData,
                 );
 
-               // $marketRepository = new \common\repository\MarketBrandsRepository;
-
+                // $marketRepository = new \common\repository\MarketBrandsRepository;
                 //$returnDataNew = $marketRepository->createMarketProduct($returnDataProduct);
 
                 if ($returnData['status']['success'] == 1) {
@@ -422,15 +427,15 @@ class ApplyController extends MarketController {
         $filters['category_id'] = $categoryId;
         $filters['brand_id'] = $brandId;
         $filters['limit'] = '';
-        
+
         //Get brand name
         $brandSearchModel = new BrandsSearch();
         $brandSearchModel = $brandSearchModel->search($filters);
         $brand_name = $brandSearchModel->allModels[0]['name'];
-        
+
         $productVarietalSearchModel = new ProductVarietalSearch();
         $productVarietalDataProvider = $productVarietalSearchModel->searchVariental($filters);
-       
+
         echo $this->renderPartial('/market/varietal_popup', [
             'productVarietalDataProvider' => $productVarietalDataProvider,
             'market_id' => $marketId,

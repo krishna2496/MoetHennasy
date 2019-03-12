@@ -9,6 +9,8 @@ use yii\widgets\Pjax;
 
 //use kartik\switchinput\SwitchInput;
 $submitUrl = "store-configuration/save-config-data";
+//echo '<pre>';
+//print_r($_SESSION['config']);exit
 ?>
 <script>
 var removeData = new Array();

@@ -508,8 +508,7 @@ class StoreConfigurationController extends ProductRuleController {
             $searchModel = new CataloguesSearch();
             $filterTopShelf['category_id'] = $categoryId;
             $topDataProvider = $searchModel->searchTopShelfProduct($wholeData,$filterTopShelf);
-//            echo '<pre>';
-//            print_r($wholeData);exit;
+
             return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -564,8 +563,8 @@ class StoreConfigurationController extends ProductRuleController {
     public function actionSaveProductData() {
         
         $post = Yii::$app->request->post('productObject');
-        $flag = 0;
-        $productArry = array();
+        $flag = $marketId = $categoryId = 0;
+        $productArry = $bottomProduct =  array();
         if (!empty($post)) {
             $flag = 1;
             foreach ($post as $key => $value) {
@@ -578,6 +577,9 @@ class StoreConfigurationController extends ProductRuleController {
                     $dataIds[$key] = $data[0];
                     $dataIds[$key]['is_top_shelf'] = '';
                     $dataIds[$key]['market'] = $marketRule;
+                    if($value['shelf'] != 'true'){
+                        $bottomProduct[]=$key;
+                    }
                 }
             }
         }
@@ -596,39 +598,42 @@ class StoreConfigurationController extends ProductRuleController {
             unset($dataIds[$key]['created_at']);
             unset($dataIds[$key]['updated_at']);
             unset($dataIds[$key]['deleted_at']);
-            unset($dataIds[$key]['product_category_id']);
+           
             unset($dataIds[$key]['product_sub_category_id']);
             unset($dataIds[$key]['product_type_id']);
-            unset($dataIds[$key]['market_id']);
-            unset($dataIds[$key]['brand_id']);
+         
+          
             unset($dataIds[$key]['sku']);
             unset($dataIds[$key]['ean']);
             unset($dataIds[$key]['manufacturer']);
         }
-       echo '<pre>';
-                    print_r($post);
-                    print_r($dataIds);
-                    exit; 
+   
         $selvesWidth = $_SESSION['config']['width_of_shelves'];
         $selvesHeight = $_SESSION['config']['height_of_shelves'];
         $selvesDepth =$_SESSION['config']['depth_of_shelves'];
         $selevesCount = $_SESSION['config']['no_of_shelves'];
-
+        $marketId = $_SESSION['config']['market_id'];
+        $categoryId = $_SESSION['config']['category_id'];
+        //top shelf product
+        $top_shelf_product = $_SESSION['config']['top_shelf'];
+        //get top shelf order 
+        $orderArry = \common\models\MarketCategoryProduct::find()->andWhere(['category_id' =>$categoryId,'market_id'=>$marketId])->asArray()->all();
+         $brand = CommonHelper::getDropdown($orderArry, ['id', 'name']);
         if ($this->ifRuleContain(\yii::$app->params['configArray']['top_shelf'])) {
             foreach ($dataIds as $dataKey => $dataValue) {
                 if ($dataValue['top_shelf'] == '1') {
-                    
                     $this->ruleTopShelf($dataValue, $racksProductArray[0], $selvesWidth);
                 }
             }
         }
-
+    
         if (isset($racksProductArray[0]) && (!empty($racksProductArray[0]))) {
             if (count($racksProductArray[0]) > 0) {
                 $this->applySortingRule($racksProductArray[0]);
             }
         }
-
+        echo '<pre>';
+        print_r($racksProductArray);exit;   
         $shelfIndex = (isset($racksProductArray[0]) && count($racksProductArray[0]) > 0 ) ? 1 : 0;
         if ($selevesCount > 1) {
         foreach ($dataIds as $value) {

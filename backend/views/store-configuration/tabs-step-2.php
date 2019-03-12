@@ -66,14 +66,14 @@ use yii\grid\GridView;
                                             'attribute' => 'product_category_name',
                                             'value' => 'product_category_name'
                                         ],
-                                            [
-                                            'attribute' => 'top_shelf',
-                                            'format' => 'raw',
-                                            'value' => function($model) {
-                                                $checked = ($model['top_shelf'] == 1) ? 'checked' : '';
-                                                return '<input disabled type="checkbox" class="toggle" ' . $checked . ' data-toggle="toggle" data-on="YES" data-off="NO">';
-                                            }
-                                        ]
+//                                            [
+//                                            'attribute' => 'top_shelf',
+//                                            'format' => 'raw',
+//                                            'value' => function($model) {
+//                                                $checked = ($model['top_shelf'] == 1) ? 'checked' : '';
+//                                                return '<input disabled type="checkbox" class="toggle" ' . $checked . ' data-toggle="toggle" data-on="YES" data-off="NO">';
+//                                            }
+//                                        ]
                                     ],
                                 ]);
                                 ?>
@@ -192,14 +192,14 @@ use yii\grid\GridView;
                                             'attribute' => 'product_category_name',
                                             'value' => 'product_category_name'
                                         ],
-                                            [
-                                            'attribute' => 'top_shelf',
-                                            'format' => 'raw',
-                                            'value' => function($model) {
-                                                $checked = ($model['top_shelf'] == 1) ? 'checked' : '';
-                                                return '<input disabled type="checkbox" class="toggle" ' . $checked . ' data-toggle="toggle" data-on="YES" data-off="NO">';
-                                            }
-                                        ]
+//                                            [
+//                                            'attribute' => 'top_shelf',
+//                                            'format' => 'raw',
+//                                            'value' => function($model) {
+//                                                $checked = ($model['top_shelf'] == 1) ? 'checked' : '';
+//                                                return '<input disabled type="checkbox" class="toggle" ' . $checked . ' data-toggle="toggle" data-on="YES" data-off="NO">';
+//                                            }
+//                                        ]
                                     ],
                                 ]);
                                 ?>

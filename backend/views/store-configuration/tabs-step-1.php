@@ -34,8 +34,8 @@ $session = Yii::$app->session;
 					<div class="form-group">
 						<label for="dispaly_name">Name Your Display</label>
                                                 <input type="hidden" name="ratio" value="5.5" id="ratio">
-                                                <input type="hidden" name="market_id_hidden" value="<?= $categoryId ?>" id="market_id_hidden">
-                                                <input type="hidden" name="category_id_hidden" value="<?= $market_id ?>" id="category_id_hidden">
+                                                <input type="hidden" name="market_id_hidden" value="<?= $market_id ?>" id="market_id_hidden">
+                                                <input type="hidden" name="category_id_hidden" value="<?= $categoryId ?>" id="category_id_hidden">
                                                 <input type="text" id="dispaly_name" name="display_name" class="form-control" placeholder="Please Enter Display Name" required autocomplete="off" autofocus="true"/><label for="dispaly_name" class="error" style="color:red"></label>
                                         </div>
 					<div class="frame-chose-option">

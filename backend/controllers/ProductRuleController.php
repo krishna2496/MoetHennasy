@@ -116,11 +116,11 @@ class ProductRuleController extends Controller {
             $sum = array_sum(array_column($racksProductArray, 'width'));
         }
         if ($selvesWidth >= ($sum + $dataValue['width'])) {
-            if (intval(($_SESSION['config']['height_of_shelves']) / ($_SESSION['config']['no_of_shelves'])) >= intval($dataValue['height'])) {
+           
                 if (intval($_SESSION['config']['depth_of_shelves']) >= intval($dataValue['length'])) {
                     $racksProductArray[$dataValue['id']] = $dataValue;
                 }
-            }
+            
         }
     }
 

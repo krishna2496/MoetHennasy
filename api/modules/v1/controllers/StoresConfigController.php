@@ -745,6 +745,7 @@ class StoresConfigController extends BaseApiController {
                             if (!empty($productVarietalDataProvider->allModels)) {
                                 foreach ($productVarietalDataProvider->allModels as $productVarietalKey => $productVarietalVal) {
                                     $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey] = $productVarietalVal;
+                                    $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey]['brand_id'] = $brandVal['id'];
                                     //Brand shares value
                                     $marketBrandVarientalShares = MarketBrandsVerietals::find()->select(['shares'])->andWhere(['verietal_id' => $productVarietalVal['id'], 'market_id' => $marketId, 'brand_id' => $brandVal['id'], 'category_id' => $catVal['id']])->orderBy(['reorder_id' => SORT_ASC])->asArray()->all();
                                     if (!empty($marketBrandVarientalShares)) {

@@ -144,16 +144,18 @@ class CataloguesSearch extends Catalogues {
     public function searchProductData($data,$filtetOtherProductData = array()) {
         
         $topShelfProduct = $otherProduct = $productCategory = $productType = array();
-        
+        $heightOfShelves = 0;
         $productCategory = ProductCategories::find()->asArray()->all();
         $productType = ProductTypes::find()->asArray()->all();
         
         if(isset($data['0']['top_shelf_product'])){
             $topShelfProduct = $data['0']['top_shelf_product'];
         }
-//        echo '<pre>';
-//        print_r($filtetOtherProductData);
-//        print_r($data['0']['brand']);exit;
+        
+        if(isset($_SESSION['config']['height_of_shelves'])){
+            $heightOfShelves = $_SESSION['config']['height_of_shelves'];
+        }
+
         if(isset($data['0']['brand'])){
             $brandData = $data['0']['brand'];
             foreach ($brandData as $brandK => $brandV){
@@ -165,6 +167,7 @@ class CataloguesSearch extends Catalogues {
                         continue;
                     }
                 }
+               
                 $varientalData = $brandV['marketBrandsVerietals'];
                 if(isset($varientalData) && (!empty($varientalData))){
                     foreach ($varientalData as $varientalK => $varientalV){
@@ -173,6 +176,9 @@ class CataloguesSearch extends Catalogues {
                             foreach ($product as $pK => $pV){
 //                                echo '<pre>';
 //                                print_r($pV);exit;
+                                if($pV['height'] > $heightOfShelves ){
+                                    continue;
+                                }
                                 $category_id = $pV['product_category_id'];
                                 $product_type = $pV['product_type_id'];
                                 $ckey = array_search($pV['product_category_id'], array_column($productCategory, 'id'));
@@ -241,8 +247,9 @@ class CataloguesSearch extends Catalogues {
         $topShelfProduct = $data[0]['top_shelf_product'];
         $productCategory = ProductCategories::find()->asArray()->all();
         $productType = ProductTypes::find()->asArray()->all();
+       
         if($topShelfProduct){
-         foreach ($topShelfProduct as $pK => $pV){
+        foreach ($topShelfProduct as $pK => $pV){
 //                                echo '<pre>';
 //                                print_r($pV);exit;
                                 $category_id = $pV['product_category_id'];

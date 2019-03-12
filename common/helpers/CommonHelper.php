@@ -72,8 +72,6 @@ class CommonHelper
                 $sortarray[$key] = isset($row[$subfield]) ? $row[$subfield] : '';
             }
             }
-//            echo '<pre>';
-//            print_r($sortarray);exit;
             array_multisort($sortarray, $sort, $array);
         }
         

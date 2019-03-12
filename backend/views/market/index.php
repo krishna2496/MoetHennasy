@@ -68,7 +68,7 @@ $formUrl = Url::to(['market/index']);
                         [
                            'class' => 'yii\grid\ActionColumn',
                            'header' => 'Actions',
-                           'template' => '{view} {update} {delete} {contact} {category}',
+                           'template' => '{view} {update} {delete} {contact}{rules} {category}',
                             'contentOptions' => ['style' => 'width:40%'],
                            'buttons' => [
     
@@ -84,10 +84,11 @@ $formUrl = Url::to(['market/index']);
                                 'contact' => function ($url, $model) use ($filters) {
                                    return Html::a('<span class="glyphicon glyphicon-phone"></span>', ['market-contacts/index/'.$model['id']],['title' => 'Contact']);
                                 },
-                                /*'rules' => function ($url, $model) use ($filters) {
+                                'rules' => function ($url, $model) use ($filters) {
                                      return Html::a('Apply Rules', ['apply/rules/'.$model['id']], ['class'=>'btn btn-primary']);
                                  
                                 },
+                                    /*
                                 'brand' => function ($url, $model) use ($filters) {
                                      return Html::a('Apply Brand', ['apply/brands/'.$model['id']], ['class'=>'btn btn-primary']);
                                 },*/
