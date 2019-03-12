@@ -107,7 +107,9 @@ use yii\widgets\Pjax;
     function checkTotalVal() {
         var shareToStore = 0;
         $.each($('[name="varietalShares[]"]'), function (key, value) {
+            if ($(value).val() != ''){
             shareToStore = shareToStore + parseInt($(value).val());
+            }
             $('#totalVarietalShares').val(shareToStore);
         });
     }

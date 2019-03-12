@@ -70,9 +70,9 @@ $('document').ready(function(){
             $(".auto_fill").attr('disabled','disabled');
         }
         if(parseInt($(this).val()) > 0){
-            $(this).parent().parent().find('.manage-varietal').show();
+            $(this).parent().parent().find('.manage-varietal').removeAttr('disabled');
         }else{
-            $(this).parent().parent().find('.manage-varietal').hide();
+            $(this).parent().parent().find('.manage-varietal').attr('disabled','disabled');
         }
         $('#totalShares').val($totalShare);
     });

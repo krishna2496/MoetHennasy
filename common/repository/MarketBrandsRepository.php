@@ -59,7 +59,7 @@ class MarketBrandsRepository extends Repository {
     
     public function productVariental($data = array()) {
         $this->apiCode = 1;
-        $query = \common\models\Catalogues::find()->andWhere(['product_category_id' =>  $data['category_id'],'top_shelf' => 0]);
+        $query = \common\models\Catalogues::find()->andWhere(['product_category_id' =>  $data['category_id'],'top_shelf' => 0])->andWhere(['not', ['product_variental' => null]]);
         $data = array();
         $data['catalogue'] = $query->asArray()->all();
         $this->apiData = $data;

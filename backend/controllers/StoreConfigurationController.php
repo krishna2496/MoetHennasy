@@ -476,7 +476,7 @@ class StoreConfigurationController extends ProductRuleController {
 
             //category 
             $marketBrandModel = new StoreConfigurationSearch();
-            $stores['market_id'] = 2;
+            $stores['market_id'] = 7;
             $marketBrand = $marketBrandModel->brandProductList($stores['market_id']);
           
             $wholeData = array();
@@ -564,25 +564,37 @@ class StoreConfigurationController extends ProductRuleController {
         
         $post = Yii::$app->request->post('productObject');
         $flag = $marketId = $categoryId = 0;
-        $productArry = $bottomProduct =  array();
+        $productArry = $bottomProduct =  $uniqueBrandVarientalArry = array();
+        $marketId = $_SESSION['config']['market_id'];
+        $categoryId = $_SESSION['config']['category_id'];
+        $orderArry = \common\models\MarketCategoryProduct::find()->andWhere(['category_id' =>$categoryId,'market_id'=>$marketId])->asArray()->all();
+        $reOrderArry = CommonHelper::getDropdown($orderArry, ['product_id', 'top_reorder_id']);
+     
         if (!empty($post)) {
             $flag = 1;
             foreach ($post as $key => $value) {
+            
                 if ($value['sel'] == 'true') {
                     $searchModel = new CataloguesSearch();
                     $filters['products_id'] = $key;
                     $dataProvider = $searchModel->search($filters);
                     $data = $dataProvider->getModels();
                     $productsArray = $marketRule = $rulesArray = $rulesId = $racksProductArray = array();
+                    if($value['shelf'] == 'true'){
+                       $data[0]['order_id'] = isset($reOrderArry[$key]) ? $reOrderArry[$key] : 0;
+                    }
                     $dataIds[$key] = $data[0];
                     $dataIds[$key]['is_top_shelf'] = '';
                     $dataIds[$key]['market'] = $marketRule;
                     if($value['shelf'] != 'true'){
                         $bottomProduct[]=$key;
+                    }else{
+//                        $dataIds[$dataKey]['order_id'] = isset($reOrderArry['id']) ? $reOrderArry['id'] : 0;
                     }
                 }
             }
         }
+       
         $_SESSION['config']['products'] = $dataIds;
       
         foreach ($dataIds as $key => $value) {
@@ -612,16 +624,16 @@ class StoreConfigurationController extends ProductRuleController {
         $selvesHeight = $_SESSION['config']['height_of_shelves'];
         $selvesDepth =$_SESSION['config']['depth_of_shelves'];
         $selevesCount = $_SESSION['config']['no_of_shelves'];
-        $marketId = $_SESSION['config']['market_id'];
-        $categoryId = $_SESSION['config']['category_id'];
+       
         //top shelf product
         $top_shelf_product = $_SESSION['config']['top_shelf'];
         //get top shelf order 
-        $orderArry = \common\models\MarketCategoryProduct::find()->andWhere(['category_id' =>$categoryId,'market_id'=>$marketId])->asArray()->all();
-         $brand = CommonHelper::getDropdown($orderArry, ['id', 'name']);
+      
+        
         if ($this->ifRuleContain(\yii::$app->params['configArray']['top_shelf'])) {
             foreach ($dataIds as $dataKey => $dataValue) {
                 if ($dataValue['top_shelf'] == '1') {
+                  
                     $this->ruleTopShelf($dataValue, $racksProductArray[0], $selvesWidth);
                 }
             }
@@ -632,10 +644,29 @@ class StoreConfigurationController extends ProductRuleController {
                 $this->applySortingRule($racksProductArray[0]);
             }
         }
+       
+        foreach ($dataIds as $value) {
+
+            if ($value['top_shelf'] == '1') {
+                continue;
+            }
+           
+            $uniqueBrandVarientalArry[$value['brand_id']]=array();
+            if(isset($value['variental']['id'])){
+                $uniqueBrandVarientalArry[$value['brand_id']][$value['variental']['id']] = $value['variental']['id'];
+            }
+        }
         echo '<pre>';
-        print_r($racksProductArray);exit;   
+        print_r($uniqueBrandVarientalArry);
+        print_r($_SESSION['config']);
+        exit;
         $shelfIndex = (isset($racksProductArray[0]) && count($racksProductArray[0]) > 0 ) ? 1 : 0;
         if ($selevesCount > 1) {
+            
+            echo '<pre>';
+            print_r($dataIds);
+            print_r($racksProductArray);            
+            exit;
         foreach ($dataIds as $value) {
 
             if ($value['top_shelf'] == '1') {
@@ -643,7 +674,6 @@ class StoreConfigurationController extends ProductRuleController {
             }
             $sum = 0;
             if (!empty($racksProductArray[$shelfIndex])) {
-
                 foreach ($racksProductArray[$shelfIndex] as $rackValue) {
                     $sum = $sum + $rackValue['width'];
                 }

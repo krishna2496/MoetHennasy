@@ -111,6 +111,7 @@ class ProductRuleController extends Controller {
     }
 
     protected function ruleTopShelf($dataValue, &$racksProductArray, $selvesWidth) {
+       
        $sum = 0;
         if (!empty($racksProductArray)) {
             $sum = array_sum(array_column($racksProductArray, 'width'));
@@ -125,45 +126,7 @@ class ProductRuleController extends Controller {
     }
 
     protected function applySortingRule(&$racksProductArray) {
-//        echo '<pre>';
-//        print_r($racksProductArray);exit;
-        
-//       $this->sort_array_of_array($racksProductArray, 'market_share', $sort);
-        if ($this->ifRuleContain(\yii::$app->params['configArray']['market_share'])) {            
-            $sort = SORT_DESC;
-            $this->sort_array_of_array($racksProductArray, 'market_share', $sort);
-        }
-        if ($this->ifRuleContain(\yii::$app->params['configArray']['price'])) {
-            $sort = SORT_ASC;
-            $this->sort_array_of_array($racksProductArray, 'price', $sort);
-        }
-        if ($this->ifRuleContain(\yii::$app->params['configArray']['size_height'])) {
-            $sort = SORT_ASC;
-            $this->sort_array_of_array($racksProductArray, 'height', $sort);
-        }
-        if ($this->ifRuleContain(\yii::$app->params['configArray']['gift_box'])) {
-            $giftProduct = $otherProduct = array();
-
-            $skipBoxCheck = 0;
-            foreach ($racksProductArray as $key => $value) {
-                if(isset($value['box_only'])){ if ($value['box_only'] == 1) {
-                    array_push($giftProduct, $value);
-                } if ($value['box_only'] == 0) { array_push($otherProduct, $value); } }
-                else {   $skipBoxCheck = 1; }
-            }
-
-            if(!$skipBoxCheck)
-            {
-                    $mergedArray = array_merge($giftProduct, $otherProduct);
-                    $racksProductArray = $mergedArray;
-            }
-        }
-        //product rule
-         if ($this->ifRuleContain(\yii::$app->params['configArray']['order_product'])) {
-          
-                $this->sort_array_of_array($racksProductArray, 'reorder_id', SORT_ASC);
-         }
-     
+        $this->sort_array_of_array($racksProductArray, 'order_id', SORT_ASC);
     }
 
     public function sort_array_of_array(&$array, $subfield, $sort) {

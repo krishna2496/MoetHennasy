@@ -98,9 +98,9 @@ class StoreConfigurationSearch extends StoreConfiguration
     }
     
     public function brandProductList($marketId) {
-        
+       
         $filters = $filterForVarietal = $marketVarientalProduct = $variental = $params = $brands = $productCategories = $productTypes = array();
-      
+        $marketId = 7;
         $queryVarietal = \common\models\Catalogues::find()->andWhere(['top_shelf' => 0])->asArray()->all();
         if ($queryVarietal) {
             foreach ($queryVarietal as $k => $v) {
@@ -225,6 +225,7 @@ class StoreConfigurationSearch extends StoreConfiguration
                             if (!empty($productVarietalDataProvider->allModels)) {
                                 foreach ($productVarietalDataProvider->allModels as $productVarietalKey => $productVarietalVal) {
                                     $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey] = $productVarietalVal;
+                                    $returnDatas['market']['category'][$catKey]['brand'][$brandKey]['marketBrandsVerietals'][$productVarietalKey]['brand_id'] = $brandVal['id'];
                                     //Brand shares value
                                     $marketBrandVarientalShares = MarketBrandsVerietals::find()->select(['shares'])->andWhere(['verietal_id' => $productVarietalVal['id'], 'market_id' => $marketId, 'brand_id' => $brandVal['id'], 'category_id' => $catVal['id']])->orderBy(['reorder_id' => SORT_ASC])->asArray()->all();
                                     if (!empty($marketBrandVarientalShares)) {
