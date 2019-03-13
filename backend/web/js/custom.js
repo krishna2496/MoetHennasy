@@ -53,10 +53,16 @@ $('document').ready(function(){
 			$(this).parent().parent().css("color", "white");
 			
 			$('#messageBox').html("<div class='alert alert-danger'><button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>Total share should equal to 100</div>");
-		    //alert('Share should be less or equal to 100');
-            //$(this).val(0);
+		    
 			$(".auto_fill").attr('disabled','disabled');
 			$('#totalShares').val($totalShare);
+			if(parseInt($(this).val()) > 0){
+				$(this).parent().parent().find('.manage-varietal').removeAttr('disabled');
+				$(this).parent().parent().find('.manage-varietal').unbind('click', false);
+			}else{
+				$(this).parent().parent().find('.manage-varietal').attr('disabled','disabled');
+				$(this).parent().parent().find('.manage-varietal').bind('click', false);
+			}
             return false;
         }else{
 			$.each( $('[name="shares[]"]'), function( key, value ) {
