@@ -476,7 +476,7 @@ class StoreConfigurationController extends ProductRuleController {
 
             //category 
             $marketBrandModel = new StoreConfigurationSearch();
-            $stores['market_id'] =$marketId;
+            $stores['market_id'] = $marketId;
             $marketBrand = $marketBrandModel->brandProductList($stores['market_id']);
             
             $wholeData = array();
@@ -703,19 +703,16 @@ class StoreConfigurationController extends ProductRuleController {
      foreach ($sharesArry as $key => $val){
          if($val['varietal']){
              foreach ($val['varietal'] as $k => $v){
-                 echo '<pre>';
-                 print_r($uniqueBrandSum[$key]);
-                 print_r($k);
-//                if($v < $uniqueBrandSum[$key][$k]){
-//                    $response['flag'] = 0;
-//                    $response['msg'] = 'You have not selected any Products';
-//                    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-//                    return $response;
-//                }
+                if($v < $uniqueBrandSum[$key][$k]){
+                    $response['flag'] = 0;
+                    $response['msg'] = 'You have not selected any Products';
+                    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                    return $response;
+                }
              }
          }
          
-     }exit;
+     }
   //ordered array 
      $rulesDataArry = [];
      if($sharesArry){
