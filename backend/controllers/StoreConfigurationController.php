@@ -476,7 +476,7 @@ class StoreConfigurationController extends ProductRuleController {
 
             //category 
             $marketBrandModel = new StoreConfigurationSearch();
-            $stores['market_id'] = 7;
+            $stores['market_id'] = $marketId;
             $marketBrand = $marketBrandModel->brandProductList($stores['market_id']);
             
             $wholeData = array();
