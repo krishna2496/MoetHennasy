@@ -44,12 +44,12 @@ class StoreConfigurationController extends ProductRuleController {
                         'actions' => ['index', 'listing', 'update-config', 'delete'],
                         'allow' => true,
                         'roles' => ['&'],
-                    ],
+                        ],
                         [
                         'actions' => ['send-mail', 'feedback', 'create', 'view', 'review-store', 'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data','delete-all'],
                         'allow' => true,
                         'roles' => ['@'],
-                    ],
+                        ],
                 ],
             ],
             'verbs' => [
@@ -574,7 +574,6 @@ class StoreConfigurationController extends ProductRuleController {
         if (!empty($post)) {
             $flag = 1;
             foreach ($post as $key => $value) {
-            
                 if ($value['sel'] == 'true') {
                     $searchModel = new CataloguesSearch();
                     $filters['products_id'] = $key;
@@ -645,24 +644,22 @@ class StoreConfigurationController extends ProductRuleController {
         }
 
         foreach ($dataIds as $value) {
-            echo '<pre>';
-            print_r($value);exit;
             if ($value['top_shelf'] == '1') {
                 continue;
             }
-           
             //$uniqueBrandVarientalArry[$value['brand_id']] = array();
             if(isset($value['variental']['id'])){
-                
-                $uniqueBrandVarientalArry[$value['brand_id']][$value['variental']['id']] = $value['id'];
-                
-//                $sumOfBrandProduct = 
+                $uniqueBrandVarientalArry[$value['brand_id']][$value['variental']['id']][$value['id']] = $value['width'];
+//                $uniqueBrandVarientalArry[$value['brand_id']]['variental_product_width'][] = 
             }
         }
-        
+
         $sharesArry =array();
         $brandSum = 0;
         $productBrandData = $_SESSION['config']['brands_data'];
+        echo '<pre>';
+        print_r($uniqueBrandVarientalArry);
+        print_r($productBrandData);exit;
         foreach ($productBrandData as $bK=>$bV){
            $brandVarientalSum = 0;
             if(isset($uniqueBrandVarientalArry[$bK])){
@@ -698,11 +695,7 @@ class StoreConfigurationController extends ProductRuleController {
             }
           }
         }
-        echo '<pre>';
-        print_r($sharesArry);
-        print_r($uniqueBrandVarientalArry);
-        print_r($sumOfBrandProduct);
-        exit;
+      
         $shelfIndex = (isset($racksProductArray[0]) && count($racksProductArray[0]) > 0 ) ? 1 : 0;
         if ($selevesCount > 1) {
             

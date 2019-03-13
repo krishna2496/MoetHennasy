@@ -132,7 +132,7 @@ use yii\widgets\Pjax;
                 $(this).parent().parent().css("background-color", "#d24737");
                 $(this).parent().parent().css("color", "white");
             });
-            $('#varietalMessageBox').html("<div class='alert alert-danger'><button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>Total share should be equals to 100.</div>");
+            $('#varietalMessageBox').html("<div class='alert alert-danger'><button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>Total share should equal to 100</div>");
         }
     }
 </script>

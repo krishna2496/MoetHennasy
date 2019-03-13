@@ -48,13 +48,15 @@ $('document').ready(function(){
             if($(value).val() != '')
                 $totalShare = $totalShare + parseInt($(value).val());
         });
-        if($totalShare > 100) {
+        if($totalShare != 100) {
 			$(this).parent().parent().css("background-color", "#d24737");
 			$(this).parent().parent().css("color", "white");
 			
-			$('#messageBox').html("<div class='alert alert-danger'><button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>Total share should be less or equal to 100</div>");
+			$('#messageBox').html("<div class='alert alert-danger'><button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>Total share should equal to 100</div>");
 		    //alert('Share should be less or equal to 100');
             //$(this).val(0);
+			$(".auto_fill").attr('disabled','disabled');
+			$('#totalShares').val($totalShare);
             return false;
         }else{
 			$.each( $('[name="shares[]"]'), function( key, value ) {
@@ -63,6 +65,7 @@ $('document').ready(function(){
 				$(this).parent().parent().css("color", "black");
 			});
 			$('#messageBox').html("");
+			$(".auto_fill").removeAttr('disabled');
 		}
         if($totalShare == 100) {
             $(".auto_fill").removeAttr('disabled');
@@ -85,7 +88,7 @@ $('document').ready(function(){
                 $totalShare = $totalShare + parseInt($(value).val());
         });
 		if($totalShare > 100) {
-            alert('Share should be less or equal to 100');
+            alert('Share should equal to 100');
             //$(this).val(0);
             return false;
         }
