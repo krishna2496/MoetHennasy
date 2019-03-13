@@ -488,7 +488,7 @@ class StoreConfigurationController extends ProductRuleController {
                     $newData =  $wholeData[$key];
                     $wholeData = array();
                     $wholeData[0] = $newData;
-                  
+                   
                 }
                 
             }else{
@@ -565,7 +565,7 @@ class StoreConfigurationController extends ProductRuleController {
         
         $post = Yii::$app->request->post('productObject');
         $flag = $marketId = $categoryId = 0;
-        $productArry = $bottomProduct =  $uniqueBrandVarientalArry = $sumOfBrandProduct = $sharesArry =array();
+        $productArry = $bottomProduct =  $uniqueBrandVarientalArry = $uniqueBrandSum = $sumOfBrandProduct = $sharesArry =array();
         $marketId = $_SESSION['config']['market_id'];
         $categoryId = $_SESSION['config']['category_id'];
         $orderArry = \common\models\MarketCategoryProduct::find()->andWhere(['category_id' =>$categoryId,'market_id'=>$marketId])->asArray()->all();
@@ -579,7 +579,7 @@ class StoreConfigurationController extends ProductRuleController {
                     $filters['products_id'] = $key;
                     $dataProvider = $searchModel->search($filters);
                     $data = $dataProvider->getModels();
-                    $productsArray = $marketRule = $rulesArray = $rulesId = $racksProductArray = array();
+                    $productsArray = $marketRule = $rulesArray = $rulesId = $racksProductArray = $orderedArry = array();
                     if($value['shelf'] == 'true'){
                        $data[0]['order_id'] = isset($reOrderArry[$key]) ? $reOrderArry[$key] : 0;
                     }
@@ -626,12 +626,9 @@ class StoreConfigurationController extends ProductRuleController {
         //top shelf product
         $top_shelf_product = $_SESSION['config']['top_shelf'];
         //get top shelf order 
-      
-        
         if ($this->ifRuleContain(\yii::$app->params['configArray']['top_shelf'])) {
             foreach ($dataIds as $dataKey => $dataValue) {
                 if ($dataValue['top_shelf'] == '1') {
-                  
                     $this->ruleTopShelf($dataValue, $racksProductArray[0], $selvesWidth);
                 }
             }
@@ -639,10 +636,10 @@ class StoreConfigurationController extends ProductRuleController {
     
         if (isset($racksProductArray[0]) && (!empty($racksProductArray[0]))) {
             if (count($racksProductArray[0]) > 0) {
-                $this->applySortingRule($racksProductArray[0]);
+                $this->applySortingRule($racksProductArray[0],$selvesWidth);
             }
         }
-
+        
         foreach ($dataIds as $value) {
             if ($value['top_shelf'] == '1') {
                 continue;
@@ -650,6 +647,7 @@ class StoreConfigurationController extends ProductRuleController {
             //$uniqueBrandVarientalArry[$value['brand_id']] = array();
             if(isset($value['variental']['id'])){
                 $uniqueBrandVarientalArry[$value['brand_id']][$value['variental']['id']][$value['id']] = $value['width'];
+                $orderedArry[$value['brand_id']][] = $value['variental']['id'];
 //                $uniqueBrandVarientalArry[$value['brand_id']]['variental_product_width'][] = 
             }
         }
@@ -657,11 +655,9 @@ class StoreConfigurationController extends ProductRuleController {
         $sharesArry =array();
         $brandSum = 0;
         $productBrandData = $_SESSION['config']['brands_data'];
-        echo '<pre>';
-        print_r($uniqueBrandVarientalArry);
-        print_r($productBrandData);exit;
+        
         foreach ($productBrandData as $bK=>$bV){
-           $brandVarientalSum = 0;
+            $brandVarientalSum = 0;
             if(isset($uniqueBrandVarientalArry[$bK])){
                 //brand share
                 $sharesArry[$bK]['brand_shares'] = $bV['shares'];
@@ -669,9 +665,10 @@ class StoreConfigurationController extends ProductRuleController {
                 if(isset($bV['marketBrandsVerietals'])){
                     $brandVarietal = $bV['marketBrandsVerietals'];
                     foreach ($brandVarietal as $k=>$v){
+                        if($v['shares'] != 0){
                             $sharesArry[$bK]['varietal'][$v['id']]= $v['shares'];
-                            
                             $brandVarientalSum = $brandVarientalSum + $v['shares'];
+                        }
                     }
                     $sharesArry[$bK]['varietal_sum'] = $brandVarientalSum; 
                 }
@@ -695,51 +692,128 @@ class StoreConfigurationController extends ProductRuleController {
             }
           }
         }
-      
-        $shelfIndex = (isset($racksProductArray[0]) && count($racksProductArray[0]) > 0 ) ? 1 : 0;
-        if ($selevesCount > 1) {
-            
-            echo '<pre>';
-            print_r($dataIds);
-            print_r($racksProductArray);            
-            exit;
-        foreach ($dataIds as $value) {
-
-            if ($value['top_shelf'] == '1') {
-                continue;
+     if($uniqueBrandVarientalArry){
+        foreach ($uniqueBrandVarientalArry as $key => $varietal){
+            foreach ($varietal as $k => $v){
+                $uniqueBrandSum[$key][$k] = array_sum($v);
             }
-            $sum = 0;
-            if (!empty($racksProductArray[$shelfIndex])) {
-                foreach ($racksProductArray[$shelfIndex] as $rackValue) {
-                    $sum = $sum + $rackValue['width'];
+        }
+     }
+   
+     foreach ($sharesArry as $key => $val){
+         if($val['varietal']){
+             foreach ($val['varietal'] as $k => $v){
+                if($v < $uniqueBrandSum[$key][$k]){
+                    $response['flag'] = 0;
+                    $response['msg'] = 'You have not selected any Products';
+                    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                    return $response;
                 }
-            }
-
-            if (intval($selvesWidth) >= intval(intval($sum) + intval($value['width']))) {
-
-                if ((intval(($selvesHeight) / ($selevesCount)) >= intval($value['height'])) && (intval($selvesDepth) >= intval($value['length']))) {
-                   
-                    if (empty($racksProductArray[$shelfIndex])) { 
-                        $racksProductArray[$shelfIndex][] = $value;
-                      
-                    } else {
-                        array_push($racksProductArray[$shelfIndex], $value);
-                    }
-                }
-            } else {
-                if (intval($shelfIndex) < ((intval($selevesCount)) - 1)) {
-                    $shelfIndex = intval($shelfIndex) + 1;
+             }
+         }
+         
+     }
+  //ordered array 
+     $rulesDataArry = [];
+     if($sharesArry){
+        foreach ($sharesArry as $sK => $sV){
+            foreach ($sV['varietal'] as $k => $v){
+                $data = $uniqueBrandVarientalArry[$sK][$k];
+                if(isset($data)){
+                    $rulesDataArry[$sK.'_'.$k] = $data;
                 }
             }
         }
-        }
-        foreach ($racksProductArray as $key =>$value){
- 
-        $this->applySortingRule($racksProductArray[$key]);
-        }
+     }
      
-        $this->fillUpEmptySpaceOfShelves($racksProductArray, $selvesWidth, $selevesCount);
+     $newArry = $applyRuleArry = array();
+     foreach ($rulesDataArry as $k => $v){
+         $keyData = explode('_',$k);
+         $brand_id = $keyData[0];
+         $varital_id = $keyData[1];
+         $z= $sharesArry[$brand_id]['varietal'][$varital_id];
+         $totalSum= $uniqueBrandSum[$brand_id][$varital_id];
+         $x = ($z/$totalSum);
+         $x = (int)$x;
+         $y = $x*$totalSum;
+         $w= $z - $y;
+         
+         foreach ($v as $key => $val){
+           $repeatCount = $x;
+           if($val < $w){
+               $repeatCount++;
+           }
+           $newArry[$k][$key]=  $repeatCount;
+         }
+         
+     }
+
+     foreach ($newArry as $key => $value)
+     {
+         foreach ($value as $k => $v){
+             for($i=0;$i<$v;$i++){
+                $applyRuleArry[$key][]=$dataIds[$k];
+             }
+         }
+     }
+   
+//        $shelfIndex = (isset($racksProductArray[0]) && count($racksProductArray[0]) > 0 ) ? 1 : 0;
+//        if ($selevesCount > 1) {
+//        
+//        foreach ($dataIds as $value) {
+//
+//            if ($value['top_shelf'] == '1') {
+//                continue;
+//            }
+//            $sum = 0;
+//            if (!empty($racksProductArray[$shelfIndex])) {
+//                foreach ($racksProductArray[$shelfIndex] as $rackValue) {
+//                    $sum = $sum + $rackValue['width'];
+//                }
+//            }
+//
+//            if (intval($selvesWidth) >= intval(intval($sum) + intval($value['width']))) {
+//
+//                if ((intval(($selvesHeight) / ($selevesCount)) >= intval($value['height'])) && (intval($selvesDepth) >= intval($value['length']))) {
+//                   
+//                    if (empty($racksProductArray[$shelfIndex])) { 
+//                        $racksProductArray[$shelfIndex][] = $value;
+//                      
+//                    } else {
+//                        array_push($racksProductArray[$shelfIndex], $value);
+//                    }
+//                }
+//            } else {
+//                if (intval($shelfIndex) < ((intval($selevesCount)) - 1)) {
+//                    $shelfIndex = intval($shelfIndex) + 1;
+//                }
+//            }
+//        }
+//        }
       
+        foreach ($applyRuleArry as $key =>$value){
+ 
+        $this->applySortingDataRule($applyRuleArry[$key]);
+        }
+        foreach ($applyRuleArry as $k => $v){
+            foreach ($v as $key =>$val){
+                if(isset($racksProductArray[0])){
+                    $racksProductArray[1][]=$val;
+                }else{
+                    $racksProductArray[0][]=$val;
+                }
+            }
+        }
+        
+        for($i=0;$i<$selevesCount;$i++){
+            if(!isset($racksProductArray[$i])){
+                $racksProductArray[$i] = $racksProductArray[$i-1];
+            }
+        }
+       
+//        $this->fillUpEmptySpaceOfShelves($racksProductArray, $selvesWidth, $selevesCount);
+//        echo '<pre>';
+//        print_r($racksProductArray);exit
         $finalProducuts = $finalProducutsRack = $productsId = array();
 
         foreach ($racksProductArray as $key => $value) {

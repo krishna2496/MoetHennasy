@@ -171,21 +171,23 @@ class CataloguesSearch extends Catalogues {
                 $varientalData = $brandV['marketBrandsVerietals'];
                 if(isset($varientalData) && (!empty($varientalData))){
                     foreach ($varientalData as $varientalK => $varientalV){
+                        if(isset($varientalV['shares']) && ($varientalV['shares'] != 0)){
                         $product = $varientalV["product"];
-                        if(isset($product) && (!empty($product))){
-                            foreach ($product as $pK => $pV){
-//                                echo '<pre>';
-//                                print_r($pV);exit;
-                                if($pV['height'] > $heightOfShelves ){
-                                    continue;
+                            if(isset($product) && (!empty($product))){
+                                foreach ($product as $pK => $pV){
+    //                                echo '<pre>';
+    //                                print_r($pV);exit;
+                                    if($pV['height'] > $heightOfShelves ){
+                                        continue;
+                                    }
+                                    $category_id = $pV['product_category_id'];
+                                    $product_type = $pV['product_type_id'];
+                                    $ckey = array_search($pV['product_category_id'], array_column($productCategory, 'id'));
+                                    $pKey = array_search($pV['product_type_id'], array_column($productType, 'id'));
+                                    $pV['product_category_name'] = isset($productCategory[$ckey]['name']) ? $productCategory[$ckey]['name'] : '';
+                                    $pV['product_type_name'] = isset($productType[$pKey]['title']) ? $productType[$pKey]['title'] : '';
+                                    $otherProduct[] = $pV;
                                 }
-                                $category_id = $pV['product_category_id'];
-                                $product_type = $pV['product_type_id'];
-                                $ckey = array_search($pV['product_category_id'], array_column($productCategory, 'id'));
-                                $pKey = array_search($pV['product_type_id'], array_column($productType, 'id'));
-                                $pV['product_category_name'] = isset($productCategory[$ckey]['name']) ? $productCategory[$ckey]['name'] : '';
-                                $pV['product_type_name'] = isset($productType[$pKey]['title']) ? $productType[$pKey]['title'] : '';
-                                $otherProduct[] = $pV;
                             }
                         }
                     }

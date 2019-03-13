@@ -554,6 +554,11 @@ jQuery(document).ready(function ()
                         data: {productObject: productObject},
                         success: function (data)
                         {
+                            alert("sfd");
+                            if(data.flag == 0){
+                                alert(data.msg);
+                                $( "#tab2" ).trigger( "click" );
+                            }else{
                             addSuccessClass('tab3');
 
                             $("#tab-step-2").hide();
@@ -567,6 +572,7 @@ jQuery(document).ready(function ()
                             $("#tab2").removeAttr('disabled');
                             $("#third").val(1);
                             $("#displayName").text($("#getName").text());
+                         }
                         }
                     });
                 }

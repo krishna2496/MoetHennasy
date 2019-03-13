@@ -101,6 +101,7 @@ class StoreConfigurationSearch extends StoreConfiguration
        
         $filters = $filterForVarietal = $marketVarientalProduct = $variental = $params = $brands = $productCategories = $productTypes = array();
         $marketId = $marketId;
+        
         $queryVarietal = \common\models\Catalogues::find()->andWhere(['top_shelf' => 0])->asArray()->all();
         if ($queryVarietal) {
             foreach ($queryVarietal as $k => $v) {

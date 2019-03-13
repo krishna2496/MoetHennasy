@@ -620,7 +620,7 @@ class StoresConfigController extends BaseApiController {
         if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
             $marketId = $currentUser->market_id;
         }
-
+$marketId=7;
         $queryVarietal = \common\models\Catalogues::find()->andWhere(['top_shelf' => 0])->asArray()->all();
         if ($queryVarietal) {
             foreach ($queryVarietal as $k => $v) {

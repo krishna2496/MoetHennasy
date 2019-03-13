@@ -45,7 +45,7 @@ class ProductRuleController extends Controller {
                         'roles' => ['&'],
                     ],
                         [
-                        'actions' => ['send-mail', 'feedback', 'create', 'view', 'review-store', 'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data','delete-all','re-intialize-brand-share-arry'],
+                        'actions' => ['send-mail', 'feedback', 'create', 'view', 'review-store', 'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data','delete-all','re-intialize-brand-share-arry','apply-sorting-data-rule'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -141,8 +141,70 @@ class ProductRuleController extends Controller {
         }
     }
 
-    protected function applySortingRule(&$racksProductArray) {
+    protected function applySortingRule(&$racksProductArray,$selvesWidth) {
         $this->sort_array_of_array($racksProductArray, 'order_id', SORT_ASC);
+        $totalWidth =[];
+        $totalSum = 0;
+        $numOfProduct = count($racksProductArray);
+        $oldRackArry =$racksProductArray;
+        
+        foreach ($racksProductArray as $k => $v){
+            $totalWidth[$v['id']] = $v['width'];
+            $totalSum = $totalSum + $v['width'];
+        }
+        $racksProductArray = [];
+        $repeatCount = ($selvesWidth)/$totalSum;
+        $repeatCount = (int)$repeatCount;
+        $repeatCount = ($repeatCount)/$numOfProduct;
+        $repeatCount = (int)$repeatCount;
+        
+        foreach ($oldRackArry as $k => $v){
+            for($i=0;$i<$repeatCount;$i++){
+                $racksProductArray[] = $v;
+            }
+        }
+    }
+    
+    protected function applySortingDataRule(&$applyRuleArry) {
+//        echo '<pre>';
+//        print_r($racksProductArray);exit;
+        
+//       $this->sort_array_of_array($racksProductArray, 'market_share', $sort);
+        if ($this->ifRuleContain(\yii::$app->params['configArray']['market_share'])) {            
+            $sort = SORT_DESC;
+            $this->sort_array_of_array($applyRuleArry, 'market_share', $sort);
+        }
+        if ($this->ifRuleContain(\yii::$app->params['configArray']['price'])) {
+            $sort = SORT_ASC;
+            $this->sort_array_of_array($applyRuleArry, 'price', $sort);
+        }
+        if ($this->ifRuleContain(\yii::$app->params['configArray']['size_height'])) {
+            $sort = SORT_ASC;
+            $this->sort_array_of_array($applyRuleArry, 'height', $sort);
+        }
+        if ($this->ifRuleContain(\yii::$app->params['configArray']['gift_box'])) {
+            $giftProduct = $otherProduct = array();
+
+            $skipBoxCheck = 0;
+            foreach ($applyRuleArry as $key => $value) {
+                if(isset($value['box_only'])){ if ($value['box_only'] == 1) {
+                    array_push($giftProduct, $value);
+                } if ($value['box_only'] == 0) { array_push($otherProduct, $value); } }
+                else {   $skipBoxCheck = 1; }
+            }
+
+            if(!$skipBoxCheck)
+            {
+                    $mergedArray = array_merge($giftProduct, $otherProduct);
+                    $applyRuleArry = $mergedArray;
+            }
+        }
+        //product rule
+         if ($this->ifRuleContain(\yii::$app->params['configArray']['order_product'])) {
+          
+                $this->sort_array_of_array($applyRuleArry, 'reorder_id', SORT_ASC);
+         }
+     
     }
 
     public function sort_array_of_array(&$array, $subfield, $sort) {
