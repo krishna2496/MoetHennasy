@@ -23,6 +23,7 @@ $('#tab2').click(function (event)
             $("#tab3").attr('disabled', 'true');
             tab3Status = '';
             $.pjax.reload({container: '#employee', async: false});
+            $.pjax.reload({container: '#topShelf', async: false});
         }
     }
 });
@@ -511,9 +512,15 @@ jQuery(document).ready(function ()
             }
             if (index == 2) {
                
+                
                 if (jQuery.isEmptyObject(productArry))
                 {
                     alert("Please Select at least one product");
+                    return false;
+                }
+                if (jQuery.isEmptyObject(bottomProductArry))
+                {
+                    alert("Please Select at least one normal product");
                     return false;
                 }
             }
@@ -554,7 +561,6 @@ jQuery(document).ready(function ()
                         data: {productObject: productObject},
                         success: function (data)
                         {
-                            alert("sfd");
                             if(data.flag == 0){
                                 alert(data.msg);
                                 $( "#tab2" ).trigger( "click" );

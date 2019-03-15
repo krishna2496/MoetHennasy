@@ -44,12 +44,12 @@ class StoreConfigurationController extends ProductRuleController {
                         'actions' => ['index', 'listing', 'update-config', 'delete'],
                         'allow' => true,
                         'roles' => ['&'],
-                        ],
+                    ],
                         [
-                        'actions' => ['send-mail', 'feedback', 'create', 'view', 'review-store', 'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data','delete-all'],
+                        'actions' => ['send-mail', 'feedback', 'create', 'view', 'review-store', 'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data', 'delete-all'],
                         'allow' => true,
                         'roles' => ['@'],
-                        ],
+                    ],
                 ],
             ],
             'verbs' => [
@@ -60,7 +60,7 @@ class StoreConfigurationController extends ProductRuleController {
             ],
         ];
     }
-    
+
     public function actionSaveConfigData() {
         $post = yii::$app->request->post();
         $shelfThumb = isset($post['thumb_image']) ? $post['thumb_image'] : '';
@@ -173,7 +173,7 @@ class StoreConfigurationController extends ProductRuleController {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $flag;
     }
-    
+
     public function actionSaveImage() {
         $returnData = array();
         $returnData['flag'] = 0;
@@ -199,7 +199,7 @@ class StoreConfigurationController extends ProductRuleController {
         $configId = $id;
         $stores = Stores::find()->where(['id' => $storeId])->asArray()->one();
         $currentUser = CommonHelper::getUser();
-         $reviewFlag = 0;
+        $reviewFlag = 0;
         if ($stores) {
             $this->checkUserAccess($currentUser, $stores);
             $storeFilter = array();
@@ -212,13 +212,13 @@ class StoreConfigurationController extends ProductRuleController {
             $request = Yii::$app->request;
             $brandThumbId = $display_name = '';
             if ($currentUser->role_id == Yii::$app->params['superAdminRole']) {
-                 $reviewFlag = 1;
+                $reviewFlag = 1;
             }
-            
+
             if ($configData['status']['success'] == 1) {
                 if (!$request->isPjax) {
                     $storeData = $configData['data']['stores_config'][0];
-                   
+
                     $userData = new User();
 
                     $userDetail = User::findOne(['id' => $storeData['created_by']]);
@@ -226,7 +226,7 @@ class StoreConfigurationController extends ProductRuleController {
                     $configCreatedByParent = ($userDetail['parent_user_id'] == '' ) ? 0 : $userDetail['parent_user_id'];
 
                     $reviewFlag = 1;
-                    
+
                     $_SESSION['config']['storeId'] = $storeData['store_id'];
 
                     $display_name = $_SESSION['config']['display_name'] = $storeData['config_name'];
@@ -322,17 +322,16 @@ class StoreConfigurationController extends ProductRuleController {
                         if (!empty($returnData['data']['market_brands'])) {
 
                             foreach ($returnData['data']['market_brands'] as $key => $value) {
-                              
+
                                 $brand[$key]['id'] = $value['brand']['id'];
                                 $brand[$key]['name'] = $value['brand']['name'];
                                 $brand[$key]['image'] = $value['brand']['image'];
                                 $brandId[] = $value['brand']['id'];
-                                if($brandThumbId != ''){
-                                if($value['brand']['id'] == $brandThumbId){
-                                    $brandBackground = $value['brand']['color_code'];
+                                if ($brandThumbId != '') {
+                                    if ($value['brand']['id'] == $brandThumbId) {
+                                        $brandBackground = $value['brand']['color_code'];
+                                    }
                                 }
-                                }
-                                
                             }
                         }
                     }
@@ -349,7 +348,7 @@ class StoreConfigurationController extends ProductRuleController {
 
                 $searchModel = new CataloguesSearch();
                 $dataProvider = $searchModel->search($filterProduct);
-               
+
                 return $this->render('index', [
                         'searchModel' => $searchModel,
                         'dataProvider' => $dataProvider,
@@ -375,12 +374,12 @@ class StoreConfigurationController extends ProductRuleController {
         $currentUser = CommonHelper::getUser();
         $canCreateNewConfig = 0;
         if ($stores) {
-          
+
             $this->checkUserAccess($currentUser, $stores);
             if ($stores['assign_to'] == $currentUser->id || $currentUser->role_id == Yii::$app->params['superAdminRole']) {
                 $canCreateNewConfig = 1;
             }
-            
+
             $filters = Yii::$app->request->queryParams;
             if (!isset($filters['limit'])) {
                 $filters['limit'] = Yii::$app->params['pageSize'];
@@ -402,8 +401,8 @@ class StoreConfigurationController extends ProductRuleController {
         }
     }
 
-    public function actionIndex($id , $categoryId = 0) {
-      
+    public function actionIndex($id, $categoryId = 0) {
+
         $storeId = $id;
         $stores = Stores::find()->where(['id' => $id])->asArray()->one();
         $currentUser = CommonHelper::getUser();
@@ -421,7 +420,7 @@ class StoreConfigurationController extends ProductRuleController {
 
             $rulesArray = array();
             if ($marketRuleData['status']['success'] == 1 && isset($marketRuleData['data']['market_rules']) && !empty($marketRuleData['data']['market_rules'])) {
-                
+
                 foreach ($marketRuleData['data']['market_rules'] as $key => $value) {
                     $rulesArray[$key]['ids'] = $value['rule_id'];
                     $rulesArray[$key]['type'] = $value['rules']['type'];
@@ -437,8 +436,7 @@ class StoreConfigurationController extends ProductRuleController {
 
             if (isset($currentUser->market_id) && ($currentUser->market_id != '') && $currentUser->role_id == '1') { // check if role is super admin
                 $marketId = $stores['market_id'];
-            }
-            else if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
+            } else if (isset($currentUser->market_id) && ($currentUser->market_id != '')) {
                 $marketId = $currentUser->market_id;
             }
 
@@ -471,44 +469,41 @@ class StoreConfigurationController extends ProductRuleController {
             if (isset($_SESSION['config']['brands']) && ($_SESSION['config']['brands'] != '')) {
                 $filterProduct['brand_id'] = $_SESSION['config']['brands'];
             }
-        
-            
+
+
 
             //category 
             $marketBrandModel = new StoreConfigurationSearch();
             $stores['market_id'] = $marketId;
             $marketBrand = $marketBrandModel->brandProductList($stores['market_id']);
-            
-            $wholeData = array();
-            if(isset($marketBrand) && (!empty($marketBrand))){
-                $wholeData =  $marketBrand['market']['category'];
 
-                if($categoryId != 0){
+            $wholeData = array();
+            if (isset($marketBrand) && (!empty($marketBrand))) {
+                $wholeData = $marketBrand['market']['category'];
+
+                if ($categoryId != 0) {
                     $key = array_search($categoryId, array_column($wholeData, 'id'));
-                    $newData =  $wholeData[$key];
+                    $newData = $wholeData[$key];
                     $wholeData = array();
                     $wholeData[0] = $newData;
-                   
                 }
-                
-            }else{
+            } else {
                 exit();
             }
             //variental product
             $brandFilter = [];
-            if(isset($_SESSION['config']['brands'])){
+            if (isset($_SESSION['config']['brands'])) {
                 $brandFilter = $_SESSION['config']['brands'];
             }
             $filtetOtherProductData = array(
-              'brands' => $brandFilter,
-                
+                'brands' => $brandFilter,
             );
             $searchModel = new CataloguesSearch();
-            $dataProvider = $searchModel->searchProductData($wholeData,$filtetOtherProductData);
+            $dataProvider = $searchModel->searchProductData($wholeData, $filtetOtherProductData);
             //top shelf product
             $searchModel = new CataloguesSearch();
             $filterTopShelf['category_id'] = $categoryId;
-            $topDataProvider = $searchModel->searchTopShelfProduct($wholeData,$filterTopShelf);
+            $topDataProvider = $searchModel->searchTopShelfProduct($wholeData, $filterTopShelf);
 
             return $this->render('index', [
                     'searchModel' => $searchModel,
@@ -532,7 +527,7 @@ class StoreConfigurationController extends ProductRuleController {
 
     public function actionSaveData() {
         $post = Yii::$app->request->post();
-        
+
         $_SESSION['config']['no_of_shelves'] = $post['no_of_shelves'];
         $_SESSION['config']['height_of_shelves'] = $post['height_of_shelves'];
         $_SESSION['config']['width_of_shelves'] = $post['width_of_shelves'];
@@ -542,35 +537,35 @@ class StoreConfigurationController extends ProductRuleController {
         $_SESSION['config']['category_id'] = $post['category_id_hidden'];
         $_SESSION['config']['ratio'] = $post['ratio'];
         $_SESSION['config']['display_name'] = $post['display_name'];
-     
+
         $filters['brand_id'] = $_SESSION['config']['brands'];
-      
+
         $marketBrandModel = new StoreConfigurationSearch();
         $market_id = $post['market_id_hidden'];
         $marketBrand = $marketBrandModel->brandProductList($market_id);
         $brand = $marketBrand['market']['category'][0]['brand'];
-        
+
         $newBrandData = array();
-        foreach ($brand as $k => $v){
-            if(in_array($v['id'], $filters['brand_id'])){
+        foreach ($brand as $k => $v) {
+            if (in_array($v['id'], $filters['brand_id'])) {
                 $newBrandData[$v['id']] = $v;
             }
         }
         $_SESSION['config']['top_shelf'] = $marketBrand['market']['category'][0]['top_shelf_product'];
         $_SESSION['config']['brands_data'] = $newBrandData;
-        
     }
 
     public function actionSaveProductData() {
-        
+
         $post = Yii::$app->request->post('productObject');
+
         $flag = $marketId = $categoryId = 0;
-        $productArry = $bottomProduct =  $uniqueBrandVarientalArry = $uniqueBrandSum = $sumOfBrandProduct = $sharesArry =array();
+        $productArry = $bottomProduct = $uniqueBrandVarientalArry = $uniqueBrandVarientalArryVal = $uniqueBrandSum = $uniqueBrandSumValidation = $sumOfBrandProduct = $sharesArry = array();
         $marketId = $_SESSION['config']['market_id'];
         $categoryId = $_SESSION['config']['category_id'];
-        $orderArry = \common\models\MarketCategoryProduct::find()->andWhere(['category_id' =>$categoryId,'market_id'=>$marketId])->asArray()->all();
+        $orderArry = \common\models\MarketCategoryProduct::find()->andWhere(['category_id' => $categoryId, 'market_id' => $marketId])->asArray()->all();
         $reOrderArry = CommonHelper::getDropdown($orderArry, ['product_id', 'top_reorder_id']);
-     
+
         if (!empty($post)) {
             $flag = 1;
             foreach ($post as $key => $value) {
@@ -580,21 +575,27 @@ class StoreConfigurationController extends ProductRuleController {
                     $dataProvider = $searchModel->search($filters);
                     $data = $dataProvider->getModels();
                     $productsArray = $marketRule = $rulesArray = $rulesId = $racksProductArray = $orderedArry = array();
-                    if($value['shelf'] == 'true'){
-                       $data[0]['order_id'] = isset($reOrderArry[$key]) ? $reOrderArry[$key] : 0;
+                    if ($value['shelf'] == 'true') {
+                        $data[0]['order_id'] = isset($reOrderArry[$key]) ? $reOrderArry[$key] : 0;
                     }
                     $dataIds[$key] = $data[0];
                     $dataIds[$key]['is_top_shelf'] = '';
                     $dataIds[$key]['market'] = $marketRule;
-                    if($value['shelf'] != 'true'){
-                        $bottomProduct[]=$key;
+                    if ($value['shelf'] != 'true') {
+                        $bottomProduct[] = $key;
                     }
                 }
             }
         }
-       
+
+        $selvesWidth = $_SESSION['config']['width_of_shelves'];
+        $selvesHeight = $_SESSION['config']['height_of_shelves'];
+        $selvesDepth = $_SESSION['config']['depth_of_shelves'];
+        $selevesCount = $_SESSION['config']['no_of_shelves'];
+        $noOfFacing = (count($bottomProduct)) * ($selevesCount - 1);
+
         $_SESSION['config']['products'] = $dataIds;
-      
+
         foreach ($dataIds as $key => $value) {
             unset($dataIds[$key]['brand']);
             unset($dataIds[$key]['productType']);
@@ -608,155 +609,230 @@ class StoreConfigurationController extends ProductRuleController {
             unset($dataIds[$key]['created_at']);
             unset($dataIds[$key]['updated_at']);
             unset($dataIds[$key]['deleted_at']);
-           
             unset($dataIds[$key]['product_sub_category_id']);
             unset($dataIds[$key]['product_type_id']);
-         
-          
             unset($dataIds[$key]['sku']);
             unset($dataIds[$key]['ean']);
             unset($dataIds[$key]['manufacturer']);
         }
-   
-        $selvesWidth = $_SESSION['config']['width_of_shelves'];
-        $selvesHeight = $_SESSION['config']['height_of_shelves'];
-        $selvesDepth =$_SESSION['config']['depth_of_shelves'];
-        $selevesCount = $_SESSION['config']['no_of_shelves'];
-       
+
         //top shelf product
         $top_shelf_product = $_SESSION['config']['top_shelf'];
+
         //get top shelf order 
-        if ($this->ifRuleContain(\yii::$app->params['configArray']['top_shelf'])) {
-            foreach ($dataIds as $dataKey => $dataValue) {
-                if ($dataValue['top_shelf'] == '1') {
-                    $this->ruleTopShelf($dataValue, $racksProductArray[0], $selvesWidth);
+//        if ($this->ifRuleContain(\yii::$app->params['configArray']['top_shelf'])) {
+        $total_top_product_sum = 0;
+        foreach ($dataIds as $dataKey => $dataValue) {
+            if ($dataValue['top_shelf'] == '1') {
+                $total_top_product_sum = $total_top_product_sum + $dataValue['width'];
+                if ($total_top_product_sum > $selvesWidth) {
+                    $response['flag'] = 0;
+                    $response['msg'] = 'Please adjust width of shelves';
+                    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                    return $response;
                 }
+                $this->ruleTopShelf($dataValue, $racksProductArray[0], $selvesWidth);
             }
         }
-    
+//        }
+
         if (isset($racksProductArray[0]) && (!empty($racksProductArray[0]))) {
             if (count($racksProductArray[0]) > 0) {
-                $this->applySortingRule($racksProductArray[0],$selvesWidth);
+                $this->applySortingRule($racksProductArray[0], $selvesWidth);
             }
         }
-        
+        $specialProductArry = array();
         foreach ($dataIds as $value) {
             if ($value['top_shelf'] == '1') {
                 continue;
             }
-            //$uniqueBrandVarientalArry[$value['brand_id']] = array();
-            if(isset($value['variental']['id'])){
+            if (isset($value['variental']['id'])) {
+
                 $uniqueBrandVarientalArry[$value['brand_id']][$value['variental']['id']][$value['id']] = $value['width'];
-                $orderedArry[$value['brand_id']][] = $value['variental']['id'];
-//                $uniqueBrandVarientalArry[$value['brand_id']]['variental_product_width'][] = 
+                if ($value['special_format'] == 1) {
+                    if ($noOfFacing > 20) {
+                        $newWidth = $value['width'] * 2;
+                    } else {
+                        $newWidth = $value['width'];
+                    }
+                } else {
+                    $newWidth = $value['width'];
+                }
+                $uniqueBrandVarientalArryVal[$value['brand_id']][$value['variental']['id']][$value['id']] = $newWidth;
+//                if($value['special_format'] == 1){
+                $specialProductArry[$value['brand_id']][$value['variental']['id']][$value['id']] = $value['special_format'];
+//                }
             }
         }
 
-        $sharesArry =array();
+        $sharesArry = array();
         $brandSum = 0;
         $productBrandData = $_SESSION['config']['brands_data'];
-        
-        foreach ($productBrandData as $bK=>$bV){
+
+        foreach ($productBrandData as $bK => $bV) {
             $brandVarientalSum = 0;
-            if(isset($uniqueBrandVarientalArry[$bK])){
+            if (isset($uniqueBrandVarientalArry[$bK])) {
+
                 //brand share
                 $sharesArry[$bK]['brand_shares'] = $bV['shares'];
                 $brandSum = $brandSum + $bV['shares'];
-                if(isset($bV['marketBrandsVerietals'])){
+
+                if (isset($bV['marketBrandsVerietals'])) {
                     $brandVarietal = $bV['marketBrandsVerietals'];
-                    foreach ($brandVarietal as $k=>$v){
-                        if($v['shares'] != 0){
-                            $sharesArry[$bK]['varietal'][$v['id']]= $v['shares'];
-                            $brandVarientalSum = $brandVarientalSum + $v['shares'];
+
+                    foreach ($brandVarietal as $k => $v) {
+                        if (isset($uniqueBrandVarientalArry[$bK][$v['id']])) {
+
+                            if ($v['shares'] != 0) {
+                                $sharesArry[$bK]['varietal'][$v['id']] = $v['shares'];
+                                $brandVarientalSum = $brandVarientalSum + $v['shares'];
+                            }
                         }
                     }
-                    $sharesArry[$bK]['varietal_sum'] = $brandVarientalSum; 
+
+                    $sharesArry[$bK]['varietal_sum'] = $brandVarientalSum;
                 }
             }
         }
-     
-        $this->reIntializeBrandShareArry($sharesArry,$brandSum);
-  
-         
-        if($sharesArry){
-          if($brandSum == 100){
-            foreach ($sharesArry as $k => $v){
-                $brandWidth = ($selvesWidth * $v['brand_shares'])/(100);
+
+
+        $this->reIntializeBrandShareArry($sharesArry, $brandSum);
+
+        if ($sharesArry) {
+            foreach ($sharesArry as $k => $v) {
+                $brandWidth = ($selvesWidth * $v['brand_shares']) / 100;
+
                 $sharesArry[$k]['brand_shares'] = $brandWidth;
-                if($v['varietal']){
-                    foreach ($v['varietal'] as $vK => $vV){
-                         $newWidth = ($vV * $brandWidth)/(100);
-                         $sharesArry[$k]['varietal'][$vK] = $newWidth;
+                if ($v['varietal']) {
+                    foreach ($v['varietal'] as $vK => $vV) {
+                        $newWidth = ($vV * $brandWidth) / (100);
+                        $sharesArry[$k]['varietal'][$vK] = $newWidth;
                     }
                 }
             }
-          }
         }
-     if($uniqueBrandVarientalArry){
-        foreach ($uniqueBrandVarientalArry as $key => $varietal){
-            foreach ($varietal as $k => $v){
-                $uniqueBrandSum[$key][$k] = array_sum($v);
-            }
-        }
-     }
-   
-     foreach ($sharesArry as $key => $val){
-         if($val['varietal']){
-             foreach ($val['varietal'] as $k => $v){
-                if($v < $uniqueBrandSum[$key][$k]){
-                    $response['flag'] = 0;
-                    $response['msg'] = 'You have not selected any Products';
-                    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                    return $response;
-                }
-             }
-         }
-         
-     }
-  //ordered array 
-     $rulesDataArry = [];
-     if($sharesArry){
-        foreach ($sharesArry as $sK => $sV){
-            foreach ($sV['varietal'] as $k => $v){
-                $data = $uniqueBrandVarientalArry[$sK][$k];
-                if(isset($data)){
-                    $rulesDataArry[$sK.'_'.$k] = $data;
-                }
-            }
-        }
-     }
-     
-     $newArry = $applyRuleArry = array();
-     foreach ($rulesDataArry as $k => $v){
-         $keyData = explode('_',$k);
-         $brand_id = $keyData[0];
-         $varital_id = $keyData[1];
-         $z= $sharesArry[$brand_id]['varietal'][$varital_id];
-         $totalSum= $uniqueBrandSum[$brand_id][$varital_id];
-         $x = ($z/$totalSum);
-         $x = (int)$x;
-         $y = $x*$totalSum;
-         $w= $z - $y;
-         
-         foreach ($v as $key => $val){
-           $repeatCount = $x;
-           if($val < $w){
-               $repeatCount++;
-           }
-           $newArry[$k][$key]=  $repeatCount;
-         }
-         
-     }
 
-     foreach ($newArry as $key => $value)
-     {
-         foreach ($value as $k => $v){
-             for($i=0;$i<$v;$i++){
-                $applyRuleArry[$key][]=$dataIds[$k];
-             }
-         }
-     }
+        if ($uniqueBrandVarientalArry) {
+            foreach ($uniqueBrandVarientalArry as $key => $varietal) {
+                foreach ($varietal as $k => $v) {
+                    $uniqueBrandSum[$key][$k] = array_sum($v);
+                }
+            }
+        }
+        if ($uniqueBrandVarientalArryVal) {
+            foreach ($uniqueBrandVarientalArryVal as $key => $varietal) {
+                foreach ($varietal as $k => $v) {
+                    $uniqueBrandSumValidation[$key][$k] = array_sum($v);
+                }
+            }
+        }
+
+        foreach ($sharesArry as $key => $val) {
+            if ($val['varietal']) {
+                foreach ($val['varietal'] as $k => $v) {
+                    if ($v < $uniqueBrandSumValidation[$key][$k]) {
+                        $response['flag'] = 0;
+                        $response['msg'] = 'Please adjust width of shelves';
+                        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                        return $response;
+                    }
+                }
+            }
+        }
+        //ordered array 
+        $rulesDataArry = [];
+        if ($sharesArry) {
+            foreach ($sharesArry as $sK => $sV) {
+                foreach ($sV['varietal'] as $k => $v) {
+                    $data = $uniqueBrandVarientalArry[$sK][$k];
+                    if (isset($data)) {
+                        $rulesDataArry[$sK . '_' . $k] = $data;
+                    }
+                }
+            }
+        }
+
+        $newArry = $applyRuleArry = array();
+//        echo '<pre>';
+//        print_r($sharesArry);
+//        print_r($rulesDataArry);
+//        print_r($uniqueBrandSum);
+//        exit;
+        foreach ($rulesDataArry as $k => $v) {
+            $is_any_special_product = 0;
+
+
+            $keyData = explode('_', $k);
+            $brand_id = $keyData[0];
+            $varital_id = $keyData[1];
+            $z = $sharesArry[$brand_id]['varietal'][$varital_id];
+            $totalSum = $uniqueBrandSum[$brand_id][$varital_id];
+
+            foreach ($v as $key => $val) {
+                if ($specialProductArry[$brand_id][$varital_id][$key] == 1) {
+                    $is_any_special_product = 1;
+                    $newArry[$k][$key]['repeat_count'] = $noOfFacing;
+                    $newArry[$k][$key]['is_special_product'] = 0; 
+                }
+            }
+            if ($is_any_special_product == 0) {
+                $x = ($z / $totalSum);
+                $x = (int) $x;
+                $y = $x * $totalSum;
+                $w = $z - $y;
+
+                foreach ($v as $key => $val) {
+                    $repeatCount = $x;
+                    if ($val < $w) {
+                        $repeatCount++;
+                    }
+                    $newArry[$k][$key]['repeat_count'] = $repeatCount;
+                    $newArry[$k][$key]['is_special_product'] = 1; 
+                }
+            } else {
+                $occupy_space = $totalWidth = 0;
+                foreach ($v as $key => $val) {
+                    if(isset($newArry[$k][$key])){
+                        $count = $newArry[$k][$key]['repeat_count'];
+                        $occupy_space = $occupy_space + ($count * $val);
+                        $totalWidth = $totalWidth+$val;
+                    }
+                }
+              
+                $z = $z - $occupy_space;
+                $newtotalSum = $totalSum - $totalWidth;
+                if($newtotalSum != 0){
+                $x = ($z / $newtotalSum);
+                $x = (int) $x;
+//                print_r($x);exit;
+                foreach ($v as $key => $val) {
+                    $repeatCount = $x;
+                    
+                    if(!isset($newArry[$k][$key])){
+                      $newArry[$k][$key]['repeat_count'] = $repeatCount;
+                      $newArry[$k][$key]['is_special_product'] = 1; 
+                    }
+                }
+                }
+                
+            }
+        }
    
+        foreach($newArry as $k => $v){
+            $this->sort_array_of_array_rack($newArry[$k], 'is_special_product', SORT_DESC);
+        }
+
+        
+        foreach ($newArry as $key => $value) {
+            foreach ($value as $k => $v) {
+                $repeat_count = $v['repeat_count'];
+                for ($i = 0; $i < $repeat_count; $i++) {
+                    $applyRuleArry[$key][] = $dataIds[$k];
+                }
+            }
+        }
+      
+
 //        $shelfIndex = (isset($racksProductArray[0]) && count($racksProductArray[0]) > 0 ) ? 1 : 0;
 //        if ($selevesCount > 1) {
 //        
@@ -790,30 +866,29 @@ class StoreConfigurationController extends ProductRuleController {
 //            }
 //        }
 //        }
-      
-        foreach ($applyRuleArry as $key =>$value){
- 
-        $this->applySortingDataRule($applyRuleArry[$key]);
+
+        foreach ($applyRuleArry as $key => $value) {
+
+            $this->applySortingDataRule($applyRuleArry[$key]);
         }
-        foreach ($applyRuleArry as $k => $v){
-            foreach ($v as $key =>$val){
-                if(isset($racksProductArray[0])){
-                    $racksProductArray[1][]=$val;
-                }else{
-                    $racksProductArray[0][]=$val;
+        foreach ($applyRuleArry as $k => $v) {
+            foreach ($v as $key => $val) {
+                if (isset($racksProductArray[0])) {
+                    $racksProductArray[1][] = $val;
+                } else {
+                    $racksProductArray[0][] = $val;
                 }
             }
         }
-        
-        for($i=0;$i<$selevesCount;$i++){
-            if(!isset($racksProductArray[$i])){
-                $racksProductArray[$i] = $racksProductArray[$i-1];
+
+        for ($i = 0; $i < $selevesCount; $i++) {
+            if (!isset($racksProductArray[$i])) {
+                $racksProductArray[$i] = $racksProductArray[$i - 1];
             }
         }
-       
+
 //        $this->fillUpEmptySpaceOfShelves($racksProductArray, $selvesWidth, $selevesCount);
-//        echo '<pre>';
-//        print_r($racksProductArray);exit
+
         $finalProducuts = $finalProducutsRack = $productsId = array();
 
         foreach ($racksProductArray as $key => $value) {
@@ -850,19 +925,19 @@ class StoreConfigurationController extends ProductRuleController {
         $returnData = $repository->listing($data);
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $returnData;
-    }  
-    
-    public function actionDeleteAll(){
+    }
+
+    public function actionDeleteAll() {
         $data = array();
         $data = Yii::$app->request->post();
         $productsData = json_decode($_SESSION['config']['shelvesProducts'], true);
-        $response=array();
-        if(isset($data['value']) && !empty($data['value'])){
+        $response = array();
+        if (isset($data['value']) && !empty($data['value'])) {
             $shelvesNo = $data['index'];
             $productKeyArr = $data['value'];
 
             $productKeyArry = array();
-            foreach($productKeyArr as $keyP=>$valueP){
+            foreach ($productKeyArr as $keyP => $valueP) {
                 $productKey = $valueP;
                 $id = isset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id']) ? $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'] : '';
                 unset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
@@ -873,21 +948,21 @@ class StoreConfigurationController extends ProductRuleController {
             }
             $_SESSION['config']['rackProducts'][$shelvesNo] = $rackArrayProduct;
 
-                $replacedData = array();
-                foreach ($productsData as $key => $value) {
-                    $ids = explode(',', $value['productIds']);
-                    $tmpProducts = '';
-                    foreach ($ids as $k => $v) {
-                        $replacedData[$key]['productIds'][$k] = $v;
+            $replacedData = array();
+            foreach ($productsData as $key => $value) {
+                $ids = explode(',', $value['productIds']);
+                $tmpProducts = '';
+                foreach ($ids as $k => $v) {
+                    $replacedData[$key]['productIds'][$k] = $v;
 
-                        if (($shelvesNo == $key) && (in_array($k, $productKeyArr))) {
-                            unset($replacedData[$key]['productIds'][$k]);
-                        } else {
-                            $tmpProducts .= $v . ",";
-                        }
+                    if (($shelvesNo == $key) && (in_array($k, $productKeyArr))) {
+                        unset($replacedData[$key]['productIds'][$k]);
+                    } else {
+                        $tmpProducts .= $v . ",";
                     }
-                    $replacedData[$key]['productIds'] = rtrim($tmpProducts, ",");
                 }
+                $replacedData[$key]['productIds'] = rtrim($tmpProducts, ",");
+            }
             $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
             $response['flag'] = 1;
             $response['msg'] = 'Product Removed Successfully';
@@ -895,16 +970,15 @@ class StoreConfigurationController extends ProductRuleController {
             $response['replacedId'] = '';
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             return $response;
+        } else {
+            $response['flag'] = 0;
+            $response['msg'] = 'You have not selected any Products';
+            $response['action'] = 'remove';
+            $response['replacedId'] = '';
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return $response;
         }
-        else {
-           $response['flag'] = 0;
-           $response['msg'] = 'You have not selected any Products';
-           $response['action'] = 'remove';
-           $response['replacedId'] = '';
-           Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-           return $response;
-        }
-    }  
+    }
 
     public function actionEditProducts() {
         $response = array();
@@ -919,7 +993,7 @@ class StoreConfigurationController extends ProductRuleController {
 
         if ($data['remove'] == 'true') {
             $id = isset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id']) ? $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'] : '';
-             unset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
+            unset($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
 
             $rackArrayProduct = array();
             foreach ($_SESSION['config']['rackProducts'][$shelvesNo] as $key => $value) {
@@ -949,74 +1023,76 @@ class StoreConfigurationController extends ProductRuleController {
             }
             $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
         }
-        
-        
-        if ($data['edit'] == 'true') {           
+
+
+        if ($data['edit'] == 'true') {
             $height = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['height'];
             $width = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['width'];
             $id = $_SESSION['config']['rackProducts'][$shelvesNo][$productKey]['id'];
 
             $repository = new CataloguesRepository();
-            if(isset($replacedProductId) && !$replacedProductId == ""){
-            $filterData['products_id'] = $replacedProductId;
-            $returnData = $repository->listing($filterData);
-            if ($returnData['status']['success'] == 1) { 
-                $racksWidth = array_sum(array_column($_SESSION['config']['rackProducts'][$shelvesNo], 'width'));
-                $countWidth = intval($racksWidth - $width);
-                if (($_SESSION['config']['width_of_shelves'] >= ($countWidth + intval($returnData['data']['catalogues'][0]['width'])))) {
-                if(($_SESSION['config']['height_of_shelves'])/($_SESSION['config']['no_of_shelves']) >= $returnData['data']['catalogues'][0]['height']){
-                     if($_SESSION['config']['depth_of_shelves'] >= $returnData['data']['catalogues'][0]['length']){
-                    $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] = '';
-                    $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] = array(
-                        'id' => $replacedProductId,
-                        'image' => CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $returnData['data']['catalogues'][0]['image']),
-                        'height' => $returnData['data']['catalogues'][0]['height'],
-                        'width' => $returnData['data']['catalogues'][0]['width'],
-                    );
-                    unset($returnData['data']['catalogues'][0]['market']['marketSegmentData']);
-                    unset($returnData['data']['catalogues'][0]['market']['productCategory']);
-                    unset($returnData['data']['catalogues'][0]['market']['market']);
-                    $returnData['data']['catalogues'][0]['productCategory'] = $returnData['data']['catalogues'][0]['productCategory']['name'];
-                    $returnData['data']['catalogues'][0]['marketName'] = $returnData['data']['catalogues'][0]['market']['title'];
-                    $returnData['data']['catalogues'][0]['brandName'] = $returnData['data']['catalogues'][0]['brand']['name'];
-                    $returnData['data']['catalogues'][0]['market'] = array('markt_title' => $returnData['data']['catalogues'][0]['market']['title']);
-                    $_SESSION['config']['products'][$replacedProductId] = $returnData['data']['catalogues'][0];
-                    $response['flag'] = 1;
-                    $response['msg'] = 'Product Edited Successfully';
-                    $response['action'] = 'edit';
-                    $response['replacedId'] = $replacedProductId;
-                    $response['product'] = json_encode($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
-                    $replacedData = array();
+            if (isset($replacedProductId) && !$replacedProductId == "") {
+                $filterData['products_id'] = $replacedProductId;
+                $returnData = $repository->listing($filterData);
+                if ($returnData['status']['success'] == 1) {
+                    $racksWidth = array_sum(array_column($_SESSION['config']['rackProducts'][$shelvesNo], 'width'));
+                    $countWidth = intval($racksWidth - $width);
+                    if (($_SESSION['config']['width_of_shelves'] >= ($countWidth + intval($returnData['data']['catalogues'][0]['width'])))) {
+                        if (($_SESSION['config']['height_of_shelves']) / ($_SESSION['config']['no_of_shelves']) >= $returnData['data']['catalogues'][0]['height']) {
+                            if ($_SESSION['config']['depth_of_shelves'] >= $returnData['data']['catalogues'][0]['length']) {
+                                $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] = '';
+                                $_SESSION['config']['rackProducts'][$shelvesNo][$productKey] = array(
+                                    'id' => $replacedProductId,
+                                    'image' => CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $returnData['data']['catalogues'][0]['image']),
+                                    'height' => $returnData['data']['catalogues'][0]['height'],
+                                    'width' => $returnData['data']['catalogues'][0]['width'],
+                                );
+                                unset($returnData['data']['catalogues'][0]['market']['marketSegmentData']);
+                                unset($returnData['data']['catalogues'][0]['market']['productCategory']);
+                                unset($returnData['data']['catalogues'][0]['market']['market']);
+                                $returnData['data']['catalogues'][0]['productCategory'] = $returnData['data']['catalogues'][0]['productCategory']['name'];
+                                $returnData['data']['catalogues'][0]['marketName'] = $returnData['data']['catalogues'][0]['market']['title'];
+                                $returnData['data']['catalogues'][0]['brandName'] = $returnData['data']['catalogues'][0]['brand']['name'];
+                                $returnData['data']['catalogues'][0]['market'] = array('markt_title' => $returnData['data']['catalogues'][0]['market']['title']);
+                                $_SESSION['config']['products'][$replacedProductId] = $returnData['data']['catalogues'][0];
+                                $response['flag'] = 1;
+                                $response['msg'] = 'Product Edited Successfully';
+                                $response['action'] = 'edit';
+                                $response['replacedId'] = $replacedProductId;
+                                $response['product'] = json_encode($_SESSION['config']['rackProducts'][$shelvesNo][$productKey]);
+                                $replacedData = array();
 
-                    foreach ($productsData as $key => $value) {
-                        $ids = explode(',', $value['productIds']);
-                        $tmpProducts = '';
-                        foreach ($ids as $k => $v) {
+                                foreach ($productsData as $key => $value) {
+                                    $ids = explode(',', $value['productIds']);
+                                    $tmpProducts = '';
+                                    foreach ($ids as $k => $v) {
 
-                            $replacedData[$key]['productIds'][$k] = $v;
-                            if (($shelvesNo == $key) && ($k == $productKey)) {
+                                        $replacedData[$key]['productIds'][$k] = $v;
+                                        if (($shelvesNo == $key) && ($k == $productKey)) {
 
-                                $tmpProducts .= $replacedProductId . ",";
+                                            $tmpProducts .= $replacedProductId . ",";
+                                        } else {
+                                            $tmpProducts .= $v . ",";
+                                        }
+                                    }
+                                    $replacedData[$key]['productIds'] = rtrim($tmpProducts, ",");
+                                }
+
+                                $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
                             } else {
-                                $tmpProducts .= $v . ",";
+                                $response['msg'] = 'Please Try Other product';
                             }
+                        } else {
+                            $response['msg'] = 'Please Try Other product';
                         }
-                        $replacedData[$key]['productIds'] = rtrim($tmpProducts, ",");
+                    } else {
+                        $response['msg'] = 'Please Try Other product';
                     }
-
-                    $_SESSION['config']['shelvesProducts'] = json_encode($replacedData);
-                }else{
-                     $response['msg'] = 'Please Try Other product';
-                }}else{
-                      $response['msg'] = 'Please Try Other product';
-                }}else{
-                    $response['msg'] = 'Please Try Other product';
                 }
-            }
-            }else{
+            } else {
                 $response['msg'] = 'Please Select One product';
             }
-            }
+        }
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $response;
     }
@@ -1051,47 +1127,47 @@ class StoreConfigurationController extends ProductRuleController {
         ]);
     }
 
-    public function actionDelete($id ='',$storeId = '') {  
-        $currentUser  = CommonHelper::getUser();
-        if(Stores::findOne($storeId)){
-        $model = Stores::findOne($storeId);
-        
-        $this->checkUserAccess($currentUser, $model);
-        
-        if($this->findModel($id)->delete()){
-          
-        if(ConfigFeedback::findOne(['config_id' => $id])){
-               ConfigFeedback::findOne(['config_id' => $id])->delete();
+    public function actionDelete($id = '', $storeId = '') {
+        $currentUser = CommonHelper::getUser();
+        if (Stores::findOne($storeId)) {
+            $model = Stores::findOne($storeId);
+
+            $this->checkUserAccess($currentUser, $model);
+
+            if ($this->findModel($id)->delete()) {
+
+                if (ConfigFeedback::findOne(['config_id' => $id])) {
+                    ConfigFeedback::findOne(['config_id' => $id])->delete();
+                }
+
+                if (ShelfDisplay::findOne(['config_id' => $id])) {
+                    ShelfDisplay::findOne(['config_id' => $id])->delete();
+                }
+
+                return $this->redirect(['store-configuration/listing/' . $storeId]);
+            }
         }
-        
-        if(ShelfDisplay::findOne(['config_id' => $id])){
-               ShelfDisplay::findOne(['config_id' => $id])->delete();
-        }
-  
-        return $this->redirect(['store-configuration/listing/'.$storeId]);
-        }
-    }
     }
 
     protected function findModel($id) {
-        if ($model = StoreConfiguration::findOne(['id'=>$id])) {
+        if ($model = StoreConfiguration::findOne(['id' => $id])) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-    
-    protected function checkUserAccess($currentUser,$stores){
+
+    protected function checkUserAccess($currentUser, $stores) {
         if ($currentUser->role_id != Yii::$app->params['superAdminRole']) {
-                $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
+            $assign_to = !empty($stores['assign_to']) ? $stores['assign_to'] : '';
 
-                $userObj = new User;
-                $childUser = $userObj->getAllChilds(array($currentUser->id));
-                $childUser[] = $currentUser->id;
+            $userObj = new User;
+            $childUser = $userObj->getAllChilds(array($currentUser->id));
+            $childUser[] = $currentUser->id;
 
-                if (!empty($childUser) && !in_array($assign_to, $childUser)) {
-                    throw new NotFoundHttpException('you are not allowed to access this page.');
-                }
+            if (!empty($childUser) && !in_array($assign_to, $childUser)) {
+                throw new NotFoundHttpException('you are not allowed to access this page.');
+            }
         }
     }
 

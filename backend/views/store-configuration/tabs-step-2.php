@@ -233,6 +233,7 @@ use yii\grid\GridView;
                                             {
                                                 bottomProductWidthArry.push($(this).attr('productWidth'));
                                                 productArry.push($(this).val());
+                                                bottomProductArry.push($(this).val());
                                                 
                                               
                                                 
@@ -243,9 +244,14 @@ use yii\grid\GridView;
                                         });
                                         $('.other input[name="selection[]"]').on('ifUnchecked', function (event) {
                                             popedValue = productArry.indexOf($(this).val());
+                                            productArry.splice(popedValue, 1);
+                                            
+                                            popedBottomValue = bottomProductArry.indexOf($(this).val());
+                                            bottomProductArry.splice(popedBottomValue, 1);
+                                            
                                             popedWidthValue =  bottomProductWidthArry.indexOf($(this).attr('productWidth'));
                                             bottomProductWidthArry.splice(popedWidthValue, 1);
-                                            productArry.splice(popedValue, 1);
+                                          
                                             
                                             
                                           

@@ -45,7 +45,7 @@ class ProductRuleController extends Controller {
                         'roles' => ['&'],
                     ],
                         [
-                        'actions' => ['send-mail', 'feedback', 'create', 'view', 'review-store', 'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data','delete-all','re-intialize-brand-share-arry','apply-sorting-data-rule'],
+                        'actions' => ['send-mail', 'feedback', 'create', 'view', 'review-store', 'save-image', 'update', 'save-image', 'save-data', 'save-product-data', 'modal-content', 'get-products', 'edit-products', 'save-config-data','delete-all','re-intialize-brand-share-arry','apply-sorting-data-rule','sort_array_of_array_rack'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -61,6 +61,7 @@ class ProductRuleController extends Controller {
     }
     
     protected function reIntializeBrandShareArry(&$sharesArry,$brandSum) {
+        
         foreach ($sharesArry as $k => $v){
             $newShare = ($v['brand_shares'] * 100)/($brandSum);
             $sharesArry[$k]['brand_shares'] = $newShare;
@@ -134,35 +135,37 @@ class ProductRuleController extends Controller {
         }
         if ($selvesWidth >= ($sum + $dataValue['width'])) {
            
-                if (intval($_SESSION['config']['depth_of_shelves']) >= intval($dataValue['length'])) {
+//                if (intval($_SESSION['config']['depth_of_shelves']) >= intval($dataValue['length'])) {
                     $racksProductArray[$dataValue['id']] = $dataValue;
-                }
+//                }
             
         }
     }
 
     protected function applySortingRule(&$racksProductArray,$selvesWidth) {
-        $this->sort_array_of_array($racksProductArray, 'order_id', SORT_ASC);
-        $totalWidth =[];
-        $totalSum = 0;
-        $numOfProduct = count($racksProductArray);
-        $oldRackArry =$racksProductArray;
-        
-        foreach ($racksProductArray as $k => $v){
-            $totalWidth[$v['id']] = $v['width'];
-            $totalSum = $totalSum + $v['width'];
-        }
-        $racksProductArray = [];
-        $repeatCount = ($selvesWidth)/$totalSum;
-        $repeatCount = (int)$repeatCount;
-        $repeatCount = ($repeatCount)/$numOfProduct;
-        $repeatCount = (int)$repeatCount;
-        
-        foreach ($oldRackArry as $k => $v){
-            for($i=0;$i<$repeatCount;$i++){
-                $racksProductArray[] = $v;
-            }
-        }
+       
+        $min = $sum = 0;
+                    if (!empty($racksProductArray)) {
+                        $min = (min(array_column($racksProductArray, 'width')) == 0) ? 1 : min(array_column($racksProductArray, 'width'));
+                        $sum = array_sum(array_column($racksProductArray, 'width'));
+                    }
+                    $diff = intval($selvesWidth - $sum);
+                    if (!empty($racksProductArray)) {
+                        if ($diff > $min) {
+                            
+                            $repeatCount = intval(($selvesWidth) / ($min));
+                            for ($j = 0; $j < $repeatCount; $j++) {
+                            foreach ($racksProductArray as $marketShareValue) {
+                                    $tempSum = array_sum(array_column($racksProductArray, 'width'));
+                                    if ($selvesWidth >= ($tempSum + $marketShareValue['width'])) {
+                                        array_push($racksProductArray, $marketShareValue);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    $this->sort_array_of_array($racksProductArray, 'order_id', SORT_ASC);
+                    
     }
     
     protected function applySortingDataRule(&$applyRuleArry) {
@@ -218,6 +221,16 @@ class ProductRuleController extends Controller {
         array_multisort($sortarray, $sort, $array);
     }
 
+    public function sort_array_of_array_rack(&$array, $subfield, $sort) {
+
+        $keys = array_keys($array);
+array_multisort(
+    array_column($array, 'is_special_product'), SORT_DESC, SORT_NUMERIC, $array, $keys
+);
+       $array= array_combine($keys, $array);
+
+    }
+    
     protected function ifRuleContain($ruleValue) {
         $rulesArray = array();
         if (isset($_SESSION['config']['rules']) && !empty($_SESSION['config']['rules'])) {

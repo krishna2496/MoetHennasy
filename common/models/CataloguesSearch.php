@@ -153,7 +153,10 @@ class CataloguesSearch extends Catalogues {
         }
         
         if(isset($_SESSION['config']['height_of_shelves'])){
+            $noOfShelves = $_SESSION['config']['no_of_shelves'];
             $heightOfShelves = $_SESSION['config']['height_of_shelves'];
+            $heightOfShelves = (int)(($heightOfShelves)/($noOfShelves));
+           
         }
 
         if(isset($data['0']['brand'])){

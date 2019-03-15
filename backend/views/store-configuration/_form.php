@@ -14,6 +14,7 @@ $noOfSelves = isset($_SESSION['config']['products']) ? isset($_SESSION['config']
 
 $ratio = isset($_SESSION['config']['ratio']) ? $_SESSION['config']['ratio'] : 5.5;
 $widthOfRack = isset($_SESSION['config']['width_of_shelves']) ? $_SESSION['config']['width_of_shelves'] : 0;
+
 if (isset($_SESSION['config']['products'])) {
     $products = json_encode($_SESSION['config']['products'], true);
 }
@@ -23,9 +24,11 @@ $session = Yii::$app->session;
     var isUpdate = '<?php echo $is_update; ?>';
     var brandThumbId = '<?php echo $brandThumbId ?>';
     var productArry = [];
+    var bottomProductArry = [];
     var bottomProductWidthArry = [];
     var topProductWidthArry = [];
     var productObject = {};
+  
     var reviewFlag = '<?php echo $reviewFlag; ?>';
 </script>
 <div class="row">
