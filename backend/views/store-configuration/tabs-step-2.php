@@ -5,6 +5,7 @@ use yii\grid\GridView;
 
 //echo '<pre>';
 //print_r($topDataProvider);exit;
+if($is_update != 1){
 ?>
 <div class="col-sm-5 pull-right" id="tab-step-2">
     <!-- Frame Filter section -->
@@ -295,3 +296,4 @@ use yii\grid\GridView;
     </div>
     <!-- End Frame Filter section -->
 </div>
+<?php } ?>

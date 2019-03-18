@@ -19,6 +19,7 @@ if (isset($_SESSION['config']['products'])) {
     $products = json_encode($_SESSION['config']['products'], true);
 }
 $session = Yii::$app->session;
+
 ?>
 <script type="text/javascript">
     var isUpdate = '<?php echo $is_update; ?>';
