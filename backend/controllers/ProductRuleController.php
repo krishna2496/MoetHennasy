@@ -202,11 +202,15 @@ class ProductRuleController extends Controller {
                     $applyRuleArry = $mergedArray;
             }
         }
+    
+            $sort = SORT_DESC;
+            $this->sort_array_of_array($applyRuleArry, 'special_format', $sort);
+        
         //product rule
-         if ($this->ifRuleContain(\yii::$app->params['configArray']['order_product'])) {
-          
-                $this->sort_array_of_array($applyRuleArry, 'reorder_id', SORT_ASC);
-         }
+//         if ($this->ifRuleContain(\yii::$app->params['configArray']['order_product'])) {
+//          
+//                $this->sort_array_of_array($applyRuleArry, 'reorder_id', SORT_ASC);
+//         }
      
     }
 
