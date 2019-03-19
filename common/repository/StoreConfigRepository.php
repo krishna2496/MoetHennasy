@@ -96,6 +96,7 @@ class StoreConfigRepository extends Repository {
             $storeModel->is_verified = $data['is_verified'];
         }
 
+        
         if (isset($data['is_autofill']) && (!empty($data['is_autofill']))) {
             $storeModel->is_autofill = $data['is_autofill'];
         }
@@ -141,6 +142,9 @@ class StoreConfigRepository extends Repository {
                         $displayModel->width_of_shelves = $value['width_of_shelves'];
                         $displayModel->depth_of_shelves = $value['depth_of_shelves'];
                         $displayModel->shelf_config = json_encode($value['shelf_config']);
+                        if(isset($value['category_id'])){
+                            $displayModel->category_id = $value['category_id'];
+                        }
                         if (isset($value['brand_thumb_id']) && ($value['brand_thumb_id'] != '')) {
                             $displayModel->brand_thumb_id = $value['brand_thumb_id'];
                         }

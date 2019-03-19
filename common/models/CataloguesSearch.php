@@ -246,8 +246,7 @@ class CataloguesSearch extends Catalogues {
     }
     
      public function searchTopShelfProduct($data) {
-//         echo '<pre>';
-//         print_R($data);exit;
+        
         $otherProduct = array();
         $topShelfProduct = $data[0]['top_shelf_product'];
        
