@@ -66,6 +66,7 @@ class CommonHelper
 	}
         
         public static function sort_array_of_array(&$array, $subfield, $sort) {
+            
             $sortarray = array();
             if(!empty($array) && (isset($array))){
             foreach ($array as $key => $row) {
@@ -73,6 +74,7 @@ class CommonHelper
             }
             }
             array_multisort($sortarray, $sort, $array);
+           
         }
         
         public static function max_val(&$array, $subfield, $sort) {

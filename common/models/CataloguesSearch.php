@@ -250,6 +250,7 @@ class CataloguesSearch extends Catalogues {
 //         print_R($data);exit;
         $otherProduct = array();
         $topShelfProduct = $data[0]['top_shelf_product'];
+       
         $productCategory = ProductCategories::find()->asArray()->all();
         $productType = ProductTypes::find()->asArray()->all();
        
