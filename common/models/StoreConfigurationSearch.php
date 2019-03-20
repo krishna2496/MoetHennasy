@@ -143,7 +143,13 @@ class StoreConfigurationSearch extends StoreConfiguration
             $categoryList = ProductCategories::find()->asArray()->all();
             //Master brands
             $searchModel = new BrandsSearch();
-
+            $market_category_product_new = array();
+            $market_category_product = MarketCategoryProduct::find()->andWhere(['market_id' => $marketId])->asArray()->all();
+            if($market_category_product){
+                foreach ($market_category_product as $k => $v){
+                    $market_category_product_new[$v['category_id']][$v['product_id']] = $v['top_reorder_id'];
+                }
+            }
             if (!empty($categoryList)) {
                 foreach ($categoryList as $catKey => $catVal) {
                     $returnDatas['market']['category'][$catKey]['id'] = $catVal['id'];
@@ -151,6 +157,9 @@ class StoreConfigurationSearch extends StoreConfiguration
 
                     //Catalogues list
                     $catalogueList = Catalogues::find()->andWhere(['top_shelf' => 1, 'product_category_id' => $catVal['id']])->asArray()->all();
+//                    echo '<pre>';
+//                    print_r($market_category_product_new);
+//                    print_r($catalogueList);exit;
                     if (!empty($catalogueList)) {
                         foreach ($catalogueList as $cataKey => $cataVal) {
                             unset($catalogueList[$cataKey]['created_by']);
@@ -159,6 +168,7 @@ class StoreConfigurationSearch extends StoreConfiguration
                             unset($catalogueList[$cataKey]['created_at']);
                             unset($catalogueList[$cataKey]['updated_at']);
                             unset($catalogueList[$cataKey]['deleted_at']);
+//                            $catalogueList[$cataKey]['top_reorder_id'] = isset($market_category_product_new[$cataVal['product_category_id']][$cataVal['id']]) ? $market_category_product_new[$cataVal['product_category_id']][$cataVal['id']] :NULL;
                         }
                     }
                     if (!empty($catalogueList)) {
@@ -171,11 +181,18 @@ class StoreConfigurationSearch extends StoreConfiguration
                             $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey]['brand'] = isset($brands[$cataVal['brand_id']]) && !empty($brands[$cataVal['brand_id']]) ? $brands[$cataVal['brand_id']] : array();
                             $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey]['product_catgeory'] = isset($productCategories[$cataVal['product_category_id']]) && !empty($productCategories[$cataVal['product_category_id']]) ? $productCategories[$cataVal['product_category_id']] : array();
                             $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey]['product_type'] = isset($productTypes[$cataVal['product_type_id']]) && !empty($productTypes[$cataVal['product_type_id']]) ? $productTypes[$cataVal['product_type_id']] : array();
+                            $returnDatas['market']['category'][$catKey]['top_shelf_product'][$cataKey]['top_reorder_id'] = isset($market_category_product_new[$cataVal['product_category_id']][$cataVal['id']]) ? $market_category_product_new[$cataVal['product_category_id']][$cataVal['id']] :NULL;;
+                            
                         }
                     } else {
                         $returnDatas['market']['category'][$catKey]['top_shelf_product'] = array();
                     }
-
+                    if($returnDatas['market']['category']){
+                    foreach ($returnDatas['market']['category'] as $k => $v){                       
+                        $val = $v['top_shelf_product'];
+                        CommonHelper::sort_array_of_array($returnDatas['market']['category'][$k]['top_shelf_product'], 'top_reorder_id',SORT_ASC);
+                    }
+                    }
                     $filters['category_id'] = $catVal['id'];
                     $filters['market_id'] = $marketId;
                     $filters['limit'] = '';
