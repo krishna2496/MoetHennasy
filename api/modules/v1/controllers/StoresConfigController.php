@@ -243,7 +243,7 @@ class StoresConfigController extends BaseApiController {
         foreach ($dataValue as $keyV => $valueV) {
             $temp = array();
             $shelfDisplay = $valueV['shelfDisplay'];
-
+           
             $shelf_thumb = $valueV['shelf_thumb'];
             unset($dataValue[$keyV]['shelf_thumb']);
             $dataValue[$keyV]['shelf_thumb'] = CommonHelper::getImage(UPLOAD_PATH_STORE_CONFIG_IMAGES . $shelf_thumb);
@@ -252,24 +252,34 @@ class StoresConfigController extends BaseApiController {
                 $productIds = json_decode($value['shelf_config'], true);
                 foreach ($productIds as $key2 => $value2) {
                     $productId = explode(',', $value2['productIds']);
+                    
                     foreach ($productId as $productKey => $productValue) {
                         $catalogueRepository = new CataloguesRepository();
                         $productIdData['products_id'] = $productValue;
                         $productArray = array();
                         $product = $catalogueRepository->listing($productIdData);
-
+                       
                         if ($product['status']['success'] == 1) {
+                            if(!empty($product['data']['catalogues'])){
                             $productArray = $product['data']['catalogues'][0];
                             unset($productArray['market']);
                             unset($productArray['brand']);
+                            $productCategory =$productArray['productCategory'];
+                            $productType =$productArray['productType'];
                             unset($productArray['productType']);
                             unset($productArray['productCategory']);
+                            $productArray['product_catgeory'] = $productCategory;
+                            $productArray['product_type'] = $productType;
+                            }
                         }
+                        if($productArray){
                         $image = $productArray['image'];
                         unset($productArray['image']);
                         unset($dataValue[$keyV]['shelfDisplay']);
                         $productArray['image'] = CommonHelper::getImage(UPLOAD_PATH_CATALOGUES_IMAGES . $image);
+                       
                         $temp['shelf_config'][$key2]['productIds'][$productKey] = $productArray;
+                        }
                     }
                 }
             }
@@ -289,17 +299,19 @@ class StoresConfigController extends BaseApiController {
 //                $dataValue[$keyV]['shelfDisplay']['depth_of_shelves'] = $shelfDisplay[0]['depth_of_shelves'];
 //                $dataValue[$keyV]['shelfDisplay']['brand_thumb_id'] = $shelfDisplay[0]['brand_thumb_id'];
 //                $dataValue[$keyV]['shelfDisplay']["shelf_config"] = $temp['shelf_config'];
-
-
-            $tmpShelfDisplayArray = array();
-            $tmpShelfDisplayArray['display_name'] = $shelfDisplay[0]['display_name'];
-            $tmpShelfDisplayArray['no_of_shelves'] = $shelfDisplay[0]['no_of_shelves'];
-            $tmpShelfDisplayArray['height_of_shelves'] = $shelfDisplay[0]['height_of_shelves'];
-            $tmpShelfDisplayArray['width_of_shelves'] = $shelfDisplay[0]['width_of_shelves'];
-            $tmpShelfDisplayArray['depth_of_shelves'] = $shelfDisplay[0]['depth_of_shelves'];
-            $tmpShelfDisplayArray['brand_thumb_id'] = $shelfDisplay[0]['brand_thumb_id'];
-            $tmpShelfDisplayArray["shelf_config"] = $temp['shelf_config'];
-            $dataValue[$keyV]['shelfDisplay'][] = $tmpShelfDisplayArray;
+            
+            
+            if(isset($shelfDisplay[0])){
+                $tmpShelfDisplayArray = array();
+                $tmpShelfDisplayArray['display_name'] = $shelfDisplay[0]['display_name'];
+                $tmpShelfDisplayArray['no_of_shelves'] = $shelfDisplay[0]['no_of_shelves'];
+                $tmpShelfDisplayArray['height_of_shelves'] = $shelfDisplay[0]['height_of_shelves'];
+                $tmpShelfDisplayArray['width_of_shelves'] = $shelfDisplay[0]['width_of_shelves'];
+                $tmpShelfDisplayArray['depth_of_shelves'] = $shelfDisplay[0]['depth_of_shelves'];
+                $tmpShelfDisplayArray['brand_thumb_id'] = $shelfDisplay[0]['brand_thumb_id'];
+                $tmpShelfDisplayArray["shelf_config"] = $temp['shelf_config'];
+                $dataValue[$keyV]['shelfDisplay'][] = $tmpShelfDisplayArray;
+            }
         }
 
         $dataProvider = new ArrayDataProvider([

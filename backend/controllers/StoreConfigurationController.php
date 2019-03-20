@@ -62,6 +62,7 @@ class StoreConfigurationController extends ProductRuleController {
     }
 
     public function actionSaveConfigData() {
+//        exit("krishna");
         $post = yii::$app->request->post();
         $shelfThumb = isset($post['thumb_image']) ? $post['thumb_image'] : '';
         $brandId = isset($post['brand']) ? $post['brand'] : '';
@@ -72,7 +73,7 @@ class StoreConfigurationController extends ProductRuleController {
         $configData['store_id'] = isset($_SESSION['config']['storeId']) ? $_SESSION['config']['storeId'] : '';
         $configData['shelf_thumb'] = $shelfThumb;
         $configData['config_name'] = isset($_SESSION['config']['display_name']) ? $_SESSION['config']['display_name'] : '';
-        
+        $configData['category_id'] = isset($_SESSION['config']['category_id']) ? $_SESSION['config']['category_id'] : '';
         $configData['shelfDisplay'] = array(
             array(
                 'width_of_shelves' => isset($_SESSION['config']['width_of_shelves']) ? $_SESSION['config']['width_of_shelves'] : '',
@@ -81,7 +82,7 @@ class StoreConfigurationController extends ProductRuleController {
                 'shelf_config' => json_decode($_SESSION['config']['shelvesProducts'], true),
                 'brand_thumb_id' => $brandId,
                 'height_of_shelves' => isset($_SESSION['config']['height_of_shelves']) ? $_SESSION['config']['height_of_shelves'] : '',
-                'category_id' => isset($_SESSION['config']['category_id']) ? $_SESSION['config']['category_id'] : '',
+                
             ),
         );
 
@@ -219,7 +220,7 @@ class StoreConfigurationController extends ProductRuleController {
             if ($configData['status']['success'] == 1) {
                 if (!$request->isPjax) {
                     $storeData = $configData['data']['stores_config'][0];
-                    
+                  
                     $userData = new User();
 
                     $userDetail = User::findOne(['id' => $storeData['created_by']]);
@@ -237,7 +238,8 @@ class StoreConfigurationController extends ProductRuleController {
                     $_SESSION['config']['height_of_shelves'] = $storeData['shelfDisplay'][0]['height_of_shelves'];
                     $_SESSION['config']['width_of_shelves'] = $storeData['shelfDisplay'][0]['width_of_shelves'];
                     $_SESSION['config']['depth_of_shelves'] = $storeData['shelfDisplay'][0]['depth_of_shelves'];
-                    $_SESSION['config']['category_id'] = $storeData['shelfDisplay'][0]['depth_of_shelves'];
+                    $_SESSION['config']['category_id'] = $storeData['category_id'];
+                    $_SESSION['config']['market_id'] = isset($storeData['stores'][0]['market_id']) ? $storeData['stores'][0]['market_id'] : 0;
                     $ratioWidth = yii::$app->params['rackWidth'][0];
                     $_SESSION['config']['ratio'] = (($ratioWidth) / $storeData['shelfDisplay'][0]['width_of_shelves']);
 
@@ -369,17 +371,20 @@ class StoreConfigurationController extends ProductRuleController {
                 }
                 
                 $searchModel = new CataloguesSearch();
+                $brandsFilter = array();
                 if (isset($_SESSION['config']['brands'])) {
-                $brandFilter = $_SESSION['config']['brands'];
+                $brandsFilter = $_SESSION['config']['brands'];
                 }
                 $filtetOtherProductData = array(
-                    'brands' => $brandFilter,
+                    'brands' => $brandsFilter,
                 );
                 $dataProvider = $searchModel->searchProductData($wholeData, $filtetOtherProductData);
             //top shelf product
                 $searchModel = new CataloguesSearch();
+               
                 $filterTopShelf['category_id'] = $categoryId;
-                $topDataProvider = $searchModel->searchTopShelfProduct($wholeData, $filterTopShelf);
+               
+                $topDataProvider = $searchModel->searchTopShelfProduct($wholeData);
                 
                 return $this->render('index', [
                         'searchModel' => $searchModel,
@@ -395,7 +400,7 @@ class StoreConfigurationController extends ProductRuleController {
                         'wholeData' => $wholeData,
                         'categoryId' =>  $_SESSION['config']['category_id'],
                         'market_id' => $stores['market_id'],
-                        'topDataProvider' => array(),
+                        'topDataProvider' => $topDataProvider,
                 ]);
             } else {
                 throw new NotFoundHttpException('The requested page does not exist.');
@@ -956,8 +961,11 @@ class StoreConfigurationController extends ProductRuleController {
         $data = array();
         $data = Yii::$app->request->post();
         $data['brand_id'] = $data['id'];
+        $data['market_id'] = $_SESSION['config']['market_id'];
+        $data['category_id'] = $_SESSION['config']['category_id'];
         $repository = new CataloguesRepository();
-        $returnData = $repository->listing($data);
+        $returnData = $repository->brandProduct($data);
+       
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $returnData;
     }

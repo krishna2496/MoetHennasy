@@ -5,6 +5,7 @@ namespace common\repository;
 use Yii;
 use common\helpers\CommonHelper;
 use common\models\Catalogues;
+use common\models\MarketBrandsVerietals;
 
 class CataloguesRepository extends Repository {
 
@@ -60,6 +61,55 @@ class CataloguesRepository extends Repository {
         $data = array();
         $data['catalogues'] = $query->orderBy('reorder_id')->asArray()->all();
         
+        $this->apiData = $data;
+        return $this->response();
+    }
+    
+    public function brandProduct($data = array()) {
+       
+        $this->apiCode = 1;
+        $marektDataArry = array();
+        $marketData = MarketBrandsVerietals::find()->andWhere(['market_id' => $data['market_id']])->andWhere(['brand_id' => $data['brand_id']])->andWhere(['category_id' => $data['category_id']])->andWhere(['!=', 'shares', 'NULL'])->andWhere(['!=', 'shares', 0])->asArray()->all();
+        if($marketData){
+            foreach ($marketData as $k => $v){
+                $marektDataArry[$v['verietal_id']] = $v['verietal_id'];
+            }
+        }
+     
+        $query = Catalogues::find()->joinWith(['market.marketSegmentData.marketSegment.marketRules.rules', 'brand','productType','productCategory'])->joinWith('marketCategoryProduct')->joinWith(['variental' =>function (\yii\db\ActiveQuery $query) use($marektDataArry) {
+        return $query
+                ->andWhere(['in', 'product_varietal.id', $marektDataArry])->all();
+            }]);
+
+        
+
+        if (isset($data['search']) && $data['search']) {
+            $search = trim($data['search']);
+            $query->andWhere([
+                'or',
+                    ['like', 'catalogues.ean', $search],
+                    ['like', 'catalogues.sku', $search],
+                    ['like', 'catalogues.short_name', $search],
+                    ['like', 'catalogues.long_name', $search],
+                    ['like', 'markets.title', $search],
+                    ['like', 'brands.name', $search],
+                    ['like', 'price', $search],
+            ]);
+        }
+        if (isset($data['brand_id']) && ($data['brand_id'] != '')) {
+            $query->andWhere(['brand_id' => $data['brand_id']]);
+        }
+     
+        $result = $query->asArray();
+        //top shelf product 
+        $queryTop = Catalogues::find()->joinWith(['market.marketSegmentData.marketSegment.marketRules.rules', 'brand','productType','productCategory'])->joinWith('marketCategoryProduct')->joinWith('variental')->andWhere(['top_shelf' => 1]); 
+         if (isset($data['brand_id']) && ($data['brand_id'] != '')) {
+            $queryTop->andWhere(['brand_id' => $data['brand_id']]);
+        }
+        $dataArry = $queryTop->orderBy('reorder_id')->asArray()->all();
+        $data = array();
+        $data['catalogues'] = $query->orderBy('reorder_id')->asArray()->all();
+        array_merge($data['catalogues'],$dataArry);
         $this->apiData = $data;
         return $this->response();
     }

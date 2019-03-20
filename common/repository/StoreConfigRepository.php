@@ -95,7 +95,9 @@ class StoreConfigRepository extends Repository {
         if (isset($data['is_verified']) && (!empty($data['is_verified']))) {
             $storeModel->is_verified = $data['is_verified'];
         }
-
+        if (isset($data['category_id']) && $data['category_id']) {
+            $storeModel->category_id = $data['category_id'];
+        }
         
         if (isset($data['is_autofill']) && (!empty($data['is_autofill']))) {
             $storeModel->is_autofill = $data['is_autofill'];
@@ -200,6 +202,10 @@ class StoreConfigRepository extends Repository {
 
         if (isset($data['star_ratings']) && (!empty($data['star_ratings']))) {
             $storeModel->star_ratings = $data['star_ratings'];
+        }
+        
+        if (isset($data['category_id']) &&(!empty($data['category_id']))) {
+            $storeModel->category_id = $data['category_id'];
         }
 
         if (isset($data['is_verified']) && (!empty($data['is_verified']))) {
@@ -332,8 +338,9 @@ class StoreConfigRepository extends Repository {
         if (isset($configId) && ($configId != '')) {
             $query->andWhere(['store_configuration.id' => $configId]);
         }
+        $dataValue =array();
         $tmpDataValues = $query->asArray()->all();
-
+        if($tmpDataValues[0]){
         $dataValue = $tmpDataValues[0];
 
         $tempShelfConfig = array();
@@ -380,7 +387,7 @@ class StoreConfigRepository extends Repository {
         $tmpShelfDisplayArray['brand_thumb_id'] = $shelfDisplay[0]['brand_thumb_id'];
         $tmpShelfDisplayArray["shelf_config"] = $tempShelfConfig['shelf_config'];
         $dataValue['shelfDisplay'][] = $tmpShelfDisplayArray;
-
+        }
         return $dataValue;
     }
 

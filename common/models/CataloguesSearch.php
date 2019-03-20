@@ -203,19 +203,7 @@ class CataloguesSearch extends Catalogues {
             'pagination' => [
                 'pageSize' =>10,
             ],
-            'sort' => [
-                'attributes' =>
-                    [
-                        'reorder_id'  ,
-                        'sku',
-                        'ean',
-                        'short_name',
-                        'productCategory',
-                        'marketName',
-                        'brandName',
-                        'price'
-                    ],
-            ]
+            
         ]);
         
 //        $otherProductData = new ArrayDataProvider([
@@ -271,21 +259,10 @@ class CataloguesSearch extends Catalogues {
             'pagination' => [
                 'pageSize' =>10,
             ],
-            'sort' => [
-                'attributes' =>
-                    [
-                        'reorder_id'  ,
-                        'sku',
-                        'ean',
-                        'short_name',
-                        'productCategory',
-                        'marketName',
-                        'brandName',
-                        'price'
-                    ],
-            ]
+           
         ]);
-
+        
+       
         return $otherProductData;
     }
     

@@ -325,7 +325,7 @@ jQuery(document).ready(function ()
                     if ($('#review').is(':visible')) {
                         var arrayData = [];
                         $("input:checkbox[name=answer]:checked").each(function () {
-                            console.log(this);
+//                            console.log(this);
                             arrayData.push($(this).attr('ans'));
                         });
 
@@ -373,6 +373,7 @@ jQuery(document).ready(function ()
                                         success: function (result)
                                         {
                                             if (result.flag == 1) {
+                                                alert(3);
                                                 $("#thumb_image").val(result.name);
                                                 $("#step_3").submit();
                                                 return false;

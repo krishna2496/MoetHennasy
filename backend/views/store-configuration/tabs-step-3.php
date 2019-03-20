@@ -37,7 +37,7 @@ $individualHeight = $heightOfRack/$shelves;
                 <?php
                 $form = ActiveForm::begin(['action' => [$submitUrl], 'id' => 'step_3', 'method' => 'post', 'class' => 'frame-filt-form']);
                 ?>
-
+  <input type="hidden" name="123" id="123" value=""/>
                 <input type="hidden" name="thumb_image" id="thumb_image" value=""/>
                 <input type="hidden" name="brand" id="brand" value=""/>
                 <input type="hidden" name="config_id" id="config_id" value="<?= $configId ?>"/>
@@ -318,6 +318,8 @@ $individualHeight = $heightOfRack/$shelves;
 
             $('.product-content').load(dataURL, function ()
             {
+                $.pjax.reload({container: "#productsBrand", async: false});
+                $.pjax.reload({container: "#productsData", async: false});
                 $('input[type="checkbox"]').iCheck({
                     checkboxClass: 'icheckbox_square-blue',
                     radioClass: 'iradio_square-blue',
@@ -355,10 +357,12 @@ $individualHeight = $heightOfRack/$shelves;
                             }
                         }
                         $('#products').html(str);
+                        
                     }, function (result) {
                         alert('Fail');
                     });
-
+                    $.pjax.reload({container: "#productsBrand", async: false});
+                    $.pjax.reload({container: "#productsData", async: false});
                 });
 
                 $('#changeData').on('click', function (e)
@@ -405,6 +409,8 @@ $individualHeight = $heightOfRack/$shelves;
                     }, function (result) {
                         alert('Fail');
                     });
+                    $.pjax.reload({container: "#productsBrand", async: false});
+                    $.pjax.reload({container: "#productsData", async: false});
                 });
                 moet.hideLoader();
             });
