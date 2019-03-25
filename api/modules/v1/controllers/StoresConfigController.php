@@ -28,6 +28,7 @@ use common\models\BrandsSearch;
 use common\repository\BrandRepository;
 use common\repository\ProductCategoryRepository;
 use common\repository\ProductTypesRepository;
+use common\models\CataloguesSearch;
 
 class StoresConfigController extends BaseApiController {
 
@@ -679,7 +680,15 @@ class StoresConfigController extends BaseApiController {
                     $returnDatas['market']['category'][$catKey]['name'] = $catVal['name'];
 
                     //Catalogues list
-                    $catalogueList = Catalogues::find()->andWhere(['top_shelf' => 1, 'product_category_id' => $catVal['id']])->asArray()->all();
+                    $catalogModel = new CataloguesSearch();
+                    $catalogFilter = array(
+                        'top_shelf' => 1,
+                        'category_id' => $catVal['id'],
+                        'market_id' => $marketId,
+                    );
+
+                    $catalogDataProvider = $catalogModel->searchTopsSelf($catalogFilter); //top shelf =1
+                    $catalogueList = $catalogDataProvider->getModels();
                     if (!empty($catalogueList)) {
                         foreach ($catalogueList as $cataKey => $cataVal) {
                             unset($catalogueList[$cataKey]['created_by']);
