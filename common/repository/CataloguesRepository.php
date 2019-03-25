@@ -107,9 +107,11 @@ class CataloguesRepository extends Repository {
             $queryTop->andWhere(['brand_id' => $data['brand_id']]);
         }
         $dataArry = $queryTop->orderBy('reorder_id')->asArray()->all();
+        $dataNew = $query->orderBy('reorder_id')->asArray()->all();
         $data = array();
-        $data['catalogues'] = $query->orderBy('reorder_id')->asArray()->all();
-        array_merge($data['catalogues'],$dataArry);
+        $data['catalogues'] = array_merge($dataNew,$dataArry);
+       
+         
         $this->apiData = $data;
         return $this->response();
     }

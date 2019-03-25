@@ -49,7 +49,7 @@ class AppAsset extends AssetBundle
         'theme/plugins/bootstrap-toggle/bootstrap-toggle.min.js',
         'theme/dist/js/bootstrap-wizard.min.js',
         'js/store-config.js',
-         'js/tableDnD.js'
+        'js/tableDnD.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

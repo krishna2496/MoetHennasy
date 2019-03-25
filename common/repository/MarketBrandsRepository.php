@@ -44,6 +44,18 @@ class MarketBrandsRepository extends Repository {
         $this->apiData = $data;
         return $this->response();
     }
+    public function listingData($data = array()) {
+
+        $this->apiCode = 1;
+        $query = MarketBrands::find()->joinWith('brand.product.productCategory')->joinWith('brand.product.productType');
+        if (isset($data['market_id']) && ($data['market_id'] != '')) {
+            $query->andWhere(['market_brands.market_id' => $data['market_id']]);
+        }
+        $data = array();
+        $data['market_brands'] = $query->orderBy('reorder_id')->asArray()->all();
+        $this->apiData = $data;
+        return $this->response();
+    }
 
     public function listingBrand($data = array()) {
         $this->apiCode = 1;

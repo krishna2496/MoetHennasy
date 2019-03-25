@@ -12,15 +12,30 @@ td {
 tr.myDragClass td {
     /*position: fixed;*/
     color: white;
-    text-shadow: 0 0 10px black, 0 0 10px black, 0 0 8px black, 0 0 6px black, 0 0 6px black;
-    background-color: gray;
-    -webkit-box-shadow: 0 12px 14px -12px #111 inset, 0 -2px 2px -1px #333 inset;
+    /*text-shadow: 0 0 10px black, 0 0 10px black, 0 0 8px black, 0 0 6px black, 0 0 6px black;*/
+    background-color: #947549;
+    opacity: 0.5;
+    z-index: 555545;
+  
+  -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+  transition: width 2s;
+    /*-webkit-box-shadow: 0 12px 14px -12px #111 inset, 0 -2px 2px -1px #333 inset;*/
+}
+tr.myDragClass{
+    /*position: fixed;*/
+    color: white;
+    /*text-shadow: 0 0 10px black, 0 0 10px black, 0 0 8px black, 0 0 6px black, 0 0 6px black;*/
+    background-color: #947549;
+    opacity: 0.5;
+    z-index: 555545;-webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+  transition: width 2s;
+    /*-webkit-box-shadow: 0 12px 14px -12px #111 inset, 0 -2px 2px -1px #333 inset;*/
 }
 tr.myDragClass td:first-child {
-    -webkit-box-shadow: 0 12px 14px -12px #111 inset, 12px 0 14px -12px #111 inset, 0 -2px 2px -1px #333 inset;
+    /*-webkit-box-shadow: 0 12px 14px -12px #111 inset, 12px 0 14px -12px #111 inset, 0 -2px 2px -1px #333 inset;*/
 }
 tr.myDragClass td:last-child {
-    -webkit-box-shadow: 0 12px 14px -12px #111 inset, -12px 0 14px -12px #111 inset, 0 -2px 2px -1px #333 inset;
+    /*-webkit-box-shadow: 0 12px 14px -12px #111 inset, -12px 0 14px -12px #111 inset, 0 -2px 2px -1px #333 inset;*/
 }
 td.showDragHandle {
 	background-image: url(images/updown2.gif);

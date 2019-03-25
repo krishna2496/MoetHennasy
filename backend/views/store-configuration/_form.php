@@ -158,7 +158,7 @@ $session = Yii::$app->session;
 </div>
 
 <script type="text/javascript">
-
+    var back_color = '';
     var rackFromURL = '<?php echo $formUrl ?>';
     var rackProductFromURL = '<?php echo $secondFormUrl ?>';
     var numOfSelves = '<?php echo $noOfSelves ?>';
@@ -167,7 +167,7 @@ $session = Yii::$app->session;
     var widthOfRack = '<?= $widthOfRack; ?>';
     if (isUpdate == '1') { 
         var back_color = '<?php echo $brandBackground ?>';
-      
+     
         var reviewStoreUrl = '<?= Url::to(['store-configuration/review-store/' . $configId]); ?>';
         $("#ex6SliderVal").val('<?= isset($_SESSION['config']['no_of_shelves']) ?  $_SESSION['config']['no_of_shelves'] :''; ?>');
         $("#hex6SliderVal").val('<?= isset($_SESSION['config']['height_of_shelves']) ? $_SESSION['config']['height_of_shelves'] : ''; ?>');

@@ -271,9 +271,9 @@ $("#dispaly_name").on('keyup', function () {
 
 function changeBrand(data) {
 
-
     var id = data.id;
     var color_code = data.title;
+    
     if ($(".display" + id).hasClass("displayBlock")) {
         $(".display" + id).css('display', 'none');
         $(".top-bg").css('background-color','#363638');
@@ -281,6 +281,7 @@ function changeBrand(data) {
         $('#brandImageHolder').html('Select Brand');
         $("#brand").val('');
     } else {
+        color_code = data.getAttribute("color_code");
         $(".display" + id).css('display', 'block');
         $(".top-bg").css('background-color',color_code);
         $(".top-bg").css('background-image',"url()");
@@ -373,7 +374,6 @@ jQuery(document).ready(function ()
                                         success: function (result)
                                         {
                                             if (result.flag == 1) {
-                                                alert(3);
                                                 $("#thumb_image").val(result.name);
                                                 $("#step_3").submit();
                                                 return false;

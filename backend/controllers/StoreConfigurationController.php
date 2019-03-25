@@ -321,7 +321,8 @@ class StoreConfigurationController extends ProductRuleController {
 
                 if ($marketId != '') {
                     $data['market_id'] = $marketId;
-                    $returnData = $repository->listing($data);
+                    $returnData = $repository->listingData($data);
+                  
                     $brandBackground = '';
                     $brandId = array();
                     if ($returnData['status']['success'] == 1) {
@@ -529,6 +530,8 @@ class StoreConfigurationController extends ProductRuleController {
                     $wholeData[0] = $newData;
                 }
             } 
+//            echo '<pre>';
+//            print_r($wholeData);exit
             //variental product
             $brandFilter = [];
             if (isset($_SESSION['config']['brands'])) {
@@ -965,7 +968,7 @@ class StoreConfigurationController extends ProductRuleController {
         $data['category_id'] = $_SESSION['config']['category_id'];
         $repository = new CataloguesRepository();
         $returnData = $repository->brandProduct($data);
-       
+      
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return $returnData;
     }

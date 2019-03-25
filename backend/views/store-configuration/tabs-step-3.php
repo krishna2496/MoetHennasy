@@ -14,6 +14,7 @@ $submitUrl = "store-configuration/save-config-data";
 $shelves =  isset($_SESSION['config']['no_of_shelves']) ? $_SESSION['config']['no_of_shelves'] : '1';
 $heightOfRack = isset($_SESSION['config']['height_of_shelves']) ? $_SESSION['config']['height_of_shelves'] : 0;
 $individualHeight = $heightOfRack/$shelves;
+
 ?>
 
 <script>
@@ -37,7 +38,7 @@ $individualHeight = $heightOfRack/$shelves;
                 <?php
                 $form = ActiveForm::begin(['action' => [$submitUrl], 'id' => 'step_3', 'method' => 'post', 'class' => 'frame-filt-form']);
                 ?>
-  <input type="hidden" name="123" id="123" value=""/>
+
                 <input type="hidden" name="thumb_image" id="thumb_image" value=""/>
                 <input type="hidden" name="brand" id="brand" value=""/>
                 <input type="hidden" name="config_id" id="config_id" value="<?= $configId ?>"/>
@@ -64,7 +65,7 @@ $individualHeight = $heightOfRack/$shelves;
                                         ?>
                                         <li>
                                             <a title="<?= $value['name'] ?>">
-                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_BRANDS_IMAGES . $value['image']); ?>" alt="brand-image" class="brand-images" id="<?= $value['id'] ?>" title ='<?= $value['name'] ?>' onclick="changeBrand(this)">
+                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_BRANDS_IMAGES . $value['image']); ?>" alt="brand-image" class="brand-images" id="<?= $value['id'] ?>" title ='<?= $value['name'] ?>' color_code="<?= $value['color_code'] ?>" onclick="changeBrand(this)">
                                                 <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $value['id']; ?>"  style="display:none">
                                             </a>
                                         </li>
@@ -145,8 +146,7 @@ $individualHeight = $heightOfRack/$shelves;
                                                                                     <p>WSP: <?= $products[$value1]['price'] ?></p>
                                                                                     <p>Category: <?= $products[$value1]['productCategory'] ?></p>
                                                                                     <p>Top shelf: <?= ($products[$value1]['top_shelf'] == 1) ? 'Yes' : 'No' ?></p>
-                                                                                    <p>Width: <?= $products[$value1]['width'] ?></p>
-                                                                                    <p>Width: <?= $products[$value1]['height'] ?></p><p>id: <?= $products[$value1]['id'] ?></p>
+                                                                                    
                                                                                 </div>
                                                                             </a>
                                                                             <input type="checkbox" shelves-key='<?= $key ?>' item-key='<?= $key1 ?>' id='<?= $key + 1; ?>,<?= $key1 + 1; ?>'>

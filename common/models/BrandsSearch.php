@@ -101,11 +101,13 @@ class BrandsSearch extends Brands
                 }
                 
                 foreach ($brandRepository['data']['brand_data'] as $key => $value) {
-                    if(in_array($value['id'], $removeDataId)){
+                  
+                    if(in_array($value['id'], $removeDataId)){ 
                         $temp=$value;
                         $temp['name']= ucfirst($temp['name']);
-                        $temp['reorder_id'] = isset($brandVarientalData[$value['id']]) ? $brandVarientalData[$value['id']]['reorder_id']!= NULL ? $brandVarientalData[$value['id']]['reorder_id'] :$max++ : $max++;
-                        $temp['shares'] = isset($brandVarientalData[$value['id']]['shares']) ? $brandVarientalData[$value['id']]['shares'] : 0;
+                        
+                        $temp['reorder_id'] = isset($brandVarientalData[$value['id']]) ? $brandVarientalData[$value['id']]['reorder_id']!= 0 ? $brandVarientalData[$value['id']]['reorder_id'] :$max++ : $max++;
+                        
                         $brandList[] = $temp;
                     }
                 }

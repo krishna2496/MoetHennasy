@@ -81,32 +81,32 @@ $count = count($dataProvider->allModels);
                             },
                             'format' => ['image',['height'=>'64px']],
                         ],
-                        [
-                            'label'=>'sort',
-                            'attribute'=>'reorder_id',
-                            'format' => 'raw',
-                            'label' => 'Order',
-                             'visible' => ($brand_ids == 0) ? 0 : 1,
-                            'value'=>  function ($model,$key)use($count,$dataProvider) {
-                           
-                            $arrow = '';
-                            if($key != 0){
-                                    //up
-                                    $up_first_id =$dataProvider->allModels[$key-1]['reorder_id'];
-                                    $current_id =$model['reorder_id'];
-                                    $arrow.='<a class="fa fa-arrow-up" href="javascript:void(0)" onclick="reorder('.$current_id.','.$up_first_id.')" title="up" style="cursor:pointer;"></a>';
-                                    $arrow.=' ';
-                            }if($key != $count-1){
-                                    
-                                    $current_id = $up_first_id =$model['reorder_id'];
-                                    $down_key =$dataProvider->allModels[$key+1]['reorder_id'];
-                                    $arrow.='<a class="fa fa-arrow-down" href="javascript:void(0)"  onclick="reorder('.$current_id.','.$down_key.')" title="down" style="cursor:pointer;"></a>';
-                              
-                            }
-                            return $arrow;
-                            },
-//                            'format' => ['image',['height'=>'64px']],
-                        ],
+//                        [
+//                            'label'=>'sort',
+//                            'attribute'=>'reorder_id',
+//                            'format' => 'raw',
+//                            'label' => 'Order',
+//                             'visible' => ($brand_ids == 0) ? 0 : 1,
+//                            'value'=>  function ($model,$key)use($count,$dataProvider) {
+//                           
+//                            $arrow = '';
+//                            if($key != 0){
+//                                    //up
+//                                    $up_first_id =$dataProvider->allModels[$key-1]['reorder_id'];
+//                                    $current_id =$model['reorder_id'];
+//                                    $arrow.='<a class="fa fa-arrow-up" href="javascript:void(0)" onclick="reorder('.$current_id.','.$up_first_id.')" title="up" style="cursor:pointer;"></a>';
+//                                    $arrow.=' ';
+//                            }if($key != $count-1){
+//                                    
+//                                    $current_id = $up_first_id =$model['reorder_id'];
+//                                    $down_key =$dataProvider->allModels[$key+1]['reorder_id'];
+//                                    $arrow.='<a class="fa fa-arrow-down" href="javascript:void(0)"  onclick="reorder('.$current_id.','.$down_key.')" title="down" style="cursor:pointer;"></a>';
+//                              
+//                            }
+//                            return $arrow;
+//                            },
+////                            'format' => ['image',['height'=>'64px']],
+//                        ],
                         [
                             'label' => 'Product Name',
                             'attribute' => 'brandName',

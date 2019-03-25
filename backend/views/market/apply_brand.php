@@ -152,6 +152,10 @@ $sharesData = array();
                         //$("#table-draggable tr:odd").addClass('alt');
                         $("#table-draggable").tableDnD({
                             onDragClass: "myDragClass",
+                            scrollAmount:45,
+                            sensitivity: 40,
+                                hierarchyLevel: 12,
+
                             onDrop: function (table, row)
                             {
                                 var i = 1;
