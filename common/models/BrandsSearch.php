@@ -107,10 +107,11 @@ class BrandsSearch extends Brands
                         $temp['name']= ucfirst($temp['name']);
                         
                         $temp['reorder_id'] = isset($brandVarientalData[$value['id']]) ? $brandVarientalData[$value['id']]['reorder_id']!= 0 ? $brandVarientalData[$value['id']]['reorder_id'] :$max++ : $max++;
-                        
+                        $temp['shares'] = isset($brandVarientalData[$value['id']]['shares']) ? $brandVarientalData[$value['id']]['shares'] : 0;
                         $brandList[] = $temp;
                     }
                 }
+               
                 
                 
             }

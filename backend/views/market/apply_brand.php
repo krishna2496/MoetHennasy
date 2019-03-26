@@ -22,10 +22,13 @@ foreach ($selected as $key => $value) {
 }
 
 $dataProvider->allModels = array_merge($new_array, $data);
+
 $count = count($dataProvider->allModels);
 $totalBranSharesCount = array_sum($selectedShares);
 $allData = $dataProvider->allModels;
 $sharesData = array();
+//echo '<pre>';
+//print_r($dataProvider);exit;
 ?>
 <script>
     productObject = {};

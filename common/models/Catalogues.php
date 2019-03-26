@@ -35,7 +35,7 @@ class Catalogues extends BaseModel
             [['sku'], 'unique'],
             ['sku','match', 'pattern' => '/^[a-zA-Z0-9\-_]{0,50}$/', 'message' => 'Sku can only contain Alphabet and Numeric'],
             [['sku','ean','short_name','long_name','width','height','length','scale','manufacturer', 'price'],'trim'],
-            [['market_share'],'integer','max' => 10,'min' => 1, 'message' => 'Market Share can only contain upto 11 digits'],
+            
             [['price'],'number','max' => 999999, 'min' => 1,'message' => 'Price can only contain upto 6 digits'],
         ];
     }

@@ -262,7 +262,7 @@ class ApplyController extends MarketController {
             $filters['market_id'] = $id;
 //        $filters['category_id'] =
             $dataProvider = $searchModel->searchMarketBrand($filters);
-
+           
             $brandsArray = array();
             foreach ($brands as $brandKey => $brand) {
                 $brandsArray[$brand['id']] = $brand['name'];

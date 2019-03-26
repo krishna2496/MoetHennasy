@@ -143,7 +143,8 @@ class ProductRuleController extends Controller {
     }
 
     protected function applySortingRule(&$racksProductArray,$selvesWidth) {
-       
+        
+          $this->sort_array_of_array($racksProductArray, 'order_id', SORT_ASC);
         $min = $sum = 0;
                     if (!empty($racksProductArray)) {
                         $min = (min(array_column($racksProductArray, 'width')) == 0) ? 1 : min(array_column($racksProductArray, 'width'));
@@ -203,8 +204,8 @@ class ProductRuleController extends Controller {
             }
         }
     
-            $sort = SORT_DESC;
-            $this->sort_array_of_array($applyRuleArry, 'special_format', $sort);
+//            $sort = SORT_DESC;
+//            $this->sort_array_of_array($applyRuleArry, 'special_format', $sort);
         
         //product rule
 //         if ($this->ifRuleContain(\yii::$app->params['configArray']['order_product'])) {

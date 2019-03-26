@@ -687,7 +687,7 @@ class StoresConfigController extends BaseApiController {
                         'market_id' => $marketId,
                     );
 
-                    $catalogDataProvider = $catalogModel->searchTopsSelf($catalogFilter); //top shelf =1
+                    $catalogDataProvider = $catalogModel->searchTopsSelfApi($catalogFilter); //top shelf =1
                     $catalogueList = $catalogDataProvider->getModels();
                     if (!empty($catalogueList)) {
                         foreach ($catalogueList as $cataKey => $cataVal) {

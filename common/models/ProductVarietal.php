@@ -39,9 +39,10 @@ class ProductVarietal extends BaseModel
     }
     
     public function canDelete()
-    { 
-        $count = Catalogues::find()->andWhere(['id' => $this->id])->count();
-       
+    {
+        $count = Catalogues::find()->andWhere(['product_variental' => $this->id])->count();
+        
+        
         if($count > 0){
             $this->addError('title', "{$this->name} is used in Catalogues");
             return false;

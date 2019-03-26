@@ -6,6 +6,11 @@ use common\helpers\CommonHelper;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
+$currentUser = CommonHelper::getUser();
+$class = '';
+if($currentUser->role_id == 1){
+$class =   'table-draggable_popup';  
+}
 ?>
 
 <div class="modal-header">
@@ -19,11 +24,12 @@ use yii\widgets\Pjax;
     <div id="varietalMessageBox"></div>
 
     <?=
+    
     GridView::widget([
         'dataProvider' => $productVarietalDataProvider,
         'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
         //'layout' => '<div class="table-responsive">{items}</div><div class="row"><div class="col-sm-5">{summary}</div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers">{pager}</div></div></div>',
-        'tableOptions' => ['id' => 'table-draggable_popup', 'class' => "table table-striped table-bordered", 'style' => "margin-bottom: 0px !important;"],
+        'tableOptions' => ['id' => $class, 'class' => "table table-striped table-bordered", 'style' => "margin-bottom: 0px !important;"],
         'rowOptions' => function($model) {
             return ['data-num' => $model['id']];
         },

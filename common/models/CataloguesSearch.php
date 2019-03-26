@@ -13,7 +13,7 @@ class CataloguesSearch extends Catalogues {
 
     public function rules() {
         return [
-                [['id', 'brand_id', 'product_category_id', 'product_sub_category_id', 'product_type_id', 'market_id', 'market_share', 'created_by', 'updated_by', 'deleted_by', 'product_variental', 'special_format'], 'integer'],
+                [['id', 'brand_id', 'product_category_id', 'product_sub_category_id', 'product_type_id', 'market_id', 'created_by', 'updated_by', 'deleted_by', 'product_variental', 'special_format'], 'integer'],
                 [['sku', 'ean', 'image', 'short_name', 'long_name', 'short_description', 'manufacturer', 'box_only', 'top_shelf', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
                 [['width', 'height', 'length', 'scale', 'price'], 'number'],
         ];
@@ -306,6 +306,63 @@ class CataloguesSearch extends Catalogues {
         }
     
         \common\helpers\CommonHelper::sort_array_of_array($userList, 'top_order_id', SORT_ASC);
+      
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $userList,
+            'pagination' => [
+                'pageSize' => $params['limit'],
+            ],
+           
+        ]);
+       
+        if (isset($params['selection']) && ($params['selection'] != '')) {
+            $dataProvider->pagination->params = ['selection' => $params['selection']];
+        }
+        
+        return $dataProvider;
+    }
+    
+     public function searchTopsSelfApi($params) {
+       
+        $userRepository = new CataloguesRepository;
+        $userList = $marketBrandVrientalProduct = array();
+        $resultUserList = $userRepository->listingTopsSelf($params);
+       
+        $max = 1;
+        if ($resultUserList['status']['success'] == 1) {
+            
+            $resultUserListNew = new CataloguesRepository();
+            $reorderData = $resultUserListNew->reorderData($params);
+            
+            if($reorderData['status']['success'] == 1){
+                if ($reorderData['data']['product']) {
+                        $max =  \common\helpers\CommonHelper::max_val($reorderData['data']['product'], 'top_reorder_id', SORT_DESC);
+                        foreach ($reorderData['data']['product'] as $key => $value) {
+                                $marketBrandVrientalProduct[$value['product_id']]['top_reorder_id'] = $value['top_reorder_id'];
+                        }
+                }
+            }
+            
+            if ($resultUserList['data']['catalogues']) {
+                foreach ($resultUserList['data']['catalogues'] as $key => $value) {
+                   
+                    $temp = $value;
+                    
+                    $temp['brandName'] = ucfirst($temp['brand']['name']);
+                    $temp['productCategory'] = ucfirst($temp['productCategory']['name']);
+                    $temp['top_order_id'] = 0;
+                    $temp['sku']= ucfirst($temp['sku']);
+                    $temp['reorder_id'] = isset($marketBrandVrientalProduct[$value['id']]) ? $marketBrandVrientalProduct[$value['id']]['top_reorder_id']!= NULL ? $marketBrandVrientalProduct[$value['id']]['top_reorder_id'] :$max++ : $max++;
+                    $userList[] = $temp;
+                }
+            }
+        }
+        
+        if(!isset($params['limit'])){
+            $params['limit'] = count($userList);
+        }
+    
+        \common\helpers\CommonHelper::sort_array_of_array($userList, 'reorder_id', SORT_ASC);
       
         $dataProvider = new ArrayDataProvider([
             'allModels' => $userList,

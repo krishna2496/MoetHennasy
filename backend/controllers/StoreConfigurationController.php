@@ -682,7 +682,7 @@ class StoreConfigurationController extends ProductRuleController {
             if (count($racksProductArray[0]) > 0) {
                 $this->applySortingRule($racksProductArray[0], $selvesWidth);
             }
-        }
+        } 
         $specialProductArry = array();
         foreach ($dataIds as $value) {
             if ($value['top_shelf'] == '1') {
@@ -737,9 +737,9 @@ class StoreConfigurationController extends ProductRuleController {
             }
         }
 
-
+ 
         $this->reIntializeBrandShareArry($sharesArry, $brandSum);
-
+        
         if ($sharesArry) {
             foreach ($sharesArry as $k => $v) {
                 $brandWidth = ($selvesWidth * $v['brand_shares']) / 100;
@@ -768,7 +768,7 @@ class StoreConfigurationController extends ProductRuleController {
                 }
             }
         }
-
+     
         foreach ($sharesArry as $key => $val) {
             if ($val['varietal']) {
                 foreach ($val['varietal'] as $k => $v) {
@@ -794,7 +794,7 @@ class StoreConfigurationController extends ProductRuleController {
             }
         }
 
-        $newArry = $applyRuleArry = array();
+        $newArry = $is_any_special = $applyRuleArry = array();
         
         foreach ($rulesDataArry as $k => $v) {
             $is_any_special_product = 0;
@@ -819,8 +819,11 @@ class StoreConfigurationController extends ProductRuleController {
                 }
             }
             if ($is_any_special_product == 0) {
+             
+               
                 $x = ($z / $totalSum);
                 $x = (int) $x;
+                
                 $y = $x * $totalSum;
                 $w = $z - $y;
 
@@ -828,14 +831,17 @@ class StoreConfigurationController extends ProductRuleController {
                     $repeatCount = $x;
                     if ($val < $w) {
                         $repeatCount++;
+                        $w = $w- $val;
                     }
                     $newArry[$k][$key]['repeat_count'] = $repeatCount;
                     $newArry[$k][$key]['is_special_product'] = 0; 
                 }
             } else {
+               
                 $occupy_space = $totalWidth = 0;
                 foreach ($v as $key => $val) {
                     if(isset($newArry[$k][$key])){
+                       
                         $count = $newArry[$k][$key]['repeat_count'];
                         $occupy_space = $occupy_space + ($count * $val);
                         $totalWidth = $totalWidth+$val;
@@ -859,14 +865,17 @@ class StoreConfigurationController extends ProductRuleController {
                 }
                 
             }
+            
+            $is_any_special[$k] = $is_any_special_product;
         }
-    
         
         foreach($newArry as $k => $v){
+            if($is_any_special[$k] == 1){
             $this->sort_array_of_array_rack($newArry[$k], 'is_special_product', SORT_DESC);
+            }
         }
-  
-        
+
+       
         foreach ($newArry as $key => $value) {
             foreach ($value as $k => $v) {
                 $repeat_count = $v['repeat_count'];
@@ -914,6 +923,7 @@ class StoreConfigurationController extends ProductRuleController {
 
             $this->applySortingDataRule($applyRuleArry[$key]);
         }
+        
         foreach ($applyRuleArry as $k => $v) {
             foreach ($v as $key => $val) {
                 if (isset($racksProductArray[0])) {
