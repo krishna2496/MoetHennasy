@@ -23,7 +23,8 @@ class ProductVarietalSearch extends ProductCategories {
     }
 
     public function search($params) {
-
+//        echo '<pre>';
+//        print_r($params);exit;
         $productVarietalRepository = new ProductVarietalRepository();
         $productVarietalRepository = $productVarietalRepository->listingVariental($params);
 
@@ -42,6 +43,9 @@ class ProductVarietalSearch extends ProductCategories {
 
         $dataProvider = new ArrayDataProvider([
             'allModels' => $varietalList,
+            'pagination' => [
+                'pageSize' => $params['limit']
+            ],
             'sort' => [
                 'attributes' =>
                     [

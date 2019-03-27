@@ -81,7 +81,7 @@ $formUrl = Url::to(['market-segments/index']);
                                      return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/market-segments/update/'.$model['id']],['title'=>'Update']);
                                 },                                
                                'delete' => function ($url, $model) use ($filters) {
-                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['market-segments/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this market segment?','title'=>'Delete']);
+                                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['market-segments/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this market cluster?','title'=>'Delete']);
                                 },                               
                                
                             ],

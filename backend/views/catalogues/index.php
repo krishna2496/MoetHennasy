@@ -129,7 +129,7 @@ $count = count($dataProvider->allModels);
                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['catalogues/update/' . $model['id']],['title'=>'Update']);
                                 },
                                 'delete' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['catalogues/delete/' . $model['id']], ['data-method' => 'post', 'data-confirm' => 'Are you sure want to delete this catalogues?','title'=>'Delete']);
+                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['catalogues/delete/' . $model['id']], ['data-method' => 'post', 'data-confirm' => 'Are you sure want to delete this product?','title'=>'Delete']);
                                 },
                             ],
                         ],

@@ -26,7 +26,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-md-2"></div>
                                 <div class="col-md-3">
                                     <?php  if(CommonHelper::checkPermission('Product-Categories.Create')){ ?>
-                                    <?= Html::a('Add Product Category', ['create'], ['class' => 'btn btn-primary']) ?>
+                                    <? 
+//                                        Html::a('Add Product Category', ['create'], ['class' => 'btn btn-primary', 'disabled' => 'disabled'])
+//                                        Html::a('Add Product Category', ['create'], ['class' => 'btn btn-primary', 'disabled' => 'disabled'])
+                                        
+                                        ?>
+                                    <button class="btn btn-primary" disabled="true">Add Product Category</button>
                                     <?php } ?>
                                 </div>
                                 <div class="col-md-5">
@@ -59,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                            'class' => 'yii\grid\ActionColumn',
                             'contentOptions'=>[ 'style'=>'width: 10%'],
                            'header' => 'Actions',
-                           'template' => '{update} {delete}',
+                           'template' => '{update}',
                            'buttons' => [
                                'view' => function ($url, $model) {
                                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['product-categories/view/'.$model['id']],['title'=>'View']);
@@ -70,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 },                                
                                'delete' => function ($url, $model) {
                                     $addLink = isset($filters['setParentID']) ? '/'.$model['parent_user_id'] : '';
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['product-categories/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this category?','title'=>'Delete']);
+                                    return Html::a('<span class="glyphicon glyphicon-trash" ></span>', ['product-categories/delete/'.$model['id']],['data-method'=>'post','data-confirm'=>'Are you sure want to delete this category?','title'=>'Delete']);
                                 },
                             ],
                         ],

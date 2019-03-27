@@ -8,6 +8,7 @@ $formUrl = Url::to(['product-varietal/index']);
 $this->title = 'Product Varietal';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="row">
     <div class="col-xs-12">
         <div class="box">
@@ -26,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-md-2"></div>
                                 <div class="col-md-3">
                                     <?php  if(CommonHelper::checkPermission('Product-Varietal.Create')){ ?>
-                                    <?= Html::a('Add Product Varietal', ['create'], ['class' => 'btn btn-primary']) ?>
+                                    <?= Html::a('Add Product Varietal', ['create'], ['class' => 'btn btn-primary btn-disabled']) ?>
                                     <?php } ?>
                                 </div>
                                 <div class="col-md-5">
@@ -82,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <script type="text/javascript">
-    $("body").on("change", "#categories-text,#categories-limit",function(event){
-        $('#search-categories').submit();
+    $("body").on("change", "#categories-text,#categories-limit,#varietal-limit",function(event){
+        $('#search-varietal').submit();
     });
 </script>

@@ -53,6 +53,10 @@ class ProductVarietalRepository extends Repository
        
         $this->apiCode = 1;
         $query = ProductVarietal::find();
+         if(isset($data['search']) && $data['search']){
+            $data['search'] = trim($data['search']);
+            $query->andWhere(['like','name',$data['search']]);
+        }
         $data = array();
         $data['productVarietal'] = $query->asArray()->all();
         $this->apiData = $data;

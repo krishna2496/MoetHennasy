@@ -9,6 +9,12 @@ $this->title = 'Markets';
 $this->params['breadcrumbs'][] = $this->title;
 $formUrl = Url::to(['market/index']);
 ?>
+<style>
+    .rule-btn{
+        margin-left: 10px;
+        margin-right:5px;
+    } 
+</style>
 <div class="row">
     <div class="col-xs-12">
         <div class="box">
@@ -85,7 +91,7 @@ $formUrl = Url::to(['market/index']);
                                    return Html::a('<span class="glyphicon glyphicon-phone"></span>', ['market-contacts/index/'.$model['id']],['title' => 'Contact']);
                                 },
                                 'rules' => function ($url, $model) use ($filters) {
-                                     return Html::a('Apply Rules', ['apply/rules/'.$model['id']], ['class'=>'btn btn-primary']);
+                                     return Html::a('Apply Rules', ['apply/rules/'.$model['id']], ['class'=>'btn btn-primary rule-btn']);
                                  
                                 },
                                     /*

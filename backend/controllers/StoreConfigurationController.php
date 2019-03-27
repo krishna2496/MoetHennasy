@@ -874,8 +874,7 @@ class StoreConfigurationController extends ProductRuleController {
             $this->sort_array_of_array_rack($newArry[$k], 'is_special_product', SORT_DESC);
             }
         }
-
-       
+        
         foreach ($newArry as $key => $value) {
             foreach ($value as $k => $v) {
                 $repeat_count = $v['repeat_count'];
