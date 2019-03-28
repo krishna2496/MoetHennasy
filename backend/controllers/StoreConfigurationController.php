@@ -933,12 +933,14 @@ class StoreConfigurationController extends ProductRuleController {
         }
         if (!isset($racksProductArray[0])) {
             $racksProductArray[0] = $racksProductArray[1];
+             sort($racksProductArray);
         }
         
         for ($i = 0; $i < $selevesCount; $i++) {
             if (!isset($racksProductArray[$i])) {
                 $racksProductArray[$i] = $racksProductArray[$i - 1];
             }
+           
         }
 
 //        $this->fillUpEmptySpaceOfShelves($racksProductArray, $selvesWidth, $selevesCount);
