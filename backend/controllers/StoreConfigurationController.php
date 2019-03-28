@@ -868,7 +868,8 @@ class StoreConfigurationController extends ProductRuleController {
             
             $is_any_special[$k] = $is_any_special_product;
         }
-        
+//        echo '<pre>';
+//        print_r($newArry);exit;
         foreach($newArry as $k => $v){
             if($is_any_special[$k] == 1){
             $this->sort_array_of_array_rack($newArry[$k], 'is_special_product', SORT_DESC);
@@ -922,21 +923,24 @@ class StoreConfigurationController extends ProductRuleController {
 
             $this->applySortingDataRule($applyRuleArry[$key]);
         }
-        
+//        echo '<pre>';
+//        print_r($racksProductArray);exit;
         foreach ($applyRuleArry as $k => $v) {
             foreach ($v as $key => $val) {
-                if (isset($racksProductArray[0])) {
                     $racksProductArray[1][] = $val;
-                } else {
-                    $racksProductArray[0][] = $val;
-                }
-            }
+                } 
+            
         }
-
+        if (!isset($racksProductArray[0])) {
+            $racksProductArray[0] = $racksProductArray[1];
+             sort($racksProductArray);
+        }
+        
         for ($i = 0; $i < $selevesCount; $i++) {
             if (!isset($racksProductArray[$i])) {
                 $racksProductArray[$i] = $racksProductArray[$i - 1];
             }
+           
         }
 
 //        $this->fillUpEmptySpaceOfShelves($racksProductArray, $selvesWidth, $selevesCount);

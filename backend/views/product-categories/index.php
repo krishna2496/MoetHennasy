@@ -26,10 +26,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-md-2"></div>
                                 <div class="col-md-3">
                                     <?php  if(CommonHelper::checkPermission('Product-Categories.Create')){ ?>
+<<<<<<< HEAD
                                      
 <!--                                        Html::a('Add Product Category', ['create'], ['class' => 'btn btn-primary', 'disabled' => 'disabled'])
                                         Html::a('Add Product Category', ['create'], ['class' => 'btn btn-primary', 'disabled' => 'disabled'])-->
                                         
+=======
+                                    
+<!--                                        Html::a('Add Product Category', ['create'], ['class' => 'btn btn-primary', 'disabled' => 'disabled'])
+                                        Html::a('Add Product Category', ['create'], ['class' => 'btn btn-primary', 'disabled' => 'disabled'])-->
+>>>>>>> d04c8cc5c6bfb8dc976913403e06f9668b5a03ba
                                         
                                     <button class="btn btn-primary" disabled="true">Add Product Category</button>
                                     <?php } ?>
