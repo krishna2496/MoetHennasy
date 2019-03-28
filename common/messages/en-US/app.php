@@ -84,5 +84,6 @@ return [
     'glossary' => 'Glossary',
     'apply_brand' =>'Brand applied sucessfully',
     'apply_strategy' =>'Strategy applied sucessfully',
-    'store_config' => 'Configuration'
+    'store_config' => 'Configuration',
+    'product_varietal' => 'Product varietal',
     ];
