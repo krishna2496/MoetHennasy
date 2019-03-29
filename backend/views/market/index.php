@@ -91,7 +91,7 @@ $formUrl = Url::to(['market/index']);
                                    return Html::a('<span class="glyphicon glyphicon-phone"></span>', ['market-contacts/index/'.$model['id']],['title' => 'Contact']);
                                 },
                                 'rules' => function ($url, $model) use ($filters) {
-                                     return Html::a('Apply Rules', ['apply/rules/'.$model['id']], ['class'=>'btn btn-primary rule-btn']);
+                                     return Html::a('<span class="glyphicon glyphicon-check"></span>', ['apply/rules/'.$model['id']], ['class'=>'rule-btn','title' => 'Apply Rules']);
                                  
                                 },
                                     /*
@@ -99,7 +99,7 @@ $formUrl = Url::to(['market/index']);
                                      return Html::a('Apply Brand', ['apply/brands/'.$model['id']], ['class'=>'btn btn-primary']);
                                 },*/
                                 'category' => function ($url, $model) use ($filters) {
-                                     return Html::a('Manage Strategy', null, ['class'=>'btn btn-primary', 'data-id'=>$model['id'], 'data-toggle'=>"modal", 'onClick'=>('$("[name=\'selectedMarkets\']").val("'.$model['id'].'");$("[id=\'marketName\']").text("'.$model['title'].'");'), 'data-target'=>"#modal-default"]);
+                                     return Html::a('<span class="glyphicon glyphicon-list-alt" style="cursor:pointer"></span>', null, [ 'data-id'=>$model['id'],'title' => 'Manage Strategy', 'data-toggle'=>"modal", 'onClick'=>('$("[name=\'selectedMarkets\']").val("'.$model['id'].'");$("[id=\'marketName\']").text("'.$model['title'].'");'), 'data-target'=>"#modal-default"]);
                                 },
                                
                             ],

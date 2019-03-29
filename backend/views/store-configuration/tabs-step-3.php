@@ -62,10 +62,12 @@ $individualHeight = $heightOfRack/$shelves;
                                         if ($value['color_code'] == '') {
                                             $value['color_code'] = COLOR_CODE;
                                         }
+                                        $imageData = end(explode('/',$value['image']));
+                                        $images_data = $imageData;
                                         ?>
                                         <li>
                                             <a title="<?= $value['name'] ?>">
-                                                <img src="<?= $value['image']; ?>" alt="brand-image" class="brand-images" id="<?= $value['id'] ?>" title ='<?= $value['name'] ?>' color_code="<?= $value['color_code'] ?>" onclick="changeBrand(this)">
+                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_BRANDS_IMAGES . $images_data); ?>" alt="brand-image" class="brand-images" id="<?= $value['id'] ?>" title ='<?= $value['name'] ?>' color_code="<?= $value['color_code'] ?>" onclick="changeBrand(this)">
                                                 <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $value['id']; ?>"  style="display:none">
                                             </a>
                                         </li>
@@ -412,9 +414,13 @@ $individualHeight = $heightOfRack/$shelves;
                     $.pjax.reload({container: "#productsBrand", async: false});
                     $.pjax.reload({container: "#productsData", async: false});
                 });
+                $.pjax.reload({container: "#productsBrand", async: false});
+                $.pjax.reload({container: "#productsData", async: false});
                 moet.hideLoader();
             });
             setTimeout(function () {
+            $.pjax.reload({container: "#productsBrand", async: false});
+                $.pjax.reload({container: "#productsData", async: false});
                 $('.modal-backdrop').css('z-index', 0);
             }, 10);
         });
