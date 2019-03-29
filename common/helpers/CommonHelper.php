@@ -11,7 +11,7 @@ use common\models\User;
 
 class CommonHelper
 {
-	public static function getUser()
+    public static function getUser()
 	{
 		$currentUser = Yii::$app->user->identity;
 
@@ -22,14 +22,7 @@ class CommonHelper
         return $currentUser;
 	}
 
-	/**
-	 * 
-	 * @param type $file = Object for UploadedFile class
-	 * @param type $path = extra path from upload directory
-	 * @param string $fileName = [optional] specific name for uploaded file
-	 * @return string|boolean = false if fail upload else return file name
-	 */
-	public static function uploadFile($file, $path = '', $fileName = '', $compress = false)
+    public static function uploadFile($file, $path = '', $fileName = '', $compress = false)
 	{
 		$path = trim(strip_tags($path));
 		$fileName = trim(strip_tags($fileName));
@@ -63,9 +56,9 @@ class CommonHelper
 		}else{
 			return false;
 		}
-	}
+    }
         
-        public static function sort_array_of_array(&$array, $subfield, $sort) {
+    public static function sort_array_of_array(&$array, $subfield, $sort) {
             
             $sortarray = array();
             if(!empty($array) && (isset($array))){
@@ -75,9 +68,9 @@ class CommonHelper
             }
             array_multisort($sortarray, $sort, $array);
            
-        }
+    }
         
-        public static function max_val(&$array, $subfield, $sort) {
+    public static function max_val(&$array, $subfield, $sort) {
             $sortarray = array();
             if(!empty($array) && (isset($array))){
             foreach ($array as $key => $row) {
@@ -91,9 +84,9 @@ class CommonHelper
             $max++;
             }
             return $max;
-        }
+    }
 
-	public static function getPath($type = ''){
+    public static function getPath($type = ''){
 		$return = '';
 
 		switch ($type) {
@@ -195,7 +188,7 @@ class CommonHelper
 		return false;
 	}
 
-	public static function getImage($path, $noImagePath = ''){
+    public static function getImage($path, $noImagePath = ''){
 		$uploadUrl = CommonHelper::getPath('upload_url');
 		$uploadPath = CommonHelper::getPath('upload_path');
 		$imgUrl = $uploadUrl.'no-image.png';
@@ -210,7 +203,7 @@ class CommonHelper
 		return $imgUrl;
 	}
 
-	public static function getDropdown($list, $columns = array()){
+    public static function getDropdown($list, $columns = array()){
     	// Prepare key, value
 		$key   = '';
 		$value = '';
