@@ -25,9 +25,9 @@ $formUrl = Url::to(['product-types/index']);
                         <div class="filter-search dataTables_filter clearfix">
                             <div class="row">
                                 <div class="col-md-3">
-                                <?php  if(CommonHelper::checkPermission('Market.Create')){ ?>
+                                
                                 <?= Html::a('Add Product Type', ['create'], ['class' => 'btn btn-primary']) ?>
-                                <?php } ?>
+                                
                                 </div>
                                 <div class="col-md-7">
                                     <?= Html::input('text', 'search', isset($filters['search']) ? $filters['search'] : '', ['class' => 'form-control', 'placeholder' => 'Search', 'id' => 'user-text']) ?>
