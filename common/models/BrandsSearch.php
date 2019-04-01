@@ -116,7 +116,9 @@ class BrandsSearch extends Brands
                 
             }
         }
+        
        \common\helpers\CommonHelper::sort_array_of_array($brandList, 'reorder_id', SORT_ASC);
+        
         $dataProvider = new ArrayDataProvider([
             'allModels' => $brandList,
             'pagination' => [

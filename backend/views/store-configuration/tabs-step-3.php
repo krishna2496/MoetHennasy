@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 //use kartik\switchinput\SwitchInput;
 $submitUrl = "store-configuration/save-config-data";
 //echo '<pre>';
-//print_r($_SESSION['config']);exit
+//print_r($_SESSION['config']);exit;
 $shelves =  isset($_SESSION['config']['no_of_shelves']) ? $_SESSION['config']['no_of_shelves'] : '1';
 $heightOfRack = isset($_SESSION['config']['height_of_shelves']) ? $_SESSION['config']['height_of_shelves'] : 0;
 $individualHeight = $heightOfRack/$shelves;
@@ -62,10 +62,12 @@ $individualHeight = $heightOfRack/$shelves;
                                         if ($value['color_code'] == '') {
                                             $value['color_code'] = COLOR_CODE;
                                         }
+                                        $imageData = end(explode('/',$value['image']));
+                                        $images_data = $imageData;
                                         ?>
                                         <li>
                                             <a title="<?= $value['name'] ?>">
-                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_BRANDS_IMAGES . $value['image']); ?>" alt="brand-image" class="brand-images" id="<?= $value['id'] ?>" title ='<?= $value['name'] ?>' color_code="<?= $value['color_code'] ?>" onclick="changeBrand(this)">
+                                                <img src="<?= CommonHelper::getImage(UPLOAD_PATH_BRANDS_IMAGES . $images_data); ?>" alt="brand-image" class="brand-images" id="<?= $value['id'] ?>" title ='<?= $value['name'] ?>' color_code="<?= $value['color_code'] ?>" onclick="changeBrand(this)">
                                                 <img src="<?= CommonHelper::getImage(UPLOAD_PATH_IMAGES . 'right-icon.png'); ?>" alt="Selected" class="brand-selected display<?= $value['id']; ?>"  style="display:none">
                                             </a>
                                         </li>
@@ -412,9 +414,13 @@ $individualHeight = $heightOfRack/$shelves;
                     $.pjax.reload({container: "#productsBrand", async: false});
                     $.pjax.reload({container: "#productsData", async: false});
                 });
+                $.pjax.reload({container: "#productsBrand", async: false});
+                $.pjax.reload({container: "#productsData", async: false});
                 moet.hideLoader();
             });
             setTimeout(function () {
+            $.pjax.reload({container: "#productsBrand", async: false});
+                $.pjax.reload({container: "#productsData", async: false});
                 $('.modal-backdrop').css('z-index', 0);
             }, 10);
         });

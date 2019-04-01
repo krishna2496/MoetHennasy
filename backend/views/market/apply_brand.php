@@ -21,7 +21,7 @@ foreach ($selected as $key => $value) {
         }
 }
 
-$dataProvider->allModels = array_merge($new_array, $data);
+//$dataProvider->allModels = array_merge($new_array, $data);
 
 $count = count($dataProvider->allModels);
 $totalBranSharesCount = array_sum($selectedShares);
